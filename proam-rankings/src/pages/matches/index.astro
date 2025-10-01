@@ -11,14 +11,14 @@ const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
 const offset = (currentPage - 1) * MATCHES_PER_PAGE;
 
 // Get total count for pagination
-const { count } = await supa()
+const { count } = await supa(Astro.locals.runtime)
   .from("matches")
   .select("*", { count: 'exact', head: true });
 
 const totalPages = Math.ceil((count || 0) / MATCHES_PER_PAGE);
 
 // Fetch matches for current page
-const { data: matchesData, error } = await supa()
+const { data: matchesData, error } = await supa(Astro.locals.runtime)
   .from("matches")
   .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, game_year, boxscore_url, league_id, season_id, tournament_id")
   .order("played_at", { ascending: false })
@@ -32,7 +32,7 @@ const teamIds = Array.from(new Set([
   ...(matchesData ?? []).map((m: any) => m.team_b_id)
 ].filter(Boolean)));
 
-const { data: teamsData } = teamIds.length > 0 ? await supa()
+const { data: teamsData } = teamIds.length > 0 ? await supa(Astro.locals.runtime)
   .from("teams")
   .select("id, name, logo_url")
   .in("id", teamIds) : { data: [] };
@@ -41,7 +41,7 @@ const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
 
 // Get league info (use season_id for accurate season lookup)
 const seasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
-const { data: leaguesData } = seasonIds.length > 0 ? await supa()
+const { data: leaguesData } = seasonIds.length > 0 ? await supa(Astro.locals.runtime)
   .from("league_calendar")
   .select("season_id, league_id, league_name, season_number")
   .in("season_id", seasonIds) : { data: [] };
@@ -50,7 +50,7 @@ const leagueMap = new Map((leaguesData ?? []).map((l: any) => [l.season_id, l]))
 
 // Get tournament info
 const tournamentIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.tournament_id).filter(Boolean)));
-const { data: tournamentsData } = tournamentIds.length > 0 ? await supa()
+const { data: tournamentsData } = tournamentIds.length > 0 ? await supa(Astro.locals.runtime)
   .from("tournaments")
   .select("id, name")
   .in("id", tournamentIds) : { data: [] };

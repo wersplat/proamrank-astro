@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { supa } from '../../lib/supabase';
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, locals }) => {
   const matchId = url.searchParams.get('match_id');
 
   if (!matchId) {
@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
-    const { data, error } = await supa()
+    const { data, error } = await supa(locals.runtime)
       .from('player_stats')
       .select('player_name, team_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, ftm, fta')
       .eq('match_id', matchId)

@@ -14,28 +14,28 @@ const matchesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
 const matchesOffset = (matchesPage - 1) * MATCHES_PER_PAGE;
 
 // Get team basic info
-const { data: teamData } = await supa()
+const { data: teamData } = await supa(Astro.locals.runtime)
   .from("teams")
   .select("id, name, logo_url, global_rank, current_rp, elo_rating, hybrid_score, leaderboard_tier")
   .eq("id", id)
   .maybeSingle();
 
 // Get team performance data
-const { data: perfData } = await supa()
+const { data: perfData } = await supa(Astro.locals.runtime)
   .from("team_performance_view")
   .select("*")
   .eq("team_id", id)
   .maybeSingle();
 
 // Get current roster
-const { data: roster } = await supa()
+const { data: roster } = await supa(Astro.locals.runtime)
   .from("team_roster_current")
   .select("*")
   .eq("team_id", id)
   .order("is_captain", { ascending: false });
 
 // Get total match count for pagination
-const { count: matchCount } = await supa()
+const { count: matchCount } = await supa(Astro.locals.runtime)
   .from("matches")
   .select("*", { count: 'exact', head: true })
   .or(`team_a_id.eq.${id},team_b_id.eq.${id}`);
@@ -43,7 +43,7 @@ const { count: matchCount } = await supa()
 const totalMatchPages = Math.ceil((matchCount || 0) / MATCHES_PER_PAGE);
 
 // Get matches with pagination
-const { data: matchesData } = await supa()
+const { data: matchesData } = await supa(Astro.locals.runtime)
   .from("matches")
   .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id, boxscore_url, league_id, season_id, tournament_id, stage")
   .or(`team_a_id.eq.${id},team_b_id.eq.${id}`)
@@ -56,7 +56,7 @@ const matchTeamIds = Array.from(new Set([
   ...(matchesData ?? []).map((m: any) => m.team_b_id)
 ].filter((tid: string) => tid !== id)));
 
-const { data: matchTeamsData } = matchTeamIds.length > 0 ? await supa()
+const { data: matchTeamsData } = matchTeamIds.length > 0 ? await supa(Astro.locals.runtime)
   .from("teams")
   .select("id, name, logo_url")
   .in("id", matchTeamIds) : { data: [] };
@@ -65,7 +65,7 @@ const matchTeamMap = new Map((matchTeamsData ?? []).map((t: any) => [t.id, t]));
 
 // Get league info for matches (use season_id for accurate season lookup)
 const matchSeasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
-const { data: matchLeaguesData } = matchSeasonIds.length > 0 ? await supa()
+const { data: matchLeaguesData } = matchSeasonIds.length > 0 ? await supa(Astro.locals.runtime)
   .from("league_calendar")
   .select("season_id, league_id, league_name, season_number")
   .in("season_id", matchSeasonIds) : { data: [] };
@@ -74,7 +74,7 @@ const matchLeagueMap = new Map((matchLeaguesData ?? []).map((l: any) => [l.seaso
 
 // Get tournament info for matches
 const matchTournamentIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.tournament_id).filter(Boolean)));
-const { data: matchTournamentsData } = matchTournamentIds.length > 0 ? await supa()
+const { data: matchTournamentsData } = matchTournamentIds.length > 0 ? await supa(Astro.locals.runtime)
   .from("tournaments")
   .select("id, name")
   .in("id", matchTournamentIds) : { data: [] };

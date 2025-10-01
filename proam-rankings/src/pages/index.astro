@@ -6,7 +6,7 @@ import "../styles/global.css";
 
 // Query teams table directly for best performance (matches Next.js TeamLeaderboardSection pattern)
 // This avoids slow view queries and matches the production Next.js app exactly
-const { data, error } = await supa()
+const { data, error } = await supa(Astro.locals.runtime)
   .from("teams")
   .select(`
     id,

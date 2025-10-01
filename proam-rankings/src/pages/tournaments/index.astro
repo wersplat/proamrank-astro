@@ -8,14 +8,14 @@ const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
 const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
 // Get total count
-const { count } = await supa()
+const { count } = await supa(Astro.locals.runtime)
   .from("tournament_calendar")
   .select("*", { count: 'exact', head: true });
 
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
 // Fetch tournaments with pagination
-const { data, error } = await supa()
+const { data, error } = await supa(Astro.locals.runtime)
   .from("tournament_calendar")
   .select("*")
   .order("start_date", { ascending: false })
