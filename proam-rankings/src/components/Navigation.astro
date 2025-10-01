@@ -1,0 +1,175 @@
+---
+// Simple navigation bar for the Astro app
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="bg-neutral-900 border-b border-neutral-800 sticky top-0 z-50">
+  <div class="mx-auto max-w-6xl px-6 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo/Title -->
+      <a href="/" class="text-xl font-bold bg-gradient-to-r from-blue-500 to-lime-400 bg-clip-text text-transparent">
+        Pro-Am Rankings
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <ul class="hidden lg:flex items-center gap-4 text-sm">
+        <li>
+          <a 
+            href="/" 
+            class={`hover:text-blue-400 transition ${currentPath === '/' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/teams" 
+            class={`hover:text-blue-400 transition ${currentPath.startsWith('/teams') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+          >
+            Teams
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/players" 
+            class={`hover:text-blue-400 transition ${currentPath.startsWith('/players') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+          >
+            Players
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/leagues" 
+            class={`hover:text-blue-400 transition ${currentPath.startsWith('/leagues') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+          >
+            Leagues
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/tournaments" 
+            class={`hover:text-blue-400 transition ${currentPath.startsWith('/tournaments') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+          >
+            Tournaments
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/matches" 
+            class={`hover:text-blue-400 transition ${currentPath.startsWith('/matches') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+          >
+            Matches
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/ranking-system" 
+            class={`hover:text-blue-400 transition ${currentPath === '/ranking-system' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+          >
+            System
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/upload" 
+            class={`px-3 py-1 rounded hover:bg-lime-500 transition ${currentPath === '/upload' ? 'bg-lime-500 text-black font-semibold' : 'bg-lime-600 text-white'}`}
+          >
+            Upload
+          </a>
+        </li>
+      </ul>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        id="mobile-menu-button"
+        class="lg:hidden text-neutral-300 hover:text-white"
+        aria-label="Toggle menu"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation (hidden by default) -->
+    <div id="mobile-menu" class="hidden lg:hidden mt-4 pb-2">
+      <ul class="space-y-1">
+        <li>
+          <a 
+            href="/" 
+            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/' ? 'bg-neutral-800 text-blue-400' : ''}`}
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/teams" 
+            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/teams') ? 'bg-neutral-800 text-blue-400' : ''}`}
+          >
+            Teams
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/players" 
+            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/players') ? 'bg-neutral-800 text-blue-400' : ''}`}
+          >
+            Players
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/leagues" 
+            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/leagues') ? 'bg-neutral-800 text-blue-400' : ''}`}
+          >
+            Leagues
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/tournaments" 
+            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/tournaments') ? 'bg-neutral-800 text-blue-400' : ''}`}
+          >
+            Tournaments
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/matches" 
+            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/matches') ? 'bg-neutral-800 text-blue-400' : ''}`}
+          >
+            Matches
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/ranking-system" 
+            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/ranking-system' ? 'bg-neutral-800 text-blue-400' : ''}`}
+          >
+            Ranking System
+          </a>
+        </li>
+        <li>
+          <a 
+            href="/upload" 
+            class={`block px-3 py-2 rounded bg-lime-600 hover:bg-lime-500 ${currentPath === '/upload' ? 'bg-lime-500 text-black font-semibold' : 'text-white'}`}
+          >
+            Upload
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Mobile menu toggle
+  const button = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+  
+  button?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>
+

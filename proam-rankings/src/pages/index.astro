@@ -1,17 +1,40 @@
 ---
+import Navigation from "../components/Navigation.astro";
 import RankTableIsland from "../components/RankTableIsland";
 import { supa } from "../lib/supabase";
 import "../styles/global.css";
 
-// NOTE: swap 'v_global_rankings' to your actual view name.
-// Leave as SSG by default; if you want per-request freshness, add: export const prerender = false;
+// Query teams table directly for best performance (matches Next.js TeamLeaderboardSection pattern)
+// This avoids slow view queries and matches the production Next.js app exactly
 const { data, error } = await supa()
-  .from("v_global_rankings")
-  .select("*")
-  .order("rating", { ascending: false });
+  .from("teams")
+  .select(`
+    id,
+    name,
+    logo_url,
+    elo_rating,
+    current_rp,
+    global_rank,
+    leaderboard_tier,
+    hybrid_score
+  `)
+  .eq("is_active", true)
+  .order("hybrid_score", { ascending: false })
+  .limit(100);
 
 if (error) console.error(error);
-const rows = data ?? [];
+
+// Map to expected format
+const rows = (data ?? []).map(team => ({
+  team_id: team.id,
+  team_name: team.name,
+  logo_url: team.logo_url,
+  elo_rating: team.elo_rating,
+  current_rp: team.current_rp,
+  global_rank: team.global_rank,
+  leaderboard_tier: team.leaderboard_tier,
+  hybrid_score: team.hybrid_score,
+}));
 ---
 
 <html lang="en">
@@ -21,23 +44,26 @@ const rows = data ?? [];
     <title>Pro-Am Rankings</title>
   </head>
   <body class="bg-neutral-950 text-white">
+    <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <h1 class="text-2xl font-bold mb-4">Global Rankings</h1>
 
       <!-- Mobile cards (smaller screens) -->
       <section class="space-y-2 sm:hidden">
-        {rows.map((r) => (
+        {rows.map((r: typeof rows[0]) => (
           <article class="rounded border border-neutral-800 p-3">
             <header class="flex items-center gap-3">
-              <img src={`${import.meta.env.PUBLIC_ASSETS_BASE || ""}/logos/${r.team_id}.webp` }
+              <img src={r.logo_url || `${import.meta.env.PUBLIC_ASSETS_BASE || ""}/logos/${r.team_id}.webp` }
                    alt="" class="h-8 w-8 rounded" loading="lazy" />
               <div class="font-semibold">{r.team_name}</div>
-              <div class="ml-auto text-sm text-neutral-400">{r.league_short ?? ""}</div>
+              {r.leaderboard_tier && (
+                <div class="ml-auto text-xs font-bold text-neutral-400">{r.leaderboard_tier}</div>
+              )}
             </header>
             <dl class="mt-2 grid grid-cols-3 text-sm">
-              <div><dt class="text-neutral-400">Rating</dt><dd class="font-medium">{r.rating}</dd></div>
-              <div><dt class="text-neutral-400">W-L</dt><dd class="font-medium">{r.wins}-{r.losses}</dd></div>
-              <div><dt class="text-neutral-400">Last 10</dt><dd>{r.last10_w ?? 0}-{r.last10_l ?? 0}</dd></div>
+              <div><dt class="text-neutral-400">Score</dt><dd class="font-medium">{Math.round(r.hybrid_score ?? 0)}</dd></div>
+              <div><dt class="text-neutral-400">Elo</dt><dd class="font-medium">{Math.round(r.elo_rating ?? 1500)}</dd></div>
+              <div><dt class="text-neutral-400">RP</dt><dd>{r.current_rp ?? 0}</dd></div>
             </dl>
           </article>
         ))}

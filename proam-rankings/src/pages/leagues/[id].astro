@@ -1,0 +1,251 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import LeagueMatchesIsland from "../../components/LeagueMatchesIsland";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+// Enable SSR for dynamic league pages
+export const prerender = false;
+
+const { id } = Astro.params;
+
+const MATCHES_PER_PAGE = 25;
+const matchesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const matchesOffset = (matchesPage - 1) * MATCHES_PER_PAGE;
+
+// Get league season info from league_calendar view
+// ID is the season_id (since leagues have multiple seasons)
+const { data: leagueData } = await supa()
+  .from("league_calendar")
+  .select("league_id, league_name, league_logo, season_id, season_number, start_date, end_date, is_active, game_year")
+  .eq("season_id", id)
+  .maybeSingle();
+
+// Get total match count for pagination
+const { count: matchCount } = await supa()
+  .from("matches")
+  .select("*", { count: 'exact', head: true })
+  .eq("season_id", id);
+
+const totalMatchPages = Math.ceil((matchCount || 0) / MATCHES_PER_PAGE);
+
+// Get league results/standings for this season (no limit - show all teams)
+const { data: standings } = await supa()
+  .from("league_results")
+  .select("*")
+  .eq("season_id", id)
+  .order("wins", { ascending: false });
+
+// Get matches for this season with pagination
+const { data: matchesData } = await supa()
+  .from("matches")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, league_id, season_id, tournament_id")
+  .eq("season_id", id)
+  .order("played_at", { ascending: false })
+  .range(matchesOffset, matchesOffset + MATCHES_PER_PAGE - 1);
+
+// Get team names separately
+const teamIds = Array.from(new Set([
+  ...(matchesData ?? []).map((m: any) => m.team_a_id),
+  ...(matchesData ?? []).map((m: any) => m.team_b_id)
+].filter(Boolean)));
+
+const { data: teamsData } = teamIds.length > 0 ? await supa()
+  .from("teams")
+  .select("id, name, logo_url")
+  .in("id", teamIds) : { data: [] };
+
+const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
+
+// Get league info (use season_id for accurate season lookup)
+const matchSeasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
+const { data: matchLeaguesData } = matchSeasonIds.length > 0 ? await supa()
+  .from("league_calendar")
+  .select("season_id, league_id, league_name, season_number")
+  .in("season_id", matchSeasonIds) : { data: [] };
+
+const matchLeagueMap = new Map((matchLeaguesData ?? []).map((l: any) => [l.season_id, l]));
+
+// Combine match data with team info
+const matches = (matchesData ?? []).map((m: any) => ({
+  ...m,
+  team_a: teamMap.get(m.team_a_id),
+  team_b: teamMap.get(m.team_b_id),
+  league: matchLeagueMap.get(m.season_id),
+}));
+
+const league = leagueData;
+const teamStandings = standings ?? [];
+const recentMatches = matches ?? [];
+
+if (!league) {
+  return Astro.redirect("/leagues");
+}
+
+// Generate page numbers for pagination
+function getPageNumbers(current: number, total: number): number[] {
+  const maxVisible = Math.min(7, total);
+  const pages: number[] = [];
+  
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  
+  return pages;
+}
+
+const matchPageNumbers = getPageNumbers(matchesPage, totalMatchPages);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{league.league_name} - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <!-- League Header -->
+      <div class="mb-8 flex items-start gap-6">
+        {league.league_logo && (
+          <img 
+            src={league.league_logo}
+            alt={league.league_name || "League"}
+            class="h-24 w-24 rounded-lg"
+          />
+        )}
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold mb-2">{league.league_name}</h1>
+          <div class="flex flex-wrap gap-4 text-sm">
+            <div>
+              <span class="text-neutral-400">Season:</span>
+              <span class="ml-2 font-semibold">{league.season_number ?? '-'}</span>
+            </div>
+            <div>
+              <span class="text-neutral-400">Year:</span>
+              <span class="ml-2 font-semibold">{league.game_year ?? '-'}</span>
+            </div>
+            {league.is_active && (
+              <span class="px-2 py-1 rounded text-xs font-bold bg-green-900 text-green-300">Active</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Standings -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Standings</h2>
+        <div class="rounded-lg border border-neutral-800 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-neutral-900 text-neutral-300">
+              <tr>
+                <th class="text-left py-2 px-4">Rank</th>
+                <th class="text-left py-2 px-4">Team</th>
+                <th class="text-right py-2 px-4">W</th>
+                <th class="text-right py-2 px-4">L</th>
+                <th class="text-right py-2 px-4">Win %</th>
+                <th class="text-right py-2 px-4">PF</th>
+                <th class="text-right py-2 px-4">PA</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-neutral-800">
+              {teamStandings.map((team: any, idx: number) => (
+                <tr class="hover:bg-neutral-900">
+                  <td class="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                  <td class="py-2 px-4">
+                    <a href={`/teams/${team.team_id}`} class="hover:text-blue-400 flex items-center gap-2">
+                      {team.logo_url && (
+                        <img src={team.logo_url} alt="" class="h-6 w-6 rounded" />
+                      )}
+                      {team.team_name}
+                    </a>
+                  </td>
+                  <td class="py-2 px-4 text-right font-semibold">{team.wins ?? 0}</td>
+                  <td class="py-2 px-4 text-right">{team.losses ?? 0}</td>
+                  <td class="py-2 px-4 text-right">{team.win_percentage?.toFixed(1) ?? '-'}%</td>
+                  <td class="py-2 px-4 text-right">{team.points_for ?? 0}</td>
+                  <td class="py-2 px-4 text-right">{team.points_against ?? 0}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {teamStandings.length === 0 && (
+          <div class="text-center py-8 text-neutral-400">
+            No standings available.
+          </div>
+        )}
+      </section>
+
+      <!-- Recent Matches (Interactive Island) -->
+      <section>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold">Matches</h2>
+          <div class="text-sm text-neutral-400">
+            Page {matchesPage} of {totalMatchPages} • {matchCount || 0} total
+          </div>
+        </div>
+        <LeagueMatchesIsland client:load matches={recentMatches} />
+        {recentMatches.length === 0 && (
+          <div class="text-center py-8 text-neutral-400">
+            No matches found.
+          </div>
+        )}
+
+        <!-- Pagination -->
+        {totalMatchPages > 1 && (
+          <div class="mt-8 flex items-center justify-center gap-2">
+            {matchesPage > 1 ? (
+              <a
+                href={`/leagues/${id}?page=${matchesPage - 1}`}
+                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              >
+                ← Previous
+              </a>
+            ) : (
+              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+                ← Previous
+              </span>
+            )}
+
+            <div class="flex gap-1">
+              {matchPageNumbers.map((pageNum: number) => (
+                <a
+                  href={`/leagues/${id}?page=${pageNum}`}
+                  class={`px-3 py-2 rounded transition ${
+                    pageNum === matchesPage
+                      ? 'bg-blue-600 text-white font-semibold'
+                      : 'bg-neutral-800 hover:bg-neutral-700'
+                  }`}
+                >
+                  {pageNum}
+                </a>
+              ))}
+            </div>
+
+            {matchesPage < totalMatchPages ? (
+              <a
+                href={`/leagues/${id}?page=${matchesPage + 1}`}
+                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              >
+                Next →
+              </a>
+            ) : (
+              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+                Next →
+              </span>
+            )}
+          </div>
+        )}
+      </section>
+    </main>
+  </body>
+</html>
+

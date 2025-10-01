@@ -1,0 +1,279 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import LeagueMatchesIsland from "../../components/LeagueMatchesIsland";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+// Enable SSR for dynamic tournament pages
+export const prerender = false;
+
+const { id } = Astro.params;
+
+const MATCHES_PER_PAGE = 25;
+const matchesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const matchesOffset = (matchesPage - 1) * MATCHES_PER_PAGE;
+
+// Get tournament info
+const { data: tournamentData } = await supa()
+  .from("tournaments")
+  .select("*")
+  .eq("id", id)
+  .maybeSingle();
+
+// Get tournament results
+const { data: results } = await supa()
+  .from("tournament_results")
+  .select("*")
+  .eq("tournament_id", id)
+  .order("final_placement", { ascending: true });
+
+// Get total match count for pagination
+const { count: matchCount } = await supa()
+  .from("matches")
+  .select("*", { count: 'exact', head: true })
+  .eq("tournament_id", id);
+
+const totalMatchPages = Math.ceil((matchCount || 0) / MATCHES_PER_PAGE);
+
+// Get tournament matches with pagination
+const { data: matchesData } = await supa()
+  .from("matches")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, league_id, season_id, tournament_id")
+  .eq("tournament_id", id)
+  .order("played_at", { ascending: false })
+  .range(matchesOffset, matchesOffset + MATCHES_PER_PAGE - 1);
+
+// Get team info for matches
+const matchTeamIds = Array.from(new Set([
+  ...(matchesData ?? []).map((m: any) => m.team_a_id),
+  ...(matchesData ?? []).map((m: any) => m.team_b_id)
+].filter(Boolean)));
+
+const { data: matchTeamsData } = matchTeamIds.length > 0 ? await supa()
+  .from("teams")
+  .select("id, name, logo_url")
+  .in("id", matchTeamIds) : { data: [] };
+
+const matchTeamMap = new Map((matchTeamsData ?? []).map((t: any) => [t.id, t]));
+
+// Get tournament info (for the badge)
+const { data: tournamentInfo } = await supa()
+  .from("tournaments")
+  .select("id, name")
+  .eq("id", id)
+  .maybeSingle();
+
+const matches = (matchesData ?? []).map((m: any) => ({
+  ...m,
+  team_a: matchTeamMap.get(m.team_a_id),
+  team_b: matchTeamMap.get(m.team_b_id),
+  tournament: tournamentInfo,
+}));
+
+const tournament = tournamentData;
+const tournamentResults = results ?? [];
+const tournamentMatches = matches;
+
+if (!tournament) {
+  return Astro.redirect("/tournaments");
+}
+
+// Generate page numbers for pagination
+function getPageNumbers(current: number, total: number): number[] {
+  const maxVisible = Math.min(7, total);
+  const pages: number[] = [];
+  
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  
+  return pages;
+}
+
+const matchPageNumbers = getPageNumbers(matchesPage, totalMatchPages);
+
+const tierColors: Record<string, string> = {
+  'T1': 'bg-purple-900 text-purple-300 border-purple-500',
+  'T2': 'bg-blue-900 text-blue-300 border-blue-500',
+  'T3': 'bg-green-900 text-green-300 border-green-500',
+  'T4': 'bg-yellow-900 text-yellow-300 border-yellow-500',
+  'T5': 'bg-gray-900 text-gray-300 border-gray-500',
+};
+const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gray-300 border-gray-500';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tournament.name} - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <!-- Tournament Header -->
+      <div class="mb-8">
+        {tournament.banner_url && (
+          <img 
+            src={tournament.banner_url}
+            alt={tournament.name || "Tournament"}
+            class="w-full h-48 object-cover rounded-lg mb-4"
+          />
+        )}
+        <h1 class="text-3xl font-bold mb-2">{tournament.name}</h1>
+        <div class="flex flex-wrap gap-3 items-center">
+          <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColor}`}>
+            {tournament.tier} Tier
+          </span>
+          <span class="text-neutral-400 text-sm">
+            {tournament.game_year ?? '-'}
+          </span>
+          {tournament.status && (
+            <span class="text-neutral-400 text-sm">• {tournament.status}</span>
+          )}
+        </div>
+      </div>
+
+      <!-- Tournament Info -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        {tournament.prize_pool && (
+          <div class="rounded-lg border border-neutral-800 p-4">
+            <div class="text-neutral-400 text-sm mb-1">Prize Pool</div>
+            <div class="text-2xl font-bold">${tournament.prize_pool.toLocaleString()}</div>
+          </div>
+        )}
+        {tournament.start_date && (
+          <div class="rounded-lg border border-neutral-800 p-4">
+            <div class="text-neutral-400 text-sm mb-1">Start Date</div>
+            <div class="text-lg font-semibold">{new Date(tournament.start_date).toLocaleDateString()}</div>
+          </div>
+        )}
+        {tournament.end_date && (
+          <div class="rounded-lg border border-neutral-800 p-4">
+            <div class="text-neutral-400 text-sm mb-1">End Date</div>
+            <div class="text-lg font-semibold">{new Date(tournament.end_date).toLocaleDateString()}</div>
+          </div>
+        )}
+        {tournament.max_rp && (
+          <div class="rounded-lg border border-neutral-800 p-4">
+            <div class="text-neutral-400 text-sm mb-1">Max RP</div>
+            <div class="text-2xl font-bold">{tournament.max_rp}</div>
+          </div>
+        )}
+      </div>
+
+      <!-- Results/Standings -->
+      {tournamentResults.length > 0 && (
+        <section class="mb-8">
+          <h2 class="text-xl font-bold mb-4">Final Standings</h2>
+          <div class="rounded-lg border border-neutral-800 overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-neutral-900 text-neutral-300">
+                <tr>
+                  <th class="text-left py-2 px-4">Place</th>
+                  <th class="text-left py-2 px-4">Team</th>
+                  <th class="text-right py-2 px-4">W-L</th>
+                  <th class="text-right py-2 px-4">RP Earned</th>
+                  <th class="text-right py-2 px-4">Prize</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-neutral-800">
+                {tournamentResults.map((result: any) => (
+                  <tr class="hover:bg-neutral-900">
+                    <td class="py-2 px-4">
+                      <span class={result.final_placement === 1 ? 'text-gold font-bold' : ''}>
+                        #{result.final_placement ?? '-'}
+                      </span>
+                    </td>
+                    <td class="py-2 px-4">
+                      <a href={`/teams/${result.team_id}`} class="hover:text-blue-400 flex items-center gap-2">
+                        {result.logo_url && (
+                          <img src={result.logo_url} alt="" class="h-6 w-6 rounded" />
+                        )}
+                        {result.team_name}
+                      </a>
+                    </td>
+                    <td class="py-2 px-4 text-right">{result.wins ?? 0}-{result.losses ?? 0}</td>
+                    <td class="py-2 px-4 text-right text-gold">{result.current_rp ?? 0}</td>
+                    <td class="py-2 px-4 text-right">
+                      {result.prize_won ? `$${result.prize_won.toLocaleString()}` : '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      <!-- Matches (Interactive Island) -->
+      <section>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold">Matches</h2>
+          <div class="text-sm text-neutral-400">
+            Page {matchesPage} of {totalMatchPages} • {matchCount || 0} total
+          </div>
+        </div>
+        <LeagueMatchesIsland client:load matches={tournamentMatches} />
+        {tournamentMatches.length === 0 && (
+          <div class="text-center py-8 text-neutral-400">
+            No matches found.
+          </div>
+        )}
+
+        <!-- Pagination -->
+        {totalMatchPages > 1 && (
+          <div class="mt-8 flex items-center justify-center gap-2">
+            {matchesPage > 1 ? (
+              <a
+                href={`/tournaments/${id}?page=${matchesPage - 1}`}
+                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              >
+                ← Previous
+              </a>
+            ) : (
+              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+                ← Previous
+              </span>
+            )}
+
+            <div class="flex gap-1">
+              {matchPageNumbers.map((pageNum: number) => (
+                <a
+                  href={`/tournaments/${id}?page=${pageNum}`}
+                  class={`px-3 py-2 rounded transition ${
+                    pageNum === matchesPage
+                      ? 'bg-blue-600 text-white font-semibold'
+                      : 'bg-neutral-800 hover:bg-neutral-700'
+                  }`}
+                >
+                  {pageNum}
+                </a>
+              ))}
+            </div>
+
+            {matchesPage < totalMatchPages ? (
+              <a
+                href={`/tournaments/${id}?page=${matchesPage + 1}`}
+                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              >
+                Next →
+              </a>
+            ) : (
+              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+                Next →
+              </span>
+            )}
+          </div>
+        )}
+      </section>
+    </main>
+  </body>
+</html>
+

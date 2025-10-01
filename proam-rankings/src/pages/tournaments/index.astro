@@ -1,0 +1,184 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+const ITEMS_PER_PAGE = 25;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+// Get total count
+const { count } = await supa()
+  .from("tournament_calendar")
+  .select("*", { count: 'exact', head: true });
+
+const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
+
+// Fetch tournaments with pagination
+const { data, error } = await supa()
+  .from("tournament_calendar")
+  .select("*")
+  .order("start_date", { ascending: false })
+  .range(offset, offset + ITEMS_PER_PAGE - 1);
+
+if (error) console.error(error);
+
+// Helper functions
+function getStatusColor(status: string | null) {
+  if (status === 'completed') return 'text-green-400';
+  if (status === 'in progress') return 'text-blue-400';
+  return 'text-yellow-400';
+}
+
+function getTierColor(tier: string | null) {
+  const tierColors: { [key: string]: string } = {
+    'T1': 'bg-purple-900 text-purple-300',
+    'T2': 'bg-blue-900 text-blue-300',
+    'T3': 'bg-green-900 text-green-300',
+    'T4': 'bg-yellow-900 text-yellow-300',
+    'T5': 'bg-gray-900 text-gray-300',
+  };
+  return tierColors[tier || ''] || 'bg-gray-900 text-gray-300';
+}
+
+const tournaments = (data ?? []).map((t: any) => ({
+  ...t,
+  statusColor: getStatusColor(t.status),
+  tierColor: getTierColor(t.tier),
+}));
+
+// Generate page numbers
+function getPageNumbers(current: number, total: number): number[] {
+  const pages: number[] = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  return pages;
+}
+
+const pageNumbers = getPageNumbers(currentPage, totalPages);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tournaments - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold">Tournaments</h1>
+        <div class="text-sm text-neutral-400">
+          Page {currentPage} of {totalPages} • {count || 0} total
+        </div>
+      </div>
+
+      <!-- Tournaments Grid -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {tournaments.map((t: any) => (
+          <a 
+            href={`/tournaments/${t.id}`}
+            class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
+          >
+            {t.banner_url && (
+              <img 
+                src={t.banner_url}
+                alt={t.tournament_name || "Tournament"}
+                class="w-full h-32 object-cover rounded mb-3"
+                loading="lazy"
+              />
+            )}
+            <div class="mb-3">
+              <h2 class="font-bold text-lg truncate mb-1">{t.tournament_name}</h2>
+              <div class="flex items-center gap-2">
+                <span class={`px-2 py-0.5 rounded text-xs font-bold ${t.tierColor}`}>
+                  {t.tier}
+                </span>
+                <span class={`text-xs ${t.statusColor}`}>
+                  {t.status || 'Scheduled'}
+                </span>
+              </div>
+            </div>
+            
+            <dl class="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <dt class="text-neutral-400 text-xs">Prize Pool</dt>
+                <dd class="font-semibold">
+                  {t.prize_pool 
+                    ? `$${t.prize_pool.toLocaleString()}` 
+                    : '-'}
+                </dd>
+              </div>
+              <div>
+                <dt class="text-neutral-400 text-xs">Year</dt>
+                <dd class="font-semibold">{t.game_year ?? '-'}</dd>
+              </div>
+            </dl>
+            
+            {t.champion_name && (
+              <div class="mt-3 pt-3 border-t border-neutral-800 text-xs">
+                <span class="text-neutral-400">Champion: </span>
+                <span class="text-gold font-semibold">{t.champion_name}</span>
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+
+      {tournaments.length === 0 && (
+        <div class="text-center py-12 text-neutral-400">
+          No tournaments found.
+        </div>
+      )}
+
+      <!-- Pagination -->
+      {totalPages > 1 && (
+        <div class="mt-8 flex items-center justify-center gap-2">
+          {currentPage > 1 ? (
+            <a href={`/tournaments?page=${currentPage - 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+              ← Previous
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              ← Previous
+            </span>
+          )}
+
+          <div class="flex gap-1">
+            {pageNumbers.map((pageNum: number) => (
+              <a
+                href={`/tournaments?page=${pageNum}`}
+                class={`px-3 py-2 rounded transition ${
+                  pageNum === currentPage
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-neutral-800 hover:bg-neutral-700'
+                }`}
+              >
+                {pageNum}
+              </a>
+            ))}
+          </div>
+
+          {currentPage < totalPages ? (
+            <a href={`/tournaments?page=${currentPage + 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+              Next →
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              Next →
+            </span>
+          )}
+        </div>
+      )}
+    </main>
+  </body>
+</html>
+

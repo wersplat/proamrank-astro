@@ -1,0 +1,296 @@
+---
+import Navigation from "../components/Navigation.astro";
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ranking System - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-5xl p-6">
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold mb-2">Ranking System</h1>
+        <p class="text-neutral-400">Learn how teams and players are ranked in the NBA 2K Pro Am Global Rankings</p>
+      </div>
+
+      <!-- Team Ranking System -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Team Ranking System</h2>
+        
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
+          <h3 class="text-xl font-medium mb-4">Hybrid Ranking System</h3>
+          <p class="text-neutral-300 mb-4">Teams are ranked using a combination of two complementary metrics to ensure both achievement and skill are fairly represented:</p>
+          
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-neutral-950 p-5 rounded-lg border border-blue-500/20">
+              <div class="flex items-center mb-2">
+                <span class="text-2xl mr-2">🧩</span>
+                <h4 class="text-lg font-semibold text-gold">Ranking Points (RP)</h4>
+                <span class="ml-auto bg-blue-500/20 text-blue-300 text-xs px-2 py-1 rounded">70% Weight</span>
+              </div>
+              <p class="text-neutral-400 text-sm">Measures team success across verified tournaments and events. Rewards consistent performance and achievement.</p>
+            </div>
+            
+            <div class="bg-neutral-950 p-5 rounded-lg border border-purple-500/20">
+              <div class="flex items-center mb-2">
+                <span class="text-2xl mr-2">📈</span>
+                <h4 class="text-lg font-semibold text-gold">ELO Rating</h4>
+                <span class="ml-auto bg-purple-500/20 text-purple-300 text-xs px-2 py-1 rounded">30% Weight</span>
+              </div>
+              <p class="text-neutral-400 text-sm">Evaluates relative team skill based on match outcomes and opponent strength. Reacts to current form and competition level.</p>
+            </div>
+          </div>
+          
+          <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800">
+            <div class="flex items-center justify-center">
+              <span class="text-gold mr-2">⚖️</span>
+              <code class="text-sm">Final Score = (RP Score × 0.70) + (ELO Normalized × 0.30)</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Tiers -->
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
+          <h3 class="text-xl font-medium mb-4">Event Tiers</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-neutral-800">
+              <thead>
+                <tr>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Description</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Max RP</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-neutral-800">
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center gap-2">
+                      <span>💎</span>
+                      <span class="font-medium">T1</span>
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">Major LANs (Worlds, UPA Live Events)</td>
+                  <td class="px-4 py-3 text-sm text-gold">1000 RP</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center gap-2">
+                      <span>🏆</span>
+                      <span class="font-medium">T2</span>
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">Monthly Franchise Events, UPA College Finals</td>
+                  <td class="px-4 py-3 text-sm text-gold">600 RP</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center gap-2">
+                      <span>🥇</span>
+                      <span class="font-medium">T3</span>
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">Franchise Qualifiers, Redraft, UPA College Regular</td>
+                  <td class="px-4 py-3 text-sm text-gold">300 RP</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center gap-2">
+                      <span>🥈</span>
+                      <span class="font-medium">T4</span>
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">Invitationals, Showmatches, Non-UPA Verified Leagues</td>
+                  <td class="px-4 py-3 text-sm text-gold">150 RP</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center gap-2">
+                      <span>🥉</span>
+                      <span class="font-medium">T5</span>
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">Community Events, Unverified Leagues</td>
+                  <td class="px-4 py-3 text-sm text-gold">50 RP</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Leaderboard Tiers -->
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
+          <h3 class="text-xl font-medium mb-4">Leaderboard Tiers</h3>
+          <p class="text-neutral-300 mb-6">Teams are grouped into five performance tiers based on their hybrid score:</p>
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+            <div class="bg-purple-500/10 p-4 rounded-lg text-center border border-purple-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 mb-2">S-Tier</div>
+              <p class="text-sm">Top 4 Teams</p>
+              <p class="text-xs text-purple-300/60 mt-1">Elite Competitors</p>
+            </div>
+            <div class="bg-blue-500/10 p-4 rounded-lg text-center border border-blue-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 mb-2">A-Tier</div>
+              <p class="text-sm">Rank 5-12</p>
+              <p class="text-xs text-blue-300/60 mt-1">Championship Contenders</p>
+            </div>
+            <div class="bg-green-500/10 p-4 rounded-lg text-center border border-green-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/20 text-green-300 mb-2">B-Tier</div>
+              <p class="text-sm">Rank 13-30</p>
+              <p class="text-xs text-green-300/60 mt-1">Playoff Hopefuls</p>
+            </div>
+            <div class="bg-yellow-500/10 p-4 rounded-lg text-center border border-yellow-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300 mb-2">C-Tier</div>
+              <p class="text-sm">Rank 31-100</p>
+              <p class="text-xs text-yellow-300/60 mt-1">Developing Teams</p>
+            </div>
+            <div class="bg-gray-500/10 p-4 rounded-lg text-center border border-gray-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 mb-2">Unranked</div>
+              <p class="text-sm">100+</p>
+              <p class="text-xs text-gray-300/60 mt-1">New/Inactive</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ELO System -->
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+          <h3 class="text-xl font-medium mb-4">ELO Rating System</h3>
+          <p class="text-neutral-300 mb-4">ELO ratings provide a dynamic measure of team skill based on match performance with <span class="text-gold font-medium">fixed normalization bounds</span> for consistent rankings:</p>
+          
+          <div class="space-y-4">
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">ELO Bounds & Normalization</h4>
+              <ul class="space-y-2 text-neutral-300 text-sm">
+                <li>• <span class="text-gold">Starting ELO:</span> 1500 (normalizes to 437.5/1000)</li>
+                <li>• <span class="text-gold">Minimum Bound:</span> 800 (theoretical competitive floor)</li>
+                <li>• <span class="text-gold">Maximum Bound:</span> 2400 (practical competitive ceiling)</li>
+                <li>• <span class="text-gold">Benefit:</span> Rankings remain stable regardless of team distribution</li>
+              </ul>
+            </div>
+            
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">How ELO Works</h4>
+              <ul class="space-y-2 text-neutral-300 text-sm">
+                <li>• Ratings increase when beating higher-rated teams</li>
+                <li>• Ratings decrease when losing to lower-rated teams</li>
+                <li>• The amount of change depends on the rating difference</li>
+                <li>• <span class="text-gold">Fixed bounds prevent ranking instability</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Player Rating System -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Player Rating System</h2>
+        
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
+          <p class="text-neutral-300 mb-6">
+            Each player receives a <span class="text-gold font-medium">Global Rating (0–100+)</span> derived from verified game stats and competitive context.
+            This rating helps evaluate player performance across different leagues and tournaments.
+          </p>
+          
+          <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 mb-6 text-center">
+            <code class="text-sm">Global Rating = Base + (Game Impact × Weight) + Event Bonus − Decay</code>
+          </div>
+          
+          <h3 class="text-xl font-medium mb-4">Player Tiers</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-neutral-800">
+              <thead>
+                <tr>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Label</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Rating Range</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-neutral-800">
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium">S+</td>
+                  <td class="px-4 py-3 text-sm text-gold font-medium">Legendary</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">95+</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Elite playmakers, consistent top performers</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium">S</td>
+                  <td class="px-4 py-3 text-sm text-purple-400 font-medium">Elite</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">90-94</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Top-tier players, tournament winners</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium">A</td>
+                  <td class="px-4 py-3 text-sm text-blue-400 font-medium">All-Star</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">85-89</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Strong competitors, frequent high placements</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium">B</td>
+                  <td class="px-4 py-3 text-sm text-green-400 font-medium">Starter</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">80-84</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Solid players, team contributors</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium">C</td>
+                  <td class="px-4 py-3 text-sm text-yellow-400 font-medium">Role Player</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">75-79</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Specialized skills, developing players</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium">D</td>
+                  <td class="px-4 py-3 text-sm text-orange-400 font-medium">Bench</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">70-74</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">New or inconsistent performers</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- RP Decay -->
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+          <h3 class="text-xl font-medium mb-4">RP Decay</h3>
+          <p class="text-neutral-300 mb-6">To maintain competitive integrity, RP will decay over time to ensure rankings reflect current performance levels.</p>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-neutral-800">
+              <thead>
+                <tr>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">RP Source</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Decay Starts</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Full Decay</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-neutral-800">
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm text-neutral-300">Event RP (LAN, Opens)</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">30 Days</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">90 Days</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm text-neutral-300">Franchise Weekly RP</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">60 Days</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">120 Days</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm text-neutral-300">Franchise Placement RP</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">90 Days</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">150 Days</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  .text-gold {
+    color: #fbbf24;
+  }
+</style>
+

@@ -1,0 +1,160 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+const ITEMS_PER_PAGE = 25;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+// Get total count
+const { count } = await supa()
+  .from("teams")
+  .select("*", { count: 'exact', head: true })
+  .eq("is_active", true);
+
+const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
+
+// Fetch teams with pagination
+const { data, error } = await supa()
+  .from("teams")
+  .select(`
+    id,
+    name,
+    logo_url,
+    elo_rating,
+    current_rp,
+    global_rank,
+    leaderboard_tier,
+    hybrid_score
+  `)
+  .eq("is_active", true)
+  .order("hybrid_score", { ascending: false })
+  .range(offset, offset + ITEMS_PER_PAGE - 1);
+
+if (error) console.error(error);
+const teams = data ?? [];
+
+// Generate page numbers
+function getPageNumbers(current: number, total: number): number[] {
+  const pages: number[] = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  return pages;
+}
+
+const pageNumbers = getPageNumbers(currentPage, totalPages);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Teams - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold">Teams</h1>
+        <div class="text-sm text-neutral-400">
+          Page {currentPage} of {totalPages} • {count || 0} total
+        </div>
+      </div>
+
+      <!-- Teams Grid -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {teams.map((team) => (
+          <a 
+            href={`/teams/${team.id}`}
+            class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
+          >
+            <div class="flex items-center gap-3 mb-3">
+              <img 
+                src={team.logo_url || `${import.meta.env.PUBLIC_ASSETS_BASE || ""}/logos/${team.id}.webp`}
+                alt={team.name || "Team"}
+                class="h-12 w-12 rounded"
+                loading="lazy"
+              />
+              <div class="flex-1 min-w-0">
+                <h2 class="font-bold text-lg truncate">{team.name}</h2>
+                {team.leaderboard_tier && (
+                  <span class="text-xs font-bold text-neutral-400">{team.leaderboard_tier} Tier</span>
+                )}
+              </div>
+            </div>
+            
+            <dl class="grid grid-cols-3 gap-2 text-sm">
+              <div>
+                <dt class="text-neutral-400 text-xs">Rank</dt>
+                <dd class="font-semibold">#{team.global_rank ?? '-'}</dd>
+              </div>
+              <div>
+                <dt class="text-neutral-400 text-xs">Score</dt>
+                <dd class="font-semibold">{Math.round(team.hybrid_score ?? 0)}</dd>
+              </div>
+              <div>
+                <dt class="text-neutral-400 text-xs">RP</dt>
+                <dd class="font-semibold">{team.current_rp ?? 0}</dd>
+              </div>
+            </dl>
+          </a>
+        ))}
+      </div>
+
+      {teams.length === 0 && (
+        <div class="text-center py-12 text-neutral-400">
+          No teams found.
+        </div>
+      )}
+
+      <!-- Pagination -->
+      {totalPages > 1 && (
+        <div class="mt-8 flex items-center justify-center gap-2">
+          {currentPage > 1 ? (
+            <a href={`/teams?page=${currentPage - 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+              ← Previous
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              ← Previous
+            </span>
+          )}
+
+          <div class="flex gap-1">
+            {pageNumbers.map((pageNum: number) => (
+              <a
+                href={`/teams?page=${pageNum}`}
+                class={`px-3 py-2 rounded transition ${
+                  pageNum === currentPage
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-neutral-800 hover:bg-neutral-700'
+                }`}
+              >
+                {pageNum}
+              </a>
+            ))}
+          </div>
+
+          {currentPage < totalPages ? (
+            <a href={`/teams?page=${currentPage + 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+              Next →
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              Next →
+            </span>
+          )}
+        </div>
+      )}
+    </main>
+  </body>
+</html>
+

@@ -1,16 +1,285 @@
 ---
+import Navigation from "../../components/Navigation.astro";
+import PlayerGamesIsland from "../../components/PlayerGamesIsland";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+// Enable SSR for dynamic player pages
+export const prerender = false;
+
 const { id } = Astro.params;
+
+const GAMES_PER_PAGE = 25;
+const gamesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const gamesOffset = (gamesPage - 1) * GAMES_PER_PAGE;
+
+// Get player basic info
+const { data: playerData } = await supa()
+  .from("players")
+  .select("id, gamertag, position, player_rp, performance_score, salary_tier, current_team_id, currentTeamName")
+  .eq("id", id)
+  .maybeSingle();
+
+// Get player performance view data
+const { data: perfData } = await supa()
+  .from("player_performance_view")
+  .select("*")
+  .eq("id", id)
+  .maybeSingle();
+
+// Get current team info if player has one
+let currentTeam = null;
+if (playerData?.current_team_id) {
+  const { data: teamData } = await supa()
+    .from("teams")
+    .select("id, name, logo_url, global_rank")
+    .eq("id", playerData.current_team_id)
+    .maybeSingle();
+  currentTeam = teamData;
+}
+
+// Get total game count for pagination
+const { count: gameCount } = await supa()
+  .from("player_stats")
+  .select("*", { count: 'exact', head: true })
+  .eq("player_id", id);
+
+const totalGamePages = Math.ceil((gameCount || 0) / GAMES_PER_PAGE);
+
+// Get games with pagination
+const { data: statsData } = await supa()
+  .from("player_stats")
+  .select("id, match_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, created_at")
+  .eq("player_id", id)
+  .order("created_at", { ascending: false })
+  .range(gamesOffset, gamesOffset + GAMES_PER_PAGE - 1);
+
+// Get match info for games
+const matchIds = (statsData ?? []).map((s: any) => s.match_id).filter(Boolean);
+const { data: matchesData } = matchIds.length > 0 ? await supa()
+  .from("matches")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, boxscore_url, league_id, season_id, tournament_id, stage")
+  .in("id", matchIds) : { data: [] };
+
+const matchMap = new Map((matchesData ?? []).map((m: any) => [m.id, m]));
+
+// Get team info for matches
+const teamIds = Array.from(new Set([
+  ...(matchesData ?? []).map((m: any) => m.team_a_id),
+  ...(matchesData ?? []).map((m: any) => m.team_b_id)
+].filter(Boolean)));
+
+const { data: teamsData } = teamIds.length > 0 ? await supa()
+  .from("teams")
+  .select("id, name, logo_url")
+  .in("id", teamIds) : { data: [] };
+
+const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
+
+// Get league info (use season_id for accurate season lookup)
+const seasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
+const { data: leaguesData } = seasonIds.length > 0 ? await supa()
+  .from("league_calendar")
+  .select("season_id, league_id, league_name, season_number")
+  .in("season_id", seasonIds) : { data: [] };
+
+const leagueMap = new Map((leaguesData ?? []).map((l: any) => [l.season_id, l]));
+
+// Get tournament info
+const tournamentIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.tournament_id).filter(Boolean)));
+const { data: tournamentsData } = tournamentIds.length > 0 ? await supa()
+  .from("tournaments")
+  .select("id, name")
+  .in("id", tournamentIds) : { data: [] };
+
+const tournamentMap = new Map((tournamentsData ?? []).map((t: any) => [t.id, t]));
+
+// Combine game stats with match info
+const games = (statsData ?? []).map((s: any) => {
+  const match = matchMap.get(s.match_id);
+  return {
+    ...s,
+    matches: match ? {
+      ...match,
+      team_a: teamMap.get(match.team_a_id),
+      team_b: teamMap.get(match.team_b_id),
+      league: leagueMap.get(match.season_id),
+      tournament: tournamentMap.get(match.tournament_id),
+    } : null,
+  };
+});
+
+const player = playerData;
+const performance = perfData;
+const recentGames = games;
+
+if (!player) {
+  return Astro.redirect("/players");
+}
+
+// Generate page numbers for pagination
+function getPageNumbers(current: number, total: number): number[] {
+  const maxVisible = Math.min(7, total);
+  const pages: number[] = [];
+  
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  
+  return pages;
+}
+
+const gamePageNumbers = getPageNumbers(gamesPage, totalGamePages);
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Player {id}</title>
+    <title>{player.gamertag} - Pro-Am Rankings</title>
   </head>
   <body class="bg-neutral-950 text-white">
-    <main class="mx-auto max-w-3xl p-6">
-      <h1 class="text-2xl font-bold">Player Profile</h1>
-      <p class="text-neutral-400">Stub for player {id}.</p>
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <!-- Player Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold mb-2">{player.gamertag}</h1>
+        <div class="flex flex-wrap gap-4 text-sm mb-4">
+          <div>
+            <span class="text-neutral-400">Position:</span>
+            <span class="ml-2 font-semibold">{player.position || 'Unknown'}</span>
+          </div>
+          {currentTeam && (
+            <div>
+              <span class="text-neutral-400">Team:</span>
+              <a href={`/teams/${currentTeam.id}`} class="ml-2 font-semibold hover:text-blue-400">
+                {currentTeam.name}
+              </a>
+            </div>
+          )}
+          <div>
+            <span class="text-neutral-400">Tier:</span>
+            <span class="ml-2 font-semibold">{player.salary_tier || '-'}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Overview -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div class="rounded-lg border border-neutral-800 p-4">
+          <div class="text-neutral-400 text-sm mb-1">Player RP</div>
+          <div class="text-2xl font-bold">{player.player_rp ?? 0}</div>
+        </div>
+        <div class="rounded-lg border border-neutral-800 p-4">
+          <div class="text-neutral-400 text-sm mb-1">Performance Score</div>
+          <div class="text-2xl font-bold">{player.performance_score?.toFixed(1) ?? '-'}</div>
+        </div>
+        <div class="rounded-lg border border-neutral-800 p-4">
+          <div class="text-neutral-400 text-sm mb-1">Games Played</div>
+          <div class="text-2xl font-bold">{performance?.games_played ?? 0}</div>
+        </div>
+        <div class="rounded-lg border border-neutral-800 p-4">
+          <div class="text-neutral-400 text-sm mb-1">PPG</div>
+          <div class="text-2xl font-bold">{performance?.avg_points?.toFixed(1) ?? '-'}</div>
+        </div>
+      </div>
+
+      <!-- Season Averages -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Season Averages</h2>
+        <div class="rounded-lg border border-neutral-800 overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-neutral-900 text-neutral-300">
+              <tr>
+                <th class="text-left py-2 px-4">PPG</th>
+                <th class="text-left py-2 px-4">RPG</th>
+                <th class="text-left py-2 px-4">APG</th>
+                <th class="text-left py-2 px-4">SPG</th>
+                <th class="text-left py-2 px-4">BPG</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-neutral-900">
+                <td class="py-2 px-4 font-semibold">{performance?.avg_points?.toFixed(1) ?? '-'}</td>
+                <td class="py-2 px-4 font-semibold">{performance?.avg_rebounds?.toFixed(1) ?? '-'}</td>
+                <td class="py-2 px-4 font-semibold">{performance?.avg_assists?.toFixed(1) ?? '-'}</td>
+                <td class="py-2 px-4 font-semibold">{performance?.avg_steals?.toFixed(1) ?? '-'}</td>
+                <td class="py-2 px-4 font-semibold">{performance?.avg_blocks?.toFixed(1) ?? '-'}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Recent Games (Interactive Island) -->
+      <section>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold">Game Log</h2>
+          <div class="text-sm text-neutral-400">
+            Page {gamesPage} of {totalGamePages} • {gameCount || 0} total
+          </div>
+        </div>
+        <PlayerGamesIsland client:load games={recentGames} />
+        {recentGames.length === 0 && (
+          <div class="text-center py-8 text-neutral-400">
+            No games found.
+          </div>
+        )}
+
+        <!-- Pagination -->
+        {totalGamePages > 1 && (
+          <div class="mt-8 flex items-center justify-center gap-2">
+            {gamesPage > 1 ? (
+              <a
+                href={`/players/${id}?page=${gamesPage - 1}`}
+                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              >
+                ← Previous
+              </a>
+            ) : (
+              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+                ← Previous
+              </span>
+            )}
+
+            <div class="flex gap-1">
+              {gamePageNumbers.map((pageNum: number) => (
+                <a
+                  href={`/players/${id}?page=${pageNum}`}
+                  class={`px-3 py-2 rounded transition ${
+                    pageNum === gamesPage
+                      ? 'bg-blue-600 text-white font-semibold'
+                      : 'bg-neutral-800 hover:bg-neutral-700'
+                  }`}
+                >
+                  {pageNum}
+                </a>
+              ))}
+            </div>
+
+            {gamesPage < totalGamePages ? (
+              <a
+                href={`/players/${id}?page=${gamesPage + 1}`}
+                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              >
+                Next →
+              </a>
+            ) : (
+              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+                Next →
+              </span>
+            )}
+          </div>
+        )}
+      </section>
     </main>
   </body>
 </html>
+
+

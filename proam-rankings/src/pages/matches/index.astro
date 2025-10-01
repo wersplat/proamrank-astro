@@ -1,0 +1,166 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import MatchesListIsland from "../../components/MatchesListIsland";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+const MATCHES_PER_PAGE = 25;
+
+// Get page from URL params
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const offset = (currentPage - 1) * MATCHES_PER_PAGE;
+
+// Get total count for pagination
+const { count } = await supa()
+  .from("matches")
+  .select("*", { count: 'exact', head: true });
+
+const totalPages = Math.ceil((count || 0) / MATCHES_PER_PAGE);
+
+// Fetch matches for current page
+const { data: matchesData, error } = await supa()
+  .from("matches")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, game_year, boxscore_url, league_id, season_id, tournament_id")
+  .order("played_at", { ascending: false })
+  .range(offset, offset + MATCHES_PER_PAGE - 1);
+
+if (error) console.error(error);
+
+// Get team info
+const teamIds = Array.from(new Set([
+  ...(matchesData ?? []).map((m: any) => m.team_a_id),
+  ...(matchesData ?? []).map((m: any) => m.team_b_id)
+].filter(Boolean)));
+
+const { data: teamsData } = teamIds.length > 0 ? await supa()
+  .from("teams")
+  .select("id, name, logo_url")
+  .in("id", teamIds) : { data: [] };
+
+const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
+
+// Get league info (use season_id for accurate season lookup)
+const seasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
+const { data: leaguesData } = seasonIds.length > 0 ? await supa()
+  .from("league_calendar")
+  .select("season_id, league_id, league_name, season_number")
+  .in("season_id", seasonIds) : { data: [] };
+
+const leagueMap = new Map((leaguesData ?? []).map((l: any) => [l.season_id, l]));
+
+// Get tournament info
+const tournamentIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.tournament_id).filter(Boolean)));
+const { data: tournamentsData } = tournamentIds.length > 0 ? await supa()
+  .from("tournaments")
+  .select("id, name")
+  .in("id", tournamentIds) : { data: [] };
+
+const tournamentMap = new Map((tournamentsData ?? []).map((t: any) => [t.id, t]));
+
+// Combine all data
+const matches = (matchesData ?? []).map((m: any) => ({
+  ...m,
+  team_a: teamMap.get(m.team_a_id),
+  team_b: teamMap.get(m.team_b_id),
+  league: leagueMap.get(m.season_id),
+  tournament: tournamentMap.get(m.tournament_id),
+}));
+
+// Generate page numbers for pagination
+function getPageNumbers(current: number, total: number): number[] {
+  const maxVisible = Math.min(7, total);
+  const pages: number[] = [];
+  
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  
+  return pages;
+}
+
+const pageNumbers = getPageNumbers(currentPage, totalPages);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recent Matches - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold">Recent Matches</h1>
+        <div class="text-sm text-neutral-400">
+          Page {currentPage} of {totalPages} • {count || 0} total matches
+        </div>
+      </div>
+
+      <!-- Interactive Matches List (Astro Island) -->
+      <MatchesListIsland client:load matches={matches} />
+
+      {matches.length === 0 && (
+        <div class="text-center py-12 text-neutral-400">
+          No matches found.
+        </div>
+      )}
+
+      <!-- Pagination -->
+      {totalPages > 1 && (
+        <div class="mt-8 flex items-center justify-center gap-2">
+          {/* Previous Button */}
+          {currentPage > 1 ? (
+            <a
+              href={`/matches?page=${currentPage - 1}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
+              ← Previous
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              ← Previous
+            </span>
+          )}
+
+          {/* Page Numbers */}
+          <div class="flex gap-1">
+            {pageNumbers.map((pageNum: number) => (
+              <a
+                href={`/matches?page=${pageNum}`}
+                class={`px-3 py-2 rounded transition ${
+                  pageNum === currentPage
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-neutral-800 hover:bg-neutral-700'
+                }`}
+              >
+                {pageNum}
+              </a>
+            ))}
+          </div>
+
+          {/* Next Button */}
+          {currentPage < totalPages ? (
+            <a
+              href={`/matches?page=${currentPage + 1}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
+              Next →
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              Next →
+            </span>
+          )}
+        </div>
+      )}
+    </main>
+  </body>
+</html>
+

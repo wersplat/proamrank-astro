@@ -1,0 +1,154 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+const ITEMS_PER_PAGE = 25;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+// Get total count
+const { count } = await supa()
+  .from("player_performance_view")
+  .select("*", { count: 'exact', head: true });
+
+const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
+
+// Fetch players with pagination
+const { data, error } = await supa()
+  .from("player_performance_view")
+  .select(`
+    id,
+    gamertag,
+    position,
+    player_rank_score,
+    player_rp,
+    current_team_id,
+    team_name,
+    games_played,
+    avg_points,
+    avg_assists,
+    avg_rebounds
+  `)
+  .order("player_rank_score", { ascending: false })
+  .range(offset, offset + ITEMS_PER_PAGE - 1);
+
+if (error) console.error(error);
+const players = data ?? [];
+
+// Generate page numbers
+function getPageNumbers(current: number, total: number): number[] {
+  const pages: number[] = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  return pages;
+}
+
+const pageNumbers = getPageNumbers(currentPage, totalPages);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Players - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold">Players</h1>
+        <div class="text-sm text-neutral-400">
+          Page {currentPage} of {totalPages} • {count || 0} total
+        </div>
+      </div>
+
+      <!-- Players Grid -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {players.map((player) => (
+          <a 
+            href={`/players/${player.id}`}
+            class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
+          >
+            <div class="mb-3">
+              <h2 class="font-bold text-lg">{player.gamertag}</h2>
+              <p class="text-sm text-neutral-400">{player.position || 'Unknown'}</p>
+              {player.team_name && (
+                <p class="text-xs text-neutral-500 mt-1">{player.team_name}</p>
+              )}
+            </div>
+            
+            <dl class="grid grid-cols-3 gap-2 text-sm">
+              <div>
+                <dt class="text-neutral-400 text-xs">PPG</dt>
+                <dd class="font-semibold">{player.avg_points?.toFixed(1) ?? '-'}</dd>
+              </div>
+              <div>
+                <dt class="text-neutral-400 text-xs">APG</dt>
+                <dd class="font-semibold">{player.avg_assists?.toFixed(1) ?? '-'}</dd>
+              </div>
+              <div>
+                <dt class="text-neutral-400 text-xs">RPG</dt>
+                <dd class="font-semibold">{player.avg_rebounds?.toFixed(1) ?? '-'}</dd>
+              </div>
+            </dl>
+          </a>
+        ))}
+      </div>
+
+      {players.length === 0 && (
+        <div class="text-center py-12 text-neutral-400">
+          No players found.
+        </div>
+      )}
+
+      <!-- Pagination -->
+      {totalPages > 1 && (
+        <div class="mt-8 flex items-center justify-center gap-2">
+          {currentPage > 1 ? (
+            <a href={`/players?page=${currentPage - 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+              ← Previous
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              ← Previous
+            </span>
+          )}
+
+          <div class="flex gap-1">
+            {pageNumbers.map((pageNum: number) => (
+              <a
+                href={`/players?page=${pageNum}`}
+                class={`px-3 py-2 rounded transition ${
+                  pageNum === currentPage
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-neutral-800 hover:bg-neutral-700'
+                }`}
+              >
+                {pageNum}
+              </a>
+            ))}
+          </div>
+
+          {currentPage < totalPages ? (
+            <a href={`/players?page=${currentPage + 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+              Next →
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              Next →
+            </span>
+          )}
+        </div>
+      )}
+    </main>
+  </body>
+</html>
+
