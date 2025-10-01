@@ -40,10 +40,11 @@ const base = import.meta.env.PUBLIC_ASSETS_BASE || "";
       <pre id="output" class="text-xs text-neutral-400 mt-4 whitespace-pre-wrap"></pre>
     </main>
 
-    <script define:vars={{ baseUrl: base }}>
+    <script is:inline set:html={`
       const form = document.getElementById('uploadForm');
       const progressBar = document.getElementById('progressBar');
       const output = document.getElementById('output');
+      const baseUrl = '${base}';
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -73,7 +74,7 @@ const base = import.meta.env.PUBLIC_ASSETS_BASE || "";
         xhr.onload = () => {
           if (xhr.status === 200) {
             const fullUrl = baseUrl ? baseUrl + '/' + key : key;
-            output.textContent = 'Upload successful!\nURL: ' + fullUrl;
+            output.textContent = 'Upload successful!\\nURL: ' + fullUrl;
           } else {
             output.textContent = 'Upload failed (status: ' + xhr.status + ')';
           }
@@ -85,6 +86,6 @@ const base = import.meta.env.PUBLIC_ASSETS_BASE || "";
         
         xhr.send(file);
       });
-    </script>
+    `}></script>
   </body>
 </html>
