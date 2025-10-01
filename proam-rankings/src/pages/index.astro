@@ -1,0 +1,54 @@
+---
+import RankTableIsland from "../components/RankTableIsland";
+import { supa } from "../lib/supabase";
+import "../styles/global.css";
+
+// NOTE: swap 'v_global_rankings' to your actual view name.
+// Leave as SSG by default; if you want per-request freshness, add: export const prerender = false;
+const { data, error } = await supa()
+  .from("v_global_rankings")
+  .select("*")
+  .order("rating", { ascending: false });
+
+if (error) console.error(error);
+const rows = data ?? [];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <main class="mx-auto max-w-6xl p-6">
+      <h1 class="text-2xl font-bold mb-4">Global Rankings</h1>
+
+      <!-- Mobile cards (smaller screens) -->
+      <section class="space-y-2 sm:hidden">
+        {rows.map((r) => (
+          <article class="rounded border border-neutral-800 p-3">
+            <header class="flex items-center gap-3">
+              <img src={`${import.meta.env.PUBLIC_ASSETS_BASE || ""}/logos/${r.team_id}.webp` }
+                   alt="" class="h-8 w-8 rounded" loading="lazy" />
+              <div class="font-semibold">{r.team_name}</div>
+              <div class="ml-auto text-sm text-neutral-400">{r.league_short ?? ""}</div>
+            </header>
+            <dl class="mt-2 grid grid-cols-3 text-sm">
+              <div><dt class="text-neutral-400">Rating</dt><dd class="font-medium">{r.rating}</dd></div>
+              <div><dt class="text-neutral-400">W-L</dt><dd class="font-medium">{r.wins}-{r.losses}</dd></div>
+              <div><dt class="text-neutral-400">Last 10</dt><dd>{r.last10_w ?? 0}-{r.last10_l ?? 0}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </section>
+
+      <!-- Desktop table (hydrated island, optional) -->
+      <RankTableIsland client:idle rows={rows} />
+
+      <p class="mt-6 text-sm text-neutral-400">
+        Upload a box score screenshot: <a class="underline" href="/upload">Upload</a>
+      </p>
+    </main>
+  </body>
+</html>

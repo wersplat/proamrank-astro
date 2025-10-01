@@ -1,0 +1,57 @@
+---
+const base = import.meta.env.PUBLIC_ASSETS_BASE || "";
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Upload Screenshot</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <main class="mx-auto max-w-xl p-6">
+      <h1 class="text-2xl font-bold mb-4">Upload Box Score Screenshot</h1>
+
+      <form id="uform" class="space-y-3">
+        <input name="file" type="file" accept="image/*" capture="environment" class="block" required />
+        <input name="gameId" type="text" placeholder="Game ID (UUID or slug)" class="w-full bg-neutral-900 p-2 rounded" required />
+        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded">Upload</button>
+      </form>
+
+      <progress id="pg" value="0" max="100" class="w-full mt-3 hidden"></progress>
+      <pre id="out" class="text-xs text-neutral-400 mt-2"></pre>
+
+      <script type="module">
+        const form = document.getElementById('uform');
+        const pg = document.getElementById('pg');
+        const out = document.getElementById('out');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const fd = new FormData(e.currentTarget);
+          const file = fd.get('file');
+          const gameId = (fd.get('gameId') || '').toString().trim();
+          if (!(file instanceof File)) return;
+
+          const key = `2K26/boxscores/${gameId}/${crypto.randomUUID()}.webp` ;
+          const url = `/api/upload-direct?key=${encodeURIComponent(key)}` ;
+
+          const req = new XMLHttpRequest();
+          req.open('PUT', url);
+          req.setRequestHeader('Content-Type', file.type);
+          req.upload.onprogress = (ev) => {
+            if (!ev.lengthComputable) return;
+            pg.classList.remove('hidden');
+            pg.value = Math.round(ev.loaded / ev.total * 100);
+          };
+          req.onload = () => out.textContent = req.status === 200
+            ? `Uploaded ✅\\nURL: ${base}/${key}` 
+            : 'Upload failed';
+          req.onerror = () => out.textContent = 'Network error';
+          req.send(file);
+        });
+      </script>
+    </main>
+  </body>
+</html>
