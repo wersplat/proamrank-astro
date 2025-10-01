@@ -3,17 +3,19 @@
 Lightweight Astro version of the Pro-Am Rankings platform, matching the Next.js app's database schema.
 
 ## Features
+
 - 🏠 **Home** - Global team rankings with sortable table
-- 🏆 **Teams** - Listing and detail pages with roster & match history
-- 👤 **Players** - Listing and detail pages with stats & game logs
-- 🏅 **Leagues** - Active leagues with standings and schedules
-- 🎯 **Tournaments** - Tournament brackets, results, and prizes
-- ⚡ **Matches** - Paginated match results (25/page) with interactive boxscore modals
+- 🏆 **Teams** - Paginated listing (25/page) with detail pages, roster & match history
+- 👤 **Players** - Paginated listing (25/page) with detail pages, stats & game logs
+- 🏅 **Leagues** - Paginated seasons (25/page) with standings and match schedules
+- 🎯 **Tournaments** - Paginated listing (25/page) with brackets, results, and prizes
+- ⚡ **Matches** - Paginated global matches (25/page) with interactive boxscore modals
 - 📊 **Ranking System** - Detailed explanation of RP, ELO, and tiers
 - 📤 **Upload** - Box score screenshot submission
 - 📱 Fully responsive (mobile & desktop)
 - 🚀 SSR with Cloudflare Pages
 - ✨ Interactive features with Astro Islands (React)
+- 📄 **Smart Pagination** - All lists paginate at 25 items/page with 7-button navigation
 
 ## Prereqs
 - Cloudflare Pages

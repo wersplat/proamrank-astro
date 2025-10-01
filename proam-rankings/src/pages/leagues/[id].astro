@@ -14,18 +14,21 @@ const matchesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
 const matchesOffset = (matchesPage - 1) * MATCHES_PER_PAGE;
 
 // Get league season info from league_calendar view
-// ID is the season_id (since leagues have multiple seasons)
+// ID is the season_id
 const { data: leagueData } = await supa()
   .from("league_calendar")
   .select("league_id, league_name, league_logo, season_id, season_number, start_date, end_date, is_active, game_year")
   .eq("season_id", id)
   .maybeSingle();
 
+// Use id directly as season_id
+const seasonId = id;
+
 // Get total match count for pagination
 const { count: matchCount } = await supa()
   .from("matches")
   .select("*", { count: 'exact', head: true })
-  .eq("season_id", id);
+  .eq("season_id", seasonId);
 
 const totalMatchPages = Math.ceil((matchCount || 0) / MATCHES_PER_PAGE);
 
@@ -33,14 +36,14 @@ const totalMatchPages = Math.ceil((matchCount || 0) / MATCHES_PER_PAGE);
 const { data: standings } = await supa()
   .from("league_results")
   .select("*")
-  .eq("season_id", id)
+  .eq("season_id", seasonId)
   .order("wins", { ascending: false });
 
 // Get matches for this season with pagination
 const { data: matchesData } = await supa()
   .from("matches")
   .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, league_id, season_id, tournament_id")
-  .eq("season_id", id)
+  .eq("season_id", seasonId)
   .order("played_at", { ascending: false })
   .range(matchesOffset, matchesOffset + MATCHES_PER_PAGE - 1);
 

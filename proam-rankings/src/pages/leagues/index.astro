@@ -63,7 +63,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {leagues.map((league: any) => (
           <a 
-            href={`/leagues/${league.league_id}`}
+            href={`/leagues/${league.season_id}`}
             class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
           >
             <div class="flex items-center gap-3 mb-3">
