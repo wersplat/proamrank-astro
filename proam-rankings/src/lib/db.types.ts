@@ -16,7 +16,7 @@ export type Database = {
     Tables: {
       achievement_rules: {
         Row: {
-          award_template: Json
+          award_template: Json | null
           created_at: string
           game_year: string | null
           id: string
@@ -33,7 +33,7 @@ export type Database = {
           window_size: number | null
         }
         Insert: {
-          award_template: Json
+          award_template?: Json | null
           created_at?: string
           game_year?: string | null
           id?: string
@@ -50,7 +50,7 @@ export type Database = {
           window_size?: number | null
         }
         Update: {
-          award_template?: Json
+          award_template?: Json | null
           created_at?: string
           game_year?: string | null
           id?: string
@@ -784,6 +784,47 @@ export type Database = {
             columns: ["tournament_id"]
             isOneToOne: false
             referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_queue: {
+        Row: {
+          attempts: number
+          created_at: string
+          id: number
+          last_error: string | null
+          player_stats_id: string
+          status: string
+          updated_at: string
+          visible_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          id?: number
+          last_error?: string | null
+          player_stats_id: string
+          status?: string
+          updated_at?: string
+          visible_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          id?: number
+          last_error?: string | null
+          player_stats_id?: string
+          status?: string
+          updated_at?: string
+          visible_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_queue_player_stats_id_fkey"
+            columns: ["player_stats_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats"
             referencedColumns: ["id"]
           },
         ]
@@ -10113,7 +10154,15 @@ export type Database = {
       achievement_event_type: "match_event" | "player_stat_event"
       achievement_rarity: "Common" | "Rare" | "Epic" | "Legendary"
       achievement_scope: "per_game" | "season" | "career" | "streak" | "event"
-      achievement_tier: "bronze" | "silver" | "gold" | "platinum" | "legendary"
+      achievement_tier:
+        | "bronze"
+        | "silver"
+        | "gold"
+        | "platinum"
+        | "common"
+        | "rare"
+        | "legendary"
+        | "epic"
       achievement_type:
         | "Career Points Milestone"
         | "Single Game"
@@ -10340,7 +10389,16 @@ export const Constants = {
       achievement_event_type: ["match_event", "player_stat_event"],
       achievement_rarity: ["Common", "Rare", "Epic", "Legendary"],
       achievement_scope: ["per_game", "season", "career", "streak", "event"],
-      achievement_tier: ["bronze", "silver", "gold", "platinum", "legendary"],
+      achievement_tier: [
+        "bronze",
+        "silver",
+        "gold",
+        "platinum",
+        "common",
+        "rare",
+        "legendary",
+        "epic",
+      ],
       achievement_type: [
         "Career Points Milestone",
         "Single Game",
