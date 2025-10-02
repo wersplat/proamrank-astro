@@ -3,27 +3,65 @@ import Navigation from "../../components/Navigation.astro";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
 
-const ITEMS_PER_PAGE = 25;
+const ITEMS_PER_PAGE = 30;
 const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
 const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-// Get total count
-const { count } = await supa(Astro.locals.runtime)
+// Get filter parameter
+const gameYearFilter = Astro.url.searchParams.get('year') || 'all';
+const statusFilter = Astro.url.searchParams.get('status') || 'all';
+
+// Build query with filters
+let query = supa((Astro.locals as any).runtime)
   .from("league_calendar")
-  .select("*", { count: 'exact', head: true });
+  .select("*", { count: 'exact' });
+
+if (gameYearFilter !== 'all') {
+  query = query.eq("game_year", gameYearFilter as any);
+}
+
+if (statusFilter === 'active') {
+  query = query.eq("is_active", true);
+} else if (statusFilter === 'inactive') {
+  query = query.eq("is_active", false);
+}
+
+// Get total count
+const { count } = await query;
 
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
-// Fetch leagues with pagination
-const { data, error } = await supa(Astro.locals.runtime)
+// Fetch leagues with pagination and filters
+let dataQuery = supa((Astro.locals as any).runtime)
   .from("league_calendar")
-  .select("*")
+  .select("*");
+
+if (gameYearFilter !== 'all') {
+  dataQuery = dataQuery.eq("game_year", gameYearFilter as any);
+}
+
+if (statusFilter === 'active') {
+  dataQuery = dataQuery.eq("is_active", true);
+} else if (statusFilter === 'inactive') {
+  dataQuery = dataQuery.eq("is_active", false);
+}
+
+const { data, error } = await dataQuery
   .order("is_active", { ascending: false })
   .order("start_date", { ascending: false })
   .range(offset, offset + ITEMS_PER_PAGE - 1);
 
 if (error) console.error(error);
 const leagues = data ?? [];
+
+// Get available game years for filter
+const { data: gameYears } = await supa((Astro.locals as any).runtime)
+  .from("league_calendar")
+  .select("game_year")
+  .not("game_year", "is", null)
+  .order("game_year", { ascending: false });
+
+const uniqueGameYears = [...new Set((gameYears ?? []).map((y: any) => y.game_year))].filter(Boolean);
 
 // Generate page numbers
 function getPageNumbers(current: number, total: number): number[] {
@@ -52,12 +90,66 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
   <body class="bg-neutral-950 text-white">
     <Navigation />
     <main class="mx-auto max-w-6xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold">Leagues</h1>
-        <div class="text-sm text-neutral-400">
-          Page {currentPage} of {totalPages} • {count || 0} total
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-2xl font-bold">Leagues</h1>
+          <div class="text-sm text-neutral-400">
+            Page {currentPage} of {totalPages} • {count || 0} total
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-3 mb-4">
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Year:</label>
+            <select 
+              id="yearFilter"
+              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('year', this.value)"
+            >
+              <option value="all" selected={gameYearFilter === 'all'}>All Years</option>
+              {uniqueGameYears.map((year: string) => (
+                <option value={year} selected={gameYearFilter === year}>{year}</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Status:</label>
+            <select 
+              id="statusFilter"
+              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('status', this.value)"
+            >
+              <option value="all" selected={statusFilter === 'all'}>All</option>
+              <option value="active" selected={statusFilter === 'active'}>Active</option>
+              <option value="inactive" selected={statusFilter === 'inactive'}>Inactive</option>
+            </select>
+          </div>
+
+          {(gameYearFilter !== 'all' || statusFilter !== 'all') && (
+            <a 
+              href="/leagues" 
+              class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+            >
+              Clear Filters
+            </a>
+          )}
         </div>
       </div>
+
+      <script>
+        function updateFilter(param: string, value: string) {
+          const url = new URL(window.location.href);
+          if (value === 'all') {
+            url.searchParams.delete(param);
+          } else {
+            url.searchParams.set(param, value);
+          }
+          url.searchParams.delete('page'); // Reset to page 1 when filtering
+          return url.toString();
+        }
+      </script>
 
       <!-- Leagues Grid -->
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -78,12 +170,12 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
               <div class="flex-1 min-w-0">
                 <h2 class="font-bold text-lg truncate">{league.league_name}</h2>
                 {league.is_active && (
-                  <span class="text-xs font-bold text-green-400">Active</span>
+                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-900 text-green-300">Active</span>
                 )}
               </div>
             </div>
             
-            <dl class="grid grid-cols-2 gap-2 text-sm">
+            <dl class="grid grid-cols-2 gap-2 text-sm mb-2">
               <div>
                 <dt class="text-neutral-400 text-xs">Season</dt>
                 <dd class="font-semibold">{league.season_number ?? '-'}</dd>
@@ -93,6 +185,17 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
                 <dd class="font-semibold">{league.game_year ?? '-'}</dd>
               </div>
             </dl>
+
+            {(league.start_date || league.end_date) && (
+              <div class="text-xs text-neutral-400 mt-2 pt-2 border-t border-neutral-800">
+                {league.start_date && (
+                  <div>Start: {new Date(league.start_date).toLocaleDateString()}</div>
+                )}
+                {league.end_date && (
+                  <div>End: {new Date(league.end_date).toLocaleDateString()}</div>
+                )}
+              </div>
+            )}
           </a>
         ))}
       </div>
@@ -107,7 +210,10 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       {totalPages > 1 && (
         <div class="mt-8 flex items-center justify-center gap-2">
           {currentPage > 1 ? (
-            <a href={`/leagues?page=${currentPage - 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+            <a 
+              href={`/leagues?page=${currentPage - 1}${gameYearFilter !== 'all' ? `&year=${gameYearFilter}` : ''}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
               ← Previous
             </a>
           ) : (
@@ -119,7 +225,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           <div class="flex gap-1">
             {pageNumbers.map((pageNum: number) => (
               <a
-                href={`/leagues?page=${pageNum}`}
+                href={`/leagues?page=${pageNum}${gameYearFilter !== 'all' ? `&year=${gameYearFilter}` : ''}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
@@ -132,7 +238,10 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           </div>
 
           {currentPage < totalPages ? (
-            <a href={`/leagues?page=${currentPage + 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+            <a 
+              href={`/leagues?page=${currentPage + 1}${gameYearFilter !== 'all' ? `&year=${gameYearFilter}` : ''}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
               Next →
             </a>
           ) : (

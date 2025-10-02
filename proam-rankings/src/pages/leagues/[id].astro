@@ -1,6 +1,6 @@
 ---
 import Navigation from "../../components/Navigation.astro";
-import LeagueMatchesIsland from "../../components/LeagueMatchesIsland";
+import LeagueTabsIsland from "../../components/LeagueTabsIsland";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
 
@@ -9,13 +9,13 @@ export const prerender = false;
 
 const { id } = Astro.params;
 
-const MATCHES_PER_PAGE = 25;
-const matchesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
-const matchesOffset = (matchesPage - 1) * MATCHES_PER_PAGE;
+if (!id) {
+  return Astro.redirect("/leagues");
+}
 
 // Get league season info from league_calendar view
 // ID is the season_id
-const { data: leagueData } = await supa(Astro.locals.runtime)
+const { data: leagueData } = await supa((Astro.locals as any).runtime)
   .from("league_calendar")
   .select("league_id, league_name, league_logo, season_id, season_number, start_date, end_date, is_active, game_year")
   .eq("season_id", id)
@@ -24,28 +24,68 @@ const { data: leagueData } = await supa(Astro.locals.runtime)
 // Use id directly as season_id
 const seasonId = id;
 
-// Get total match count for pagination
-const { count: matchCount } = await supa(Astro.locals.runtime)
-  .from("matches")
-  .select("*", { count: 'exact', head: true })
-  .eq("season_id", seasonId);
+// Load entry fee and prize pool from league_seasons table if we have a season_id
+let entryFee: number | null = null;
+let prizePool: number | null = null;
+if (seasonId) {
+  const { data: seasonData } = await supa((Astro.locals as any).runtime)
+    .from("league_seasons")
+    .select("entry_fee, prize_pool")
+    .eq("id", seasonId)
+    .maybeSingle();
+  
+  if (seasonData) {
+    entryFee = seasonData.entry_fee;
+    prizePool = seasonData.prize_pool;
+  }
+}
 
-const totalMatchPages = Math.ceil((matchCount || 0) / MATCHES_PER_PAGE);
+// Get additional league info if we have a league_id
+let leagueInfo: any = null;
+if (leagueData?.league_id) {
+  const { data: info } = await supa((Astro.locals as any).runtime)
+    .from("leagues_info")
+    .select("id, league, lg_logo_url, lg_url, lg_discord, twitch_url, twitter_id")
+    .eq("id", leagueData.league_id)
+    .maybeSingle();
+  leagueInfo = info;
+}
 
 // Get league results/standings for this season (no limit - show all teams)
-const { data: standings } = await supa(Astro.locals.runtime)
+const { data: standings } = await supa((Astro.locals as any).runtime)
   .from("league_results")
   .select("*")
   .eq("season_id", seasonId)
   .order("wins", { ascending: false });
 
-// Get matches for this season with pagination
-const { data: matchesData } = await supa(Astro.locals.runtime)
+// Fetch teams data separately and merge with standings
+let teamsWithData = standings ?? [];
+if (standings && standings.length > 0) {
+  const teamIds = standings.map((s: any) => s.team_id).filter(Boolean);
+  if (teamIds.length > 0) {
+    const { data: teamsData } = await supa((Astro.locals as any).runtime)
+      .from("teams")
+      .select("id, global_rank, hybrid_score, leaderboard_tier")
+      .in("id", teamIds);
+    
+    // Merge teams data with standings
+    teamsWithData = standings.map((standing: any) => {
+      const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
+      return {
+        ...standing,
+        teams: teamData
+      };
+    });
+  }
+}
+
+// Get matches for this season (paginated in tabs, showing up to 100 matches)
+const { data: matchesData } = await supa((Astro.locals as any).runtime)
   .from("matches")
   .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, league_id, season_id, tournament_id")
   .eq("season_id", seasonId)
   .order("played_at", { ascending: false })
-  .range(matchesOffset, matchesOffset + MATCHES_PER_PAGE - 1);
+  .limit(1000);
 
 // Get team names separately
 const teamIds = Array.from(new Set([
@@ -53,7 +93,7 @@ const teamIds = Array.from(new Set([
   ...(matchesData ?? []).map((m: any) => m.team_b_id)
 ].filter(Boolean)));
 
-const { data: teamsData } = teamIds.length > 0 ? await supa(Astro.locals.runtime)
+const { data: teamsData } = teamIds.length > 0 ? await supa((Astro.locals as any).runtime)
   .from("teams")
   .select("id, name, logo_url")
   .in("id", teamIds) : { data: [] };
@@ -62,7 +102,7 @@ const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
 
 // Get league info (use season_id for accurate season lookup)
 const matchSeasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
-const { data: matchLeaguesData } = matchSeasonIds.length > 0 ? await supa(Astro.locals.runtime)
+const { data: matchLeaguesData } = matchSeasonIds.length > 0 ? await supa((Astro.locals as any).runtime)
   .from("league_calendar")
   .select("season_id, league_id, league_name, season_number")
   .in("season_id", matchSeasonIds) : { data: [] };
@@ -77,33 +117,95 @@ const matches = (matchesData ?? []).map((m: any) => ({
   league: matchLeagueMap.get(m.season_id),
 }));
 
+// Get match IDs for player statistics
+let matchIds: string[] = [];
+const { data: allMatches } = await supa((Astro.locals as any).runtime)
+  .from("matches")
+  .select("id")
+  .eq("season_id", seasonId);
+matchIds = allMatches?.map(m => m.id) || [];
+
+// Get player statistics - calculate per-game averages
+let topScorers: any[] = [];
+let topAssists: any[] = [];
+let topRebounders: any[] = [];
+
+if (matchIds.length > 0) {
+  const { data: allPlayerStats } = await supa((Astro.locals as any).runtime)
+    .from("player_stats")
+    .select("player_name, points, assists, rebounds, steals, blocks")
+    .in("match_id", matchIds)
+    .not("player_name", "is", null);
+
+  if (allPlayerStats && allPlayerStats.length > 0) {
+    // Aggregate by player to get totals and game counts
+    const playerTotals = allPlayerStats.reduce((acc: any, stat: any) => {
+      const playerName = stat.player_name;
+      if (!acc[playerName]) {
+        acc[playerName] = {
+          player_name: playerName,
+          points: 0,
+          assists: 0,
+          rebounds: 0,
+          games_played: 0
+        };
+      }
+      acc[playerName].points += stat.points || 0;
+      acc[playerName].assists += stat.assists || 0;
+      acc[playerName].rebounds += stat.rebounds || 0;
+      acc[playerName].games_played += 1;
+      return acc;
+    }, {});
+
+    // Calculate per-game averages and filter players with minimum games
+    const playersWithAverages = Object.values(playerTotals)
+      .filter((player: any) => player.games_played >= 3)
+      .map((player: any) => ({
+        player_name: player.player_name,
+        points_per_game: player.games_played > 0 ? player.points / player.games_played : 0,
+        assists_per_game: player.games_played > 0 ? player.assists / player.games_played : 0,
+        rebounds_per_game: player.games_played > 0 ? player.rebounds / player.games_played : 0,
+        games_played: player.games_played
+      }));
+
+    // Sort by per-game averages and get top 5
+    topScorers = playersWithAverages
+      .sort((a: any, b: any) => b.points_per_game - a.points_per_game)
+      .slice(0, 5);
+
+    topAssists = playersWithAverages
+      .sort((a: any, b: any) => b.assists_per_game - a.assists_per_game)
+      .slice(0, 5);
+
+    topRebounders = playersWithAverages
+      .sort((a: any, b: any) => b.rebounds_per_game - a.rebounds_per_game)
+      .slice(0, 5);
+  }
+}
+
 const league = leagueData;
-const teamStandings = standings ?? [];
+const teamStandings = teamsWithData ?? [];
 const recentMatches = matches ?? [];
 
 if (!league) {
   return Astro.redirect("/leagues");
 }
 
-// Generate page numbers for pagination
-function getPageNumbers(current: number, total: number): number[] {
-  const maxVisible = Math.min(7, total);
-  const pages: number[] = [];
-  
-  if (total <= 7) {
-    for (let i = 1; i <= total; i++) pages.push(i);
-  } else if (current <= 4) {
-    for (let i = 1; i <= 7; i++) pages.push(i);
-  } else if (current >= total - 3) {
-    for (let i = total - 6; i <= total; i++) pages.push(i);
-  } else {
-    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
-  }
-  
-  return pages;
-}
-
-const matchPageNumbers = getPageNumbers(matchesPage, totalMatchPages);
+// Prepare league info object for tabs
+const leagueInfoForTabs = {
+  league_name: league.league_name,
+  season_number: league.season_number,
+  game_year: league.game_year,
+  start_date: league.start_date,
+  end_date: league.end_date,
+  is_active: league.is_active,
+  entry_fee: entryFee,
+  prize_pool: prizePool,
+  lg_url: leagueInfo?.lg_url,
+  lg_discord: leagueInfo?.lg_discord,
+  twitch_url: leagueInfo?.twitch_url,
+  twitter_id: leagueInfo?.twitter_id,
+};
 ---
 
 <html lang="en">
@@ -126,7 +228,7 @@ const matchPageNumbers = getPageNumbers(matchesPage, totalMatchPages);
         )}
         <div class="flex-1">
           <h1 class="text-3xl font-bold mb-2">{league.league_name}</h1>
-          <div class="flex flex-wrap gap-4 text-sm">
+          <div class="flex flex-wrap gap-4 text-sm mb-3">
             <div>
               <span class="text-neutral-400">Season:</span>
               <span class="ml-2 font-semibold">{league.season_number ?? '-'}</span>
@@ -135,119 +237,59 @@ const matchPageNumbers = getPageNumbers(matchesPage, totalMatchPages);
               <span class="text-neutral-400">Year:</span>
               <span class="ml-2 font-semibold">{league.game_year ?? '-'}</span>
             </div>
+            {entryFee && (
+              <div>
+                <span class="text-neutral-400">Entry Fee:</span>
+                <span class="ml-2 font-semibold">${entryFee}</span>
+              </div>
+            )}
+            {prizePool && (
+              <div>
+                <span class="text-neutral-400">Prize Pool:</span>
+                <span class="ml-2 font-semibold text-green-400">${prizePool}</span>
+              </div>
+            )}
             {league.is_active && (
               <span class="px-2 py-1 rounded text-xs font-bold bg-green-900 text-green-300">Active</span>
             )}
           </div>
+          {leagueInfo && (
+            <div class="flex flex-wrap gap-2 text-sm">
+              {leagueInfo.lg_url && (
+                <a href={leagueInfo.lg_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+                  🌐 Website
+                </a>
+              )}
+              {leagueInfo.lg_discord && (
+                <a href={leagueInfo.lg_discord} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-indigo-900 hover:bg-indigo-800 transition">
+                  💬 Discord
+                </a>
+              )}
+              {leagueInfo.twitch_url && (
+                <a href={leagueInfo.twitch_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-purple-900 hover:bg-purple-800 transition">
+                  📺 Twitch
+                </a>
+              )}
+              {leagueInfo.twitter_id && (
+                <a href={`https://twitter.com/${leagueInfo.twitter_id}`} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-sky-900 hover:bg-sky-800 transition">
+                  🐦 Twitter
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      <!-- Standings -->
-      <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">Standings</h2>
-        <div class="rounded-lg border border-neutral-800 overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead class="bg-neutral-900 text-neutral-300">
-              <tr>
-                <th class="text-left py-2 px-4">Rank</th>
-                <th class="text-left py-2 px-4">Team</th>
-                <th class="text-right py-2 px-4">W</th>
-                <th class="text-right py-2 px-4">L</th>
-                <th class="text-right py-2 px-4">Win %</th>
-                <th class="text-right py-2 px-4">PF</th>
-                <th class="text-right py-2 px-4">PA</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-neutral-800">
-              {teamStandings.map((team: any, idx: number) => (
-                <tr class="hover:bg-neutral-900">
-                  <td class="py-2 px-4 text-neutral-400">{idx + 1}</td>
-                  <td class="py-2 px-4">
-                    <a href={`/teams/${team.team_id}`} class="hover:text-blue-400 flex items-center gap-2">
-                      {team.logo_url && (
-                        <img src={team.logo_url} alt="" class="h-6 w-6 rounded" />
-                      )}
-                      {team.team_name}
-                    </a>
-                  </td>
-                  <td class="py-2 px-4 text-right font-semibold">{team.wins ?? 0}</td>
-                  <td class="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                  <td class="py-2 px-4 text-right">{team.win_percentage?.toFixed(1) ?? '-'}%</td>
-                  <td class="py-2 px-4 text-right">{team.points_for ?? 0}</td>
-                  <td class="py-2 px-4 text-right">{team.points_against ?? 0}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {teamStandings.length === 0 && (
-          <div class="text-center py-8 text-neutral-400">
-            No standings available.
-          </div>
-        )}
-      </section>
-
-      <!-- Recent Matches (Interactive Island) -->
-      <section>
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold">Matches</h2>
-          <div class="text-sm text-neutral-400">
-            Page {matchesPage} of {totalMatchPages} • {matchCount || 0} total
-          </div>
-        </div>
-        <LeagueMatchesIsland client:load matches={recentMatches} />
-        {recentMatches.length === 0 && (
-          <div class="text-center py-8 text-neutral-400">
-            No matches found.
-          </div>
-        )}
-
-        <!-- Pagination -->
-        {totalMatchPages > 1 && (
-          <div class="mt-8 flex items-center justify-center gap-2">
-            {matchesPage > 1 ? (
-              <a
-                href={`/leagues/${id}?page=${matchesPage - 1}`}
-                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
-              >
-                ← Previous
-              </a>
-            ) : (
-              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
-                ← Previous
-              </span>
-            )}
-
-            <div class="flex gap-1">
-              {matchPageNumbers.map((pageNum: number) => (
-                <a
-                  href={`/leagues/${id}?page=${pageNum}`}
-                  class={`px-3 py-2 rounded transition ${
-                    pageNum === matchesPage
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'bg-neutral-800 hover:bg-neutral-700'
-                  }`}
-                >
-                  {pageNum}
-                </a>
-              ))}
-            </div>
-
-            {matchesPage < totalMatchPages ? (
-              <a
-                href={`/leagues/${id}?page=${matchesPage + 1}`}
-                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
-              >
-                Next →
-              </a>
-            ) : (
-              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
-                Next →
-              </span>
-            )}
-          </div>
-        )}
-      </section>
+      <!-- League Tabs -->
+      <LeagueTabsIsland 
+        client:load
+        standings={teamStandings as any}
+        matches={recentMatches as any}
+        topScorers={topScorers as any}
+        topAssists={topAssists as any}
+        topRebounders={topRebounders as any}
+        leagueInfo={leagueInfoForTabs as any}
+      />
     </main>
   </body>
 </html>
