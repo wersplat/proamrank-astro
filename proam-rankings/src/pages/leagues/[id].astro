@@ -117,71 +117,57 @@ const matches = (matchesData ?? []).map((m: any) => ({
   league: matchLeagueMap.get(m.season_id),
 }));
 
-// Get match IDs for player statistics
-let matchIds: string[] = [];
-const { data: allMatches } = await supa((Astro.locals as any).runtime)
-  .from("matches")
-  .select("id")
-  .eq("season_id", seasonId);
-matchIds = allMatches?.map(m => m.id) || [];
+// Get player statistics from pre-calculated view
+const { data: playerStats } = await supa((Astro.locals as any).runtime)
+  .from("player_stats_by_league_season")
+  .select("player_gamertag, avg_points, avg_assists, avg_rebounds, avg_steals, avg_blocks, games_played")
+  .eq("league_season_id", seasonId)
+  .gte("games_played", 3);
 
-// Get player statistics - calculate per-game averages
-let topScorers: any[] = [];
-let topAssists: any[] = [];
-let topRebounders: any[] = [];
+const topScorers = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_points - a.avg_points)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.player_gamertag,
+    points_per_game: p.avg_points,
+    games_played: p.games_played
+  }));
 
-if (matchIds.length > 0) {
-  const { data: allPlayerStats } = await supa((Astro.locals as any).runtime)
-    .from("player_stats")
-    .select("player_name, points, assists, rebounds, steals, blocks")
-    .in("match_id", matchIds)
-    .not("player_name", "is", null);
+const topAssists = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_assists - a.avg_assists)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.player_gamertag,
+    assists_per_game: p.avg_assists,
+    games_played: p.games_played
+  }));
 
-  if (allPlayerStats && allPlayerStats.length > 0) {
-    // Aggregate by player to get totals and game counts
-    const playerTotals = allPlayerStats.reduce((acc: any, stat: any) => {
-      const playerName = stat.player_name;
-      if (!acc[playerName]) {
-        acc[playerName] = {
-          player_name: playerName,
-          points: 0,
-          assists: 0,
-          rebounds: 0,
-          games_played: 0
-        };
-      }
-      acc[playerName].points += stat.points || 0;
-      acc[playerName].assists += stat.assists || 0;
-      acc[playerName].rebounds += stat.rebounds || 0;
-      acc[playerName].games_played += 1;
-      return acc;
-    }, {});
+const topRebounders = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_rebounds - a.avg_rebounds)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.player_gamertag,
+    rebounds_per_game: p.avg_rebounds,
+    games_played: p.games_played
+  }));
 
-    // Calculate per-game averages and filter players with minimum games
-    const playersWithAverages = Object.values(playerTotals)
-      .filter((player: any) => player.games_played >= 3)
-      .map((player: any) => ({
-        player_name: player.player_name,
-        points_per_game: player.games_played > 0 ? player.points / player.games_played : 0,
-        assists_per_game: player.games_played > 0 ? player.assists / player.games_played : 0,
-        rebounds_per_game: player.games_played > 0 ? player.rebounds / player.games_played : 0,
-        games_played: player.games_played
-      }));
+const topSteals = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_steals - a.avg_steals)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.player_gamertag,
+    steals_per_game: p.avg_steals,
+    games_played: p.games_played
+  }));
 
-    // Sort by per-game averages and get top 5
-    topScorers = playersWithAverages
-      .sort((a: any, b: any) => b.points_per_game - a.points_per_game)
-      .slice(0, 5);
-
-    topAssists = playersWithAverages
-      .sort((a: any, b: any) => b.assists_per_game - a.assists_per_game)
-      .slice(0, 5);
-
-    topRebounders = playersWithAverages
-      .sort((a: any, b: any) => b.rebounds_per_game - a.rebounds_per_game)
-      .slice(0, 5);
-  }
-}
+const topBlocks = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_blocks - a.avg_blocks)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.player_gamertag,
+    blocks_per_game: p.avg_blocks,
+    games_played: p.games_played
+  }));
 
 const league = leagueData;
 const teamStandings = teamsWithData ?? [];
@@ -288,6 +274,8 @@ const leagueInfoForTabs = {
         topScorers={topScorers as any}
         topAssists={topAssists as any}
         topRebounders={topRebounders as any}
+        topSteals={topSteals as any}
+        topBlocks={topBlocks as any}
         leagueInfo={leagueInfoForTabs as any}
       />
     </main>

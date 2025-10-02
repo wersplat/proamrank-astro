@@ -97,6 +97,8 @@ type LeagueTabsProps = {
   topScorers: TopPlayerStat[];
   topAssists: TopPlayerStat[];
   topRebounders: TopPlayerStat[];
+  topSteals: TopPlayerStat[];
+  topBlocks: TopPlayerStat[];
   leagueInfo?: LeagueInfo;
 };
 
@@ -106,6 +108,8 @@ export default function LeagueTabsIsland({
   topScorers,
   topAssists,
   topRebounders,
+  topSteals,
+  topBlocks,
   leagueInfo,
 }: LeagueTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
@@ -547,9 +551,57 @@ export default function LeagueTabsIsland({
                 </div>
               </div>
             )}
+            {topSteals.length > 0 && (
+              <div className="rounded-lg border border-neutral-800 p-4">
+                <h3 className="font-bold mb-3 text-sm text-neutral-400">
+                  Steals Per Game
+                </h3>
+                <div className="space-y-2">
+                  {topSteals.map((player, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-neutral-500 w-4">{idx + 1}.</span>
+                        <span>{player.player_name}</span>
+                      </div>
+                      <span className="font-bold text-yellow-400">
+                        {player.steals_per_game?.toFixed(1)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {topBlocks.length > 0 && (
+              <div className="rounded-lg border border-neutral-800 p-4">
+                <h3 className="font-bold mb-3 text-sm text-neutral-400">
+                  Blocks Per Game
+                </h3>
+                <div className="space-y-2">
+                  {topBlocks.map((player, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-neutral-500 w-4">{idx + 1}.</span>
+                        <span>{player.player_name}</span>
+                      </div>
+                      <span className="font-bold text-red-400">
+                        {player.blocks_per_game?.toFixed(1)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             {topScorers.length === 0 &&
               topAssists.length === 0 &&
-              topRebounders.length === 0 && (
+              topRebounders.length === 0 &&
+              topSteals.length === 0 &&
+              topBlocks.length === 0 && (
                 <div className="col-span-full text-center py-8 text-neutral-400">
                   No player statistics available.
                 </div>
