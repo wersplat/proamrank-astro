@@ -7,13 +7,27 @@ type RuntimeEnv = {
   SUPABASE_ANON_KEY?: string;
 };
 
-export function supa(runtime?: { env?: RuntimeEnv }) {
-  // Try runtime env first (Cloudflare Pages), fallback to import.meta.env (local dev)
-  const supabaseUrl = runtime?.env?.SUPABASE_URL || import.meta.env.SUPABASE_URL;
-  const supabaseKey = runtime?.env?.SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+export function supa(locals?: { env?: RuntimeEnv; runtime?: any }) {
+  // Try locals.env first (set by middleware), then runtime, then import.meta.env (local dev)
+  const supabaseUrl = 
+    locals?.env?.SUPABASE_URL || 
+    locals?.runtime?.env?.SUPABASE_URL || 
+    import.meta.env.SUPABASE_URL;
+    
+  const supabaseKey = 
+    locals?.env?.SUPABASE_ANON_KEY || 
+    locals?.runtime?.env?.SUPABASE_ANON_KEY || 
+    import.meta.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Missing Supabase environment variables");
+    const hasRuntimeEnv = !!locals?.runtime?.env;
+    const hasLocalsEnv = !!locals?.env;
+    const hasImportMetaEnv = !!(import.meta.env.SUPABASE_URL && import.meta.env.SUPABASE_ANON_KEY);
+    
+    throw new Error(
+      `Missing Supabase environment variables. ` +
+      `Debug: hasRuntimeEnv=${hasRuntimeEnv}, hasLocalsEnv=${hasLocalsEnv}, hasImportMetaEnv=${hasImportMetaEnv}`
+    );
   }
 
   return createClient<Database>(

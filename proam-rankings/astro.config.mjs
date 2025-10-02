@@ -7,5 +7,7 @@ export default defineConfig({
   integrations: [tailwind(), react()],
   // Server mode for SSR on Cloudflare Pages
   output: "server",
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    mode: "directory",
+  }),
 });
