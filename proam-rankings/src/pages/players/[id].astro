@@ -14,83 +14,194 @@ const gamesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
 const gamesOffset = (gamesPage - 1) * GAMES_PER_PAGE;
 
 // Get player basic info
-const { data: playerData } = await supa()
-  .from("players")
-  .select("id, gamertag, position, player_rp, performance_score, salary_tier, current_team_id, currentTeamName")
-  .eq("id", id!)
-  .maybeSingle();
+let playerData;
+try {
+  const { data, error } = await supa()
+    .from("players")
+    .select("id, gamertag, position, player_rp, performance_score, salary_tier, current_team_id, currentTeamName")
+    .eq("id", id!)
+    .maybeSingle();
+  
+  if (error) {
+    console.error('Error fetching player data:', error);
+    throw error;
+  }
+  playerData = data;
+} catch (error) {
+  console.error('Failed to fetch player data:', error);
+  return Astro.redirect("/players");
+}
 
 // Get player performance view data
-const { data: perfData } = await supa()
-  .from("player_performance_view")
-  .select("*")
-  .eq("id", id!)
-  .maybeSingle();
+let perfData;
+try {
+  const { data, error } = await supa()
+    .from("player_performance_view")
+    .select("*")
+    .eq("id", id!)
+    .maybeSingle();
+  
+  if (error) {
+    console.error('Error fetching performance data:', error);
+  }
+  perfData = data;
+} catch (error) {
+  console.error('Failed to fetch performance data:', error);
+  perfData = null;
+}
 
 // Get current team info if player has one
 let currentTeam = null;
 if (playerData?.current_team_id) {
-  const { data: teamData } = await supa()
-    .from("teams")
-    .select("id, name, logo_url, global_rank")
-    .eq("id", playerData.current_team_id)
-    .maybeSingle();
-  currentTeam = teamData;
+  try {
+    const { data: teamData, error } = await supa()
+      .from("teams")
+      .select("id, name, logo_url, global_rank")
+      .eq("id", playerData.current_team_id)
+      .maybeSingle();
+    
+    if (error) {
+      console.error('Error fetching team data:', error);
+    } else {
+      currentTeam = teamData;
+    }
+  } catch (error) {
+    console.error('Failed to fetch team data:', error);
+  }
 }
 
 // Get total game count for pagination
-const { count: gameCount } = await supa()
-  .from("player_stats")
-  .select("*", { count: 'exact', head: true })
-  .eq("player_id", id!);
+let gameCount = 0;
+let statsData: any[] = [];
+try {
+  const { count, error: countError } = await supa()
+    .from("player_stats")
+    .select("*", { count: 'exact', head: true })
+    .eq("player_id", id!);
+  
+  if (countError) {
+    console.error('Error fetching game count:', countError);
+  } else {
+    gameCount = count || 0;
+  }
+} catch (error) {
+  console.error('Failed to fetch game count:', error);
+}
 
 const totalGamePages = Math.ceil((gameCount || 0) / GAMES_PER_PAGE);
 
 // Get games with pagination
-const { data: statsData } = await supa()
-  .from("player_stats")
-  .select("id, match_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, created_at")
-  .eq("player_id", id!)
-  .order("created_at", { ascending: false })
-  .range(gamesOffset, gamesOffset + GAMES_PER_PAGE - 1);
+try {
+  const { data, error } = await supa()
+    .from("player_stats")
+    .select("id, match_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, created_at")
+    .eq("player_id", id!)
+    .order("created_at", { ascending: false })
+    .range(gamesOffset, gamesOffset + GAMES_PER_PAGE - 1);
+  
+  if (error) {
+    console.error('Error fetching game stats:', error);
+  } else {
+    statsData = data || [];
+  }
+} catch (error) {
+  console.error('Failed to fetch game stats:', error);
+  statsData = [];
+}
 
 // Get match info for games
-const matchIds = (statsData ?? []).map((s: any) => s.match_id).filter(Boolean);
-const { data: matchesData } = matchIds.length > 0 ? await supa()
-  .from("matches")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, boxscore_url, league_id, season_id, tournament_id, stage")
-  .in("id", matchIds) : { data: [] };
+let matchesData: any[] = [];
+let teamsData: any[] = [];
+let leaguesData: any[] = [];
+let tournamentsData: any[] = [];
+
+try {
+  const matchIds = (statsData ?? []).map((s: any) => s.match_id).filter(Boolean);
+  
+  if (matchIds.length > 0) {
+    const { data, error } = await supa()
+      .from("matches")
+      .select("id, played_at, team_a_id, team_b_id, score_a, score_b, boxscore_url, league_id, season_id, tournament_id, stage")
+      .in("id", matchIds);
+    
+    if (error) {
+      console.error('Error fetching matches data:', error);
+    } else {
+      matchesData = data || [];
+    }
+  }
+} catch (error) {
+  console.error('Failed to fetch matches data:', error);
+}
 
 const matchMap = new Map((matchesData ?? []).map((m: any) => [m.id, m]));
 
 // Get team info for matches
-const teamIds = Array.from(new Set([
-  ...(matchesData ?? []).map((m: any) => m.team_a_id),
-  ...(matchesData ?? []).map((m: any) => m.team_b_id)
-].filter(Boolean)));
+try {
+  const teamIds = Array.from(new Set([
+    ...(matchesData ?? []).map((m: any) => m.team_a_id),
+    ...(matchesData ?? []).map((m: any) => m.team_b_id)
+  ].filter(Boolean)));
 
-const { data: teamsData } = teamIds.length > 0 ? await supa()
-  .from("teams")
-  .select("id, name, logo_url")
-  .in("id", teamIds) : { data: [] };
+  if (teamIds.length > 0) {
+    const { data, error } = await supa()
+      .from("teams")
+      .select("id, name, logo_url")
+      .in("id", teamIds);
+    
+    if (error) {
+      console.error('Error fetching teams data:', error);
+    } else {
+      teamsData = data || [];
+    }
+  }
+} catch (error) {
+  console.error('Failed to fetch teams data:', error);
+}
 
 const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
 
 // Get league info (use season_id for accurate season lookup)
-const seasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
-const { data: leaguesData } = seasonIds.length > 0 ? await supa()
-  .from("league_calendar")
-  .select("season_id, league_id, league_name, season_number")
-  .in("season_id", seasonIds) : { data: [] };
+try {
+  const seasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
+  
+  if (seasonIds.length > 0) {
+    const { data, error } = await supa()
+      .from("league_calendar")
+      .select("season_id, league_id, league_name, season_number")
+      .in("season_id", seasonIds);
+    
+    if (error) {
+      console.error('Error fetching leagues data:', error);
+    } else {
+      leaguesData = data || [];
+    }
+  }
+} catch (error) {
+  console.error('Failed to fetch leagues data:', error);
+}
 
 const leagueMap = new Map((leaguesData ?? []).map((l: any) => [l.season_id, l]));
 
 // Get tournament info
-const tournamentIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.tournament_id).filter(Boolean)));
-const { data: tournamentsData } = tournamentIds.length > 0 ? await supa()
-  .from("tournaments")
-  .select("id, name")
-  .in("id", tournamentIds) : { data: [] };
+try {
+  const tournamentIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.tournament_id).filter(Boolean)));
+  
+  if (tournamentIds.length > 0) {
+    const { data, error } = await supa()
+      .from("tournaments")
+      .select("id, name")
+      .in("id", tournamentIds);
+    
+    if (error) {
+      console.error('Error fetching tournaments data:', error);
+    } else {
+      tournamentsData = data || [];
+    }
+  }
+} catch (error) {
+  console.error('Failed to fetch tournaments data:', error);
+}
 
 const tournamentMap = new Map((tournamentsData ?? []).map((t: any) => [t.id, t]));
 
@@ -282,7 +393,10 @@ const gamePageNumbers = getPageNumbers(gamesPage, totalGamePages);
             Page {gamesPage} of {totalGamePages} • {gameCount || 0} total
           </div>
         </div>
-        <PlayerGamesIsland client:load games={recentGames} />
+        <!-- PlayerGamesIsland temporarily disabled for debugging -->
+        <div class="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
+          <p class="text-neutral-400">Game log temporarily disabled for debugging</p>
+        </div>
         {recentGames.length === 0 && (
           <div class="text-center py-8 text-neutral-400">
             No games found.
