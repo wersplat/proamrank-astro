@@ -1,8 +1,6 @@
 ---
 import Navigation from "../../components/Navigation.astro";
-import PlayerStatsIsland from "../../components/PlayerStatsIsland";
 import PlayerGamesIsland from "../../components/PlayerGamesIsland";
-import PlayerBadgesIsland from "../../components/PlayerBadgesIsland";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
 
@@ -219,18 +217,65 @@ const gamePageNumbers = getPageNumbers(gamesPage, totalGamePages);
         </div>
       </section>
 
-      <!-- Player Stats Overview -->
+      <!-- Player Overview -->
       <section class="mb-8">
-        <PlayerStatsIsland 
-          client:load 
-          player={player} 
-          team={currentTeam} 
-          performance={performance}
-        />
+        <h2 class="text-xl font-bold mb-4">Player Overview</h2>
+        <div class="grid gap-6 lg:grid-cols-2">
+          {/* Basic Info */}
+          <div class="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
+            <h3 class="text-lg font-semibold mb-4 text-white">Basic Information</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-neutral-400">Gamertag:</span>
+                <span class="font-semibold text-white">{player.gamertag}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-400">Position:</span>
+                <span class="font-semibold text-white">{player.position || 'Unknown'}</span>
+              </div>
+              {player.salary_tier && (
+                <div class="flex justify-between">
+                  <span class="text-neutral-400">Salary Tier:</span>
+                  <span class="font-semibold text-yellow-400">Tier {player.salary_tier}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Team Info */}
+          {currentTeam && (
+            <div class="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
+              <h3 class="text-lg font-semibold mb-4 text-white">Current Team</h3>
+              <div class="flex items-center gap-4 mb-4">
+                {currentTeam.logo_url && (
+                  <img 
+                    src={currentTeam.logo_url} 
+                    alt={currentTeam.name}
+                    class="w-12 h-12 rounded-lg object-cover"
+                  />
+                )}
+                <div>
+                  <div class="font-semibold text-lg text-white mb-1">
+                    {currentTeam.name}
+                  </div>
+                  <div class="text-neutral-400 text-sm">
+                    Rank #{currentTeam.global_rank || 'N/A'}
+                  </div>
+                </div>
+              </div>
+              <a 
+                href={`/teams/${currentTeam.id}`}
+                class="text-blue-400 hover:text-blue-300 text-sm transition-colors"
+              >
+                View Team Details →
+              </a>
+            </div>
+          )}
+        </div>
       </section>
 
-      <!-- Player Games -->
-      <section class="mb-8">
+      <!-- Recent Games (Interactive Island) -->
+      <section>
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-bold">Game Log</h2>
           <div class="text-sm text-neutral-400">
@@ -289,15 +334,6 @@ const gamePageNumbers = getPageNumbers(gamesPage, totalGamePages);
             )}
           </div>
         )}
-      </section>
-
-      <!-- Player Badges -->
-      <section>
-        <PlayerBadgesIsland 
-          client:load 
-          player={player} 
-          playerId={id!}
-        />
       </section>
     </main>
   </body>
