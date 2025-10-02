@@ -1,39 +1,14 @@
 import { useState } from 'react';
 
-type Game = {
-  id: string;
-  match_id: string;
-  points: number;
-  assists: number;
-  rebounds: number;
-  steals: number;
-  blocks: number;
-  turnovers: number;
-  fgm: number;
-  fga: number;
-  three_points_made: number;
-  three_points_attempted: number;
-  matches?: {
-    id: string;
-    played_at: string;
-    team_a_id: string;
-    team_b_id: string;
-    score_a: number | null;
-    score_b: number | null;
-    boxscore_url?: string | null;
-    stage?: string | null;
-    league_id?: string | null;
-    season_id?: string | null;
-    tournament_id?: string | null;
-    team_a?: { name: string | null };
-    team_b?: { name: string | null };
-    league?: { league_id: string; league_name: string | null; season_number: number | null };
-    tournament?: { id: string; name: string | null };
-  } | null;
+type GamesProps = {
+  player: any;
+  recentGames: any[];
 };
 
-export default function PlayerGamesIsland({ games }: { games: Game[] }) {
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+export default function Games({ player, recentGames }: GamesProps) {
+  const [selectedGame, setSelectedGame] = useState<any>(null);
+
+  if (!player) return <div>Player not found</div>;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', { 
@@ -43,20 +18,20 @@ export default function PlayerGamesIsland({ games }: { games: Game[] }) {
     });
   };
 
-  const getMatchData = (game: Game) => {
+  const getMatchData = (game: any) => {
     return Array.isArray(game.matches) ? game.matches[0] : game.matches;
   };
 
   const calculateAverages = () => {
-    if (!games || games.length === 0) return null;
+    if (!recentGames || recentGames.length === 0) return null;
     
     return {
-      points: games.reduce((sum, game) => sum + (game.points || 0), 0) / games.length,
-      assists: games.reduce((sum, game) => sum + (game.assists || 0), 0) / games.length,
-      rebounds: games.reduce((sum, game) => sum + (game.rebounds || 0), 0) / games.length,
-      steals: games.reduce((sum, game) => sum + (game.steals || 0), 0) / games.length,
-      blocks: games.reduce((sum, game) => sum + (game.blocks || 0), 0) / games.length,
-      turnovers: games.reduce((sum, game) => sum + (game.turnovers || 0), 0) / games.length,
+      points: recentGames.reduce((sum, game) => sum + (game.points || 0), 0) / recentGames.length,
+      assists: recentGames.reduce((sum, game) => sum + (game.assists || 0), 0) / recentGames.length,
+      rebounds: recentGames.reduce((sum, game) => sum + (game.rebounds || 0), 0) / recentGames.length,
+      steals: recentGames.reduce((sum, game) => sum + (game.steals || 0), 0) / recentGames.length,
+      blocks: recentGames.reduce((sum, game) => sum + (game.blocks || 0), 0) / recentGames.length,
+      turnovers: recentGames.reduce((sum, game) => sum + (game.turnovers || 0), 0) / recentGames.length,
     };
   };
 
@@ -64,11 +39,13 @@ export default function PlayerGamesIsland({ games }: { games: Game[] }) {
 
   return (
     <div>
-      {games && games.length > 0 ? (
+      <h2 class="text-xl font-bold mb-6 text-white">Game History</h2>
+      
+      {recentGames && recentGames.length > 0 ? (
         <div>
           <div class="mb-4 flex justify-between items-center">
             <p class="text-neutral-400">
-              Showing {games.length} recent games
+              Showing {recentGames.length} recent games
             </p>
             <div class="text-sm text-neutral-500">
               Click any row for details
@@ -92,7 +69,7 @@ export default function PlayerGamesIsland({ games }: { games: Game[] }) {
                 </tr>
               </thead>
               <tbody>
-                {games.map((game) => {
+                {recentGames.map((game) => {
                   const matchData = getMatchData(game);
                   const hasBoxscore = matchData?.boxscore_url;
                   const fgPercentage = game.fga && game.fga > 0 ? ((game.fgm || 0) / game.fga * 100).toFixed(1) : '0.0';
@@ -136,7 +113,7 @@ export default function PlayerGamesIsland({ games }: { games: Game[] }) {
           {/* Game Averages */}
           {averages && (
             <div class="mt-6 rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-              <h3 class="text-lg font-semibold mb-4 text-white">Recent Averages (Last {games.length} games)</h3>
+              <h3 class="text-lg font-semibold mb-4 text-white">Recent Averages (Last {recentGames.length} games)</h3>
               <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 <div class="text-center">
                   <div class="text-neutral-400 text-sm mb-1">Points</div>
