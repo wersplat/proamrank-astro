@@ -678,23 +678,25 @@ export default function LeagueTabsIsland({
       {/* Match Details Modal */}
       {selectedMatch && (
         <div
-          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={closeModal}
         >
           <div
-            className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-neutral-800">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-xl font-bold">
-                  {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
-                  <span className="ml-3 text-sm text-neutral-400">
+            <div className="p-3 sm:p-4 border-b border-neutral-800">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-base sm:text-lg md:text-xl font-bold break-words">
+                    {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
+                  </h2>
+                  <span className="text-sm text-neutral-400">
                     {selectedMatch.score_a}-{selectedMatch.score_b}
                   </span>
-                </h2>
-                <button onClick={closeModal} className="text-neutral-400 hover:text-white">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                </div>
+                <button onClick={closeModal} className="text-neutral-400 hover:text-white flex-shrink-0">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -705,10 +707,10 @@ export default function LeagueTabsIsland({
               </div>
             </div>
 
-            <div className="flex border-b border-neutral-800">
+            <div className="flex border-b border-neutral-800 overflow-x-auto scrollbar-thin">
               <button
                 onClick={() => setModalTab('screenshot')}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
                   modalTab === 'screenshot' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
                 }`}
               >
@@ -716,7 +718,7 @@ export default function LeagueTabsIsland({
               </button>
               <button
                 onClick={() => setModalTab('player-stats')}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
                   modalTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
                 }`}
               >
@@ -724,7 +726,7 @@ export default function LeagueTabsIsland({
               </button>
               <button
                 onClick={() => setModalTab('team-stats')}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
                   modalTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
                 }`}
               >
@@ -732,7 +734,7 @@ export default function LeagueTabsIsland({
               </button>
             </div>
 
-            <div className="p-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+            <div className="p-3 sm:p-4 overflow-y-auto max-h-[calc(95vh-160px)] sm:max-h-[calc(90vh-140px)]">
               {modalTab === 'screenshot' && selectedMatch.boxscore_url && (
                 <div className="flex justify-center">
                   <img src={selectedMatch.boxscore_url} alt="Box Score" className="max-w-full h-auto rounded" />
