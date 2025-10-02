@@ -1,0 +1,46 @@
+---
+import Navigation from '../../components/Navigation.astro';
+import AchievementsIsland from '../../components/AchievementsIsland';
+
+const title = 'Achievements';
+const description = 'Browse all available achievements and badges in Pro-Am Rank';
+
+// Get query params for filters
+const searchParam = Astro.url.searchParams.get('search') || '';
+const categoryParam = Astro.url.searchParams.get('category') || '';
+const rarityParam = Astro.url.searchParams.get('rarity') || '';
+const viewParam = Astro.url.searchParams.get('view') || 'grid';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Pro-Am Rank</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-neutral-950 text-white min-h-screen">
+    <Navigation />
+    
+    <main class="container mx-auto px-4 py-8">
+      {/* Header */}
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-2 text-white">🏆 Achievements</h1>
+        <p class="text-neutral-400">
+          Track your progress and unlock badges by reaching milestones across various categories
+        </p>
+      </div>
+
+      {/* Achievements Grid/List with Filters */}
+      <AchievementsIsland 
+        client:load
+        searchParam={searchParam}
+        categoryParam={categoryParam}
+        rarityParam={rarityParam}
+        viewParam={viewParam}
+      />
+    </main>
+  </body>
+</html>
+
