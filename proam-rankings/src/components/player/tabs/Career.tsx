@@ -37,7 +37,7 @@ export default function Career({ player, playerId }: CareerProps) {
         setLoading(true);
         setError(null);
 
-        // Fetch all career stats for the player
+        // Fetch career stats from optimized view endpoint
         const response = await fetch(`/api/player-stats?player_id=${playerId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch career stats');
@@ -45,76 +45,35 @@ export default function Career({ player, playerId }: CareerProps) {
         
         const data = await response.json();
         
-        if (data && data.length > 0) {
-          const stats = data.reduce((acc: any, game: any) => {
-            acc.totalGames += 1;
-            acc.totalPoints += game.points || 0;
-            acc.totalAssists += game.assists || 0;
-            acc.totalRebounds += game.rebounds || 0;
-            acc.totalSteals += game.steals || 0;
-            acc.totalBlocks += game.blocks || 0;
-            acc.totalTurnovers += game.turnovers || 0;
-            
-            acc.careerHighPoints = Math.max(acc.careerHighPoints, game.points || 0);
-            acc.careerHighAssists = Math.max(acc.careerHighAssists, game.assists || 0);
-            acc.careerHighRebounds = Math.max(acc.careerHighRebounds, game.rebounds || 0);
-            acc.careerHighSteals = Math.max(acc.careerHighSteals, game.steals || 0);
-            acc.careerHighBlocks = Math.max(acc.careerHighBlocks, game.blocks || 0);
-            
-            return acc;
-          }, {
-            totalGames: 0,
-            totalPoints: 0,
-            totalAssists: 0,
-            totalRebounds: 0,
-            totalSteals: 0,
-            totalBlocks: 0,
-            totalTurnovers: 0,
-            avgPoints: 0,
-            avgAssists: 0,
-            avgRebounds: 0,
-            avgSteals: 0,
-            avgBlocks: 0,
-            avgTurnovers: 0,
-            careerHighPoints: 0,
-            careerHighAssists: 0,
-            careerHighRebounds: 0,
-            careerHighSteals: 0,
-            careerHighBlocks: 0
-          });
-
-          // Calculate averages
-          if (stats.totalGames > 0) {
-            stats.avgPoints = stats.totalPoints / stats.totalGames;
-            stats.avgAssists = stats.totalAssists / stats.totalGames;
-            stats.avgRebounds = stats.totalRebounds / stats.totalGames;
-            stats.avgSteals = stats.totalSteals / stats.totalGames;
-            stats.avgBlocks = stats.totalBlocks / stats.totalGames;
-            stats.avgTurnovers = stats.totalTurnovers / stats.totalGames;
-          }
-
+        if (data && data.games_played > 0) {
+          // Data is already aggregated from the view - just map it
+          const stats: CareerStats = {
+            totalGames: data.games_played,
+            // Calculate totals from averages * games
+            totalPoints: Math.round(data.avg_points * data.games_played),
+            totalAssists: Math.round(data.avg_assists * data.games_played),
+            totalRebounds: Math.round(data.avg_rebounds * data.games_played),
+            totalSteals: Math.round(data.avg_steals * data.games_played),
+            totalBlocks: Math.round(data.avg_blocks * data.games_played),
+            totalTurnovers: 0, // Not available in view yet
+            // Averages from view
+            avgPoints: Number(data.avg_points) || 0,
+            avgAssists: Number(data.avg_assists) || 0,
+            avgRebounds: Number(data.avg_rebounds) || 0,
+            avgSteals: Number(data.avg_steals) || 0,
+            avgBlocks: Number(data.avg_blocks) || 0,
+            avgTurnovers: 0, // Not available in view yet
+            // Career highs
+            careerHighPoints: data.high_points || 0,
+            careerHighAssists: data.high_assists || 0,
+            careerHighRebounds: data.high_rebounds || 0,
+            careerHighSteals: data.high_steals || 0,
+            careerHighBlocks: data.high_blocks || 0,
+          };
+          
           setCareerStats(stats);
         } else {
-          setCareerStats({
-            totalGames: 0,
-            totalPoints: 0,
-            totalAssists: 0,
-            totalRebounds: 0,
-            totalSteals: 0,
-            totalBlocks: 0,
-            totalTurnovers: 0,
-            avgPoints: 0,
-            avgAssists: 0,
-            avgRebounds: 0,
-            avgSteals: 0,
-            avgBlocks: 0,
-            avgTurnovers: 0,
-            careerHighPoints: 0,
-            careerHighAssists: 0,
-            careerHighRebounds: 0,
-            careerHighSteals: 0,
-            careerHighBlocks: 0
-          });
+          setCareerStats(null);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load career stats');

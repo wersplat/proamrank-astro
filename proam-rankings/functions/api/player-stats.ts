@@ -47,22 +47,48 @@ export async function onRequest(context: { request: Request; env: Env }) {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Fetch by player_id (for career stats)
+    // Fetch by player_id (for career stats) - Use efficient view + single query for highs
     if (playerId) {
-      const { data, error } = await supabase
-        .from('player_stats')
-        .select('id, match_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, ftm, fta, created_at')
-        .eq('player_id', playerId)
-        .order('created_at', { ascending: false });
+      // Get career aggregates from view (much more efficient!)
+      const { data: careerData, error: careerError } = await supabase
+        .from('player_performance_view')
+        .select('games_played, avg_points, avg_assists, avg_rebounds, avg_steals, avg_blocks')
+        .eq('id', playerId)
+        .single();
 
-      if (error) {
-        return new Response(JSON.stringify({ error: error.message }), {
+      if (careerError) {
+        return new Response(JSON.stringify({ error: careerError.message }), {
           status: 500,
           headers: corsHeaders
         });
       }
 
-      return new Response(JSON.stringify(data || []), {
+      // Get career highs with optimized queries
+      const [pointsHigh, assistsHigh, reboundsHigh, stealsHigh, blocksHigh] = await Promise.all([
+        supabase.from('player_stats').select('points').eq('player_id', playerId).order('points', { ascending: false }).limit(1).single(),
+        supabase.from('player_stats').select('assists').eq('player_id', playerId).order('assists', { ascending: false }).limit(1).single(),
+        supabase.from('player_stats').select('rebounds').eq('player_id', playerId).order('rebounds', { ascending: false }).limit(1).single(),
+        supabase.from('player_stats').select('steals').eq('player_id', playerId).order('steals', { ascending: false }).limit(1).single(),
+        supabase.from('player_stats').select('blocks').eq('player_id', playerId).order('blocks', { ascending: false }).limit(1).single()
+      ]);
+
+      const careerStats = {
+        games_played: careerData?.games_played || 0,
+        // Averages from view
+        avg_points: careerData?.avg_points || 0,
+        avg_assists: careerData?.avg_assists || 0,
+        avg_rebounds: careerData?.avg_rebounds || 0,
+        avg_steals: careerData?.avg_steals || 0,
+        avg_blocks: careerData?.avg_blocks || 0,
+        // Career highs
+        high_points: pointsHigh.data?.points || 0,
+        high_assists: assistsHigh.data?.assists || 0,
+        high_rebounds: reboundsHigh.data?.rebounds || 0,
+        high_steals: stealsHigh.data?.steals || 0,
+        high_blocks: blocksHigh.data?.blocks || 0
+      };
+
+      return new Response(JSON.stringify(careerStats), {
         headers: corsHeaders
       });
     }
