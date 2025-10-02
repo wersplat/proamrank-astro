@@ -12,10 +12,10 @@ const { id } = Astro.params;
 // Fetch recent games (limited to recent 25 for initial display)
 const GAMES_LIMIT = 25;
 
-// Get player basic info
+// Get player basic info (including social media and alternate gamertag)
 const { data: playerData } = await supa(Astro.locals)
   .from("players")
-  .select("id, gamertag, position, player_rp, performance_score, salary_tier, current_team_id, currentTeamName")
+  .select("id, gamertag, alternate_gamertag, position, player_rp, performance_score, salary_tier, current_team_id, currentTeamName, twitter_id, discord_id, twitch")
   .eq("id", id!)
   .maybeSingle();
 
