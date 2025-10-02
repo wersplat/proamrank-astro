@@ -22,9 +22,10 @@ export async function onRequest(context: { request: Request; env: Env }) {
 
   const url = new URL(context.request.url);
   const matchId = url.searchParams.get('match_id');
+  const playerId = url.searchParams.get('player_id');
 
-  if (!matchId) {
-    return new Response(JSON.stringify({ error: 'match_id required' }), {
+  if (!matchId && !playerId) {
+    return new Response(JSON.stringify({ error: 'match_id or player_id required' }), {
       status: 400,
       headers: corsHeaders
     });
@@ -46,20 +47,48 @@ export async function onRequest(context: { request: Request; env: Env }) {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { data, error } = await supabase
-      .from('player_stats')
-      .select('player_name, team_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, ftm, fta')
-      .eq('match_id', matchId)
-      .order('points', { ascending: false });
+    // Fetch by player_id (for career stats)
+    if (playerId) {
+      const { data, error } = await supabase
+        .from('player_stats')
+        .select('id, match_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, ftm, fta, created_at')
+        .eq('player_id', playerId)
+        .order('created_at', { ascending: false });
 
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
+      if (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+          headers: corsHeaders
+        });
+      }
+
+      return new Response(JSON.stringify(data || []), {
         headers: corsHeaders
       });
     }
 
-    return new Response(JSON.stringify({ playerStats: data || [] }), {
+    // Fetch by match_id (for match boxscore)
+    if (matchId) {
+      const { data, error } = await supabase
+        .from('player_stats')
+        .select('player_name, team_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, ftm, fta')
+        .eq('match_id', matchId)
+        .order('points', { ascending: false });
+
+      if (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+          headers: corsHeaders
+        });
+      }
+
+      return new Response(JSON.stringify({ playerStats: data || [] }), {
+        headers: corsHeaders
+      });
+    }
+
+    return new Response(JSON.stringify({ error: 'Invalid request' }), {
+      status: 400,
       headers: corsHeaders
     });
   } catch (error: any) {

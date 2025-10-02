@@ -30,68 +30,11 @@ export default function Media({ player, playerId }: MediaProps) {
         setLoading(true);
         setError(null);
 
-        // Mock data for now - this would typically be an API call
-        const mockMedia: MediaItem[] = [
-          {
-            id: '1',
-            title: 'Epic Triple Double Game',
-            description: 'My best game of the season with 25 points, 12 assists, and 10 rebounds',
-            type: 'youtube',
-            url: 'https://youtube.com/watch?v=example1',
-            thumbnailUrl: 'https://img.youtube.com/vi/example1/maxresdefault.jpg',
-            publishedAt: '2024-01-15',
-            duration: '12:34',
-            views: 1250,
-            likes: 89
-          },
-          {
-            id: '2',
-            title: 'Live Stream - Pro-Am Practice',
-            description: 'Practicing with the team before the big tournament',
-            type: 'twitch',
-            url: 'https://twitch.tv/videos/example2',
-            thumbnailUrl: 'https://static-cdn.jtvnw.net/previews-ttv/live_user_example-320x180.jpg',
-            publishedAt: '2024-01-20',
-            duration: '2:15:30',
-            views: 450,
-            likes: 23
-          },
-          {
-            id: '3',
-            title: 'Game-winning shot! 🏀',
-            description: 'Clutch 3-pointer to win the championship game',
-            type: 'twitter',
-            url: 'https://twitter.com/status/example3',
-            thumbnailUrl: 'https://pbs.twimg.com/media/example3.jpg',
-            publishedAt: '2024-01-25',
-            views: 2100,
-            likes: 156
-          },
-          {
-            id: '4',
-            title: 'Behind the Scenes: Team Practice',
-            description: 'Getting ready for the upcoming season',
-            type: 'instagram',
-            url: 'https://instagram.com/p/example4',
-            thumbnailUrl: 'https://scontent.cdninstagram.com/example4.jpg',
-            publishedAt: '2024-02-01',
-            views: 890,
-            likes: 67
-          },
-          {
-            id: '5',
-            title: 'TikTok: Crazy Crossover',
-            description: 'My signature move that always works',
-            type: 'tiktok',
-            url: 'https://tiktok.com/@user/video/example5',
-            thumbnailUrl: 'https://p16-sign.tiktokcdn-us.com/example5.jpg',
-            publishedAt: '2024-02-05',
-            views: 5600,
-            likes: 445
-          }
-        ];
+        // TODO: Fetch actual media from API when implemented
+        // For now, return empty array - only show real media
+        const media: MediaItem[] = [];
 
-        setMediaItems(mockMedia);
+        setMediaItems(media);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load media');
       } finally {
@@ -105,6 +48,17 @@ export default function Media({ player, playerId }: MediaProps) {
   }, [playerId]);
 
   if (!player) return <div>Player not found</div>;
+
+  if (error) {
+    return (
+      <div>
+        <h2 className="text-xl font-bold mb-6 text-white">Media & Highlights</h2>
+        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
+          <p className="text-red-400">Error loading media: {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -132,7 +86,7 @@ export default function Media({ player, playerId }: MediaProps) {
     if (filter === 'all') return true;
     return item.type === filter;
   });
-
+  
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -158,36 +112,15 @@ export default function Media({ player, playerId }: MediaProps) {
     return duration;
   };
 
-  if (loading) {
-    return (
-      <div>
-        <h2 class="text-xl font-bold mb-6 text-white">Media & Highlights</h2>
-        <div class="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p class="text-neutral-400">Loading media...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <h2 class="text-xl font-bold mb-6 text-white">Media & Highlights</h2>
-        <div class="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p class="text-red-400">Error loading media: {error}</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold text-white">Media & Highlights</h2>
-        <div class="flex gap-2">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-bold text-white">Media & Highlights</h2>
+        {mediaItems.length > 0 && (
+        <div className="flex gap-2">
           <button
             onClick={() => setFilter('all')}
-            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'all' 
                 ? 'bg-blue-600 text-white' 
                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
@@ -197,7 +130,7 @@ export default function Media({ player, playerId }: MediaProps) {
           </button>
           <button
             onClick={() => setFilter('youtube')}
-            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'youtube' 
                 ? 'bg-blue-600 text-white' 
                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
@@ -207,7 +140,7 @@ export default function Media({ player, playerId }: MediaProps) {
           </button>
           <button
             onClick={() => setFilter('twitch')}
-            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'twitch' 
                 ? 'bg-blue-600 text-white' 
                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
@@ -217,7 +150,7 @@ export default function Media({ player, playerId }: MediaProps) {
           </button>
           <button
             onClick={() => setFilter('twitter')}
-            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'twitter' 
                 ? 'bg-blue-600 text-white' 
                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
@@ -227,7 +160,7 @@ export default function Media({ player, playerId }: MediaProps) {
           </button>
           <button
             onClick={() => setFilter('instagram')}
-            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'instagram' 
                 ? 'bg-blue-600 text-white' 
                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
@@ -236,58 +169,60 @@ export default function Media({ player, playerId }: MediaProps) {
             Instagram
           </button>
         </div>
+        )}
       </div>
 
       {/* Media Grid */}
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {mediaItems.length > 0 && (
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredMedia.map((item) => (
           <div 
             key={item.id}
-            class="rounded-lg border border-neutral-800 overflow-hidden bg-neutral-900 hover:bg-neutral-800 transition-all duration-200 cursor-pointer group"
+            className="rounded-lg border border-neutral-800 overflow-hidden bg-neutral-900 hover:bg-neutral-800 transition-all duration-200 cursor-pointer group"
             onClick={() => window.open(item.url, '_blank')}
           >
             {/* Thumbnail */}
-            <div class="relative aspect-video bg-neutral-800">
+            <div className="relative aspect-video bg-neutral-800">
               {item.thumbnailUrl ? (
                 <img 
                   src={item.thumbnailUrl} 
                   alt={item.title}
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                 />
               ) : (
-                <div class="w-full h-full flex items-center justify-center text-4xl text-neutral-500">
+                <div className="w-full h-full flex items-center justify-center text-4xl text-neutral-500">
                   {getTypeIcon(item.type)}
                 </div>
               )}
               
               {/* Duration overlay */}
               {item.duration && (
-                <div class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white px-2 py-1 rounded text-xs font-semibold">
+                <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white px-2 py-1 rounded text-xs font-semibold">
                   {formatDuration(item.duration)}
                 </div>
               )}
 
               {/* Type indicator */}
-              <div class={`absolute top-2 left-2 px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 ${getTypeColor(item.type)} bg-black bg-opacity-80`}>
+              <div className={`absolute top-2 left-2 px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 ${getTypeColor(item.type)} bg-black bg-opacity-80`}>
                 <span>{getTypeIcon(item.type)}</span>
-                <span class="capitalize">{item.type}</span>
+                <span className="capitalize">{item.type}</span>
               </div>
             </div>
 
             {/* Content */}
-            <div class="p-4">
-              <h4 class="text-white font-semibold mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
+            <div className="p-4">
+              <h4 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
                 {item.title}
               </h4>
 
-              <p class="text-neutral-400 text-sm mb-4 line-clamp-2">
+              <p className="text-neutral-400 text-sm mb-4 line-clamp-2">
                 {item.description}
               </p>
 
               {/* Stats */}
-              <div class="flex justify-between items-center text-xs text-neutral-500">
+              <div className="flex justify-between items-center text-xs text-neutral-500">
                 <span>{formatDate(item.publishedAt)}</span>
-                <div class="flex gap-3">
+                <div className="flex gap-3">
                   {item.views && (
                     <span>👁️ {item.views.toLocaleString()}</span>
                   )}
@@ -300,12 +235,19 @@ export default function Media({ player, playerId }: MediaProps) {
           </div>
         ))}
       </div>
+      )}
 
-      {filteredMedia.length === 0 && (
-        <div class="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p class="text-neutral-400 text-lg">
-            No media found for the selected filter
+      {filteredMedia.length === 0 && !loading && (
+        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
+          <p className="text-neutral-400 text-lg">
+            {mediaItems.length === 0 ? 'No media available yet' : 'No media found for the selected filter'}
           </p>
+        </div>
+      )}
+      
+      {loading && (
+        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
+          <p className="text-neutral-400">Loading media...</p>
         </div>
       )}
     </div>

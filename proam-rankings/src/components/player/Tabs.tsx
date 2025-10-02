@@ -25,14 +25,14 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
   ];
 
   return (
-    <div class="rounded-lg border border-neutral-800 bg-neutral-900">
+    <div className="rounded-lg border border-neutral-800 bg-neutral-900">
       {/* Tab Navigation */}
-      <div class="flex border-b border-neutral-800">
+      <div className="flex border-b border-neutral-800">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            class={`px-6 py-4 text-sm font-medium transition-colors ${
+            className={`px-6 py-4 text-sm font-medium transition-colors ${
               activeTab === tab.id
                 ? 'text-blue-400 border-b-2 border-blue-400 bg-neutral-800'
                 : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
@@ -44,7 +44,7 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
       </div>
 
       {/* Tab Content */}
-      <div class="p-6">
+      <div className="p-6">
         {activeTab === 'overview' && (
           <Overview player={player} team={team} performance={performance} />
         )}
