@@ -178,8 +178,8 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
         </div>
       </div>
 
-      <script>
-        function updateFilter(param: string, value: string) {
+      <script is:inline>
+        function updateFilter(param, value) {
           const url = new URL(window.location.href);
           if (value === 'all' || (param === 'sort' && value === 'rank')) {
             url.searchParams.delete(param);

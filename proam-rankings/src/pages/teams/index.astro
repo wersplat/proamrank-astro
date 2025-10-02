@@ -7,16 +7,32 @@ const ITEMS_PER_PAGE = 25;
 const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
 const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-// Get total count
-const { count } = await supa(Astro.locals.runtime)
+// Get filter parameters
+const tierFilter = Astro.url.searchParams.get('tier') || 'all';
+const sortBy = Astro.url.searchParams.get('sort') || 'rank';
+const searchQuery = Astro.url.searchParams.get('search') || '';
+
+// Build query with filters
+let countQuery = supa((Astro.locals as any).runtime)
   .from("teams")
   .select("*", { count: 'exact', head: true })
   .eq("is_active", true);
 
+if (tierFilter !== 'all') {
+  countQuery = countQuery.eq("leaderboard_tier", tierFilter as any);
+}
+
+if (searchQuery) {
+  countQuery = countQuery.ilike("name", `%${searchQuery}%`);
+}
+
+// Get total count
+const { count } = await countQuery;
+
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
-// Fetch teams with pagination
-const { data, error } = await supa(Astro.locals.runtime)
+// Fetch teams with pagination and filters
+let dataQuery = supa((Astro.locals as any).runtime)
   .from("teams")
   .select(`
     id,
@@ -28,12 +44,40 @@ const { data, error } = await supa(Astro.locals.runtime)
     leaderboard_tier,
     hybrid_score
   `)
-  .eq("is_active", true)
-  .order("hybrid_score", { ascending: false })
-  .range(offset, offset + ITEMS_PER_PAGE - 1);
+  .eq("is_active", true);
+
+if (tierFilter !== 'all') {
+  dataQuery = dataQuery.eq("leaderboard_tier", tierFilter as any);
+}
+
+if (searchQuery) {
+  dataQuery = dataQuery.ilike("name", `%${searchQuery}%`);
+}
+
+// Apply sorting
+if (sortBy === 'rank') {
+  dataQuery = dataQuery.order("global_rank", { ascending: true });
+} else if (sortBy === 'score') {
+  dataQuery = dataQuery.order("hybrid_score", { ascending: false });
+} else if (sortBy === 'rp') {
+  dataQuery = dataQuery.order("current_rp", { ascending: false });
+} else if (sortBy === 'elo') {
+  dataQuery = dataQuery.order("elo_rating", { ascending: false });
+}
+
+const { data, error } = await dataQuery.range(offset, offset + ITEMS_PER_PAGE - 1);
 
 if (error) console.error(error);
 const teams = data ?? [];
+
+// Get unique tiers for filter
+const { data: tiersData } = await supa((Astro.locals as any).runtime)
+  .from("teams")
+  .select("leaderboard_tier")
+  .eq("is_active", true)
+  .not("leaderboard_tier", "is", null);
+
+const uniqueTiers = [...new Set((tiersData ?? []).map((t: any) => t.leaderboard_tier))].filter(Boolean).sort();
 
 // Generate page numbers
 function getPageNumbers(current: number, total: number): number[] {
@@ -62,12 +106,99 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
   <body class="bg-neutral-950 text-white">
     <Navigation />
     <main class="mx-auto max-w-6xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold">Teams</h1>
-        <div class="text-sm text-neutral-400">
-          Page {currentPage} of {totalPages} • {count || 0} total
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-2xl font-bold">Teams</h1>
+          <div class="text-sm text-neutral-400">
+            Page {currentPage} of {totalPages} • {count || 0} total
+          </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="flex flex-wrap gap-3 mb-4">
+          <div class="flex-1 min-w-[200px]">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search teams..."
+              value={searchQuery}
+              class="w-full px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onkeydown="if(event.key==='Enter') handleSearch()"
+            />
+          </div>
+
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Tier:</label>
+            <select 
+              id="tierFilter"
+              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('tier', this.value)"
+            >
+              <option value="all" selected={tierFilter === 'all'}>All Tiers</option>
+              {uniqueTiers.map((tier: string) => (
+                <option value={tier} selected={tierFilter === tier}>{tier}</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Sort:</label>
+            <select 
+              id="sortFilter"
+              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('sort', this.value)"
+            >
+              <option value="rank" selected={sortBy === 'rank'}>Global Rank</option>
+              <option value="score" selected={sortBy === 'score'}>Hybrid Score</option>
+              <option value="rp" selected={sortBy === 'rp'}>Ranking Points</option>
+              <option value="elo" selected={sortBy === 'elo'}>Elo Rating</option>
+            </select>
+          </div>
+
+          <button
+            onclick="handleSearch()"
+            class="px-4 py-1 rounded bg-blue-600 hover:bg-blue-700 transition text-sm font-medium"
+          >
+            Search
+          </button>
+
+          {(tierFilter !== 'all' || sortBy !== 'rank' || searchQuery) && (
+            <a 
+              href="/teams" 
+              class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+            >
+              Clear Filters
+            </a>
+          )}
         </div>
       </div>
+
+      <script is:inline>
+        function updateFilter(param, value) {
+          const url = new URL(window.location.href);
+          if (value === 'all' || (param === 'sort' && value === 'rank')) {
+            url.searchParams.delete(param);
+          } else {
+            url.searchParams.set(param, value);
+          }
+          url.searchParams.delete('page'); // Reset to page 1 when filtering
+          return url.toString();
+        }
+
+        function handleSearch() {
+          const searchInput = document.getElementById('searchInput');
+          const url = new URL(window.location.href);
+          
+          if (searchInput.value.trim()) {
+            url.searchParams.set('search', searchInput.value.trim());
+          } else {
+            url.searchParams.delete('search');
+          }
+          
+          url.searchParams.delete('page'); // Reset to page 1 when searching
+          window.location.href = url.toString();
+        }
+      </script>
 
       <!-- Teams Grid -->
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -119,7 +250,10 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       {totalPages > 1 && (
         <div class="mt-8 flex items-center justify-center gap-2">
           {currentPage > 1 ? (
-            <a href={`/teams?page=${currentPage - 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+            <a 
+              href={`/teams?page=${currentPage - 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
               ← Previous
             </a>
           ) : (
@@ -131,7 +265,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           <div class="flex gap-1">
             {pageNumbers.map((pageNum: number) => (
               <a
-                href={`/teams?page=${pageNum}`}
+                href={`/teams?page=${pageNum}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
@@ -144,7 +278,10 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           </div>
 
           {currentPage < totalPages ? (
-            <a href={`/teams?page=${currentPage + 1}`} class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+            <a 
+              href={`/teams?page=${currentPage + 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
               Next →
             </a>
           ) : (
