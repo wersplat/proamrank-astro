@@ -1,6 +1,6 @@
 ---
 import Navigation from "../../components/Navigation.astro";
-import LeagueMatchesIsland from "../../components/LeagueMatchesIsland";
+import TournamentTabsIsland from "../../components/TournamentTabsIsland";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
 
@@ -9,39 +9,58 @@ export const prerender = false;
 
 const { id } = Astro.params;
 
-const MATCHES_PER_PAGE = 25;
-const matchesPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
-const matchesOffset = (matchesPage - 1) * MATCHES_PER_PAGE;
+if (!id) {
+  return Astro.redirect("/tournaments");
+}
 
 // Get tournament info
-const { data: tournamentData } = await supa(Astro.locals.runtime)
+const { data: tournamentData } = await supa((Astro.locals as any).runtime)
   .from("tournaments")
   .select("*")
   .eq("id", id)
   .maybeSingle();
 
+const tournament = tournamentData;
+
+if (!tournament) {
+  return Astro.redirect("/tournaments");
+}
+
 // Get tournament results
-const { data: results } = await supa(Astro.locals.runtime)
+const { data: results } = await supa((Astro.locals as any).runtime)
   .from("tournament_results")
   .select("*")
   .eq("tournament_id", id)
   .order("final_placement", { ascending: true });
 
-// Get total match count for pagination
-const { count: matchCount } = await supa(Astro.locals.runtime)
-  .from("matches")
-  .select("*", { count: 'exact', head: true })
-  .eq("tournament_id", id);
+// Fetch teams data separately and merge with standings
+let teamsWithData = results ?? [];
+if (results && results.length > 0) {
+  const teamIds = results.map((s: any) => s.team_id).filter(Boolean);
+  if (teamIds.length > 0) {
+    const { data: teamsData } = await supa((Astro.locals as any).runtime)
+      .from("teams")
+      .select("id, global_rank, hybrid_score, leaderboard_tier")
+      .in("id", teamIds);
+    
+    // Merge teams data with standings
+    teamsWithData = results.map((standing: any) => {
+      const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
+      return {
+        ...standing,
+        teams: teamData
+      };
+    });
+  }
+}
 
-const totalMatchPages = Math.ceil((matchCount || 0) / MATCHES_PER_PAGE);
-
-// Get tournament matches with pagination
-const { data: matchesData } = await supa(Astro.locals.runtime)
+// Get tournament matches (limit to 1000 for performance)
+const { data: matchesData } = await supa((Astro.locals as any).runtime)
   .from("matches")
   .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, league_id, season_id, tournament_id")
   .eq("tournament_id", id)
   .order("played_at", { ascending: false })
-  .range(matchesOffset, matchesOffset + MATCHES_PER_PAGE - 1);
+  .limit(1000);
 
 // Get team info for matches
 const matchTeamIds = Array.from(new Set([
@@ -49,7 +68,7 @@ const matchTeamIds = Array.from(new Set([
   ...(matchesData ?? []).map((m: any) => m.team_b_id)
 ].filter(Boolean)));
 
-const { data: matchTeamsData } = matchTeamIds.length > 0 ? await supa(Astro.locals.runtime)
+const { data: matchTeamsData } = matchTeamIds.length > 0 ? await supa((Astro.locals as any).runtime)
   .from("teams")
   .select("id, name, logo_url")
   .in("id", matchTeamIds) : { data: [] };
@@ -57,7 +76,7 @@ const { data: matchTeamsData } = matchTeamIds.length > 0 ? await supa(Astro.loca
 const matchTeamMap = new Map((matchTeamsData ?? []).map((t: any) => [t.id, t]));
 
 // Get tournament info (for the badge)
-const { data: tournamentInfo } = await supa(Astro.locals.runtime)
+const { data: tournamentInfo } = await supa((Astro.locals as any).runtime)
   .from("tournaments")
   .select("id, name")
   .eq("id", id)
@@ -70,33 +89,72 @@ const matches = (matchesData ?? []).map((m: any) => ({
   tournament: tournamentInfo,
 }));
 
-const tournament = tournamentData;
-const tournamentResults = results ?? [];
-const tournamentMatches = matches;
+// Get player statistics from pre-calculated view
+const { data: playerStats } = await supa((Astro.locals as any).runtime)
+  .from("tournament_player_stats")
+  .select("gamertag, avg_points, avg_assists, avg_rebounds, avg_steals, avg_blocks, games_played")
+  .eq("tournament_id", id)
+  .gte("games_played", 3);
 
-if (!tournament) {
-  return Astro.redirect("/tournaments");
-}
+const topScorers = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_points - a.avg_points)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.gamertag,
+    points_per_game: p.avg_points,
+    games_played: p.games_played
+  }));
 
-// Generate page numbers for pagination
-function getPageNumbers(current: number, total: number): number[] {
-  const maxVisible = Math.min(7, total);
-  const pages: number[] = [];
-  
-  if (total <= 7) {
-    for (let i = 1; i <= total; i++) pages.push(i);
-  } else if (current <= 4) {
-    for (let i = 1; i <= 7; i++) pages.push(i);
-  } else if (current >= total - 3) {
-    for (let i = total - 6; i <= total; i++) pages.push(i);
-  } else {
-    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
-  }
-  
-  return pages;
-}
+const topAssists = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_assists - a.avg_assists)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.gamertag,
+    assists_per_game: p.avg_assists,
+    games_played: p.games_played
+  }));
 
-const matchPageNumbers = getPageNumbers(matchesPage, totalMatchPages);
+const topRebounders = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_rebounds - a.avg_rebounds)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.gamertag,
+    rebounds_per_game: p.avg_rebounds,
+    games_played: p.games_played
+  }));
+
+const topSteals = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_steals - a.avg_steals)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.gamertag,
+    steals_per_game: p.avg_steals,
+    games_played: p.games_played
+  }));
+
+const topBlocks = (playerStats ?? [])
+  .sort((a: any, b: any) => b.avg_blocks - a.avg_blocks)
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.gamertag,
+    blocks_per_game: p.avg_blocks,
+    games_played: p.games_played
+  }));
+
+const tournamentResults = teamsWithData ?? [];
+const recentMatches = matches ?? [];
+
+// Prepare tournament info object for tabs
+const tournamentInfoForTabs = {
+  tournament_name: tournament.name,
+  tier: tournament.tier,
+  game_year: tournament.game_year,
+  start_date: tournament.start_date,
+  end_date: tournament.end_date,
+  status: tournament.status,
+  prize_pool: tournament.prize_pool,
+  max_rp: tournament.max_rp,
+};
 
 const tierColors: Record<string, string> = {
   'T1': 'bg-purple-900 text-purple-300 border-purple-500',
@@ -127,7 +185,7 @@ const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gra
           />
         )}
         <h1 class="text-3xl font-bold mb-2">{tournament.name}</h1>
-        <div class="flex flex-wrap gap-3 items-center">
+        <div class="flex flex-wrap gap-3 items-center mb-3">
           <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColor}`}>
             {tournament.tier} Tier
           </span>
@@ -138,141 +196,48 @@ const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gra
             <span class="text-neutral-400 text-sm">• {tournament.status}</span>
           )}
         </div>
-      </div>
-
-      <!-- Tournament Info -->
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        {tournament.prize_pool && (
-          <div class="rounded-lg border border-neutral-800 p-4">
-            <div class="text-neutral-400 text-sm mb-1">Prize Pool</div>
-            <div class="text-2xl font-bold">${tournament.prize_pool.toLocaleString()}</div>
-          </div>
-        )}
-        {tournament.start_date && (
-          <div class="rounded-lg border border-neutral-800 p-4">
-            <div class="text-neutral-400 text-sm mb-1">Start Date</div>
-            <div class="text-lg font-semibold">{new Date(tournament.start_date).toLocaleDateString()}</div>
-          </div>
-        )}
-        {tournament.end_date && (
-          <div class="rounded-lg border border-neutral-800 p-4">
-            <div class="text-neutral-400 text-sm mb-1">End Date</div>
-            <div class="text-lg font-semibold">{new Date(tournament.end_date).toLocaleDateString()}</div>
-          </div>
-        )}
-        {tournament.max_rp && (
-          <div class="rounded-lg border border-neutral-800 p-4">
-            <div class="text-neutral-400 text-sm mb-1">Max RP</div>
-            <div class="text-2xl font-bold">{tournament.max_rp}</div>
-          </div>
-        )}
-      </div>
-
-      <!-- Results/Standings -->
-      {tournamentResults.length > 0 && (
-        <section class="mb-8">
-          <h2 class="text-xl font-bold mb-4">Final Standings</h2>
-          <div class="rounded-lg border border-neutral-800 overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="bg-neutral-900 text-neutral-300">
-                <tr>
-                  <th class="text-left py-2 px-4">Place</th>
-                  <th class="text-left py-2 px-4">Team</th>
-                  <th class="text-right py-2 px-4">W-L</th>
-                  <th class="text-right py-2 px-4">RP Earned</th>
-                  <th class="text-right py-2 px-4">Prize</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-neutral-800">
-                {tournamentResults.map((result: any) => (
-                  <tr class="hover:bg-neutral-900">
-                    <td class="py-2 px-4">
-                      <span class={result.final_placement === 1 ? 'text-gold font-bold' : ''}>
-                        #{result.final_placement ?? '-'}
-                      </span>
-                    </td>
-                    <td class="py-2 px-4">
-                      <a href={`/teams/${result.team_id}`} class="hover:text-blue-400 flex items-center gap-2">
-                        {result.logo_url && (
-                          <img src={result.logo_url} alt="" class="h-6 w-6 rounded" />
-                        )}
-                        {result.team_name}
-                      </a>
-                    </td>
-                    <td class="py-2 px-4 text-right">{result.wins ?? 0}-{result.losses ?? 0}</td>
-                    <td class="py-2 px-4 text-right text-gold">{result.current_rp ?? 0}</td>
-                    <td class="py-2 px-4 text-right">
-                      {result.prize_won ? `$${result.prize_won.toLocaleString()}` : '-'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
-
-      <!-- Matches (Interactive Island) -->
-      <section>
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold">Matches</h2>
-          <div class="text-sm text-neutral-400">
-            Page {matchesPage} of {totalMatchPages} • {matchCount || 0} total
-          </div>
-        </div>
-        <LeagueMatchesIsland client:load matches={tournamentMatches} />
-        {tournamentMatches.length === 0 && (
-          <div class="text-center py-8 text-neutral-400">
-            No matches found.
-          </div>
-        )}
-
-        <!-- Pagination -->
-        {totalMatchPages > 1 && (
-          <div class="mt-8 flex items-center justify-center gap-2">
-            {matchesPage > 1 ? (
-              <a
-                href={`/tournaments/${id}?page=${matchesPage - 1}`}
-                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
-              >
-                ← Previous
-              </a>
-            ) : (
-              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
-                ← Previous
-              </span>
-            )}
-
-            <div class="flex gap-1">
-              {matchPageNumbers.map((pageNum: number) => (
-                <a
-                  href={`/tournaments/${id}?page=${pageNum}`}
-                  class={`px-3 py-2 rounded transition ${
-                    pageNum === matchesPage
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'bg-neutral-800 hover:bg-neutral-700'
-                  }`}
-                >
-                  {pageNum}
-                </a>
-              ))}
+        
+        <!-- Quick Stats -->
+        <div class="flex flex-wrap gap-4 text-sm">
+          {tournament.prize_pool && (
+            <div>
+              <span class="text-neutral-400">Prize Pool:</span>
+              <span class="ml-2 font-semibold text-green-400">${tournament.prize_pool.toLocaleString()}</span>
             </div>
+          )}
+          {tournament.max_rp && (
+            <div>
+              <span class="text-neutral-400">Max RP:</span>
+              <span class="ml-2 font-semibold text-yellow-400">{tournament.max_rp}</span>
+            </div>
+          )}
+          {tournament.start_date && (
+            <div>
+              <span class="text-neutral-400">Start:</span>
+              <span class="ml-2 font-semibold">{new Date(tournament.start_date).toLocaleDateString()}</span>
+            </div>
+          )}
+          {tournament.end_date && (
+            <div>
+              <span class="text-neutral-400">End:</span>
+              <span class="ml-2 font-semibold">{new Date(tournament.end_date).toLocaleDateString()}</span>
+            </div>
+          )}
+        </div>
+      </div>
 
-            {matchesPage < totalMatchPages ? (
-              <a
-                href={`/tournaments/${id}?page=${matchesPage + 1}`}
-                class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
-              >
-                Next →
-              </a>
-            ) : (
-              <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
-                Next →
-              </span>
-            )}
-          </div>
-        )}
-      </section>
+      <!-- Tournament Tabs -->
+      <TournamentTabsIsland 
+        client:load
+        standings={tournamentResults as any}
+        matches={recentMatches as any}
+        topScorers={topScorers as any}
+        topAssists={topAssists as any}
+        topRebounders={topRebounders as any}
+        topSteals={topSteals as any}
+        topBlocks={topBlocks as any}
+        tournamentInfo={tournamentInfoForTabs as any}
+      />
     </main>
   </body>
 </html>

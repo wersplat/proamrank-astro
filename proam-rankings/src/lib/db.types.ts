@@ -10212,6 +10212,7 @@ export type Database = {
         | "Dunk League"
         | "Road to 25K"
         | "Association"
+        | "USA Basketball"
       player_position:
         | "Point Guard"
         | "Shooting Guard"
@@ -10451,6 +10452,7 @@ export const Constants = {
         "Dunk League",
         "Road to 25K",
         "Association",
+        "USA Basketball",
       ],
       player_position: [
         "Point Guard",
