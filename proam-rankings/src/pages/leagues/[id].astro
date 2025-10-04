@@ -169,6 +169,14 @@ const topBlocks = (playerStats ?? [])
     games_played: p.games_played
   }));
 
+// Get full player statistics for league statistics tab
+const { data: fullPlayerStats } = await supa((Astro.locals as any).runtime)
+  .from("player_stats_by_league_season")
+  .select("*")
+  .eq("league_season_id", seasonId)
+  .gte("games_played", 1)
+  .order("avg_points", { ascending: false });
+
 const league = leagueData;
 const teamStandings = teamsWithData ?? [];
 const recentMatches = matches ?? [];
@@ -277,6 +285,7 @@ const leagueInfoForTabs = {
         topSteals={topSteals as any}
         topBlocks={topBlocks as any}
         leagueInfo={leagueInfoForTabs as any}
+        playerStats={fullPlayerStats as any}
       />
     </main>
   </body>

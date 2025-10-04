@@ -27,6 +27,7 @@ type Match = {
 };
 
 type TeamHistoryEntry = {
+  player_id: string | null;
   gamertag: string | null;
   position: string | null;
   joined_at: string | null;
@@ -337,7 +338,16 @@ export default function TeamTabsIsland({
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <div className="font-semibold text-sm">
-                                      {entry.gamertag || 'Unknown Player'}
+                                      {entry.player_id ? (
+                                        <a 
+                                          href={`/players/${entry.player_id}`}
+                                          className="hover:text-blue-400 transition"
+                                        >
+                                          {entry.gamertag || 'Unknown Player'}
+                                        </a>
+                                      ) : (
+                                        <span>{entry.gamertag || 'Unknown Player'}</span>
+                                      )}
                                       {entry.is_captain && <span className="ml-2 text-xs text-lime-400">(C)</span>}
                                       {entry.is_player_coach && <span className="ml-2 text-xs text-cyan-400">(PC)</span>}
                                     </div>
