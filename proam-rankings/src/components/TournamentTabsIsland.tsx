@@ -231,7 +231,7 @@ export default function TournamentTabsIsland({
         {/* Standings Tab */}
         {activeTab === 0 && (
           <div className="overflow-x-auto">
-            {standings.length === 0 ? (
+            {standings.filter(t => t.final_placement).length === 0 ? (
               <div className="text-center py-8 text-neutral-400">
                 No standings available.
               </div>
@@ -248,69 +248,16 @@ export default function TournamentTabsIsland({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-800">
-                  {standings.map((team) => (
-                    <tr key={team.team_id} className="hover:bg-neutral-900">
-                      <td className="py-2 px-4">
-                        <span className={`font-bold ${getPlacementColor(team.final_placement)}`}>
-                          #{team.final_placement ?? '-'}
-                        </span>
-                      </td>
-                      <td className="py-2 px-4">
-                        <a
-                          href={`/teams/${team.team_id}`}
-                          className="hover:text-blue-400 flex items-center gap-2"
-                        >
-                          {team.logo_url && (
-                            <img
-                              src={team.logo_url}
-                              alt=""
-                              className="h-6 w-6 rounded"
-                            />
-                          )}
-                          {team.team_name}
-                        </a>
-                      </td>
-                      <td className="py-2 px-4 text-right font-semibold">
-                        {team.wins ?? 0}
-                      </td>
-                      <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                      <td className="py-2 px-4 text-right text-yellow-400">
-                        {team.current_rp ?? 0}
-                      </td>
-                      <td className="py-2 px-4 text-right text-green-400">
-                        {team.prize_won ? `$${team.prize_won.toLocaleString()}` : '-'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        )}
-
-        {/* Teams Tab */}
-        {activeTab === 1 && (
-          <div className="overflow-x-auto">
-            {standings.length === 0 ? (
-              <div className="text-center py-8 text-neutral-400">
-                No teams available.
-              </div>
-            ) : (
-              <table className="w-full text-sm">
-                <thead className="bg-neutral-950 text-neutral-300">
-                  <tr>
-                    <th className="text-left py-2 px-4">Team</th>
-                    <th className="text-right py-2 px-4">Global Rank</th>
-                    <th className="text-right py-2 px-4">Rating</th>
-                    <th className="text-right py-2 px-4">Tier</th>
-                    <th className="text-right py-2 px-4">Tournament Place</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-neutral-800">
                   {standings
-                    .sort((a, b) => (a.teams?.global_rank ?? 999) - (b.teams?.global_rank ?? 999))
+                    .filter(team => team.final_placement)
+                    .sort((a, b) => (a.final_placement ?? 999) - (b.final_placement ?? 999))
                     .map((team) => (
                       <tr key={team.team_id} className="hover:bg-neutral-900">
+                        <td className="py-2 px-4">
+                          <span className={`font-bold ${getPlacementColor(team.final_placement)}`}>
+                            #{team.final_placement ?? '-'}
+                          </span>
+                        </td>
                         <td className="py-2 px-4">
                           <a
                             href={`/teams/${team.team_id}`}
@@ -326,48 +273,123 @@ export default function TournamentTabsIsland({
                             {team.team_name}
                           </a>
                         </td>
-                        <td className="py-2 px-4 text-right text-neutral-400">
-                          #{team.teams?.global_rank ?? "-"}
+                        <td className="py-2 px-4 text-right font-semibold">
+                          {team.wins ?? 0}
                         </td>
-                        <td className="py-2 px-4 text-right">
-                          {team.teams?.hybrid_score ? (
-                            <span className="font-semibold text-blue-400">
-                              {team.teams.hybrid_score.toFixed(0)}
-                            </span>
-                          ) : (
-                            "-"
-                          )}
+                        <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+                        <td className="py-2 px-4 text-right text-yellow-400">
+                          {team.current_rp ?? 0}
                         </td>
-                        <td className="py-2 px-4 text-right">
-                          {team.teams?.leaderboard_tier ? (
-                            <span
-                              className={`px-2 py-1 rounded text-xs font-bold ${
-                                team.teams.leaderboard_tier === "S"
-                                  ? "bg-red-900 text-red-300"
-                                  : team.teams.leaderboard_tier === "A"
-                                  ? "bg-orange-900 text-orange-300"
-                                  : team.teams.leaderboard_tier === "B"
-                                  ? "bg-green-900 text-green-300"
-                                  : team.teams.leaderboard_tier === "C"
-                                  ? "bg-blue-900 text-blue-300"
-                                  : "bg-neutral-800 text-neutral-300"
-                              }`}
-                            >
-                              {team.teams.leaderboard_tier}
-                            </span>
-                          ) : (
-                            "-"
-                          )}
-                        </td>
-                        <td className="py-2 px-4 text-right">
-                          <span className={`font-bold ${getPlacementColor(team.final_placement)}`}>
-                            #{team.final_placement ?? "-"}
-                          </span>
+                        <td className="py-2 px-4 text-right text-green-400">
+                          {team.prize_won ? `$${team.prize_won.toLocaleString()}` : '-'}
                         </td>
                       </tr>
                     ))}
                 </tbody>
               </table>
+            )}
+          </div>
+        )}
+
+        {/* Teams Tab */}
+        {activeTab === 1 && (
+          <div>
+            {standings.length === 0 ? (
+              <div className="text-center py-8 text-neutral-400">
+                No teams registered.
+              </div>
+            ) : (
+              <>
+                <div className="mb-4 text-sm text-neutral-400">
+                  {standings.length} team{standings.length !== 1 ? 's' : ''} registered
+                  {standings.filter(t => t.final_placement).length > 0 && 
+                    ` • ${standings.filter(t => t.final_placement).length} placed`
+                  }
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-neutral-950 text-neutral-300">
+                      <tr>
+                        <th className="text-left py-2 px-4">Team</th>
+                        <th className="text-right py-2 px-4">Global Rank</th>
+                        <th className="text-right py-2 px-4">Rating</th>
+                        <th className="text-right py-2 px-4">Tier</th>
+                        <th className="text-right py-2 px-4">Tournament Place</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-800">
+                      {standings
+                        .sort((a, b) => {
+                          // Sort by global rank if both have it
+                          const rankA = a.teams?.global_rank ?? 9999;
+                          const rankB = b.teams?.global_rank ?? 9999;
+                          return rankA - rankB;
+                        })
+                        .map((team) => (
+                          <tr key={team.team_id} className="hover:bg-neutral-900">
+                            <td className="py-2 px-4">
+                              <a
+                                href={`/teams/${team.team_id}`}
+                                className="hover:text-blue-400 flex items-center gap-2"
+                              >
+                                {team.logo_url && (
+                                  <img
+                                    src={team.logo_url}
+                                    alt=""
+                                    className="h-6 w-6 rounded"
+                                  />
+                                )}
+                                {team.team_name}
+                              </a>
+                            </td>
+                            <td className="py-2 px-4 text-right text-neutral-400">
+                              #{team.teams?.global_rank ?? "-"}
+                            </td>
+                            <td className="py-2 px-4 text-right">
+                              {team.teams?.hybrid_score ? (
+                                <span className="font-semibold text-blue-400">
+                                  {team.teams.hybrid_score.toFixed(0)}
+                                </span>
+                              ) : (
+                                "-"
+                              )}
+                            </td>
+                            <td className="py-2 px-4 text-right">
+                              {team.teams?.leaderboard_tier ? (
+                                <span
+                                  className={`px-2 py-1 rounded text-xs font-bold ${
+                                    team.teams.leaderboard_tier === "S"
+                                      ? "bg-red-900 text-red-300"
+                                      : team.teams.leaderboard_tier === "A"
+                                      ? "bg-orange-900 text-orange-300"
+                                      : team.teams.leaderboard_tier === "B"
+                                      ? "bg-green-900 text-green-300"
+                                      : team.teams.leaderboard_tier === "C"
+                                      ? "bg-blue-900 text-blue-300"
+                                      : "bg-neutral-800 text-neutral-300"
+                                  }`}
+                                >
+                                  {team.teams.leaderboard_tier}
+                                </span>
+                              ) : (
+                                "-"
+                              )}
+                            </td>
+                            <td className="py-2 px-4 text-right">
+                              {team.final_placement ? (
+                                <span className={`font-bold ${getPlacementColor(team.final_placement)}`}>
+                                  #{team.final_placement}
+                                </span>
+                              ) : (
+                                <span className="text-neutral-500 text-xs">Not Placed</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         )}

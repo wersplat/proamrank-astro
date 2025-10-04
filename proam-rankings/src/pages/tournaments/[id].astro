@@ -33,25 +33,58 @@ const { data: results } = await supa((Astro.locals as any).runtime)
   .eq("tournament_id", id)
   .order("final_placement", { ascending: true });
 
-// Fetch teams data separately and merge with standings
-let teamsWithData = results ?? [];
-if (results && results.length > 0) {
-  const teamIds = results.map((s: any) => s.team_id).filter(Boolean);
-  if (teamIds.length > 0) {
-    const { data: teamsData } = await supa((Astro.locals as any).runtime)
-      .from("teams")
-      .select("id, global_rank, hybrid_score, leaderboard_tier")
-      .in("id", teamIds);
+// Get all teams registered for the tournament (from rosters)
+const { data: registeredTeamsRaw } = await supa((Astro.locals as any).runtime)
+  .from("tournament_team_rosters")
+  .select("team_id, team_name, team_logo")
+  .eq("tournament_id", id);
+
+// Get unique team IDs from both results and rosters
+const uniqueRegisteredTeams = Array.from(
+  new Map((registeredTeamsRaw ?? []).map((t: any) => [t.team_id, t])).values()
+);
+
+const allTeamIds = Array.from(new Set([
+  ...(results ?? []).map((s: any) => s.team_id),
+  ...uniqueRegisteredTeams.map((t: any) => t.team_id)
+].filter(Boolean)));
+
+// Fetch global team data for all teams
+let teamsWithData: any[] = [];
+if (allTeamIds.length > 0) {
+  const { data: teamsData } = await supa((Astro.locals as any).runtime)
+    .from("teams")
+    .select("id, name, logo_url, global_rank, hybrid_score, leaderboard_tier")
+    .in("id", allTeamIds);
+  
+  // Create a map for quick lookup
+  const teamsDataMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
+  const resultsMap = new Map((results ?? []).map((r: any) => [r.team_id, r]));
+  
+  // Merge all data - prioritize teams with results, then add registered teams without results
+  teamsWithData = allTeamIds.map((teamId: string) => {
+    const teamData = teamsDataMap.get(teamId);
+    const resultData = resultsMap.get(teamId);
+    const rosterData = uniqueRegisteredTeams.find((t: any) => t.team_id === teamId);
     
-    // Merge teams data with standings
-    teamsWithData = results.map((standing: any) => {
-      const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
-      return {
-        ...standing,
-        teams: teamData
-      };
-    });
-  }
+    return {
+      team_id: teamId,
+      team_name: teamData?.name || rosterData?.team_name || resultData?.team_name || 'Unknown',
+      logo_url: teamData?.logo_url || rosterData?.team_logo || resultData?.logo_url,
+      // Results data (may be null for teams without placements)
+      final_placement: resultData?.final_placement,
+      wins: resultData?.wins,
+      losses: resultData?.losses,
+      current_rp: resultData?.current_rp,
+      prize_won: resultData?.prize_won,
+      // Global team data
+      teams: teamData ? {
+        global_rank: teamData.global_rank,
+        hybrid_score: teamData.hybrid_score,
+        leaderboard_tier: teamData.leaderboard_tier
+      } : null
+    };
+  });
 }
 
 // Get tournament matches (limit to 1000 for performance)
