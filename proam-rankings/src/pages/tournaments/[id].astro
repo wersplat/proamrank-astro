@@ -71,10 +71,14 @@ if (allTeamIds.length > 0) {
       team_id: teamId,
       team_name: teamData?.name || rosterData?.team_name || resultData?.team_name || 'Unknown',
       logo_url: teamData?.logo_url || rosterData?.team_logo || resultData?.logo_url,
-      // Results data (may be null for teams without placements)
+      // Results data from tournament_results view (by UUID)
       final_placement: resultData?.final_placement,
       wins: resultData?.wins,
       losses: resultData?.losses,
+      win_percentage: resultData?.win_percentage,
+      points_for: resultData?.points_for,
+      points_against: resultData?.points_against,
+      point_differential: resultData?.point_differential,
       current_rp: resultData?.current_rp,
       prize_won: resultData?.prize_won,
       // Global team data

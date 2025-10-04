@@ -40,6 +40,10 @@ type Team = {
   logo_url?: string | null;
   wins?: number;
   losses?: number;
+  win_percentage?: number;
+  points_for?: number;
+  points_against?: number;
+  point_differential?: number;
   final_placement?: number;
   current_rp?: number;
   prize_won?: number;
@@ -231,7 +235,7 @@ export default function TournamentTabsIsland({
         {/* Standings Tab */}
         {activeTab === 0 && (
           <div className="overflow-x-auto">
-            {standings.filter(t => t.final_placement).length === 0 ? (
+            {standings.filter(t => t.wins !== undefined || t.losses !== undefined).length === 0 ? (
               <div className="text-center py-8 text-neutral-400">
                 No standings available.
               </div>
@@ -243,19 +247,34 @@ export default function TournamentTabsIsland({
                     <th className="text-left py-2 px-4">Team</th>
                     <th className="text-right py-2 px-4">W</th>
                     <th className="text-right py-2 px-4">L</th>
+                    <th className="text-right py-2 px-4">Win%</th>
+                    <th className="text-right py-2 px-4">PF</th>
+                    <th className="text-right py-2 px-4">PA</th>
+                    <th className="text-right py-2 px-4">Diff</th>
                     <th className="text-right py-2 px-4">RP Earned</th>
                     <th className="text-right py-2 px-4">Prize Won</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-800">
                   {standings
-                    .filter(team => team.final_placement)
-                    .sort((a, b) => (a.final_placement ?? 999) - (b.final_placement ?? 999))
+                    .filter(team => team.wins !== undefined || team.losses !== undefined)
+                    .sort((a, b) => {
+                      // Sort by placement first (if exists), then by wins, then by point differential
+                      if (a.final_placement && b.final_placement) {
+                        return a.final_placement - b.final_placement;
+                      }
+                      if (a.final_placement) return -1;
+                      if (b.final_placement) return 1;
+                      if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+                        return (b.wins ?? 0) - (a.wins ?? 0);
+                      }
+                      return (b.point_differential ?? 0) - (a.point_differential ?? 0);
+                    })
                     .map((team) => (
                       <tr key={team.team_id} className="hover:bg-neutral-900">
                         <td className="py-2 px-4">
                           <span className={`font-bold ${getPlacementColor(team.final_placement)}`}>
-                            #{team.final_placement ?? '-'}
+                            {team.final_placement ? `#${team.final_placement}` : '-'}
                           </span>
                         </td>
                         <td className="py-2 px-4">
@@ -273,10 +292,24 @@ export default function TournamentTabsIsland({
                             {team.team_name}
                           </a>
                         </td>
-                        <td className="py-2 px-4 text-right font-semibold">
+                        <td className="py-2 px-4 text-right font-semibold text-green-400">
                           {team.wins ?? 0}
                         </td>
-                        <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+                        <td className="py-2 px-4 text-right text-red-400">{team.losses ?? 0}</td>
+                        <td className="py-2 px-4 text-right text-neutral-300">
+                          {team.win_percentage ? `${team.win_percentage}%` : '-'}
+                        </td>
+                        <td className="py-2 px-4 text-right text-neutral-400">
+                          {team.points_for ?? 0}
+                        </td>
+                        <td className="py-2 px-4 text-right text-neutral-400">
+                          {team.points_against ?? 0}
+                        </td>
+                        <td className="py-2 px-4 text-right">
+                          <span className={team.point_differential && team.point_differential > 0 ? 'text-green-400' : team.point_differential && team.point_differential < 0 ? 'text-red-400' : ''}>
+                            {team.point_differential !== undefined ? (team.point_differential > 0 ? '+' : '') + team.point_differential : '-'}
+                          </span>
+                        </td>
                         <td className="py-2 px-4 text-right text-yellow-400">
                           {team.current_rp ?? 0}
                         </td>
