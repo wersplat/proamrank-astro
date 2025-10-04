@@ -83,7 +83,7 @@ const matches = (matchesData ?? []).map((m: any) => ({
 // Get team roster history
 const { data: teamHistory } = await supa((Astro.locals as any).runtime)
   .from("team_roster_history")
-  .select("gamertag, position, joined_at, left_at, season_number, league_name, team_logo, team_name, is_captain, is_player_coach")
+  .select("gamertag, position, joined_at, left_at, season_number, league_name, team_logo, team_name, is_captain, is_player_coach, tournament_id, tournament_name")
   .eq("team_id", id)
   .order("joined_at", { ascending: false });
 

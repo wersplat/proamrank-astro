@@ -37,6 +37,8 @@ type TeamHistoryEntry = {
   team_name: string | null;
   is_captain: boolean | null;
   is_player_coach: boolean | null;
+  tournament_id: string | null;
+  tournament_name: string | null;
 };
 
 type Championship = {
@@ -232,47 +234,130 @@ export default function TeamTabsIsland({
         {/* Roster Tab */}
         {activeTab === 0 && (
           <div>
-            <h3 className="text-lg font-bold mb-4">Current Roster ({players.length})</h3>
-            {players.length === 0 ? (
-              <div className="text-center py-8 text-neutral-400">
-                No roster information available.
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-neutral-950 text-neutral-300">
-                    <tr>
-                      <th className="text-left py-2 px-4">Player</th>
-                      <th className="text-left py-2 px-4">Position</th>
-                      <th className="text-right py-2 px-4">Tier</th>
-                      <th className="text-right py-2 px-4">Joined</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-neutral-800">
-                    {players.map((p) => (
-                      <tr key={p.player_id} className="hover:bg-neutral-900">
-                        <td className="py-2 px-4">
-                          <a href={`/players/${p.player_id}`} className="hover:text-blue-400">
-                            {p.gamertag}
-                            {p.is_captain && <span className="ml-2 text-xs text-lime-400">(C)</span>}
-                            {p.is_player_coach && <span className="ml-2 text-xs text-cyan-400">(PC)</span>}
-                          </a>
-                        </td>
-                        <td className="py-2 px-4 text-neutral-400">{p.position || '-'}</td>
-                        <td className="py-2 px-4 text-right">
-                          <span className="px-2 py-0.5 rounded text-xs bg-neutral-800">
-                            {p.salary_tier || '-'}
+            {(() => {
+              // Get current players from team history
+              const currentPlayers = teamHistory.filter((entry) => !entry.left_at);
+              
+              if (currentPlayers.length === 0) {
+                return (
+                  <>
+                    <h3 className="text-lg font-bold mb-4">Current Roster (0)</h3>
+                    <div className="text-center py-8 text-neutral-400">
+                      No roster information available.
+                    </div>
+                  </>
+                );
+              }
+
+              // Group by tournament or league/season
+              const grouped = currentPlayers.reduce((acc, entry) => {
+                let key: string;
+                let groupName: string;
+                let groupType: 'tournament' | 'season';
+                
+                if (entry.tournament_id && entry.tournament_name) {
+                  // Group by tournament
+                  key = `tournament_${entry.tournament_id}`;
+                  groupName = entry.tournament_name;
+                  groupType = 'tournament';
+                } else {
+                  // Group by league and season
+                  key = `season_${entry.league_name || 'Unknown League'}_${entry.season_number || 0}`;
+                  groupName = `${entry.league_name || 'Unknown League'}${entry.season_number ? ` • Season ${entry.season_number}` : ''}`;
+                  groupType = 'season';
+                }
+                
+                if (!acc[key]) {
+                  acc[key] = {
+                    groupName,
+                    groupType,
+                    league_name: entry.league_name || 'Unknown League',
+                    season_number: entry.season_number || 0,
+                    tournament_name: entry.tournament_name,
+                    entries: []
+                  };
+                }
+                acc[key].entries.push(entry);
+                return acc;
+              }, {} as Record<string, { 
+                groupName: string; 
+                groupType: 'tournament' | 'season';
+                league_name: string; 
+                season_number: number; 
+                tournament_name: string | null;
+                entries: TeamHistoryEntry[] 
+              }>);
+
+              // Sort groups: tournaments first, then by season (most recent)
+              const sortedGroups = Object.values(grouped).sort((a, b) => {
+                if (a.groupType !== b.groupType) {
+                  return a.groupType === 'tournament' ? -1 : 1;
+                }
+                if (a.groupType === 'season' && b.groupType === 'season') {
+                  if (b.season_number !== a.season_number) {
+                    return b.season_number - a.season_number;
+                  }
+                  return a.league_name.localeCompare(b.league_name);
+                }
+                return a.groupName.localeCompare(b.groupName);
+              });
+
+              return (
+                <>
+                  <h3 className="text-lg font-bold mb-4">Current Roster ({currentPlayers.length})</h3>
+                  <div className="space-y-6">
+                    {sortedGroups.map((group, groupIdx) => (
+                      <div key={groupIdx} className="rounded-lg border border-neutral-800 bg-neutral-900/30 p-4">
+                        <h4 className="font-bold mb-3 text-neutral-300 flex items-center gap-2">
+                          {group.groupType === 'tournament' ? (
+                            <>
+                              <span>🏆 {group.tournament_name}</span>
+                              <span className="text-xs text-neutral-500">(Tournament)</span>
+                            </>
+                          ) : (
+                            <span>{group.groupName}</span>
+                          )}
+                          <span className="ml-auto text-xs text-neutral-500">
+                            ({group.entries.length} player{group.entries.length !== 1 ? 's' : ''})
                           </span>
-                        </td>
-                        <td className="py-2 px-4 text-right text-neutral-400 text-xs">
-                          {p.joined_at ? new Date(p.joined_at).toLocaleDateString() : '-'}
-                        </td>
-                      </tr>
+                        </h4>
+                        <div className="space-y-2">
+                          {group.entries
+                            .sort((a, b) => {
+                              // Sort by captain first, then by joined date
+                              if (a.is_captain && !b.is_captain) return -1;
+                              if (!a.is_captain && b.is_captain) return 1;
+                              if (a.joined_at && b.joined_at) {
+                                return new Date(a.joined_at).getTime() - new Date(b.joined_at).getTime();
+                              }
+                              return 0;
+                            })
+                            .map((entry, i) => (
+                              <div key={i} className="rounded border border-neutral-700 bg-neutral-900/50 p-3">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1">
+                                    <div className="font-semibold text-sm">
+                                      {entry.gamertag || 'Unknown Player'}
+                                      {entry.is_captain && <span className="ml-2 text-xs text-lime-400">(C)</span>}
+                                      {entry.is_player_coach && <span className="ml-2 text-xs text-cyan-400">(PC)</span>}
+                                    </div>
+                                    <div className="text-xs text-neutral-400 mt-1">
+                                      {entry.position || 'No position'}
+                                    </div>
+                                    <div className="text-xs text-neutral-500 mt-1">
+                                      Joined: {entry.joined_at ? new Date(entry.joined_at).toLocaleDateString() : 'Unknown'}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                  </div>
+                </>
+              );
+            })()}
           </div>
         )}
 
@@ -482,34 +567,69 @@ export default function TeamTabsIsland({
             ) : (
               <div className="space-y-6">
                 {(() => {
-                  // Group by league and season
+                  // Group by tournament or league/season
                   const grouped = teamHistory.reduce((acc, entry) => {
-                    const key = `${entry.league_name || 'Unknown League'}_${entry.season_number || 0}`;
+                    let key: string;
+                    let groupName: string;
+                    let groupType: 'tournament' | 'season';
+                    
+                    if (entry.tournament_id && entry.tournament_name) {
+                      // Group by tournament
+                      key = `tournament_${entry.tournament_id}`;
+                      groupName = entry.tournament_name;
+                      groupType = 'tournament';
+                    } else {
+                      // Group by league and season
+                      key = `season_${entry.league_name || 'Unknown League'}_${entry.season_number || 0}`;
+                      groupName = `${entry.league_name || 'Unknown League'}${entry.season_number ? ` • Season ${entry.season_number}` : ''}`;
+                      groupType = 'season';
+                    }
+                    
                     if (!acc[key]) {
                       acc[key] = {
+                        groupName,
+                        groupType,
                         league_name: entry.league_name || 'Unknown League',
                         season_number: entry.season_number || 0,
+                        tournament_name: entry.tournament_name,
                         entries: []
                       };
                     }
                     acc[key].entries.push(entry);
                     return acc;
-                  }, {} as Record<string, { league_name: string; season_number: number; entries: TeamHistoryEntry[] }>);
+                  }, {} as Record<string, { 
+                    groupName: string; 
+                    groupType: 'tournament' | 'season';
+                    league_name: string; 
+                    season_number: number; 
+                    tournament_name: string | null;
+                    entries: TeamHistoryEntry[] 
+                  }>);
 
-                  // Sort by season (most recent first)
+                  // Sort groups: tournaments first, then by season (most recent)
                   const sortedGroups = Object.values(grouped).sort((a, b) => {
-                    if (b.season_number !== a.season_number) {
-                      return b.season_number - a.season_number;
+                    if (a.groupType !== b.groupType) {
+                      return a.groupType === 'tournament' ? -1 : 1;
                     }
-                    return a.league_name.localeCompare(b.league_name);
+                    if (a.groupType === 'season' && b.groupType === 'season') {
+                      if (b.season_number !== a.season_number) {
+                        return b.season_number - a.season_number;
+                      }
+                      return a.league_name.localeCompare(b.league_name);
+                    }
+                    return a.groupName.localeCompare(b.groupName);
                   });
 
                   return sortedGroups.map((group, groupIdx) => (
                     <div key={groupIdx} className="rounded-lg border border-neutral-800 bg-neutral-900/30 p-4">
                       <h4 className="font-bold mb-3 text-neutral-300 flex items-center gap-2">
-                        <span>{group.league_name}</span>
-                        {group.season_number > 0 && (
-                          <span className="text-sm text-neutral-400">• Season {group.season_number}</span>
+                        {group.groupType === 'tournament' ? (
+                          <>
+                            <span>🏆 {group.tournament_name}</span>
+                            <span className="text-xs text-neutral-500">(Tournament)</span>
+                          </>
+                        ) : (
+                          <span>{group.groupName}</span>
                         )}
                         <span className="ml-auto text-xs text-neutral-500">
                           ({group.entries.length} player{group.entries.length !== 1 ? 's' : ''})
