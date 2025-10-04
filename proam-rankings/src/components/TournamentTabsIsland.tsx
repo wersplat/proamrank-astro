@@ -87,6 +87,10 @@ type TournamentInfo = {
   status?: string;
   prize_pool?: number;
   max_rp?: number;
+  lg_url?: string;
+  lg_discord?: string;
+  twitch_url?: string;
+  twitter_id?: string;
 };
 
 type PlayerStatFull = {
@@ -916,6 +920,60 @@ export default function TournamentTabsIsland({
                     </div>
                   )}
                 </div>
+
+                {/* Social Media Links */}
+                {(tournamentInfo.lg_url ||
+                  tournamentInfo.lg_discord ||
+                  tournamentInfo.twitch_url ||
+                  tournamentInfo.twitter_id) && (
+                  <div className="mt-6">
+                    <div className="text-sm text-neutral-400 mb-3">
+                      Organizer Links
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {tournamentInfo.lg_url && (
+                        <a
+                          href={tournamentInfo.lg_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+                        >
+                          🌐 Website
+                        </a>
+                      )}
+                      {tournamentInfo.lg_discord && (
+                        <a
+                          href={tournamentInfo.lg_discord}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1 rounded bg-indigo-900 hover:bg-indigo-800 transition"
+                        >
+                          💬 Discord
+                        </a>
+                      )}
+                      {tournamentInfo.twitch_url && (
+                        <a
+                          href={tournamentInfo.twitch_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1 rounded bg-purple-900 hover:bg-purple-800 transition"
+                        >
+                          📺 Twitch
+                        </a>
+                      )}
+                      {tournamentInfo.twitter_id && (
+                        <a
+                          href={`https://twitter.com/${tournamentInfo.twitter_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1 rounded bg-sky-900 hover:bg-sky-800 transition"
+                        >
+                          🐦 Twitter
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
               </>
             ) : (
               <div className="text-center py-8 text-neutral-400">

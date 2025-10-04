@@ -13,10 +13,18 @@ if (!id) {
   return Astro.redirect("/tournaments");
 }
 
-// Get tournament info
+// Get tournament info with organizer details (for social media)
 const { data: tournamentData } = await supa((Astro.locals as any).runtime)
   .from("tournaments")
-  .select("*")
+  .select(`
+    *,
+    organizer:organizer_id (
+      lg_url,
+      lg_discord,
+      twitch_url,
+      twitter_id
+    )
+  `)
   .eq("id", id)
   .maybeSingle();
 
@@ -199,6 +207,10 @@ const tournamentInfoForTabs = {
   status: tournament.status,
   prize_pool: tournament.prize_pool,
   max_rp: tournament.max_rp,
+  lg_url: tournament.organizer?.lg_url,
+  lg_discord: tournament.organizer?.lg_discord,
+  twitch_url: tournament.organizer?.twitch_url,
+  twitter_id: tournament.organizer?.twitter_id,
 };
 
 const tierColors: Record<string, string> = {
@@ -243,7 +255,7 @@ const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gra
         </div>
         
         <!-- Quick Stats -->
-        <div class="flex flex-wrap gap-4 text-sm">
+        <div class="flex flex-wrap gap-4 text-sm mb-4">
           {tournament.prize_pool && (
             <div>
               <span class="text-neutral-400">Prize Pool:</span>
@@ -269,6 +281,32 @@ const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gra
             </div>
           )}
         </div>
+
+        <!-- Social Media Links -->
+        {tournament.organizer && (
+          <div class="flex flex-wrap gap-2 text-sm">
+            {tournament.organizer.lg_url && (
+              <a href={tournament.organizer.lg_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+                🌐 Website
+              </a>
+            )}
+            {tournament.organizer.lg_discord && (
+              <a href={tournament.organizer.lg_discord} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-indigo-900 hover:bg-indigo-800 transition">
+                💬 Discord
+              </a>
+            )}
+            {tournament.organizer.twitch_url && (
+              <a href={tournament.organizer.twitch_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-purple-900 hover:bg-purple-800 transition">
+                📺 Twitch
+              </a>
+            )}
+            {tournament.organizer.twitter_id && (
+              <a href={`https://twitter.com/${tournament.organizer.twitter_id}`} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-sky-900 hover:bg-sky-800 transition">
+                🐦 Twitter
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       <!-- Tournament Tabs -->
