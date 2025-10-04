@@ -89,6 +89,27 @@ type TournamentInfo = {
   max_rp?: number;
 };
 
+type PlayerStatFull = {
+  player_id: string;
+  gamertag: string;
+  position?: string;
+  team_id: string;
+  team_name: string;
+  games_played: number;
+  avg_points: number;
+  avg_assists: number;
+  avg_rebounds: number;
+  avg_steals: number;
+  avg_blocks: number;
+  avg_turnovers: number;
+  avg_fouls?: number;
+  fg_percentage?: number;
+  three_pt_percentage?: number;
+  ft_percentage?: number;
+  avg_plus_minus?: number;
+  avg_performance_score?: number;
+};
+
 type TournamentTabsProps = {
   standings: Team[];
   matches: Match[];
@@ -98,6 +119,7 @@ type TournamentTabsProps = {
   topSteals: TopPlayerStat[];
   topBlocks: TopPlayerStat[];
   tournamentInfo?: TournamentInfo;
+  playerStats?: PlayerStatFull[];
 };
 
 export default function TournamentTabsIsland({
@@ -109,6 +131,7 @@ export default function TournamentTabsIsland({
   topSteals,
   topBlocks,
   tournamentInfo,
+  playerStats: tournamentPlayerStats = [],
 }: TournamentTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [matchesPage, setMatchesPage] = useState(1);
@@ -118,13 +141,16 @@ export default function TournamentTabsIsland({
   const [teamStats, setTeamStats] = useState<TeamStat[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<keyof PlayerStatFull>('avg_points');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   const tabs = [
     { id: 0, label: "Standings" },
     { id: 1, label: "Teams" },
     { id: 2, label: "Matches" },
-    { id: 3, label: "Top Performers" },
-    { id: 4, label: "Information" },
+    { id: 3, label: "Player Statistics" },
+    { id: 4, label: "Top Performers" },
+    { id: 5, label: "Information" },
   ];
 
   // Pagination for matches
@@ -150,6 +176,23 @@ export default function TournamentTabsIsland({
   };
 
   const matchPageNumbers = getPageNumbers(matchesPage, totalMatchPages);
+
+  // Sort player statistics
+  const handleSort = (column: keyof PlayerStatFull) => {
+    if (sortBy === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(column);
+      setSortDirection('desc');
+    }
+  };
+
+  const sortedPlayerStats = [...tournamentPlayerStats].sort((a, b) => {
+    const aVal = a[sortBy] ?? 0;
+    const bVal = b[sortBy] ?? 0;
+    const comparison = aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+    return sortDirection === 'asc' ? comparison : -comparison;
+  });
 
   // Reset to page 1 when switching tabs
   const handleTabChange = (tabId: number) => {
@@ -537,8 +580,149 @@ export default function TournamentTabsIsland({
           </div>
         )}
 
-        {/* Top Performers Tab */}
+        {/* Player Statistics Tab */}
         {activeTab === 3 && (
+          <div>
+            {sortedPlayerStats.length === 0 ? (
+              <div className="text-center py-8 text-neutral-400">
+                No player statistics available.
+              </div>
+            ) : (
+              <>
+                <div className="mb-4 text-sm text-neutral-400">
+                  {sortedPlayerStats.length} player{sortedPlayerStats.length !== 1 ? 's' : ''} • Click column headers to sort
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-neutral-950 text-neutral-300">
+                      <tr>
+                        <th className="text-left py-2 px-4 sticky left-0 bg-neutral-950 z-10">Player</th>
+                        <th className="text-left py-2 px-4">Team</th>
+                        <th className="text-left py-2 px-4">Pos</th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('games_played')}
+                        >
+                          GP {sortBy === 'games_played' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('avg_points')}
+                        >
+                          PPG {sortBy === 'avg_points' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('avg_rebounds')}
+                        >
+                          RPG {sortBy === 'avg_rebounds' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('avg_assists')}
+                        >
+                          APG {sortBy === 'avg_assists' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('avg_steals')}
+                        >
+                          SPG {sortBy === 'avg_steals' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('avg_blocks')}
+                        >
+                          BPG {sortBy === 'avg_blocks' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('avg_turnovers')}
+                        >
+                          TOV {sortBy === 'avg_turnovers' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('fg_percentage')}
+                        >
+                          FG% {sortBy === 'fg_percentage' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('three_pt_percentage')}
+                        >
+                          3P% {sortBy === 'three_pt_percentage' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('avg_performance_score')}
+                        >
+                          PS {sortBy === 'avg_performance_score' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-800">
+                      {sortedPlayerStats.map((player) => (
+                        <tr key={player.player_id} className="hover:bg-neutral-900">
+                          <td className="py-2 px-4 sticky left-0 bg-neutral-900 hover:bg-neutral-900">
+                            <a
+                              href={`/players/${player.player_id}`}
+                              className="hover:text-blue-400 font-medium"
+                            >
+                              {player.gamertag}
+                            </a>
+                          </td>
+                          <td className="py-2 px-4">
+                            <a
+                              href={`/teams/${player.team_id}`}
+                              className="hover:text-blue-400 text-neutral-400"
+                            >
+                              {player.team_name}
+                            </a>
+                          </td>
+                          <td className="py-2 px-4 text-neutral-400 text-xs">
+                            {player.position || '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right">{player.games_played}</td>
+                          <td className="py-2 px-4 text-right font-semibold text-blue-400">
+                            {player.avg_points?.toFixed(1) ?? '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right">
+                            {player.avg_rebounds?.toFixed(1) ?? '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right text-green-400">
+                            {player.avg_assists?.toFixed(1) ?? '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right text-yellow-400">
+                            {player.avg_steals?.toFixed(1) ?? '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right text-red-400">
+                            {player.avg_blocks?.toFixed(1) ?? '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right text-neutral-400">
+                            {player.avg_turnovers?.toFixed(1) ?? '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right">
+                            {player.fg_percentage ? `${player.fg_percentage.toFixed(1)}%` : '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right">
+                            {player.three_pt_percentage ? `${player.three_pt_percentage.toFixed(1)}%` : '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right font-semibold text-purple-400">
+                            {player.avg_performance_score?.toFixed(1) ?? '-'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Top Performers Tab */}
+        {activeTab === 4 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {topScorers.length > 0 && (
               <div className="rounded-lg border border-neutral-800 p-4">
@@ -668,7 +852,7 @@ export default function TournamentTabsIsland({
         )}
 
         {/* Information Tab */}
-        {activeTab === 4 && (
+        {activeTab === 5 && (
           <div className="space-y-4">
             {tournamentInfo ? (
               <>

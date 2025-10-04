@@ -178,6 +178,14 @@ const topBlocks = (playerStats ?? [])
     games_played: p.games_played
   }));
 
+// Get full player statistics for tournament statistics tab
+const { data: fullPlayerStats } = await supa((Astro.locals as any).runtime)
+  .from("tournament_player_stats")
+  .select("*")
+  .eq("tournament_id", id)
+  .gte("games_played", 1)
+  .order("avg_points", { ascending: false });
+
 const tournamentResults = teamsWithData ?? [];
 const recentMatches = matches ?? [];
 
@@ -274,6 +282,7 @@ const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gra
         topSteals={topSteals as any}
         topBlocks={topBlocks as any}
         tournamentInfo={tournamentInfoForTabs as any}
+        playerStats={fullPlayerStats as any}
       />
     </main>
   </body>
