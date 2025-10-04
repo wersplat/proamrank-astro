@@ -474,36 +474,84 @@ export default function TeamTabsIsland({
         {/* Past Players Tab */}
         {activeTab === 3 && (
           <div>
-            <h3 className="text-lg font-bold mb-4">Past Players</h3>
+            <h3 className="text-lg font-bold mb-4">Roster History</h3>
             {teamHistory.length === 0 ? (
               <div className="text-center py-8 text-neutral-400">
                 No team history available.
               </div>
             ) : (
-              <div className="space-y-2">
-                {teamHistory.map((entry, i) => (
-                  <div key={i} className="rounded-lg border border-neutral-800 p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm">
-                          {entry.gamertag || 'Unknown Player'}
-                          {entry.is_captain && <span className="ml-2 text-xs text-lime-400">(Captain)</span>}
-                          {entry.is_player_coach && <span className="ml-2 text-xs text-cyan-400">(Player-Coach)</span>}
-                        </div>
-                        <div className="text-xs text-neutral-400 mt-1">
-                          {entry.position || 'No position'} • {entry.league_name || 'No league'}
-                          {entry.season_number && ` • Season ${entry.season_number}`}
-                        </div>
-                        <div className="text-xs text-neutral-500 mt-1">
-                          {entry.joined_at ? new Date(entry.joined_at).toLocaleDateString() : 'Unknown'} - {entry.left_at ? new Date(entry.left_at).toLocaleDateString() : 'Present'}
-                        </div>
-                      </div>
-                      <div className="text-xs text-neutral-500">
-                        {entry.left_at ? 'Former' : 'Current'}
+              <div className="space-y-6">
+                {(() => {
+                  // Group by league and season
+                  const grouped = teamHistory.reduce((acc, entry) => {
+                    const key = `${entry.league_name || 'Unknown League'}_${entry.season_number || 0}`;
+                    if (!acc[key]) {
+                      acc[key] = {
+                        league_name: entry.league_name || 'Unknown League',
+                        season_number: entry.season_number || 0,
+                        entries: []
+                      };
+                    }
+                    acc[key].entries.push(entry);
+                    return acc;
+                  }, {} as Record<string, { league_name: string; season_number: number; entries: TeamHistoryEntry[] }>);
+
+                  // Sort by season (most recent first)
+                  const sortedGroups = Object.values(grouped).sort((a, b) => {
+                    if (b.season_number !== a.season_number) {
+                      return b.season_number - a.season_number;
+                    }
+                    return a.league_name.localeCompare(b.league_name);
+                  });
+
+                  return sortedGroups.map((group, groupIdx) => (
+                    <div key={groupIdx} className="rounded-lg border border-neutral-800 bg-neutral-900/30 p-4">
+                      <h4 className="font-bold mb-3 text-neutral-300 flex items-center gap-2">
+                        <span>{group.league_name}</span>
+                        {group.season_number > 0 && (
+                          <span className="text-sm text-neutral-400">• Season {group.season_number}</span>
+                        )}
+                        <span className="ml-auto text-xs text-neutral-500">
+                          ({group.entries.length} player{group.entries.length !== 1 ? 's' : ''})
+                        </span>
+                      </h4>
+                      <div className="space-y-2">
+                        {group.entries
+                          .sort((a, b) => {
+                            // Sort by captain first, then by joined date
+                            if (a.is_captain && !b.is_captain) return -1;
+                            if (!a.is_captain && b.is_captain) return 1;
+                            if (a.joined_at && b.joined_at) {
+                              return new Date(b.joined_at).getTime() - new Date(a.joined_at).getTime();
+                            }
+                            return 0;
+                          })
+                          .map((entry, i) => (
+                            <div key={i} className="rounded border border-neutral-700 bg-neutral-900/50 p-3">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="font-semibold text-sm">
+                                    {entry.gamertag || 'Unknown Player'}
+                                    {entry.is_captain && <span className="ml-2 text-xs text-lime-400">(C)</span>}
+                                    {entry.is_player_coach && <span className="ml-2 text-xs text-cyan-400">(PC)</span>}
+                                  </div>
+                                  <div className="text-xs text-neutral-400 mt-1">
+                                    {entry.position || 'No position'}
+                                  </div>
+                                  <div className="text-xs text-neutral-500 mt-1">
+                                    {entry.joined_at ? new Date(entry.joined_at).toLocaleDateString() : 'Unknown'} - {entry.left_at ? new Date(entry.left_at).toLocaleDateString() : 'Present'}
+                                  </div>
+                                </div>
+                                <div className="text-xs text-neutral-500">
+                                  {entry.left_at ? 'Former' : 'Current'}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ));
+                })()}
               </div>
             )}
           </div>
