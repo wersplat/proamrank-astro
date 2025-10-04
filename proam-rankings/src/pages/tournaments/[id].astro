@@ -18,7 +18,7 @@ const { data: tournamentData } = await supa((Astro.locals as any).runtime)
   .from("tournaments")
   .select(`
     *,
-    organizer:organizer_id (
+    organizer:leagues_info!tournaments_organizer_id_fkey (
       lg_url,
       lg_discord,
       twitch_url,
@@ -28,11 +28,21 @@ const { data: tournamentData } = await supa((Astro.locals as any).runtime)
   .eq("id", id)
   .maybeSingle();
 
+// Get tier from event_strength_metrics_mv
+const { data: eventMetrics } = await supa((Astro.locals as any).runtime)
+  .from("event_strength_metrics_mv")
+  .select("tier_label")
+  .eq("tournament_id", id)
+  .maybeSingle();
+
 const tournament = tournamentData;
 
 if (!tournament) {
   return Astro.redirect("/tournaments");
 }
+
+// Use tier from event_strength_metrics_mv if available, otherwise fall back to tournament.tier
+const tournamentTier = eventMetrics?.tier_label || tournament.tier;
 
 // Get tournament results
 const { data: results } = await supa((Astro.locals as any).runtime)
@@ -200,7 +210,7 @@ const recentMatches = matches ?? [];
 // Prepare tournament info object for tabs
 const tournamentInfoForTabs = {
   tournament_name: tournament.name,
-  tier: tournament.tier,
+  tier: tournamentTier,
   game_year: tournament.game_year,
   start_date: tournament.start_date,
   end_date: tournament.end_date,
@@ -220,7 +230,7 @@ const tierColors: Record<string, string> = {
   'T4': 'bg-yellow-900 text-yellow-300 border-yellow-500',
   'T5': 'bg-gray-900 text-gray-300 border-gray-500',
 };
-const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gray-300 border-gray-500';
+const tierColor = tierColors[tournamentTier as string] || 'bg-gray-900 text-gray-300 border-gray-500';
 ---
 
 <html lang="en">
@@ -244,7 +254,7 @@ const tierColor = tierColors[tournament.tier as string] || 'bg-gray-900 text-gra
         <h1 class="text-3xl font-bold mb-2">{tournament.name}</h1>
         <div class="flex flex-wrap gap-3 items-center mb-3">
           <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColor}`}>
-            {tournament.tier} Tier
+            {tournamentTier} Tier
           </span>
           <span class="text-neutral-400 text-sm">
             {tournament.game_year ?? '-'}
