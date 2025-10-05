@@ -30,10 +30,14 @@ export default function Badges({ player, playerId }: BadgesProps) {
         setLoading(true);
         setError(null);
 
-        // TODO: Fetch actual badges from API when implemented
-        // For now, return empty array - only show real unlocked badges
-        const badges: Badge[] = [];
+        // Fetch badges from API
+        const response = await fetch(`/api/player-badges?playerId=${playerId}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch badges');
+        }
 
+        const badges: Badge[] = await response.json();
         setBadges(badges);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load badges');
