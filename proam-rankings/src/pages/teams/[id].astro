@@ -37,7 +37,7 @@ const { data: roster } = await supa((Astro.locals as any).runtime)
 // Get all matches for the team
 const { data: matchesData } = await supa((Astro.locals as any).runtime)
   .from("matches")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id, boxscore_url, league_id, season_id, tournament_id, stage")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id, boxscore_url, status, verified, league_id, season_id, tournament_id, stage")
   .or(`team_a_id.eq.${id},team_b_id.eq.${id}`)
   .order("played_at", { ascending: false });
 

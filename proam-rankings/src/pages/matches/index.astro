@@ -20,7 +20,7 @@ const totalPages = Math.ceil((count || 0) / MATCHES_PER_PAGE);
 // Fetch matches for current page
 const { data: matchesData, error } = await supa(Astro.locals.runtime)
   .from("matches")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, game_year, boxscore_url, league_id, season_id, tournament_id")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, game_year, boxscore_url, status, verified, league_id, season_id, tournament_id")
   .order("played_at", { ascending: false })
   .range(offset, offset + MATCHES_PER_PAGE - 1);
 

@@ -82,7 +82,7 @@ if (standings && standings.length > 0) {
 // Get matches for this season (paginated in tabs, showing up to 100 matches)
 const { data: matchesData } = await supa((Astro.locals as any).runtime)
   .from("matches")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, league_id, season_id, tournament_id")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, status, verified, league_id, season_id, tournament_id")
   .eq("season_id", seasonId)
   .order("played_at", { ascending: false })
   .limit(1000);

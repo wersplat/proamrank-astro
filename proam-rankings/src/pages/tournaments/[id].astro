@@ -112,7 +112,7 @@ if (allTeamIds.length > 0) {
 // Get tournament matches (limit to 1000 for performance)
 const { data: matchesData } = await supa((Astro.locals as any).runtime)
   .from("matches")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, league_id, season_id, tournament_id")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, status, verified, league_id, season_id, tournament_id")
   .eq("tournament_id", id)
   .order("played_at", { ascending: false })
   .limit(1000);

@@ -49,7 +49,7 @@ const { data: statsData } = await supa(Astro.locals)
 const matchIds = (statsData ?? []).map((s: any) => s.match_id).filter(Boolean);
 const { data: matchesData } = matchIds.length > 0 ? await supa(Astro.locals)
   .from("matches")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, boxscore_url, league_id, season_id, tournament_id, stage")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, boxscore_url, status, verified, league_id, season_id, tournament_id, stage")
   .in("id", matchIds) : { data: [] };
 
 const matchMap = new Map((matchesData ?? []).map((m: any) => [m.id, m]));
