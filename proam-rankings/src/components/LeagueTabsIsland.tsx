@@ -635,6 +635,12 @@ export default function LeagueTabsIsland({
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('fta')}
+                        >
+                          FT% {sortBy === 'fta' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
                           onClick={() => handleSort('plus_minus')}
                         >
                           +/- {sortBy === 'plus_minus' && (sortDirection === 'asc' ? '↑' : '↓')}
@@ -653,6 +659,9 @@ export default function LeagueTabsIsland({
                         const threePtPercentage = player.three_points_attempted > 0 
                           ? ((player.three_points_made / player.three_points_attempted) * 100).toFixed(1) 
                           : '-';
+                        const ftPercentage = player.fta > 0 
+                          ? ((player.ftm / player.fta) * 100).toFixed(1) 
+                          : '0.0';
                         
                         return (
                           <tr key={player.player_id} className="hover:bg-neutral-900">
@@ -688,6 +697,9 @@ export default function LeagueTabsIsland({
                             </td>
                             <td className="py-2 px-4 text-right">
                               {threePtPercentage}%
+                            </td>
+                            <td className="py-2 px-4 text-right">
+                              {ftPercentage}%
                             </td>
                             <td className="py-2 px-4 text-right">
                               <span className={player.plus_minus > 0 ? 'text-green-400' : player.plus_minus < 0 ? 'text-red-400' : ''}>
@@ -1136,7 +1148,7 @@ export default function LeagueTabsIsland({
                             : '-';
                           const ftPct = stat.free_throws_attempted > 0
                             ? ((stat.free_throws_made / stat.free_throws_attempted) * 100).toFixed(1)
-                            : '-';
+                            : '0.0';
 
                           return (
                             <tr key={idx} className="hover:bg-neutral-950">

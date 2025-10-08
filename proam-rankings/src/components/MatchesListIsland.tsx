@@ -430,7 +430,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                             : '-';
                           const ftPct = stat.free_throws_attempted > 0
                             ? ((stat.free_throws_made / stat.free_throws_attempted) * 100).toFixed(1)
-                            : '-';
+                            : '0.0';
 
                           return (
                             <tr key={idx} className="hover:bg-neutral-950">

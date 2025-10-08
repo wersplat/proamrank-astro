@@ -692,6 +692,12 @@ export default function TournamentTabsIsland({
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          onClick={() => handleSort('ft_percentage')}
+                        >
+                          FT% {sortBy === 'ft_percentage' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th 
+                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
                           onClick={() => handleSort('avg_performance_score')}
                         >
                           PS {sortBy === 'avg_performance_score' && (sortDirection === 'asc' ? '↑' : '↓')}
@@ -744,6 +750,9 @@ export default function TournamentTabsIsland({
                           </td>
                           <td className="py-2 px-4 text-right">
                             {player.three_pt_percentage ? `${player.three_pt_percentage.toFixed(1)}%` : '-'}
+                          </td>
+                          <td className="py-2 px-4 text-right">
+                            {player.ft_percentage ? `${player.ft_percentage.toFixed(1)}%` : '0.0%'}
                           </td>
                           <td className="py-2 px-4 text-right font-semibold text-purple-400">
                             {player.avg_performance_score?.toFixed(1) ?? '-'}
@@ -1197,7 +1206,7 @@ export default function TournamentTabsIsland({
                             : '-';
                           const ftPct = stat.free_throws_attempted > 0
                             ? ((stat.free_throws_made / stat.free_throws_attempted) * 100).toFixed(1)
-                            : '-';
+                            : '0.0';
 
                           return (
                             <tr key={idx} className="hover:bg-neutral-950">
