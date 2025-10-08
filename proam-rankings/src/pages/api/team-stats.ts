@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ url, locals }) => {
     // Get team stats
     const { data: statsData, error: statsError } = await supa(locals.runtime)
       .from('team_match_stats')
-      .select('team_id, points, rebounds, assists, steals, blocks, turnovers, field_goals_made, field_goals_attempted, three_points_made, three_points_attempted, free_throws_made, free_throws_attempted')
+      .select('team_id, points, rebounds, assists, steals, blocks, turnovers, fouls, field_goals_made, field_goals_attempted, three_points_made, three_points_attempted, free_throws_made, free_throws_attempted, plus_minus, grd')
       .eq('match_id', matchId);
 
     if (statsError) {

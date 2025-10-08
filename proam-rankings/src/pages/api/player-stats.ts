@@ -71,9 +71,9 @@ export const GET: APIRoute = async ({ url, locals }) => {
     if (matchId) {
       const { data, error } = await supa(locals)
         .from('player_stats')
-        .select('player_name, team_id, points, assists, rebounds, steals, blocks, turnovers, fgm, fga, three_points_made, three_points_attempted, ftm, fta')
+        .select('player_name, team_id, points, assists, rebounds, steals, blocks, turnovers, fouls, fgm, fga, three_points_made, three_points_attempted, ftm, fta, plus_minus, grd, slot_index')
         .eq('match_id', matchId)
-        .order('points', { ascending: false });
+        .order('slot_index', { ascending: true });
 
       if (error) {
         return new Response(JSON.stringify({ error: error.message }), {

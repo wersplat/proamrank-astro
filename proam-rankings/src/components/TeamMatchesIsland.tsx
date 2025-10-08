@@ -30,12 +30,16 @@ type PlayerStat = {
   steals: number;
   blocks: number;
   turnovers: number;
+  fouls: number;
   fgm: number;
   fga: number;
   three_points_made: number;
   three_points_attempted: number;
   ftm: number;
   fta: number;
+  plus_minus: number | null;
+  grd: string | null;
+  slot_index: number | null;
 };
 
 type TeamStat = {
@@ -46,12 +50,15 @@ type TeamStat = {
   steals: number;
   blocks: number;
   turnovers: number;
+  fouls: number;
   field_goals_made: number;
   field_goals_attempted: number;
   three_points_made: number;
   three_points_attempted: number;
   free_throws_made: number;
   free_throws_attempted: number;
+  plus_minus: number | null;
+  grd: string | null;
   teams?: { name: string; logo_url: string | null };
 };
 
@@ -297,44 +304,70 @@ export default function TeamMatchesIsland({
                   {loading ? (
                     <div className="text-center py-8 text-neutral-400">Loading stats...</div>
                   ) : playerStats.length > 0 ? (
-                    <table className="w-full text-sm">
-                      <thead className="bg-neutral-950 text-neutral-300">
-                        <tr>
-                          <th className="text-left py-2 px-4">Player</th>
-                          <th className="text-right py-2 px-4">PTS</th>
-                          <th className="text-right py-2 px-4">REB</th>
-                          <th className="text-right py-2 px-4">AST</th>
-                          <th className="text-right py-2 px-4">STL</th>
-                          <th className="text-right py-2 px-4">BLK</th>
-                          <th className="text-right py-2 px-4">TO</th>
-                          <th className="text-right py-2 px-4">FG</th>
-                          <th className="text-right py-2 px-4">3PT</th>
-                          <th className="text-right py-2 px-4">FT</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-neutral-800">
-                        {playerStats.map((stat, idx) => (
-                          <tr key={idx} className="hover:bg-neutral-950">
-                            <td className="py-2 px-4">{stat.player_name}</td>
-                            <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
-                            <td className="text-right py-2 px-4">{stat.rebounds}</td>
-                            <td className="text-right py-2 px-4">{stat.assists}</td>
-                            <td className="text-right py-2 px-4">{stat.steals}</td>
-                            <td className="text-right py-2 px-4">{stat.blocks}</td>
-                            <td className="text-right py-2 px-4">{stat.turnovers}</td>
-                            <td className="text-right py-2 px-4">
-                              {stat.fgm}/{stat.fga}
-                            </td>
-                            <td className="text-right py-2 px-4">
-                              {stat.three_points_made}/{stat.three_points_attempted}
-                            </td>
-                            <td className="text-right py-2 px-4">
-                              {stat.ftm}/{stat.fta}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    (() => {
+                      // Sort by team_a_id first, then by slot_index
+                      const sortedStats = [...playerStats].sort((a, b) => {
+                        // Team A players first
+                        if (a.team_id === selectedMatch?.team_a_id && b.team_id !== selectedMatch?.team_a_id) return -1;
+                        if (a.team_id !== selectedMatch?.team_a_id && b.team_id === selectedMatch?.team_a_id) return 1;
+                        // Then by slot_index within each team
+                        return (a.slot_index ?? 999) - (b.slot_index ?? 999);
+                      });
+
+                      return (
+                        <table className="w-full text-sm">
+                          <thead className="bg-neutral-950 text-neutral-300">
+                            <tr>
+                              <th className="text-left py-2 px-4">Player</th>
+                              <th className="text-center py-2 px-4">GRD</th>
+                              <th className="text-right py-2 px-4">PTS</th>
+                              <th className="text-right py-2 px-4">REB</th>
+                              <th className="text-right py-2 px-4">AST</th>
+                              <th className="text-right py-2 px-4">STL</th>
+                              <th className="text-right py-2 px-4">BLK</th>
+                              <th className="text-right py-2 px-4">TO</th>
+                              <th className="text-right py-2 px-4">PF</th>
+                              <th className="text-right py-2 px-4">FG</th>
+                              <th className="text-right py-2 px-4">3PT</th>
+                              <th className="text-right py-2 px-4">FT</th>
+                              <th className="text-right py-2 px-4">+/-</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-neutral-800">
+                            {sortedStats.map((stat, idx) => {
+                              const isTeamA = stat.team_id === selectedMatch?.team_a_id;
+                              return (
+                                <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
+                                  <td className="py-2 px-4">{stat.player_name}</td>
+                                  <td className="text-center py-2 px-4">
+                                    <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                      {stat.grd || '-'}
+                                    </span>
+                                  </td>
+                                  <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
+                                  <td className="text-right py-2 px-4">{stat.rebounds}</td>
+                                  <td className="text-right py-2 px-4">{stat.assists}</td>
+                                  <td className="text-right py-2 px-4">{stat.steals}</td>
+                                  <td className="text-right py-2 px-4">{stat.blocks}</td>
+                                  <td className="text-right py-2 px-4">{stat.turnovers}</td>
+                                  <td className="text-right py-2 px-4">{stat.fouls}</td>
+                                  <td className="text-right py-2 px-4">{stat.fgm}/{stat.fga}</td>
+                                  <td className="text-right py-2 px-4">{stat.three_points_made}/{stat.three_points_attempted}</td>
+                                  <td className="text-right py-2 px-4">{stat.ftm}/{stat.fta}</td>
+                                  <td className={`text-right py-2 px-4 font-semibold ${
+                                    (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
+                                    (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
+                                    'text-neutral-400'
+                                  }`}>
+                                    {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      );
+                    })()
                   ) : (
                     <div className="text-center py-8 text-neutral-400">
                       No player stats available for this match.
@@ -353,14 +386,18 @@ export default function TeamMatchesIsland({
                       <thead className="bg-neutral-950 text-neutral-300">
                         <tr>
                           <th className="text-left py-2 px-4">Team</th>
+                          <th className="text-center py-2 px-4">GRD</th>
                           <th className="text-right py-2 px-4">PTS</th>
                           <th className="text-right py-2 px-4">REB</th>
                           <th className="text-right py-2 px-4">AST</th>
                           <th className="text-right py-2 px-4">STL</th>
                           <th className="text-right py-2 px-4">BLK</th>
                           <th className="text-right py-2 px-4">TO</th>
+                          <th className="text-right py-2 px-4">PF</th>
                           <th className="text-right py-2 px-4">FG%</th>
                           <th className="text-right py-2 px-4">3PT%</th>
+                          <th className="text-right py-2 px-4">FT%</th>
+                          <th className="text-right py-2 px-4">+/-</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-neutral-800">
@@ -371,11 +408,19 @@ export default function TeamMatchesIsland({
                           const threePct = stat.three_points_attempted > 0
                             ? ((stat.three_points_made / stat.three_points_attempted) * 100).toFixed(1)
                             : '-';
+                          const ftPct = stat.free_throws_attempted > 0
+                            ? ((stat.free_throws_made / stat.free_throws_attempted) * 100).toFixed(1)
+                            : '-';
 
                           return (
                             <tr key={idx} className="hover:bg-neutral-950">
                               <td className="py-2 px-4 font-semibold">
                                 {stat.teams?.name || 'Team'}
+                              </td>
+                              <td className="text-center py-2 px-4">
+                                <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                  {stat.grd || '-'}
+                                </span>
                               </td>
                               <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
                               <td className="text-right py-2 px-4">{stat.rebounds}</td>
@@ -383,8 +428,17 @@ export default function TeamMatchesIsland({
                               <td className="text-right py-2 px-4">{stat.steals}</td>
                               <td className="text-right py-2 px-4">{stat.blocks}</td>
                               <td className="text-right py-2 px-4">{stat.turnovers}</td>
+                              <td className="text-right py-2 px-4">{stat.fouls}</td>
                               <td className="text-right py-2 px-4">{fgPct}%</td>
                               <td className="text-right py-2 px-4">{threePct}%</td>
+                              <td className="text-right py-2 px-4">{ftPct}%</td>
+                              <td className={`text-right py-2 px-4 font-semibold ${
+                                (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
+                                (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
+                                'text-neutral-400'
+                              }`}>
+                                {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
+                              </td>
                             </tr>
                           );
                         })}
