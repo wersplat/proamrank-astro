@@ -2614,9 +2614,11 @@ export type Database = {
           score_b: number | null
           season_id: string | null
           stage: Database["public"]["Enums"]["stage"] | null
+          status: string | null
           team_a_id: string | null
           team_b_id: string | null
           tournament_id: string | null
+          verified: boolean
           winner_id: string | null
         }
         Insert: {
@@ -2630,9 +2632,11 @@ export type Database = {
           score_b?: number | null
           season_id?: string | null
           stage?: Database["public"]["Enums"]["stage"] | null
+          status?: string | null
           team_a_id?: string | null
           team_b_id?: string | null
           tournament_id?: string | null
+          verified?: boolean
           winner_id?: string | null
         }
         Update: {
@@ -2646,9 +2650,11 @@ export type Database = {
           score_b?: number | null
           season_id?: string | null
           stage?: Database["public"]["Enums"]["stage"] | null
+          status?: string | null
           team_a_id?: string | null
           team_b_id?: string | null
           tournament_id?: string | null
+          verified?: boolean
           winner_id?: string | null
         }
         Relationships: [
@@ -3036,6 +3042,51 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      ocr_validations: {
+        Row: {
+          "auto-corrected": boolean | null
+          created_at: string
+          error: string | null
+          id: string
+          match_id: string | null
+          player_stats_id: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          "auto-corrected"?: boolean | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          match_id?: string | null
+          player_stats_id?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          "auto-corrected"?: boolean | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          match_id?: string | null
+          player_stats_id?: string | null
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ocr_validations_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ocr_validations_player_stats_id_fkey"
+            columns: ["player_stats_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       past_champions: {
         Row: {
@@ -3534,7 +3585,7 @@ export type Database = {
           asset_png_url: string | null
           asset_svg_url: string | null
           awarded_at: string
-          game_year: string
+          game_year: Database["public"]["Enums"]["game_year"]
           id: string
           issuer: string
           league_id: string
@@ -3557,7 +3608,7 @@ export type Database = {
           asset_png_url?: string | null
           asset_svg_url?: string | null
           awarded_at?: string
-          game_year: string
+          game_year: Database["public"]["Enums"]["game_year"]
           id?: string
           issuer?: string
           league_id: string
@@ -3580,7 +3631,7 @@ export type Database = {
           asset_png_url?: string | null
           asset_svg_url?: string | null
           awarded_at?: string
-          game_year?: string
+          game_year?: Database["public"]["Enums"]["game_year"]
           id?: string
           issuer?: string
           league_id?: string
@@ -3601,11 +3652,144 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "player_awards_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "player_awards_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "player_awards_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "player_awards_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "player_awards_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_awards_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "player_awards_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_by_game_year"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "top_tournament_performers"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
             foreignKeyName: "player_awards_rule_id_fkey"
             columns: ["rule_id"]
             isOneToOne: false
             referencedRelation: "achievement_rules"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_awards_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_awards_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_awards_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_seasons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_awards_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats_by_league_season"
+            referencedColumns: ["league_season_id"]
           },
         ]
       }
@@ -3618,6 +3802,7 @@ export type Database = {
           league_id: string | null
           match_id: number
           player_wallet: string
+          season_id: string | null
           token_id: number | null
           tournament_id: string | null
           tx_hash: string | null
@@ -3630,6 +3815,7 @@ export type Database = {
           league_id?: string | null
           match_id: number
           player_wallet: string
+          season_id?: string | null
           token_id?: number | null
           tournament_id?: string | null
           tx_hash?: string | null
@@ -3642,6 +3828,7 @@ export type Database = {
           league_id?: string | null
           match_id?: number
           player_wallet?: string
+          season_id?: string | null
           token_id?: number | null
           tournament_id?: string | null
           tx_hash?: string | null
@@ -3688,6 +3875,34 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_results"
             referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "player_badges_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_badges_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_badges_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_seasons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_badges_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats_by_league_season"
+            referencedColumns: ["league_season_id"]
           },
           {
             foreignKeyName: "player_badges_tournament_id_fkey"
@@ -3813,7 +4028,92 @@ export type Database = {
           tpm_total?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_by_game_year"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "top_tournament_performers"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_counters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_counters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_seasons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_counters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats_by_league_season"
+            referencedColumns: ["league_season_id"]
+          },
+        ]
       }
       player_handles: {
         Row: {
@@ -4221,20 +4521,24 @@ export type Database = {
           fouls: number | null
           fta: number | null
           ftm: number | null
+          grd: string | null
           id: string
           match_id: string
+          needs_review: boolean | null
           player_id: string | null
           player_name: string | null
           plus_minus: number | null
           points: number | null
           ps: number | null
           rebounds: number | null
+          slot_index: number | null
           steals: number | null
           team_id: string | null
           three_points_attempted: number | null
           three_points_made: number | null
           turnovers: number | null
           updated_at: string | null
+          verified: boolean
         }
         Insert: {
           assists?: number | null
@@ -4247,20 +4551,24 @@ export type Database = {
           fouls?: number | null
           fta?: number | null
           ftm?: number | null
+          grd?: string | null
           id?: string
           match_id: string
+          needs_review?: boolean | null
           player_id?: string | null
           player_name?: string | null
           plus_minus?: number | null
           points?: number | null
           ps?: number | null
           rebounds?: number | null
+          slot_index?: number | null
           steals?: number | null
           team_id?: string | null
           three_points_attempted?: number | null
           three_points_made?: number | null
           turnovers?: number | null
           updated_at?: string | null
+          verified?: boolean
         }
         Update: {
           assists?: number | null
@@ -4273,20 +4581,24 @@ export type Database = {
           fouls?: number | null
           fta?: number | null
           ftm?: number | null
+          grd?: string | null
           id?: string
           match_id?: string
+          needs_review?: boolean | null
           player_id?: string | null
           player_name?: string | null
           plus_minus?: number | null
           points?: number | null
           ps?: number | null
           rebounds?: number | null
+          slot_index?: number | null
           steals?: number | null
           team_id?: string | null
           three_points_attempted?: number | null
           three_points_made?: number | null
           turnovers?: number | null
           updated_at?: string | null
+          verified?: boolean
         }
         Relationships: [
           {
@@ -4351,97 +4663,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "league_season_team_rosters"
-            referencedColumns: ["player_name"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "league_team_rosters"
-            referencedColumns: ["player_name"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "player_performance_by_game_year"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "player_performance_view"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "player_roster_history"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "player_stats_by_league_season"
-            referencedColumns: ["player_gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "players"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "team_roster_current"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "team_roster_history"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "top_tournament_performers"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "tournament_mvps"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "tournament_player_stats"
-            referencedColumns: ["gamertag"]
-          },
-          {
-            foreignKeyName: "player_stats_player_name_fkey"
-            columns: ["player_name"]
-            isOneToOne: false
-            referencedRelation: "tournament_team_rosters"
-            referencedColumns: ["gamertag"]
           },
           {
             foreignKeyName: "player_stats_team_id_fkey"
@@ -5867,6 +6088,7 @@ export type Database = {
           fouls: number | null
           free_throws_attempted: number | null
           free_throws_made: number | null
+          grd: string | null
           id: string
           match_id: string
           plus_minus: number | null
@@ -5877,6 +6099,7 @@ export type Database = {
           three_points_attempted: number | null
           three_points_made: number | null
           turnovers: number | null
+          verified: boolean
         }
         Insert: {
           assists?: number | null
@@ -5886,6 +6109,7 @@ export type Database = {
           fouls?: number | null
           free_throws_attempted?: number | null
           free_throws_made?: number | null
+          grd?: string | null
           id?: string
           match_id: string
           plus_minus?: number | null
@@ -5896,6 +6120,7 @@ export type Database = {
           three_points_attempted?: number | null
           three_points_made?: number | null
           turnovers?: number | null
+          verified?: boolean
         }
         Update: {
           assists?: number | null
@@ -5905,6 +6130,7 @@ export type Database = {
           fouls?: number | null
           free_throws_attempted?: number | null
           free_throws_made?: number | null
+          grd?: string | null
           id?: string
           match_id?: string
           plus_minus?: number | null
@@ -5915,6 +6141,7 @@ export type Database = {
           three_points_attempted?: number | null
           three_points_made?: number | null
           turnovers?: number | null
+          verified?: boolean
         }
         Relationships: [
           {
@@ -7636,6 +7863,27 @@ export type Database = {
           role?: Database["public"]["Enums"]["app_role"] | null
           role_name?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_config: {
+        Row: {
+          created_at: string | null
+          key: string
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          created_at?: string | null
+          key: string
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          created_at?: string | null
+          key?: string
+          updated_at?: string | null
+          value?: string
         }
         Relationships: []
       }
@@ -9901,8 +10149,589 @@ export type Database = {
         }
         Relationships: []
       }
+      v_player_game_per: {
+        Row: {
+          game_date: string | null
+          league_id: string | null
+          league_ts_avg: number | null
+          match_id: string | null
+          month: string | null
+          player_id: string | null
+          raw_score: number | null
+          season_id: string | null
+          tournament_id: string | null
+          ts_pct: number | null
+          ts_plus: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_seasons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats_by_league_season"
+            referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_calendar"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_champions_by_year"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_team_stats"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_by_game_year"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "top_tournament_performers"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["player_id"]
+          },
+        ]
+      }
+      v_player_monthly_per: {
+        Row: {
+          games_played: number | null
+          league_id: string | null
+          month: string | null
+          per_raw: number | null
+          per15: number | null
+          player_id: string | null
+          season_id: string | null
+          tournament_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_seasons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats_by_league_season"
+            referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_calendar"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_champions_by_year"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_team_stats"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_by_game_year"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "top_tournament_performers"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["player_id"]
+          },
+        ]
+      }
+      v_player_yearly_per: {
+        Row: {
+          game_year: Database["public"]["Enums"]["game_year"] | null
+          games_played: number | null
+          league_id: string | null
+          per_raw: number | null
+          per15: number | null
+          player_id: string | null
+          season_id: string | null
+          tournament_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_seasons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "player_stats_by_league_season"
+            referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_calendar"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_champions_by_year"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_team_stats"
+            referencedColumns: ["tournament_id"]
+          },
+          {
+            foreignKeyName: "matches_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_by_game_year"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "player_performance_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "top_tournament_performers"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_mvps"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_player_stats"
+            referencedColumns: ["player_id"]
+          },
+        ]
+      }
     }
     Functions: {
+      _sign_payload: {
+        Args: { payload: Json }
+        Returns: string
+      }
       analyze_elo_distribution: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -9970,6 +10799,10 @@ export type Database = {
         }
         Returns: string
       }
+      compute_hmac_hex: {
+        Args: { body: string; secret: string }
+        Returns: string
+      }
       custom_jwt: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -10021,6 +10854,14 @@ export type Database = {
       is_league_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      mark_queue_retry: {
+        Args: {
+          p_error_message: string
+          p_max_attempts: number
+          p_queue_id: number
+        }
+        Returns: Json
       }
       promote_to_league_admin: {
         Args: { target_user_id: string }
@@ -10140,6 +10981,29 @@ export type Database = {
       update_user_claims: {
         Args: { p_user_id: string }
         Returns: boolean
+      }
+      upsert_player_counter: {
+        Args: {
+          p_ast_total?: number
+          p_blk_total?: number
+          p_fga_total?: number
+          p_fgm_total?: number
+          p_fta_total?: number
+          p_ftm_total?: number
+          p_games_played?: number
+          p_has_50pt_game?: boolean
+          p_has_triple_double?: boolean
+          p_player_id: string
+          p_pts_total?: number
+          p_reb_total?: number
+          p_scope: Database["public"]["Enums"]["counter_scope"]
+          p_season_id?: string
+          p_stl_total?: number
+          p_tov_total?: number
+          p_tpa_total?: number
+          p_tpm_total?: number
+        }
+        Returns: undefined
       }
     }
     Enums: {
