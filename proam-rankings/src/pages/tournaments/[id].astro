@@ -110,10 +110,11 @@ if (allTeamIds.length > 0) {
 }
 
 // Get tournament matches (limit to 1000 for performance)
+// Use primary_tournament_id to include matches added via match_contexts
 const { data: matchesData } = await supa((Astro.locals as any).runtime)
   .from("v_matches_with_primary_context")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, status, verified, league_id, season_id, tournament_id")
-  .eq("tournament_id", id)
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, status, verified, league_id, season_id, tournament_id, primary_tournament_id")
+  .eq("primary_tournament_id", id)
   .order("played_at", { ascending: false })
   .limit(1000);
 
