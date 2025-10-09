@@ -190,15 +190,89 @@ import "../styles/global.css";
         <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
           <p class="text-neutral-300 mb-6">
             Each player receives a <span class="text-gold font-medium">Global Rating (0–100+)</span> derived from verified game stats and competitive context.
-            This rating helps evaluate player performance across different leagues and tournaments.
+            This rating helps evaluate player performance across different leagues and tournaments. The system automatically updates when new stats are verified.
           </p>
           
           <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 mb-6 text-center">
-            <code class="text-sm">Global Rating = Base + (Game Impact × Weight) + Event Bonus − Decay</code>
+            <code class="text-sm">Global Rating = Base + Game Impact + Event Bonus + Consistency − Decay</code>
+          </div>
+
+          <h3 class="text-lg font-medium mb-4">Rating Components Breakdown</h3>
+          
+          <div class="grid gap-4 mb-6">
+            <!-- Base Rating -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <h4 class="font-semibold text-blue-400 mb-2">1. Base Rating (50-70 points)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Starting point that increases with experience:</p>
+              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
+                <li>• <span class="text-neutral-300">No games:</span> 50 points (below average, new to system)</li>
+                <li>• <span class="text-neutral-300">< 5 games:</span> 65 points (new player, establishing baseline)</li>
+                <li>• <span class="text-neutral-300">< 10 games:</span> 68 points (getting established)</li>
+                <li>• <span class="text-neutral-300">10+ games:</span> 70 points (established player baseline)</li>
+              </ul>
+            </div>
+
+            <!-- Game Impact -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <h4 class="font-semibold text-green-400 mb-2">2. Game Impact (0-30 points)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Performance-based score using comprehensive stats:</p>
+              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
+                <li>• <span class="text-green-400">Points</span> × True Shooting Plus (efficiency vs league average)</li>
+                <li>• <span class="text-green-400">Assists</span> × 1.5 (playmaking value)</li>
+                <li>• <span class="text-green-400">Rebounds</span> × 1.25 (board control)</li>
+                <li>• <span class="text-green-400">Steals</span> × 2.5 (defensive pressure)</li>
+                <li>• <span class="text-green-400">Blocks</span> × 2.0 (rim protection)</li>
+                <li>• <span class="text-red-400">Missed FGs</span> × -1.0 (efficiency penalty)</li>
+                <li>• <span class="text-red-400">Missed FTs</span> × -0.7 (efficiency penalty)</li>
+                <li>• <span class="text-red-400">Turnovers</span> × -2.0 (possession penalty)</li>
+              </ul>
+              <p class="text-neutral-500 text-xs mt-3">Weighted by event tier multiplier and averaged over recent 20 games</p>
+            </div>
+
+            <!-- Event Bonus -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <h4 class="font-semibold text-purple-400 mb-2">3. Event Bonus (0-15 points)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Rewards participation in high-tier competitions:</p>
+              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
+                <li>• <span class="text-neutral-300">T1 (Major LANs):</span> +8 bonus per game</li>
+                <li>• <span class="text-neutral-300">T2 (Franchise Events):</span> +5 bonus per game</li>
+                <li>• <span class="text-neutral-300">T3 (Qualifiers):</span> +3 bonus per game</li>
+                <li>• <span class="text-neutral-300">T4 (Invitationals):</span> +2 bonus per game</li>
+                <li>• <span class="text-neutral-300">T5 (Community):</span> +1 bonus per game</li>
+              </ul>
+              <p class="text-neutral-500 text-xs mt-3">Sum of unique tier bonuses from recent games, capped at 15 points</p>
+            </div>
+
+            <!-- Consistency Bonus -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <h4 class="font-semibold text-yellow-400 mb-2">4. Consistency Bonus (0-3 points)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Rewards reliable, steady performers:</p>
+              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
+                <li>• <span class="text-neutral-300">Very Consistent</span> (peak within 5pts of avg): +3 points</li>
+                <li>• <span class="text-neutral-300">Consistent</span> (peak within 10pts): +2 points</li>
+                <li>• <span class="text-neutral-300">Somewhat Consistent</span> (peak within 15pts): +1 point</li>
+                <li>• <span class="text-neutral-300">Inconsistent:</span> 0 points</li>
+              </ul>
+              <p class="text-neutral-500 text-xs mt-3">Compares peak performance to average game impact</p>
+            </div>
+
+            <!-- Decay Penalty -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <h4 class="font-semibold text-red-400 mb-2">5. Decay Penalty (0-15 points)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Encourages active participation:</p>
+              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
+                <li>• <span class="text-green-400">≤ 30 days:</span> No decay (active player)</li>
+                <li>• <span class="text-yellow-400">31-60 days:</span> -2 points (recently active)</li>
+                <li>• <span class="text-orange-400">61-90 days:</span> -5 points (moderate inactivity)</li>
+                <li>• <span class="text-red-400">91-180 days:</span> -10 points (prolonged absence)</li>
+                <li>• <span class="text-red-400">180+ days:</span> -15 points (severely inactive)</li>
+              </ul>
+              <p class="text-neutral-500 text-xs mt-3">Based on days since last verified game</p>
+            </div>
           </div>
           
           <h3 class="text-xl font-medium mb-4">Player Tiers</h3>
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto mb-4">
             <table class="min-w-full divide-y divide-neutral-800">
               <thead>
                 <tr>
@@ -213,40 +287,57 @@ import "../styles/global.css";
                   <td class="px-4 py-3 text-sm font-medium">S+</td>
                   <td class="px-4 py-3 text-sm text-gold font-medium">Legendary</td>
                   <td class="px-4 py-3 text-sm text-neutral-300">95+</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Elite playmakers, consistent top performers</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Elite playmakers, consistent top performers across T1/T2 events</td>
                 </tr>
                 <tr class="hover:bg-neutral-950">
                   <td class="px-4 py-3 text-sm font-medium">S</td>
                   <td class="px-4 py-3 text-sm text-purple-400 font-medium">Elite</td>
                   <td class="px-4 py-3 text-sm text-neutral-300">90-94</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Top-tier players, tournament winners</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Top-tier players, tournament winners, high consistency</td>
                 </tr>
                 <tr class="hover:bg-neutral-950">
                   <td class="px-4 py-3 text-sm font-medium">A</td>
                   <td class="px-4 py-3 text-sm text-blue-400 font-medium">All-Star</td>
                   <td class="px-4 py-3 text-sm text-neutral-300">85-89</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Strong competitors, frequent high placements</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Strong competitors, frequent high placements, solid impact</td>
                 </tr>
                 <tr class="hover:bg-neutral-950">
                   <td class="px-4 py-3 text-sm font-medium">B</td>
                   <td class="px-4 py-3 text-sm text-green-400 font-medium">Starter</td>
                   <td class="px-4 py-3 text-sm text-neutral-300">80-84</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Solid players, team contributors</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Solid players, reliable team contributors</td>
                 </tr>
                 <tr class="hover:bg-neutral-950">
                   <td class="px-4 py-3 text-sm font-medium">C</td>
                   <td class="px-4 py-3 text-sm text-yellow-400 font-medium">Role Player</td>
                   <td class="px-4 py-3 text-sm text-neutral-300">75-79</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Specialized skills, developing players</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Specialized skills, developing players, niche roles</td>
                 </tr>
                 <tr class="hover:bg-neutral-950">
                   <td class="px-4 py-3 text-sm font-medium">D</td>
                   <td class="px-4 py-3 text-sm text-orange-400 font-medium">Bench</td>
                   <td class="px-4 py-3 text-sm text-neutral-300">70-74</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">New or inconsistent performers</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">New or inconsistent performers, needs improvement</td>
+                </tr>
+                <tr class="hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium">Unranked</td>
+                  <td class="px-4 py-3 text-sm text-neutral-500 font-medium">Unranked</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">< 70</td>
+                  <td class="px-4 py-3 text-sm text-neutral-400">Insufficient games or very low performance</td>
                 </tr>
               </tbody>
             </table>
+          </div>
+          
+          <div class="bg-neutral-950 p-4 rounded-lg">
+            <h4 class="font-semibold mb-2 text-neutral-200">How Ratings are Calculated</h4>
+            <ul class="space-y-2 text-sm text-neutral-400">
+              <li>• <span class="text-neutral-300">Automatic Updates:</span> Ratings recalculate when new stats are verified</li>
+              <li>• <span class="text-neutral-300">Recent Performance:</span> Last 20 games weighted more heavily</li>
+              <li>• <span class="text-neutral-300">Event Tier Weighting:</span> T1 games have 1.5x multiplier vs T5 at 0.7x</li>
+              <li>• <span class="text-neutral-300">Context-Aware:</span> Performance compared to league averages for fair evaluation</li>
+              <li>• <span class="text-neutral-300">Daily Updates:</span> Decay penalties apply automatically each day</li>
+            </ul>
           </div>
         </div>
 

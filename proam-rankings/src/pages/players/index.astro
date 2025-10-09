@@ -2,6 +2,7 @@
 import Navigation from "../../components/Navigation.astro";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
+import { getRatingTierColor } from "../../lib/ratingUtils";
 
 const ITEMS_PER_PAGE = 30;
 const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
@@ -10,11 +11,11 @@ const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 // Get filter parameters
 const positionFilter = Astro.url.searchParams.get('position') || 'all';
 const tierFilter = Astro.url.searchParams.get('tier') || 'all';
-const sortBy = Astro.url.searchParams.get('sort') || 'rank';
+const sortBy = Astro.url.searchParams.get('sort') || 'rating';
 
-// Build query with filters
+// Build query with filters - join with global rating view
 let query = supa((Astro.locals as any).runtime)
-  .from("player_performance_view")
+  .from("v_player_global_rating")
   .select("*", { count: 'exact' });
 
 if (positionFilter !== 'all') {
@@ -22,7 +23,7 @@ if (positionFilter !== 'all') {
 }
 
 if (tierFilter !== 'all') {
-  query = query.eq("salary_tier", tierFilter as any);
+  query = query.eq("rating_tier", tierFilter as any);
 }
 
 // Get total count
@@ -30,41 +31,26 @@ const { count } = await query;
 
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
-// Fetch players with pagination and filters
+// Fetch players with pagination and filters from global rating view
 let dataQuery = supa((Astro.locals as any).runtime)
-  .from("player_performance_view")
-  .select(`
-    id,
-    gamertag,
-    position,
-    player_rank_score,
-    player_rp,
-    current_team_id,
-    team_name,
-    games_played,
-    avg_points,
-    avg_assists,
-    avg_rebounds,
-    salary_tier
-  `);
+  .from("v_player_global_rating")
+  .select("*");
 
 if (positionFilter !== 'all') {
   dataQuery = dataQuery.eq("position", positionFilter as any);
 }
 
 if (tierFilter !== 'all') {
-  dataQuery = dataQuery.eq("salary_tier", tierFilter as any);
+  dataQuery = dataQuery.eq("rating_tier", tierFilter as any);
 }
 
 // Apply sorting
-if (sortBy === 'rank') {
-  dataQuery = dataQuery.order("player_rank_score", { ascending: false });
-} else if (sortBy === 'ppg') {
-  dataQuery = dataQuery.order("avg_points", { ascending: false });
-} else if (sortBy === 'apg') {
-  dataQuery = dataQuery.order("avg_assists", { ascending: false });
-} else if (sortBy === 'rpg') {
-  dataQuery = dataQuery.order("avg_rebounds", { ascending: false });
+if (sortBy === 'rating') {
+  dataQuery = dataQuery.order("global_rating", { ascending: false });
+} else if (sortBy === 'games') {
+  dataQuery = dataQuery.order("total_games", { ascending: false });
+} else if (sortBy === 'impact') {
+  dataQuery = dataQuery.order("game_impact", { ascending: false });
 }
 
 const { data, error } = await dataQuery.range(offset, offset + ITEMS_PER_PAGE - 1);
@@ -74,19 +60,21 @@ const players = data ?? [];
 
 // Get unique positions for filter
 const { data: positionsData } = await supa((Astro.locals as any).runtime)
-  .from("player_performance_view")
+  .from("v_player_global_rating")
   .select("position")
   .not("position", "is", null);
 
 const uniquePositions = [...new Set((positionsData ?? []).map((p: any) => p.position))].filter(Boolean).sort();
 
-// Get unique tiers for filter
+// Get unique rating tiers for filter
 const { data: tiersData } = await supa((Astro.locals as any).runtime)
-  .from("player_performance_view")
-  .select("salary_tier")
-  .not("salary_tier", "is", null);
+  .from("v_player_global_rating")
+  .select("rating_tier")
+  .not("rating_tier", "is", null);
 
-const uniqueTiers = [...new Set((tiersData ?? []).map((t: any) => t.salary_tier))].filter(Boolean).sort();
+const allTiers = ['S+', 'S', 'A', 'B', 'C', 'D', 'Unranked'];
+const availableTiers = [...new Set((tiersData ?? []).map((t: any) => t.rating_tier))].filter(Boolean);
+const uniqueTiers = allTiers.filter(tier => availableTiers.includes(tier));
 
 // Generate page numbers
 function getPageNumbers(current: number, total: number): number[] {
@@ -160,14 +148,13 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
               class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
               onchange="window.location.href = updateFilter('sort', this.value)"
             >
-              <option value="rank" selected={sortBy === 'rank'}>Rank Score</option>
-              <option value="ppg" selected={sortBy === 'ppg'}>Points Per Game</option>
-              <option value="apg" selected={sortBy === 'apg'}>Assists Per Game</option>
-              <option value="rpg" selected={sortBy === 'rpg'}>Rebounds Per Game</option>
+              <option value="rating" selected={sortBy === 'rating'}>Global Rating</option>
+              <option value="games" selected={sortBy === 'games'}>Games Played</option>
+              <option value="impact" selected={sortBy === 'impact'}>Game Impact</option>
             </select>
           </div>
 
-          {(positionFilter !== 'all' || tierFilter !== 'all' || sortBy !== 'rank') && (
+          {(positionFilter !== 'all' || tierFilter !== 'all' || sortBy !== 'rating') && (
             <a 
               href="/players" 
               class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
@@ -181,7 +168,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       <script is:inline>
         function updateFilter(param, value) {
           const url = new URL(window.location.href);
-          if (value === 'all' || (param === 'sort' && value === 'rank')) {
+          if (value === 'all' || (param === 'sort' && value === 'rating')) {
             url.searchParams.delete(param);
           } else {
             url.searchParams.set(param, value);
@@ -195,36 +182,33 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {players.map((player) => (
           <a 
-            href={`/players/${player.id}`}
+            href={`/players/${player.player_id}`}
             class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
           >
             <div class="mb-3">
               <div class="flex items-start justify-between gap-2 mb-1">
                 <h2 class="font-bold text-lg flex-1">{player.gamertag}</h2>
-                {player.salary_tier && (
-                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-900 text-blue-300">
-                    {player.salary_tier}
+                {player.rating_tier && (
+                  <span class={`px-2 py-0.5 rounded text-xs font-bold border ${getRatingTierColor(player.rating_tier)}`}>
+                    {player.rating_tier}
                   </span>
                 )}
               </div>
               <p class="text-sm text-neutral-400">{player.position || 'Unknown'}</p>
-              {player.team_name && (
-                <p class="text-xs text-neutral-500 mt-1">{player.team_name}</p>
-              )}
             </div>
             
-            <dl class="grid grid-cols-3 gap-2 text-sm">
+            <dl class="grid grid-cols-3 gap-2 text-sm mb-3">
               <div>
-                <dt class="text-neutral-400 text-xs">PPG</dt>
-                <dd class="font-semibold">{player.avg_points?.toFixed(1) ?? '-'}</dd>
+                <dt class="text-neutral-400 text-xs">Rating</dt>
+                <dd class="font-semibold text-white">{player.global_rating?.toFixed(1) ?? '-'}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">APG</dt>
-                <dd class="font-semibold">{player.avg_assists?.toFixed(1) ?? '-'}</dd>
+                <dt class="text-neutral-400 text-xs">Games</dt>
+                <dd class="font-semibold text-blue-400">{player.total_games ?? 0}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">RPG</dt>
-                <dd class="font-semibold">{player.avg_rebounds?.toFixed(1) ?? '-'}</dd>
+                <dt class="text-neutral-400 text-xs">Impact</dt>
+                <dd class="font-semibold text-green-400">{player.game_impact?.toFixed(1) ?? '-'}</dd>
               </div>
             </dl>
           </a>
@@ -242,7 +226,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
         <div class="mt-8 flex items-center justify-center gap-2">
           {currentPage > 1 ? (
             <a 
-              href={`/players?page=${currentPage - 1}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}`}
+              href={`/players?page=${currentPage - 1}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rating' ? `&sort=${sortBy}` : ''}`}
               class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
             >
               ← Previous
@@ -256,7 +240,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           <div class="flex gap-1">
             {pageNumbers.map((pageNum: number) => (
               <a
-                href={`/players?page=${pageNum}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}`}
+                href={`/players?page=${pageNum}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rating' ? `&sort=${sortBy}` : ''}`}
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
@@ -270,7 +254,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
           {currentPage < totalPages ? (
             <a 
-              href={`/players?page=${currentPage + 1}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}`}
+              href={`/players?page=${currentPage + 1}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rating' ? `&sort=${sortBy}` : ''}`}
               class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
             >
               Next →

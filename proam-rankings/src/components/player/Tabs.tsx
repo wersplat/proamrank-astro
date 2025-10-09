@@ -11,9 +11,10 @@ type TabsProps = {
   recentGames: any[];
   playerId: string;
   performance: any;
+  globalRating?: any;
 };
 
-export default function PlayerTabs({ player, team, recentGames, playerId, performance }: TabsProps) {
+export default function PlayerTabs({ player, team, recentGames, playerId, performance, globalRating }: TabsProps) {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
@@ -46,7 +47,7 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
       {/* Tab Content */}
       <div className="p-6">
         {activeTab === 'overview' && (
-          <Overview player={player} team={team} performance={performance} />
+          <Overview player={player} team={team} performance={performance} globalRating={globalRating} />
         )}
         {activeTab === 'games' && (
           <Games player={player} recentGames={recentGames} />

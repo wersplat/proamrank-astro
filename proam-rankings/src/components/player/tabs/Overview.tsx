@@ -1,10 +1,19 @@
+import { 
+  getRatingTierColor, 
+  getRatingTierLabel, 
+  getRatingTierRange,
+  formatDaysInactive,
+  getActivityStatusColor
+} from '../../../lib/ratingUtils';
+
 type OverviewProps = {
   player: any;
   team: any;
   performance: any;
+  globalRating?: any;
 };
 
-export default function Overview({ player, team, performance }: OverviewProps) {
+export default function Overview({ player, team, performance, globalRating }: OverviewProps) {
   if (!player) return <div>Player not found</div>;
 
   return (
@@ -69,23 +78,86 @@ export default function Overview({ player, team, performance }: OverviewProps) {
           </div>
         )}
 
+        {/* Global Rating - New comprehensive rating card */}
+        {globalRating && (
+          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900 lg:col-span-2">
+            <h3 className="text-lg font-semibold mb-4 text-white">Global Rating</h3>
+            
+            <div className="flex flex-col sm:flex-row gap-6 mb-6">
+              {/* Main Rating Display */}
+              <div className="text-center sm:text-left">
+                <div className="text-neutral-400 text-sm mb-2">Overall Rating</div>
+                <div className="text-5xl font-bold text-white mb-3">
+                  {globalRating.global_rating?.toFixed(1) || '-'}
+                </div>
+                <div className={`inline-flex px-4 py-2 rounded-lg border font-bold text-sm ${getRatingTierColor(globalRating.rating_tier)}`}>
+                  {globalRating.rating_tier || 'Unranked'} - {getRatingTierLabel(globalRating.rating_tier)}
+                </div>
+                <div className="text-xs text-neutral-500 mt-2">
+                  Range: {getRatingTierRange(globalRating.rating_tier)}
+                </div>
+              </div>
+
+              {/* Rating Components Breakdown */}
+              <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-neutral-400 text-xs mb-1">Base</div>
+                  <div className="text-lg font-bold text-blue-400">
+                    +{globalRating.base_rating?.toFixed(1) || 0}
+                  </div>
+                </div>
+                <div className="bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-neutral-400 text-xs mb-1">Game Impact</div>
+                  <div className="text-lg font-bold text-green-400">
+                    +{globalRating.game_impact?.toFixed(1) || 0}
+                  </div>
+                </div>
+                <div className="bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-neutral-400 text-xs mb-1">Event Bonus</div>
+                  <div className="text-lg font-bold text-purple-400">
+                    +{globalRating.event_bonus?.toFixed(1) || 0}
+                  </div>
+                </div>
+                <div className="bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-neutral-400 text-xs mb-1">Consistency</div>
+                  <div className="text-lg font-bold text-yellow-400">
+                    +{globalRating.consistency_bonus?.toFixed(1) || 0}
+                  </div>
+                </div>
+                <div className="bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-neutral-400 text-xs mb-1">Decay</div>
+                  <div className="text-lg font-bold text-red-400">
+                    -{globalRating.decay_penalty?.toFixed(1) || 0}
+                  </div>
+                </div>
+                <div className="bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-neutral-400 text-xs mb-1">Games</div>
+                  <div className="text-lg font-bold text-white">
+                    {globalRating.total_games || 0}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Activity Status */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-neutral-400">Last Activity:</span>
+              <span className={getActivityStatusColor(globalRating.days_since_last_game)}>
+                {formatDaysInactive(globalRating.days_since_last_game)}
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Key Stats */}
         <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
           <h3 className="text-lg font-semibold mb-4 text-white">Key Stats</h3>
           <div className="grid grid-cols-2 gap-4">
-            {player.player_rp !== null && (
+            {player.player_rp !== null && player.player_rp !== undefined && (
               <div className="text-center">
                 <div className="text-neutral-400 text-sm mb-1">Ranking Points</div>
                 <div className="text-2xl font-bold text-blue-400">
                   {player.player_rp}
-                </div>
-              </div>
-            )}
-            {player.performance_score !== null && player.performance_score > 0 && (
-              <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Performance</div>
-                <div className="text-2xl font-bold text-green-400">
-                  {Math.round(player.performance_score)}
                 </div>
               </div>
             )}
@@ -102,6 +174,14 @@ export default function Overview({ player, team, performance }: OverviewProps) {
                 <div className="text-neutral-400 text-sm mb-1">PPG</div>
                 <div className="text-2xl font-bold text-green-400">
                   {performance.avg_points.toFixed(1)}
+                </div>
+              </div>
+            )}
+            {globalRating?.peak_performance && (
+              <div className="text-center">
+                <div className="text-neutral-400 text-sm mb-1">Peak Impact</div>
+                <div className="text-2xl font-bold text-yellow-400">
+                  {globalRating.peak_performance.toFixed(1)}
                 </div>
               </div>
             )}

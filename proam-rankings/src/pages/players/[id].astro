@@ -26,6 +26,13 @@ const { data: perfData } = await supa(Astro.locals)
   .eq("id", id!)
   .maybeSingle();
 
+// Get player global rating data
+const { data: globalRatingData } = await supa(Astro.locals)
+  .from("v_player_global_rating")
+  .select("*")
+  .eq("player_id", id!)
+  .maybeSingle();
+
 // Get current team info if player has one
 let currentTeam = null;
 if (playerData?.current_team_id) {
@@ -103,6 +110,7 @@ const games = (statsData ?? []).map((s: any) => {
 const player = playerData;
 const performance = perfData;
 const recentGames = games;
+const globalRating = globalRatingData;
 
 if (!player) {
   return Astro.redirect("/players");
@@ -149,6 +157,7 @@ if (!player) {
         recentGames={recentGames}
         playerId={id!}
         performance={performance}
+        globalRating={globalRating}
       />
     </main>
   </body>
