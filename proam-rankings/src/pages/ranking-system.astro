@@ -206,8 +206,8 @@ import "../styles/global.css";
               <p class="text-neutral-300 text-sm mb-3">Starting point that increases with experience:</p>
               <ul class="space-y-1 text-sm text-neutral-400 ml-4">
                 <li>• <span class="text-neutral-300">No games:</span> 50 points (below average, new to system)</li>
-                <li>• <span class="text-neutral-300">< 5 games:</span> 65 points (new player, establishing baseline)</li>
-                <li>• <span class="text-neutral-300">< 10 games:</span> 68 points (getting established)</li>
+                <li>• <span class="text-neutral-300">&lt; 5 games:</span> 65 points (new player, establishing baseline)</li>
+                <li>• <span class="text-neutral-300">&lt; 10 games:</span> 68 points (getting established)</li>
                 <li>• <span class="text-neutral-300">10+ games:</span> 70 points (established player baseline)</li>
               </ul>
             </div>
@@ -322,7 +322,7 @@ import "../styles/global.css";
                 <tr class="hover:bg-neutral-950">
                   <td class="px-4 py-3 text-sm font-medium">Unranked</td>
                   <td class="px-4 py-3 text-sm text-neutral-500 font-medium">Unranked</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">< 70</td>
+                  <td class="px-4 py-3 text-sm text-neutral-300">&lt; 70</td>
                   <td class="px-4 py-3 text-sm text-neutral-400">Insufficient games or very low performance</td>
                 </tr>
               </tbody>
@@ -337,6 +337,86 @@ import "../styles/global.css";
               <li>• <span class="text-neutral-300">Event Tier Weighting:</span> T1 games have 1.5x multiplier vs T5 at 0.7x</li>
               <li>• <span class="text-neutral-300">Context-Aware:</span> Performance compared to league averages for fair evaluation</li>
               <li>• <span class="text-neutral-300">Daily Updates:</span> Decay penalties apply automatically each day</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Match Data & Verification Section -->
+      <section id="verification" class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Match Data & Verification</h2>
+        
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
+          <h3 class="text-xl font-medium mb-4">From OCR to Verified Stats</h3>
+          <p class="text-neutral-300 mb-6">
+            Our system uses Optical Character Recognition (OCR) technology to automatically extract player and team statistics 
+            from match boxscore screenshots. This automated process allows us to quickly capture and display match data for the community.
+          </p>
+
+          <div class="grid gap-4 mb-6">
+            <!-- OCR Processing -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">🤖</span>
+                <h4 class="font-semibold text-blue-400">1. OCR Processing</h4>
+              </div>
+              <p class="text-neutral-300 text-sm mb-2">
+                When a boxscore screenshot is uploaded, our OCR system automatically reads and extracts statistics from the image. 
+                This process happens instantly and makes the data immediately visible on the platform.
+              </p>
+              <div class="flex items-start gap-2 mt-3 p-3 bg-yellow-900/10 border border-yellow-500/20 rounded">
+                <svg class="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <p class="text-yellow-200 text-xs">
+                  <span class="font-semibold">Important:</span> OCR-derived stats may contain errors due to image quality, formatting variations, or recognition limitations.
+                </p>
+              </div>
+            </div>
+
+            <!-- Under Review -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">⏳</span>
+                <h4 class="font-semibold text-yellow-400">2. Under Review</h4>
+              </div>
+              <p class="text-neutral-300 text-sm">
+                After OCR processing, matches enter the "Under Review" state. During this phase, our team manually verifies the 
+                extracted data against the original screenshots to ensure accuracy. Matches with the 
+                <span class="px-2 py-0.5 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-xs font-medium">Under Review</span> 
+                badge are awaiting verification.
+              </p>
+            </div>
+
+            <!-- Verified -->
+            <div class="bg-neutral-950 p-4 rounded-lg">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">✅</span>
+                <h4 class="font-semibold text-green-400">3. Verified</h4>
+              </div>
+              <p class="text-neutral-300 text-sm mb-2">
+                Once our team confirms the accuracy of the OCR-extracted data, the match is marked as "Verified" with a 
+                <span class="px-2 py-0.5 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-xs font-medium">Verified</span> 
+                badge. Only at this stage are the statistics officially entered into our database tables.
+              </p>
+              <div class="flex items-start gap-2 mt-3 p-3 bg-green-900/10 border border-green-500/20 rounded">
+                <svg class="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <p class="text-green-200 text-xs">
+                  <span class="font-semibold">Key Point:</span> Verified stats are the only ones that count toward player ratings, season statistics, and leaderboard standings.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-neutral-950 p-4 rounded-lg border border-blue-500/20">
+            <h4 class="font-semibold mb-2 text-blue-300">Why This Matters</h4>
+            <ul class="space-y-2 text-sm text-neutral-300">
+              <li>• <span class="text-neutral-200">Transparency:</span> You can see match data immediately, even before verification</li>
+              <li>• <span class="text-neutral-200">Accuracy:</span> Manual verification ensures only correct stats affect rankings and ratings</li>
+              <li>• <span class="text-neutral-200">Fair Competition:</span> Player ratings and team rankings are based solely on verified, error-free data</li>
+              <li>• <span class="text-neutral-200">Community Trust:</span> Clear badges help you understand which stats are official</li>
             </ul>
           </div>
         </div>
