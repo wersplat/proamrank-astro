@@ -3,6 +3,7 @@ import Navigation from "../../components/Navigation.astro";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
 import { getRatingTierColor } from "../../lib/ratingUtils";
+import { buildFilterQuery, hasActiveFilters } from "../../lib/filterUtils";
 
 const ITEMS_PER_PAGE = 30;
 const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
@@ -12,6 +13,7 @@ const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 const positionFilter = Astro.url.searchParams.get('position') || 'all';
 const tierFilter = Astro.url.searchParams.get('tier') || 'all';
 const sortBy = Astro.url.searchParams.get('sort') || 'rating';
+const searchQuery = Astro.url.searchParams.get('search') || '';
 
 // Build query with filters - join with global rating view
 let query = supa((Astro.locals as any).runtime)
@@ -24,6 +26,10 @@ if (positionFilter !== 'all') {
 
 if (tierFilter !== 'all') {
   query = query.eq("rating_tier", tierFilter as any);
+}
+
+if (searchQuery) {
+  query = query.ilike("gamertag", `%${searchQuery}%`);
 }
 
 // Get total count
@@ -42,6 +48,10 @@ if (positionFilter !== 'all') {
 
 if (tierFilter !== 'all') {
   dataQuery = dataQuery.eq("rating_tier", tierFilter as any);
+}
+
+if (searchQuery) {
+  dataQuery = dataQuery.ilike("gamertag", `%${searchQuery}%`);
 }
 
 // Apply sorting
@@ -92,6 +102,20 @@ function getPageNumbers(current: number, total: number): number[] {
 }
 
 const pageNumbers = getPageNumbers(currentPage, totalPages);
+
+// Build filter query for pagination links
+const filterQuery = buildFilterQuery({
+  position: positionFilter,
+  tier: tierFilter,
+  sort: sortBy,
+  search: searchQuery
+});
+
+// Check if filters are active
+const filtersActive = hasActiveFilters(
+  { position: positionFilter, tier: tierFilter, sort: sortBy, search: searchQuery },
+  { position: 'all', tier: 'all', sort: 'rating', search: '' }
+);
 ---
 
 <html lang="en">
@@ -113,6 +137,18 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
         <!-- Filters -->
         <div class="flex flex-wrap gap-3 mb-4">
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Search:</label>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Player name..."
+              value={searchQuery}
+              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm w-48"
+              onkeydown="if (event.key === 'Enter') window.location.href = updateFilter('search', this.value)"
+            />
+          </div>
+
           <div class="flex items-center gap-2">
             <label class="text-sm text-neutral-400">Position:</label>
             <select 
@@ -154,7 +190,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
             </select>
           </div>
 
-          {(positionFilter !== 'all' || tierFilter !== 'all' || sortBy !== 'rating') && (
+          {filtersActive && (
             <a 
               href="/players" 
               class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
@@ -168,7 +204,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       <script is:inline>
         function updateFilter(param, value) {
           const url = new URL(window.location.href);
-          if (value === 'all' || (param === 'sort' && value === 'rating')) {
+          if (value === 'all' || (param === 'sort' && value === 'rating') || (param === 'search' && value === '')) {
             url.searchParams.delete(param);
           } else {
             url.searchParams.set(param, value);
@@ -226,7 +262,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
         <div class="mt-8 flex items-center justify-center gap-2">
           {currentPage > 1 ? (
             <a 
-              href={`/players?page=${currentPage - 1}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rating' ? `&sort=${sortBy}` : ''}`}
+              href={`/players?page=${currentPage - 1}${filterQuery}`}
               class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
             >
               ← Previous
@@ -240,7 +276,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           <div class="flex gap-1">
             {pageNumbers.map((pageNum: number) => (
               <a
-                href={`/players?page=${pageNum}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rating' ? `&sort=${sortBy}` : ''}`}
+                href={`/players?page=${pageNum}${filterQuery}`}
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
@@ -254,7 +290,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
           {currentPage < totalPages ? (
             <a 
-              href={`/players?page=${currentPage + 1}${positionFilter !== 'all' ? `&position=${positionFilter}` : ''}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rating' ? `&sort=${sortBy}` : ''}`}
+              href={`/players?page=${currentPage + 1}${filterQuery}`}
               class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
             >
               Next →

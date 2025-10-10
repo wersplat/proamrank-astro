@@ -2,6 +2,7 @@
 import Navigation from "../../components/Navigation.astro";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
+import { buildFilterQuery, hasActiveFilters } from "../../lib/filterUtils";
 
 const ITEMS_PER_PAGE = 30;
 const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
@@ -10,6 +11,7 @@ const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 // Get filter parameter
 const gameYearFilter = Astro.url.searchParams.get('year') || 'all';
 const statusFilter = Astro.url.searchParams.get('status') || 'all';
+const searchQuery = Astro.url.searchParams.get('search') || '';
 
 // Build query with filters
 let query = supa((Astro.locals as any).runtime)
@@ -24,6 +26,10 @@ if (statusFilter === 'active') {
   query = query.eq("is_active", true);
 } else if (statusFilter === 'inactive') {
   query = query.eq("is_active", false);
+}
+
+if (searchQuery) {
+  query = query.ilike("league_name", `%${searchQuery}%`);
 }
 
 // Get total count
@@ -44,6 +50,10 @@ if (statusFilter === 'active') {
   dataQuery = dataQuery.eq("is_active", true);
 } else if (statusFilter === 'inactive') {
   dataQuery = dataQuery.eq("is_active", false);
+}
+
+if (searchQuery) {
+  dataQuery = dataQuery.ilike("league_name", `%${searchQuery}%`);
 }
 
 const { data, error } = await dataQuery
@@ -79,6 +89,19 @@ function getPageNumbers(current: number, total: number): number[] {
 }
 
 const pageNumbers = getPageNumbers(currentPage, totalPages);
+
+// Build filter query for pagination links
+const filterQuery = buildFilterQuery({
+  year: gameYearFilter,
+  status: statusFilter,
+  search: searchQuery
+});
+
+// Check if filters are active
+const filtersActive = hasActiveFilters(
+  { year: gameYearFilter, status: statusFilter, search: searchQuery },
+  { year: 'all', status: 'all', search: '' }
+);
 ---
 
 <html lang="en">
@@ -100,6 +123,18 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
         <!-- Filters -->
         <div class="flex flex-wrap gap-3 mb-4">
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Search:</label>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="League name..."
+              value={searchQuery}
+              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm w-48"
+              onkeydown="if (event.key === 'Enter') window.location.href = updateFilter('search', this.value)"
+            />
+          </div>
+
           <div class="flex items-center gap-2">
             <label class="text-sm text-neutral-400">Year:</label>
             <select 
@@ -127,7 +162,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
             </select>
           </div>
 
-          {(gameYearFilter !== 'all' || statusFilter !== 'all') && (
+          {filtersActive && (
             <a 
               href="/leagues" 
               class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
@@ -141,7 +176,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       <script is:inline>
         function updateFilter(param, value) {
           const url = new URL(window.location.href);
-          if (value === 'all') {
+          if (value === 'all' || (param === 'search' && value === '')) {
             url.searchParams.delete(param);
           } else {
             url.searchParams.set(param, value);
@@ -211,7 +246,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
         <div class="mt-8 flex items-center justify-center gap-2">
           {currentPage > 1 ? (
             <a 
-              href={`/leagues?page=${currentPage - 1}${gameYearFilter !== 'all' ? `&year=${gameYearFilter}` : ''}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
+              href={`/leagues?page=${currentPage - 1}${filterQuery}`}
               class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
             >
               ← Previous
@@ -225,7 +260,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           <div class="flex gap-1">
             {pageNumbers.map((pageNum: number) => (
               <a
-                href={`/leagues?page=${pageNum}${gameYearFilter !== 'all' ? `&year=${gameYearFilter}` : ''}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
+                href={`/leagues?page=${pageNum}${filterQuery}`}
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
@@ -239,7 +274,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
           {currentPage < totalPages ? (
             <a 
-              href={`/leagues?page=${currentPage + 1}${gameYearFilter !== 'all' ? `&year=${gameYearFilter}` : ''}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
+              href={`/leagues?page=${currentPage + 1}${filterQuery}`}
               class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
             >
               Next →
