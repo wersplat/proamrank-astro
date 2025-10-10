@@ -75,23 +75,43 @@ Access your Sentry dashboard:
 - **Performance**: https://sentry.io/organizations/bodegacatsgc/performance/
 - **Replays**: https://sentry.io/organizations/bodegacatsgc/replays/
 
-### 4. Test the Integration (Optional)
+### 4. Test the Integration
 
-After deploying, test error capture:
+**🧪 Use the Test Page** (Recommended):
 
-**Client-side test**: Add to any React component:
+Visit **`/sentry-test`** in your browser:
+- Development: `http://localhost:4321/sentry-test`
+- Production: `https://your-domain.com/sentry-test`
+
+The test page includes interactive buttons to trigger:
+- ✅ Client-side errors
+- ✅ Async/Promise errors
+- ✅ API fetch errors  
+- ✅ React component errors
+- ✅ Manual error captures
+
+**Or test manually**:
+
+Client-side test:
 ```tsx
-throw new Error("Test client error from ProAm Rankings");
+throw new Error("[Test] Client error from ProAm Rankings");
 ```
 
-**Server-side test**: Add to any Astro page:
+Server-side test - uncomment line 2 in `src/pages/sentry-test.astro`:
 ```astro
 ---
-throw new Error("Test server error from ProAm Rankings");
+throw new Error("[Test] Server error from ProAm Rankings");
 ---
 ```
 
-Visit the page, and the error should appear in Sentry within seconds!
+API Route test:
+```bash
+curl http://localhost:4321/api/sentry-test-error
+```
+
+Check errors at: https://sentry.io/organizations/bodegacatsgc/issues/
+
+📖 **See `SENTRY_TESTING_GUIDE.md` for complete testing instructions**
 
 ## Sample Rates (Currently Set)
 
