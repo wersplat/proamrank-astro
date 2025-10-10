@@ -1732,3 +1732,249 @@ The About page is now live and accessible from the main navigation menu!
 
 ---
 
+_**User (2025-10-10 03:02Z)**_
+
+update the ranking system page to mention the dynamic tier calculation
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user wants me to update the ranking system page to mention the dynamic tier calculation. Let me read the ranking system page first to see where this should be added.</details></think>
+
+---
+
+I'll update the ranking system page to include information about the dynamic tier calculation system.
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro
+
+---
+
+<think><details><summary>Thought Process</summary>I can see the Event Tiers section. I should add information about the dynamic tier calculation right after the Event Tiers table, before the Leaderboard Tiers section. This would be a good place to explain how tiers are actually calculated dynamically.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 16, lines removed: undefined
+
+```diff
+@@ -120,4 +120,20 @@
+              </table>
+            </div>
++           
++           <!-- Dynamic Tier Calculation -->
++           <div class="mt-6 bg-blue-900/20 border border-blue-500/30 p-5 rounded-lg">
++             <div class="flex items-start gap-3">
++               <span class="text-2xl">⚡</span>
++               <div>
++                 <h4 class="text-lg font-semibold text-blue-300 mb-2">Dynamic Tier Calculation</h4>
++                 <p class="text-sm text-neutral-300 mb-3">
++                   Tournament tiers are calculated dynamically based on objective team strength metrics rather than relying solely on event labels. This system analyzes the participating teams' rankings, historical performance, and competitive pedigree to determine the true competitive level of each tournament.
++                 </p>
++                 <p class="text-sm text-neutral-400">
++                   This approach ensures that rankings and rating points accurately reflect the actual difficulty and prestige of each event, preventing tier inflation and maintaining competitive integrity across the ecosystem.
++                 </p>
++               </div>
++             </div>
++           </div>
+          </div>
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Good, I've added the dynamic tier calculation section. Now let me check for linter errors and build to make sure everything is working.</details></think>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Tool use: **run_terminal_cmd**
+
+```bash
+cd /Volumes/870SSD/Active\ GH\ Projects/proamrank-astro/proam-rankings && npm run build
+```
+
+```
+
+> build
+> astro build
+
+07:33:01 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+07:33:01 [@astrojs/cloudflare] If you see the error "Invalid binding `SESSION`" in your build output, you need to add the binding to your wrangler config file.
+07:33:01 [WARN] [adapter] Cloudflare does not support sharp at runtime. However, you can configure `imageService: "compile"` to optimize images with sharp on prerendered pages during build time.
+[sentry-vite-plugin] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+07:33:01 [content] Syncing content
+07:33:01 [content] Synced content
+07:33:01 [types] Generated 46ms
+07:33:01 [build] output: "server"
+07:33:01 [build] mode: "server"
+07:33:01 [build] directory: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/dist/
+07:33:01 [build] adapter: @astrojs/cloudflare
+07:33:01 [build] Collecting build info...
+07:33:01 [build] ✓ Completed in 86ms.
+07:33:01 [build] Building server entrypoints...
+[sentry-vite-plugin] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:diagnostics_channel" imported from "node_modules/@sentry/node/build/esm/integrations/tracing/fastify/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:events" imported from "node_modules/@sentry/node-core/build/esm/integrations/http/httpServerSpansIntegration.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:diagnostics_channel" imported from "node_modules/@sentry/node-core/build/esm/integrations/http/httpServerIntegration.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "diagnostics_channel" imported from "node_modules/@sentry/node-core/build/esm/integrations/node-fetch/SentryNodeFetchInstrumentation.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:diagnostics_channel" imported from "node_modules/@sentry/node-core/build/esm/integrations/http/SentryHttpInstrumentation.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:fs" imported from "node_modules/@sentry/node-core/build/esm/integrations/contextlines.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:readline" imported from "node_modules/@sentry/node-core/build/esm/integrations/contextlines.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:fs" imported from "node_modules/@sentry/node-core/build/esm/integrations/modules.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:path" imported from "node_modules/@sentry/node-core/build/esm/integrations/modules.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:util" imported from "node_modules/@sentry/node-core/build/esm/integrations/systemError.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:diagnostics_channel" imported from "node_modules/@sentry/node-core/build/esm/integrations/childProcess.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:diagnostics_channel" imported from "node_modules/@sentry/node-core/build/esm/integrations/pino.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:path" imported from "node_modules/@sentry/node-core/build/esm/utils/module.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "module" imported from "node_modules/@sentry/node-core/build/esm/sdk/esmLoader.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:diagnostics_channel" imported from "node_modules/@sentry/node/build/esm/integrations/tracing/fastify/fastify-otel/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:http" imported from "node_modules/@sentry/node-core/build/esm/integrations/spotlight.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:child_process" imported from "node_modules/@sentry/node-core/build/esm/integrations/context.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:fs" imported from "node_modules/@sentry/node-core/build/esm/integrations/context.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:os" imported from "node_modules/@sentry/node-core/build/esm/integrations/context.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:path" imported from "node_modules/@sentry/node-core/build/esm/integrations/context.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:util" imported from "node_modules/@sentry/node-core/build/esm/integrations/context.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:util" imported from "node_modules/@sentry/node-core/build/esm/integrations/anr/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:worker_threads" imported from "node_modules/@sentry/node-core/build/esm/integrations/anr/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:inspector" imported from "node_modules/@sentry/node-core/build/esm/integrations/anr/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:http" imported from "node_modules/@sentry/node-core/build/esm/transports/http.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:https" imported from "node_modules/@sentry/node-core/build/esm/transports/http.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:stream" imported from "node_modules/@sentry/node-core/build/esm/transports/http.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:zlib" imported from "node_modules/@sentry/node-core/build/esm/transports/http.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:os" imported from "node_modules/@sentry/node-core/build/esm/sdk/client.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "worker_threads" imported from "node_modules/@sentry/node-core/build/esm/sdk/client.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "diagnostics_channel" imported from "node_modules/@opentelemetry/instrumentation-undici/build/src/undici.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "url" imported from "node_modules/@opentelemetry/instrumentation-undici/build/src/undici.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "util" imported from "node_modules/@opentelemetry/instrumentation-fs/build/src/instrumentation.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "events" imported from "node_modules/@opentelemetry/instrumentation-tedious/build/src/instrumentation.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "path" imported from "node_modules/import-in-the-middle/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "url" imported from "node_modules/import-in-the-middle/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "worker_threads" imported from "node_modules/import-in-the-middle/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:net" imported from "node_modules/@sentry/node/build/esm/integrations/tracing/firebase/otel/patches/firestore.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:util" imported from "node_modules/@sentry/node-core/build/esm/logs/capture.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:inspector" imported from "node_modules/@sentry/node-core/build/esm/integrations/local-variables/local-variables-sync.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "module" imported from "node_modules/@sentry/node-core/build/esm/sdk/injectLoader.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:net" imported from "node_modules/@sentry/node-core/build/esm/proxy/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:tls" imported from "node_modules/@sentry/node-core/build/esm/proxy/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:01 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:inspector" imported from "node_modules/@sentry/node-core/build/esm/utils/debug.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "async_hooks" imported from "node_modules/@opentelemetry/context-async-hooks/build/src/AsyncHooksContextManager.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "async_hooks" imported from "node_modules/@opentelemetry/context-async-hooks/build/src/AsyncLocalStorageContextManager.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "path" imported from "node_modules/module-details-from-path/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:http" imported from "node_modules/@sentry/node-core/build/esm/proxy/base.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:https" imported from "node_modules/@sentry/node-core/build/esm/proxy/base.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "diagnostics_channel" imported from " diagnostics_channel?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "url" imported from " url?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "util" imported from " util?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "events" imported from " events?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "events" imported from "node_modules/@opentelemetry/context-async-hooks/build/src/AbstractAsyncHooksContextManager.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "path" imported from " path?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "worker_threads" imported from " worker_threads?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "async_hooks" imported from " async_hooks?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "url" imported from "node_modules/@opentelemetry/instrumentation-http/build/src/http.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "events" imported from "node_modules/@opentelemetry/instrumentation-http/build/src/http.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:worker_threads" imported from "node_modules/@sentry/node-core/build/esm/integrations/local-variables/local-variables-async.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:inspector" imported from "node_modules/@sentry/node-core/build/esm/integrations/local-variables/local-variables-async.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:module" imported from "node_modules/@apm-js-collab/tracing-hooks/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:os" imported from "node_modules/@apm-js-collab/tracing-hooks/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:path" imported from "node_modules/@apm-js-collab/tracing-hooks/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:fs" imported from "node_modules/@apm-js-collab/tracing-hooks/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "url" imported from "node_modules/@opentelemetry/instrumentation-http/build/src/utils.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:fs" imported from "node_modules/@apm-js-collab/tracing-hooks/lib/get-package-version.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:path" imported from "node_modules/@apm-js-collab/tracing-hooks/lib/get-package-version.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "util" imported from "node_modules/forwarded-parse/index.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "util" imported from "node_modules/forwarded-parse/lib/error.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "util" imported from "node_modules/@apm-js-collab/code-transformer/pkg/orchestrion_js.js". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:module" imported from " node:module?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:path" imported from " node:path?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:os" imported from " node:os?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+07:33:02 [WARN] [vite] [plugin vite:resolve] Automatically externalized node built-in module "node:fs" imported from " node:fs?commonjs-external". Consider adding it to environments.ssr.external if it is intended.
+[sentry-vite-plugin] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+07:33:03 [vite] ✓ built in 1.90s
+07:33:03 [build] ✓ Completed in 1.91s.
+
+ building client (vite) 
+[sentry-vite-plugin] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+07:33:03 [vite] transforming...
+[sentry-vite-plugin] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+07:33:03 [vite] ✓ 297 modules transformed.
+07:33:03 [vite] rendering chunks...
+07:33:03 [vite] computing gzip size...
+[sentry-vite-plugin] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+07:33:03 [vite] dist/_astro/sentry-test.astro_astro_type_script_index_1_lang.C8vgTCqI.js    0.59 kB │ gzip:  0.32 kB │ map:     0.14 kB
+07:33:03 [vite] dist/_astro/jsx-runtime.tUo9E9Gb.js                                         1.56 kB │ gzip:  0.86 kB │ map:     2.22 kB
+07:33:03 [vite] dist/_astro/sentry-test.astro_astro_type_script_index_0_lang.Csc-_quy.js    1.73 kB │ gzip:  0.81 kB │ map:    22.39 kB
+07:33:03 [vite] dist/_astro/RankTableIsland.e02b5GrH.js                                     2.45 kB │ gzip:  1.03 kB │ map:     4.37 kB
+07:33:03 [vite] dist/_astro/index.CKTNd8WP.js                                               7.36 kB │ gzip:  2.96 kB │ map:    15.74 kB
+07:33:03 [vite] dist/_astro/MatchesListIsland.Dpfa2axt.js                                  14.19 kB │ gzip:  3.29 kB │ map:    34.94 kB
+07:33:03 [vite] dist/_astro/AchievementsIsland.Bk-MxERT.js                                 20.80 kB │ gzip:  4.46 kB │ map:    41.52 kB
+07:33:03 [vite] dist/_astro/TeamTabsIsland.BU13eI0M.js                                     23.77 kB │ gzip:  5.36 kB │ map:    66.24 kB
+07:33:03 [vite] dist/_astro/LeagueTabsIsland.t37qoCYw.js                                   29.42 kB │ gzip:  5.54 kB │ map:    79.77 kB
+07:33:03 [vite] dist/_astro/TournamentTabsIsland.Dx_YWpYU.js                               31.17 kB │ gzip:  5.89 kB │ map:    84.92 kB
+07:33:03 [vite] dist/_astro/debug-build.OCcED88E.js                                        35.28 kB │ gzip: 12.37 kB │ map:   229.45 kB
+07:33:03 [vite] dist/_astro/Tabs.C49pwVoG.js                                               37.45 kB │ gzip:  6.85 kB │ map:    86.82 kB
+07:33:03 [vite] dist/_astro/client.DoWNrgBN.js                                            137.06 kB │ gzip: 44.24 kB │ map:   336.15 kB
+07:33:03 [vite] dist/_astro/page.DjYd8xOU.js                                              218.85 kB │ gzip: 72.64 kB │ map: 1,090.84 kB
+07:33:03 [vite] ✓ built in 616ms
+
+ prerendering static routes 
+07:33:03 ✓ Completed in 10ms.
+
+07:33:03 [build] Rearranging server assets...
+07:33:03 [build] Server built in 2.64s
+07:33:03 [build] Complete!
+[sentry-vite-plugin] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+
+```
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! The build was successful. The ranking system page now includes information about the dynamic tier calculation system. The update was added as a highlighted info box right after the Event Tiers table, which makes it prominent and easy to notice.</details></think>
+
+---
+
+Perfect! ✅ I've successfully updated the ranking system page to include information about the dynamic tier calculation. 
+
+## Summary
+
+Added a new section titled **"Dynamic Tier Calculation"** to the Event Tiers section on the ranking system page. The addition:
+
+- **Location**: Placed directly after the Event Tiers table, making it immediately visible to users learning about the tier system
+- **Styling**: Uses a blue highlighted info box (matching the site's design) with a lightning bolt emoji (⚡) to indicate the dynamic nature
+- **Content**: Explains that:
+  - Tournament tiers are calculated dynamically based on objective team strength metrics
+  - The system analyzes participating teams' rankings, historical performance, and competitive pedigree
+  - This ensures accurate competitive classification regardless of event labels
+  - Prevents tier inflation and maintains competitive integrity
+
+The build completed successfully with no errors, and the new section is now live on the `/ranking-system` page!
+
+---
+
