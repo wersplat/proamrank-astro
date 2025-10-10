@@ -1,0 +1,233 @@
+---
+import Navigation from "../components/Navigation.astro";
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-5xl p-6">
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold mb-2">About Pro-Am Rankings</h1>
+        <p class="text-neutral-400">Your comprehensive source for NBA 2K Pro-Am competitive statistics and rankings</p>
+      </div>
+
+      <!-- Purpose Section -->
+      <section class="mb-12">
+        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+          <h2 class="text-2xl font-semibold mb-4 pb-2 border-b border-neutral-800">Our Purpose</h2>
+          <p class="text-neutral-300 mb-4">
+            Pro-Am Rankings is dedicated to tracking the NBA 2K Pro-Am competitive scene, providing comprehensive global rankings for teams and players across all major leagues and tournaments. Our mission is to deliver objective, verified statistics and rankings that accurately reflect competitive performance in the Pro-Am community.
+          </p>
+          <p class="text-neutral-300">
+            Whether you're a player looking to track your progress, a team scouting talent, or a fan following the competitive scene, Pro-Am Rankings offers the most complete and accurate data available.
+          </p>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">How It Works</h2>
+        
+        <div class="space-y-6">
+          <!-- Data Collection -->
+          <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl">📊</span>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Data Collection</h3>
+                <p class="text-neutral-300">
+                  We collect match data from verified leagues and tournaments across the Pro-Am ecosystem, including UPA events, franchise leagues, and community tournaments. All data is carefully tracked and organized to ensure accuracy and completeness.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verification Process -->
+          <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl">✅</span>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Verification Process</h3>
+                <p class="text-neutral-300 mb-3">
+                  Only verified matches count toward player ratings and official statistics. While we may display OCR-derived stats from screenshots for reference, these unverified results are clearly marked and do not impact rankings or player ratings.
+                </p>
+                <div class="bg-blue-900/20 border border-blue-500/30 p-3 rounded-lg">
+                  <p class="text-sm text-blue-300">
+                    Look for the <span class="text-green-300 font-semibold">Verified</span> badge on matches to identify official, rating-eligible games.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event Tiers -->
+          <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl">🏆</span>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Event Tier System</h3>
+                <p class="text-neutral-300 mb-4">
+                  Events are classified using a T1-T5 tier system that determines their competitive weight:
+                </p>
+                <ul class="space-y-2 text-neutral-300 ml-6">
+                  <li><span class="font-semibold text-purple-400">T1</span> - Major LANs (Worlds, UPA Live Events)</li>
+                  <li><span class="font-semibold text-blue-400">T2</span> - Monthly Franchise Events, UPA College Finals</li>
+                  <li><span class="font-semibold text-green-400">T3</span> - Franchise Qualifiers, Redraft, UPA College Regular</li>
+                  <li><span class="font-semibold text-yellow-400">T4</span> - Invitationals, Community Competitive</li>
+                  <li><span class="font-semibold text-neutral-400">T5</span> - Open Community Events</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Tier System -->
+          <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl">⚡</span>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Dynamic Tier Calculation</h3>
+                <p class="text-neutral-300 mb-3">
+                  Tournament tiers are calculated dynamically based on objective team strength metrics, ensuring accurate competitive classification regardless of the event's advertised label. This system analyzes the participating teams' rankings, historical performance, and competitive pedigree to determine the true competitive level of each tournament.
+                </p>
+                <p class="text-neutral-400 text-sm">
+                  This approach ensures that rankings and rating points accurately reflect the actual difficulty and prestige of each event.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ranking Systems Section -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Ranking Systems</h2>
+        
+        <div class="space-y-6">
+          <!-- Team Rankings -->
+          <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl">👥</span>
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold mb-2">Team Rankings</h3>
+                <p class="text-neutral-300 mb-4">
+                  Teams are ranked using a hybrid system that combines two complementary metrics:
+                </p>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div class="bg-neutral-950 p-4 rounded-lg border border-blue-500/20">
+                    <h4 class="font-semibold text-blue-400 mb-2">Ranking Points (70%)</h4>
+                    <p class="text-sm text-neutral-300">Measures team success across verified tournaments and events. Rewards consistent performance and achievement.</p>
+                  </div>
+                  <div class="bg-neutral-950 p-4 rounded-lg border border-purple-500/20">
+                    <h4 class="font-semibold text-purple-400 mb-2">ELO Rating (30%)</h4>
+                    <p class="text-sm text-neutral-300">Evaluates relative team skill based on match outcomes and opponent strength. Adapts to current form.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Player Ratings -->
+          <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl">⭐</span>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Player Ratings</h3>
+                <p class="text-neutral-300 mb-4">
+                  Player ratings use a comprehensive multi-factor system that evaluates:
+                </p>
+                <ul class="space-y-2 text-neutral-300 ml-6">
+                  <li><span class="font-semibold text-blue-400">Base Rating</span> - Starting point that increases with experience</li>
+                  <li><span class="font-semibold text-green-400">Game Impact</span> - Performance-based score using comprehensive stats</li>
+                  <li><span class="font-semibold text-purple-400">Event Bonus</span> - Rewards participation in high-tier competitions</li>
+                  <li><span class="font-semibold text-yellow-400">Consistency Bonus</span> - Rewards reliable, steady performers</li>
+                  <li><span class="font-semibold text-red-400">Decay Penalty</span> - Encourages active participation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Learn More -->
+          <div class="bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg">
+            <p class="text-blue-300">
+              📘 For a detailed explanation of our ranking methodology, visit the <a href="/ranking-system" class="underline font-semibold hover:text-blue-200">Ranking System</a> page.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Platform Features</h2>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">📈</span>
+              <h3 class="text-lg font-semibold">Real-Time Standings</h3>
+            </div>
+            <p class="text-neutral-300 text-sm">
+              Live standings and results for all active leagues and tournaments, updated as matches are verified.
+            </p>
+          </div>
+
+          <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">📊</span>
+              <h3 class="text-lg font-semibold">Comprehensive Statistics</h3>
+            </div>
+            <p class="text-neutral-300 text-sm">
+              Detailed player statistics, game logs, and performance metrics across all verified matches.
+            </p>
+          </div>
+
+          <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">🎯</span>
+              <h3 class="text-lg font-semibold">Match History</h3>
+            </div>
+            <p class="text-neutral-300 text-sm">
+              Complete match records with boxscore details, team compositions, and performance breakdowns.
+            </p>
+          </div>
+
+          <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">🏅</span>
+              <h3 class="text-lg font-semibold">Achievement Tracking</h3>
+            </div>
+            <p class="text-neutral-300 text-sm">
+              Track player achievements and milestones throughout their competitive journey.
+            </p>
+          </div>
+
+          <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">👥</span>
+              <h3 class="text-lg font-semibold">Team Profiles</h3>
+            </div>
+            <p class="text-neutral-300 text-sm">
+              Detailed team pages with rosters, match history, rankings, and tournament results.
+            </p>
+          </div>
+
+          <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">📱</span>
+              <h3 class="text-lg font-semibold">Responsive Design</h3>
+            </div>
+            <p class="text-neutral-300 text-sm">
+              Fully optimized for mobile and desktop, providing a seamless experience on any device.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
