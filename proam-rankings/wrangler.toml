@@ -17,4 +17,5 @@ crons = ["0 2 * * *"]
 # Required variables:
 # - SUPABASE_URL: Your Supabase project URL
 # - SUPABASE_ANON_KEY: Your Supabase anonymous key
+# - SENTRY_AUTH_TOKEN: Sentry authentication token for source map uploads (build-time only)
 

@@ -7,6 +7,15 @@
  * Cron Expression: 0 2 * * *
  */
 
+import * as Sentry from '@sentry/cloudflare';
+
+// Initialize Sentry
+Sentry.init({
+  dsn: "https://15ecc8d420bd1ac21d6ca88698ca4566@o4509330775277568.ingest.us.sentry.io/4510164326023168",
+  environment: "production",
+  tracesSampleRate: 1.0,
+});
+
 interface Env {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
@@ -61,6 +70,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   } catch (error) {
     console.error('Error updating player ratings:', error);
+    Sentry.captureException(error);
     return new Response(
       JSON.stringify({ 
         error: 'Internal server error', 

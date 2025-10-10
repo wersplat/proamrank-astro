@@ -1,10 +1,18 @@
 // Cloudflare Pages function to fetch player stats for a match
 import { createClient } from '@supabase/supabase-js';
+import * as Sentry from '@sentry/cloudflare';
 
 interface Env {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
 }
+
+// Initialize Sentry
+Sentry.init({
+  dsn: "https://15ecc8d420bd1ac21d6ca88698ca4566@o4509330775277568.ingest.us.sentry.io/4510164326023168",
+  environment: "production",
+  tracesSampleRate: 1.0,
+});
 
 export async function onRequest(context: { request: Request; env: Env }) {
   // Set CORS headers
@@ -118,6 +126,7 @@ export async function onRequest(context: { request: Request; env: Env }) {
       headers: corsHeaders
     });
   } catch (error: any) {
+    Sentry.captureException(error);
     return new Response(JSON.stringify({ error: error.message || 'Unknown error' }), {
       status: 500,
       headers: corsHeaders

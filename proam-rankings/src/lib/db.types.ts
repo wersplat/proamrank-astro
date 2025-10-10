@@ -2819,6 +2819,7 @@ export type Database = {
           id: string
           league_id: string | null
           played_at: string | null
+          possible_duplicate_of: string | null
           score_a: number | null
           score_b: number | null
           season_id: string | null
@@ -2837,6 +2838,7 @@ export type Database = {
           id?: string
           league_id?: string | null
           played_at?: string | null
+          possible_duplicate_of?: string | null
           score_a?: number | null
           score_b?: number | null
           season_id?: string | null
@@ -2855,6 +2857,7 @@ export type Database = {
           id?: string
           league_id?: string | null
           played_at?: string | null
+          possible_duplicate_of?: string | null
           score_a?: number | null
           score_b?: number | null
           season_id?: string | null
@@ -2908,6 +2911,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_results"
             referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "matches_possible_duplicate_of_fkey"
+            columns: ["possible_duplicate_of"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_possible_duplicate_of_fkey"
+            columns: ["possible_duplicate_of"]
+            isOneToOne: false
+            referencedRelation: "v_matches_with_primary_context"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "matches_season_id_fkey"
