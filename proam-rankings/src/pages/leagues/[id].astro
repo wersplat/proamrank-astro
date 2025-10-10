@@ -88,6 +88,9 @@ const { data: matchesData } = await supa((Astro.locals as any).runtime)
   .order("played_at", { ascending: false })
   .limit(1000);
 
+// Get the last match update time for the notice
+const lastMatchUpdate = matchesData && matchesData.length > 0 ? matchesData[0].played_at : null;
+
 // Get team names separately
 const teamIds = Array.from(new Set([
   ...(matchesData ?? []).map((m: any) => m.team_a_id),
@@ -274,6 +277,26 @@ const leagueInfoForTabs = {
           )}
         </div>
       </div>
+
+      <!-- Last Updated Notice -->
+      {lastMatchUpdate && (
+        <div class="mb-4 p-3 rounded-lg border border-neutral-700 bg-neutral-800/50">
+          <div class="flex items-center gap-2 text-sm text-neutral-300">
+            <svg class="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>
+              Last match: <span class="font-medium text-white">{new Date(lastMatchUpdate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}</span>
+            </span>
+          </div>
+        </div>
+      )}
 
       <!-- Verification Info Notice -->
       <div class="mb-6 p-4 rounded-lg border border-blue-500/30 bg-blue-900/10">
