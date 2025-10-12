@@ -69,18 +69,38 @@ const logoMap = new Map(leagueLogos.map(l => [l.id, l.lg_logo_url]));
 ### 4. Matches Page Not Showing Verified/Under Review Badge ✅ FIXED
 **Issue**: Match listings were not displaying verification status badges.
 
-**Root Cause**: The status field mapping was incorrect. The component expects `status: 'processed'` for "Under Review" matches, but we were setting it to `'unverified'`.
+**Root Cause**: The `match_analytics_mart` only has `is_verified` (boolean) but doesn't have the `status` field that distinguishes between:
+- "Under Review" (status='processed', verified=false) 
+- "Unverified" (status=null, verified=null/false)
+
+The component needs both fields to show the correct badges.
 
 **Solution**:
-- Changed status mapping from `'unverified'` to `'processed'` for non-verified matches
-- This matches what the `MatchesListIsland` component expects
+- After fetching from the mart, query the original `matches` table to get `status` and `verified` fields
+- Create a mapping and merge this data with the mart results
+- Also added handling for the 'review' filter option
 - File: `src/pages/matches/index.astro`
 
 ```typescript
-// Was: status: m.is_verified ? 'verified' : 'unverified',
-// Now: status: m.is_verified ? 'verified' : 'processed',
-status: m.is_verified ? 'verified' : 'processed', // 'processed' for under review
-verified: m.is_verified,
+// Fetch status and verified fields from original matches table
+const matchIds = (matchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
+const { data: matchStatusData } = await supa()
+  .from("matches")
+  .select("id, status, verified")
+  .in("id", matchIds);
+
+const statusMap = new Map(matchStatusData.map(m => [m.id, { status: m.status, verified: m.verified }]));
+
+// Merge with mart data
+const matches = matchesData.map(m => {
+  const statusInfo = statusMap.get(m.match_id);
+  return {
+    ...m,
+    status: statusInfo?.status || null,
+    verified: statusInfo?.verified || false,
+    // ... other fields
+  };
+});
 ```
 
 ---

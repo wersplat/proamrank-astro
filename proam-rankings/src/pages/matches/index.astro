@@ -43,6 +43,10 @@ if (yearFilter !== 'all') {
 
 if (verifiedFilter === 'verified') {
   countQuery = countQuery.eq("is_verified", true);
+} else if (verifiedFilter === 'review') {
+  // Under Review means: not verified but in match_analytics_mart (which only has verified matches)
+  // Since mart only has matches that have been processed, we can filter by is_verified = false
+  countQuery = countQuery.eq("is_verified", false);
 } else if (verifiedFilter === 'unverified') {
   countQuery = countQuery.eq("is_verified", false);
 }
@@ -81,6 +85,9 @@ if (yearFilter !== 'all') {
 
 if (verifiedFilter === 'verified') {
   dataQuery = dataQuery.eq("is_verified", true);
+} else if (verifiedFilter === 'review') {
+  // Under Review means: not verified but processed (in the mart)
+  dataQuery = dataQuery.eq("is_verified", false);
 } else if (verifiedFilter === 'unverified') {
   dataQuery = dataQuery.eq("is_verified", false);
 }
@@ -99,39 +106,51 @@ const { data: matchesData, error } = await dataQuery
 
 if (error) console.error(error);
 
+// Fetch status and verified fields from original matches table since mart doesn't have status
+const matchIds = (matchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
+const { data: matchStatusData } = matchIds.length > 0 ? await supa((Astro.locals as any).runtime)
+  .from("matches")
+  .select("id, status, verified")
+  .in("id", matchIds) : { data: [] };
+
+const statusMap = new Map((matchStatusData ?? []).map((m: any) => [m.id, { status: m.status, verified: m.verified }]));
+
 // Map match_analytics_mart to expected format
-const matches = (matchesData ?? []).map((m: any) => ({
-  id: m.match_id,
-  played_at: m.played_at,
-  team_a_id: m.team_a_id,
-  team_b_id: m.team_b_id,
-  score_a: m.score_a,
-  score_b: m.score_b,
-  stage: m.stage,
-  game_year: m.game_year,
-  boxscore_url: null, // Not in mart
-  status: m.is_verified ? 'verified' : 'processed', // 'processed' for under review
-  verified: m.is_verified,
-  team_a: {
-    id: m.team_a_id,
-    name: m.team_a_name,
-    logo_url: m.team_a_logo,
-  },
-  team_b: {
-    id: m.team_b_id,
-    name: m.team_b_name,
-    logo_url: m.team_b_logo,
-  },
-  league: m.league_name ? {
-    season_id: m.season_ids?.[0],
-    league_name: m.league_name,
-    season_number: null, // Not available in mart
-  } : null,
-  tournament: m.tournament_name ? {
-    id: m.tournament_ids?.[0],
-    name: m.tournament_name,
-  } : null,
-}));
+const matches = (matchesData ?? []).map((m: any) => {
+  const statusInfo = statusMap.get(m.match_id);
+  return {
+    id: m.match_id,
+    played_at: m.played_at,
+    team_a_id: m.team_a_id,
+    team_b_id: m.team_b_id,
+    score_a: m.score_a,
+    score_b: m.score_b,
+    stage: m.stage,
+    game_year: m.game_year,
+    boxscore_url: null, // Not in mart
+    status: statusInfo?.status || null,
+    verified: statusInfo?.verified || false,
+    team_a: {
+      id: m.team_a_id,
+      name: m.team_a_name,
+      logo_url: m.team_a_logo,
+    },
+    team_b: {
+      id: m.team_b_id,
+      name: m.team_b_name,
+      logo_url: m.team_b_logo,
+    },
+    league: m.league_name ? {
+      season_id: m.season_ids?.[0],
+      league_name: m.league_name,
+      season_number: null, // Not available in mart
+    } : null,
+    tournament: m.tournament_name ? {
+      id: m.tournament_ids?.[0],
+      name: m.tournament_name,
+    } : null,
+  };
+});
 
 // Generate page numbers for pagination
 function getPageNumbers(current: number, total: number): number[] {
