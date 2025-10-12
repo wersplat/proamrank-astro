@@ -873,7 +873,7 @@ export default function LeagueTabsIsland({
                           : 'bg-gray-900 text-gray-300 border-gray-500'
                       }`}
                     >
-                      {leagueInfo.tier} Tier
+                      {leagueInfo.tier}
                     </span>
                   </div>
                 )}

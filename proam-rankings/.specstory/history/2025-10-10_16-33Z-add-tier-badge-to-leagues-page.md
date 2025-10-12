@@ -794,7 +794,321 @@ I’m thinking about adding the tier rendering inside the function, but since it
 
 I’ll look for the section where the Info tab grid items are defined and plan to insert the conditional block just after the opening grid `<div className="grid gap-4 sm:grid-cols-2">` within the `activeTab === 5` block.
 
-I’m considering whether to let the tier span two columns or keep it in one cell. A simple `<div>` with a label and badge should work fine. I’ll make sure that the `tierColors` variable is correctly</details></think>
+I’m considering whether to let the tier span two columns or keep it in one cell. A simple `<div>` with a label and badge should work fine. I’ll make sure that the `tierColors` variable is correctly defined in the component, placing it near the top of the function for clarity.
+**Implementing function changes**
+
+I’ll start by searching for where the function begins, looking at lines 143 onwards. I plan to inject the necessary changes right after the `useState` definitions. Once I implement these modifications, I'll run the linter to ensure consistency.
+
+Earlier, in `leagues/index.astro`, I added `tierMap` and `tierColors`, which is all set. I must also remember to include a status update since I’m utilizing tools, so I’ll add a brief status line before the tool calls. 
+
+Finally, I'll combine this with the todo updates and mark the relevant todos as completed before performing the patch calls.</details></think>
+
+---
+
+I'll add `tier` to `leagueInfoForTabs` in `src/pages/leagues/[id].astro`, update the `LeagueInfo` type and Information tab UI in `src/components/LeagueTabsIsland.tsx` to render the badge with tournament colors, then run a linter check.
+
+---
+
+Tool use: **apply_patch**
+
+<details>
+        <summary>Apply patch for /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+      
+
+```diff
+*** Begin Patch
+*** Update File: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro
+@@
+ const leagueInfoForTabs = {
+   league_name: league.league_name,
+   season_number: league.season_number,
+   game_year: league.game_year,
+   start_date: league.start_date,
+   end_date: league.end_date,
+   is_active: league.is_active,
+   entry_fee: entryFee,
+   prize_pool: prizePool,
++  tier: leagueTier,
+   lg_url: leagueInfo?.lg_url,
+   lg_discord: leagueInfo?.lg_discord,
+   twitch_url: leagueInfo?.twitch_url,
+   twitter_id: leagueInfo?.twitter_id,
+ };
+*** End Patch
+```
+
+---
+
+Tool use: **apply_patch**
+
+<details>
+        <summary>Apply patch for /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+      
+
+```diff
+*** Begin Patch
+*** Update File: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx
+@@
+ type LeagueInfo = {
+   league_name?: string;
+   season_number?: number;
+   game_year?: string;
+   start_date?: string;
+   end_date?: string;
+   is_active?: boolean;
+   entry_fee?: number;
+   prize_pool?: number;
++  tier?: string;
+   lg_url?: string;
+   lg_discord?: string;
+   twitch_url?: string;
+   twitter_id?: string;
+ };
+*** End Patch
+```
+
+---
+
+Tool use: **apply_patch**
+
+<details>
+        <summary>Apply patch for /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+      
+
+```diff
+*** Begin Patch
+*** Update File: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx
+@@
+         {/* Information Tab */}
+         {activeTab === 5 && (
+           <div className="space-y-4">
+             {leagueInfo ? (
+               <>
++                {leagueInfo.tier && (
++                  <div>
++                    <div className="text-sm text-neutral-400 mb-1">Tier</div>
++                    {/* Match tournament styling */}
++                    <span
++                      className={`px-3 py-1 rounded text-sm font-bold border ${
++                        leagueInfo.tier === 'T1'
++                          ? 'bg-purple-900 text-purple-300 border-purple-500'
++                          : leagueInfo.tier === 'T2'
++                          ? 'bg-blue-900 text-blue-300 border-blue-500'
++                          : leagueInfo.tier === 'T3'
++                          ? 'bg-green-900 text-green-300 border-green-500'
++                          : leagueInfo.tier === 'T4'
++                          ? 'bg-yellow-900 text-yellow-300 border-yellow-500'
++                          : 'bg-gray-900 text-gray-300 border-gray-500'
++                      }`}
++                    >
++                      {leagueInfo.tier} Tier
++                    </span>
++                  </div>
++                )}
+                 <div className="grid gap-4 sm:grid-cols-2">
+                   {leagueInfo.season_number && (
+                     <div>
+                       <div className="text-sm text-neutral-400 mb-1">Season</div>
+                       <div className="text-lg font-semibold">
+*** End Patch
+```
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Locate leagues page and rendering components
+- [x] Identify league data shape and tier field
+- [x] Implement tier badge/chip on leagues UI
+- [x] Style badge consistent with existing design
+- [x] Add tier badge to Information tab in LeagueTabsIsland
+
+---
+
+- Added `tier` to `leagueInfoForTabs` in `src/pages/leagues/[id].astro` (fetched from `event_strength_metrics_mv` via `season_id`).
+- Updated `LeagueInfo` type and rendered a T1–T5 badge in the Information tab of `src/components/LeagueTabsIsland.tsx` with the same tournament color scheme.
+- Lint is clean.
+
+Want the tier also shown in any other tabs or tables within `LeagueTabsIsland`?
+
+---
+
+_**User (2025-10-12 00:45Z)**_
+
+we dont need it to say Tier the T already indicates that
+
+---
+
+_**Assistant (gpt-5)**_
+
+<think><details><summary>Thought Process</summary>**Proceeding with adjustments**
+
+I’m thinking about the small adjustment we just finished up. It wasn't tracked before, but I feel like that’s okay. Now, I want to move forward with implementing the patches in parallel. It seems like the right approach to ensure everything runs smoothly. Let’s keep the momentum going and not dwell on what wasn’t tracked before. I’m focused on getting things done efficiently!</details></think>
+
+---
+
+I'll remove the literal " Tier" suffix from the league tier badges on the index cards, league header, and the Information tab so they just show T1–T5. Then I'll run a quick lint on the changed files.
+
+---
+
+Tool use: **apply_patch**
+
+<details>
+        <summary>Apply patch for /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/index.astro</summary>
+      
+
+```diff
+*** Begin Patch
+*** Update File: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/index.astro
+@@
+-                {tierMap.get(league.season_id) && (
+-                  <span class={`mt-1 inline-block px-2 py-0.5 rounded text-xs font-bold border ${tierColors[tierMap.get(league.season_id) as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
+-                    {tierMap.get(league.season_id)} Tier
+-                  </span>
+-                )}
++                {tierMap.get(league.season_id) && (
++                  <span class={`mt-1 inline-block px-2 py-0.5 rounded text-xs font-bold border ${tierColors[tierMap.get(league.season_id) as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
++                    {tierMap.get(league.season_id)}
++                  </span>
++                )}
+*** End Patch
+```
+
+---
+
+Tool use: **apply_patch**
+
+<details>
+        <summary>Apply patch for /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+      
+
+```diff
+*** Begin Patch
+*** Update File: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro
+@@
+-            {leagueTier && (
+-              <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColors[leagueTier as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
+-                {leagueTier} Tier
+-              </span>
+-            )}
++            {leagueTier && (
++              <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColors[leagueTier as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
++                {leagueTier}
++              </span>
++            )}
+*** End Patch
+```
+
+---
+
+Tool use: **apply_patch**
+
+<details>
+        <summary>Apply patch for /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+      
+
+```diff
+*** Begin Patch
+*** Update File: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx
+@@
+-                {leagueInfo.tier && (
+-                  <div>
+-                    <div className="text-sm text-neutral-400 mb-1">Tier</div>
+-                    {/* Match tournament styling */}
+-                    <span
+-                      className={`px-3 py-1 rounded text-sm font-bold border ${
+-                        leagueInfo.tier === 'T1'
+-                          ? 'bg-purple-900 text-purple-300 border-purple-500'
+-                          : leagueInfo.tier === 'T2'
+-                          ? 'bg-blue-900 text-blue-300 border-blue-500'
+-                          : leagueInfo.tier === 'T3'
+-                          ? 'bg-green-900 text-green-300 border-green-500'
+-                          : leagueInfo.tier === 'T4'
+-                          ? 'bg-yellow-900 text-yellow-300 border-yellow-500'
+-                          : 'bg-gray-900 text-gray-300 border-gray-500'
+-                      }`}
+-                    >
+-                      {leagueInfo.tier} Tier
+-                    </span>
+-                  </div>
+-                )}
++                {leagueInfo.tier && (
++                  <div>
++                    <div className="text-sm text-neutral-400 mb-1">Tier</div>
++                    {/* Match tournament styling */}
++                    <span
++                      className={`px-3 py-1 rounded text-sm font-bold border ${
++                        leagueInfo.tier === 'T1'
++                          ? 'bg-purple-900 text-purple-300 border-purple-500'
++                          : leagueInfo.tier === 'T2'
++                          ? 'bg-blue-900 text-blue-300 border-blue-500'
++                          : leagueInfo.tier === 'T3'
++                          ? 'bg-green-900 text-green-300 border-green-500'
++                          : leagueInfo.tier === 'T4'
++                          ? 'bg-yellow-900 text-yellow-300 border-yellow-500'
++                          : 'bg-gray-900 text-gray-300 border-gray-500'
++                      }`}
++                    >
++                      {leagueInfo.tier}
++                    </span>
++                  </div>
++                )}
+*** End Patch
+```
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 3 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/index.astro`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+Lint errors for `src/pages/leagues/index.astro`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| 'event' is deprecated. | 154:30-154:35 | DIAGNOSTIC_SEVERITY_HINT |
+
+
+</details>
+
+---
+
+Removed the “ Tier” suffix everywhere so badges show just T1–T5:
+- `src/pages/leagues/index.astro`: league cards
+- `src/pages/leagues/[id].astro`: header badge
+- `src/components/LeagueTabsIsland.tsx`: Information tab
+
+Lint is clean.
 
 ---
 
