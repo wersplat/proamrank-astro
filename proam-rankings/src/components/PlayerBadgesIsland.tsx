@@ -29,10 +29,11 @@ type AchievementProgress = {
   streakLastGame?: string | null;
   count50PtGames: number;
   count40PtGames: number;
+  count30PtGames: number;
   countTripleDoubles: number;
   countDoubleDoubles: number;
-  count20AssistGames: number;
-  count20ReboundGames: number;
+  count10AssistGames: number;
+  count10ReboundGames: number;
   careerPoints: number;
   careerAssists: number;
   careerRebounds: number;
@@ -229,29 +230,33 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
           <div className="rounded-lg border border-neutral-800 p-4 bg-neutral-900">
             <h3 className="text-sm font-semibold mb-3 text-neutral-300">Career Milestones</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div className="text-center">
+              <div className="text-center p-2 rounded bg-neutral-800/50">
                 <div className="text-2xl font-bold text-purple-400">{achievementProgress.count50PtGames}</div>
-                <div className="text-xs text-neutral-400">50-Point Games</div>
+                <div className="text-xs text-neutral-400">50+ Point Games</div>
               </div>
-              <div className="text-center">
+              <div className="text-center p-2 rounded bg-neutral-800/50">
                 <div className="text-2xl font-bold text-blue-400">{achievementProgress.count40PtGames}</div>
-                <div className="text-xs text-neutral-400">40-Point Games</div>
+                <div className="text-xs text-neutral-400">40+ Point Games</div>
               </div>
-              <div className="text-center">
+              <div className="text-center p-2 rounded bg-neutral-800/50">
+                <div className="text-2xl font-bold text-indigo-400">{achievementProgress.count30PtGames}</div>
+                <div className="text-xs text-neutral-400">30+ Point Games</div>
+              </div>
+              <div className="text-center p-2 rounded bg-neutral-800/50">
                 <div className="text-2xl font-bold text-green-400">{achievementProgress.countTripleDoubles}</div>
                 <div className="text-xs text-neutral-400">Triple-Doubles</div>
               </div>
-              <div className="text-center">
+              <div className="text-center p-2 rounded bg-neutral-800/50">
                 <div className="text-2xl font-bold text-cyan-400">{achievementProgress.countDoubleDoubles}</div>
                 <div className="text-xs text-neutral-400">Double-Doubles</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count20AssistGames}</div>
-                <div className="text-xs text-neutral-400">20-Assist Games</div>
+              <div className="text-center p-2 rounded bg-neutral-800/50">
+                <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count10AssistGames}</div>
+                <div className="text-xs text-neutral-400">10+ Assist Games</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-orange-400">{achievementProgress.count20ReboundGames}</div>
-                <div className="text-xs text-neutral-400">20-Rebound Games</div>
+              <div className="text-center p-2 rounded bg-neutral-800/50">
+                <div className="text-2xl font-bold text-orange-400">{achievementProgress.count10ReboundGames}</div>
+                <div className="text-xs text-neutral-400">10+ Rebound Games</div>
               </div>
             </div>
           </div>

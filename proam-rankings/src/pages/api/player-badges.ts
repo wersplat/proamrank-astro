@@ -19,6 +19,13 @@ export const GET: APIRoute = async ({ url, locals }) => {
       .eq('player_id', playerId)
       .single();
 
+    // Fetch game counts from player_stats_tracking_mart (has detailed milestone counts)
+    const { data: trackingData, error: trackingError } = await supa(locals)
+      .from('player_stats_tracking_mart')
+      .select('count_30pt_games, count_40pt_games, count_50pt_games, count_triple_doubles, count_double_doubles, count_10ast_games, count_10reb_games')
+      .eq('player_id', playerId)
+      .single();
+
     // Also fetch already unlocked awards
     const { data: playerAwards, error: awardsError } = await supa(locals)
       .from('player_awards')
@@ -117,23 +124,24 @@ export const GET: APIRoute = async ({ url, locals }) => {
         totalAchievementsEarned: achievementData.total_achievements_earned || 0,
         nextAchievementAlert: achievementData.next_achievement_alert,
         pointsToNextMilestone: achievementData.points_to_next_milestone,
-        reboundsToNextMilestone: achievementData.rebounds_to_next_milestone,
+        reboundsToNextMilestone: null, // Not in achievement mart, would need to calculate
         assistsToNextMilestone: achievementData.assists_to_next_milestone,
         activeStreakType: achievementData.active_streak_type,
         activeStreakLength: achievementData.active_streak_length,
         streakLastGame: achievementData.streak_last_game,
-        // Milestone counts
-        count50PtGames: achievementData.count_50pt_games || 0,
-        count40PtGames: achievementData.count_40pt_games || 0,
-        countTripleDoubles: achievementData.count_triple_doubles || 0,
-        countDoubleDoubles: achievementData.count_double_doubles || 0,
-        count20AssistGames: achievementData.count_20assist_games || 0,
-        count20ReboundGames: achievementData.count_20rebound_games || 0,
-        // Career totals
-        careerPoints: achievementData.career_points || 0,
-        careerAssists: achievementData.career_assists || 0,
-        careerRebounds: achievementData.career_rebounds || 0,
-        careerGames: achievementData.career_games || 0,
+        // Milestone counts from player_stats_tracking_mart
+        count50PtGames: trackingData?.count_50pt_games || 0,
+        count40PtGames: trackingData?.count_40pt_games || 0,
+        count30PtGames: trackingData?.count_30pt_games || 0,
+        countTripleDoubles: trackingData?.count_triple_doubles || 0,
+        countDoubleDoubles: trackingData?.count_double_doubles || 0,
+        count10AssistGames: trackingData?.count_10ast_games || 0,
+        count10ReboundGames: trackingData?.count_10reb_games || 0,
+        // Career totals from achievement_eligibility_mart
+        careerPoints: achievementData.total_points || 0,
+        careerAssists: achievementData.total_assists || 0,
+        careerRebounds: achievementData.total_rebounds || 0,
+        careerGames: achievementData.total_games || 0,
       } : null
     };
 
