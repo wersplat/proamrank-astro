@@ -15,9 +15,9 @@ const tierFilter = Astro.url.searchParams.get('tier') || 'all';
 const sortBy = Astro.url.searchParams.get('sort') || 'rating';
 const searchQuery = Astro.url.searchParams.get('search') || '';
 
-// Build query with filters - join with global rating view
+// Build query with filters - use player_performance_mart for optimized performance
 let query = supa((Astro.locals as any).runtime)
-  .from("v_player_global_rating")
+  .from("player_performance_mart")
   .select("*", { count: 'exact' });
 
 if (positionFilter !== 'all') {
@@ -37,9 +37,9 @@ const { count } = await query;
 
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
-// Fetch players with pagination and filters from global rating view
+// Fetch players with pagination and filters from player_performance_mart
 let dataQuery = supa((Astro.locals as any).runtime)
-  .from("v_player_global_rating")
+  .from("player_performance_mart")
   .select("*");
 
 if (positionFilter !== 'all') {
@@ -58,9 +58,9 @@ if (searchQuery) {
 if (sortBy === 'rating') {
   dataQuery = dataQuery.order("global_rating", { ascending: false });
 } else if (sortBy === 'games') {
-  dataQuery = dataQuery.order("total_games", { ascending: false });
+  dataQuery = dataQuery.order("games_played", { ascending: false });
 } else if (sortBy === 'impact') {
-  dataQuery = dataQuery.order("game_impact", { ascending: false });
+  dataQuery = dataQuery.order("avg_points", { ascending: false }); // Use avg_points as impact metric
 }
 
 const { data, error } = await dataQuery.range(offset, offset + ITEMS_PER_PAGE - 1);
@@ -70,7 +70,7 @@ const players = data ?? [];
 
 // Get unique positions for filter
 const { data: positionsData } = await supa((Astro.locals as any).runtime)
-  .from("v_player_global_rating")
+  .from("player_performance_mart")
   .select("position")
   .not("position", "is", null);
 
@@ -78,7 +78,7 @@ const uniquePositions = [...new Set((positionsData ?? []).map((p: any) => p.posi
 
 // Get unique rating tiers for filter
 const { data: tiersData } = await supa((Astro.locals as any).runtime)
-  .from("v_player_global_rating")
+  .from("player_performance_mart")
   .select("rating_tier")
   .not("rating_tier", "is", null);
 
@@ -240,11 +240,11 @@ const filtersActive = hasActiveFilters(
               </div>
               <div>
                 <dt class="text-neutral-400 text-xs">Games</dt>
-                <dd class="font-semibold text-blue-400">{player.total_games ?? 0}</dd>
+                <dd class="font-semibold text-blue-400">{player.games_played ?? 0}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">Impact</dt>
-                <dd class="font-semibold text-green-400">{player.game_impact?.toFixed(1) ?? '-'}</dd>
+                <dt class="text-neutral-400 text-xs">PPG</dt>
+                <dd class="font-semibold text-green-400">{player.avg_points?.toFixed(1) ?? '-'}</dd>
               </div>
             </dl>
           </a>

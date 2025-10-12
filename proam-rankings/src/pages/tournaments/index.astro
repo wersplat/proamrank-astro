@@ -12,9 +12,9 @@ const gameYearFilter = Astro.url.searchParams.get('year') || 'all';
 const statusFilter = Astro.url.searchParams.get('status') || 'all';
 const tierFilter = Astro.url.searchParams.get('tier') || 'all';
 
-// Build query with filters
+// Build query with filters - use tournament_performance_mart for optimized performance
 let query = supa((Astro.locals as any).runtime)
-  .from("tournament_calendar")
+  .from("tournament_performance_mart")
   .select("*", { count: 'exact' });
 
 if (gameYearFilter !== 'all') {
@@ -26,7 +26,7 @@ if (statusFilter !== 'all') {
 }
 
 if (tierFilter !== 'all') {
-  query = query.eq("tier", tierFilter as any);
+  query = query.eq("tournament_tier", tierFilter as any);
 }
 
 // Get total count
@@ -34,9 +34,9 @@ const { count } = await query;
 
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
-// Fetch tournaments with pagination and filters
+// Fetch tournaments with pagination and filters from tournament_performance_mart
 let dataQuery = supa((Astro.locals as any).runtime)
-  .from("tournament_calendar")
+  .from("tournament_performance_mart")
   .select("*");
 
 if (gameYearFilter !== 'all') {
@@ -48,7 +48,7 @@ if (statusFilter !== 'all') {
 }
 
 if (tierFilter !== 'all') {
-  dataQuery = dataQuery.eq("tier", tierFilter as any);
+  dataQuery = dataQuery.eq("tournament_tier", tierFilter as any);
 }
 
 const { data, error } = await dataQuery
@@ -57,9 +57,9 @@ const { data, error } = await dataQuery
 
 if (error) console.error(error);
 
-// Get available game years for filter
+// Get available game years for filter from mart
 const { data: gameYears } = await supa((Astro.locals as any).runtime)
-  .from("tournament_calendar")
+  .from("tournament_performance_mart")
   .select("game_year")
   .not("game_year", "is", null)
   .order("game_year", { ascending: false });
@@ -84,10 +84,20 @@ function getTierColor(tier: string | null) {
   return tierColors[tier || ''] || 'bg-gray-900 text-gray-300';
 }
 
+// Map tournament_performance_mart data to expected format
 const tournaments = (data ?? []).map((t: any) => ({
-  ...t,
+  id: t.tournament_id,
+  tournament_name: t.tournament_name,
+  tier: t.tournament_tier,
+  status: t.status,
+  prize_pool: t.prize_pool,
+  game_year: t.game_year,
+  start_date: t.start_date,
+  end_date: t.end_date,
+  champion_name: t.champion_team,
+  banner_url: null, // Not in mart
   statusColor: getStatusColor(t.status),
-  tierColor: getTierColor(t.tier),
+  tierColor: getTierColor(t.tournament_tier),
 }));
 
 // Generate page numbers

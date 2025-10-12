@@ -13,11 +13,10 @@ if (!id) {
   return Astro.redirect("/leagues");
 }
 
-// Get league season info from league_calendar view
-// ID is the season_id
+// Use league_season_performance_mart for optimized league season info
 const { data: leagueData } = await supa((Astro.locals as any).runtime)
-  .from("league_calendar")
-  .select("league_id, league_name, league_logo, season_id, season_number, start_date, end_date, is_active, game_year")
+  .from("league_season_performance_mart")
+  .select("*")
   .eq("season_id", id)
   .maybeSingle();
 
@@ -58,16 +57,8 @@ const { data: standings } = await supa((Astro.locals as any).runtime)
   .eq("season_id", seasonId)
   .order("wins", { ascending: false });
 
-// Fetch tier label for this season from event_strength_metrics_mv
-let leagueTier: string | null = null;
-if (seasonId) {
-  const { data: tierRow } = await supa((Astro.locals as any).runtime)
-    .from("event_strength_metrics_mv")
-    .select("tier_label")
-    .eq("season_id", seasonId)
-    .maybeSingle();
-  leagueTier = tierRow?.tier_label ?? null;
-}
+// Tier is already in league_season_performance_mart
+const leagueTier = leagueData?.league_tier || null;
 
 // Tier badge colors to match tournaments
 const tierColors: Record<string, string> = {
@@ -141,65 +132,65 @@ const matches = (matchesData ?? []).map((m: any) => ({
   league: matchLeagueMap.get(m.season_id),
 }));
 
-// Get player statistics from pre-calculated view
+// Get player statistics from player_league_season_stats_mart
 const { data: playerStats } = await supa((Astro.locals as any).runtime)
-  .from("player_stats_by_league_season")
-  .select("player_gamertag, avg_points, avg_assists, avg_rebounds, avg_steals, avg_blocks, games_played")
-  .eq("league_season_id", seasonId)
+  .from("player_league_season_stats_mart")
+  .select("gamertag, ppg, apg, rpg, spg, bpg, games_played")
+  .eq("season_id", seasonId)
   .gte("games_played", 3);
 
 const topScorers = (playerStats ?? [])
-  .sort((a: any, b: any) => b.avg_points - a.avg_points)
+  .sort((a: any, b: any) => b.ppg - a.ppg)
   .slice(0, 5)
   .map((p: any) => ({
-    player_name: p.player_gamertag,
-    points_per_game: p.avg_points,
+    player_name: p.gamertag,
+    points_per_game: p.ppg,
     games_played: p.games_played
   }));
 
 const topAssists = (playerStats ?? [])
-  .sort((a: any, b: any) => b.avg_assists - a.avg_assists)
+  .sort((a: any, b: any) => b.apg - a.apg)
   .slice(0, 5)
   .map((p: any) => ({
-    player_name: p.player_gamertag,
-    assists_per_game: p.avg_assists,
+    player_name: p.gamertag,
+    assists_per_game: p.apg,
     games_played: p.games_played
   }));
 
 const topRebounders = (playerStats ?? [])
-  .sort((a: any, b: any) => b.avg_rebounds - a.avg_rebounds)
+  .sort((a: any, b: any) => b.rpg - a.rpg)
   .slice(0, 5)
   .map((p: any) => ({
-    player_name: p.player_gamertag,
-    rebounds_per_game: p.avg_rebounds,
+    player_name: p.gamertag,
+    rebounds_per_game: p.rpg,
     games_played: p.games_played
   }));
 
 const topSteals = (playerStats ?? [])
-  .sort((a: any, b: any) => b.avg_steals - a.avg_steals)
+  .sort((a: any, b: any) => b.spg - a.spg)
   .slice(0, 5)
   .map((p: any) => ({
-    player_name: p.player_gamertag,
-    steals_per_game: p.avg_steals,
+    player_name: p.gamertag,
+    steals_per_game: p.spg,
     games_played: p.games_played
   }));
 
 const topBlocks = (playerStats ?? [])
-  .sort((a: any, b: any) => b.avg_blocks - a.avg_blocks)
+  .sort((a: any, b: any) => b.bpg - a.bpg)
   .slice(0, 5)
   .map((p: any) => ({
-    player_name: p.player_gamertag,
-    blocks_per_game: p.avg_blocks,
+    player_name: p.gamertag,
+    blocks_per_game: p.bpg,
     games_played: p.games_played
   }));
 
-// Get full player statistics for league statistics tab
+// Get full player statistics for league statistics tab from player_league_season_stats_mart
 const { data: fullPlayerStats } = await supa((Astro.locals as any).runtime)
-  .from("player_stats_by_league_season")
+  .from("player_league_season_stats_mart")
   .select("*")
-  .eq("league_season_id", seasonId)
+  .eq("season_id", seasonId)
   .gte("games_played", 1)
-  .order("avg_points", { ascending: false});
+  .order("ppg", { ascending: false});
 
 // Fetch Open Tournament data
 let openTournament = null;
@@ -341,17 +332,17 @@ if (!league) {
   return Astro.redirect("/leagues");
 }
 
-// Prepare league info object for tabs
+// Prepare league info object for tabs (using data from league_season_performance_mart)
 const leagueInfoForTabs = {
   league_name: league.league_name,
   season_number: league.season_number,
   game_year: league.game_year,
-  start_date: league.start_date,
-  end_date: league.end_date,
+  start_date: null, // Not in mart
+  end_date: null, // Not in mart
   is_active: league.is_active,
   entry_fee: entryFee,
   prize_pool: prizePool,
-  tier: leagueTier,
+  tier: league.league_tier, // From mart
   lg_url: leagueInfo?.lg_url,
   lg_discord: leagueInfo?.lg_discord,
   twitch_url: leagueInfo?.twitch_url,

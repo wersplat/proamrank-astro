@@ -13,11 +13,20 @@ if (!id) {
   return Astro.redirect("/tournaments");
 }
 
-// Get tournament info with organizer details (for social media)
+// Use tournament_performance_mart for optimized tournament data
+const { data: tournamentMartData } = await supa((Astro.locals as any).runtime)
+  .from("tournament_performance_mart")
+  .select("*")
+  .eq("tournament_id", id)
+  .maybeSingle();
+
+// Also get organizer details for social media links
 const { data: tournamentData } = await supa((Astro.locals as any).runtime)
   .from("tournaments")
   .select(`
-    *,
+    id,
+    name,
+    banner_url,
     organizer:leagues_info!tournaments_organizer_id_fkey (
       lg_url,
       lg_discord,
@@ -28,21 +37,27 @@ const { data: tournamentData } = await supa((Astro.locals as any).runtime)
   .eq("id", id)
   .maybeSingle();
 
-// Get tier from event_strength_metrics_mv
-const { data: eventMetrics } = await supa((Astro.locals as any).runtime)
-  .from("event_strength_metrics_mv")
-  .select("tier_label")
-  .eq("tournament_id", id)
-  .maybeSingle();
-
-const tournament = tournamentData;
+// Merge mart data with basic tournament data
+const tournament = tournamentMartData ? {
+  id: tournamentMartData.tournament_id,
+  name: tournamentMartData.tournament_name,
+  banner_url: tournamentData?.banner_url,
+  game_year: tournamentMartData.game_year,
+  start_date: tournamentMartData.start_date,
+  end_date: tournamentMartData.end_date,
+  status: tournamentMartData.status,
+  prize_pool: tournamentMartData.prize_pool,
+  max_rp: tournamentMartData.max_rp,
+  tier: tournamentMartData.tournament_tier,
+  organizer: tournamentData?.organizer,
+} : null;
 
 if (!tournament) {
   return Astro.redirect("/tournaments");
 }
 
-// Use tier from event_strength_metrics_mv if available, otherwise fall back to tournament.tier
-const tournamentTier = eventMetrics?.tier_label || tournament.tier;
+// Use tier from tournament_performance_mart
+const tournamentTier = tournamentMartData?.tournament_tier || null;
 
 // Get tournament results
 const { data: results } = await supa((Astro.locals as any).runtime)

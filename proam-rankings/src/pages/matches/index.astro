@@ -20,28 +20,17 @@ const verifiedFilter = Astro.url.searchParams.get('verified') || 'all';
 const stageFilter = Astro.url.searchParams.get('stage') || 'all';
 const playerSearch = Astro.url.searchParams.get('player') || '';
 
-// Handle player search - get match IDs where player participated
-let playerMatchIds: string[] = [];
-if (playerSearch) {
-  const { data: playerStatsData } = await supa((Astro.locals as any).runtime)
-    .from("player_stats")
-    .select("match_id")
-    .ilike("player_name", `%${playerSearch}%`);
-  
-  playerMatchIds = Array.from(new Set((playerStatsData ?? []).map((ps: any) => ps.match_id)));
-}
-
-// Build count query with filters
+// Build query with filters - use match_analytics_mart for optimized performance
 let countQuery = supa((Astro.locals as any).runtime)
-  .from("v_matches_with_primary_context")
+  .from("match_analytics_mart")
   .select("*", { count: 'exact', head: true });
 
 if (leagueFilter !== 'all') {
-  countQuery = countQuery.eq("season_id", leagueFilter);
+  countQuery = countQuery.contains("season_ids", [leagueFilter]);
 }
 
 if (tournamentFilter !== 'all') {
-  countQuery = countQuery.eq("tournament_id", tournamentFilter);
+  countQuery = countQuery.contains("tournament_ids", [tournamentFilter]);
 }
 
 if (teamFilter !== 'all') {
@@ -53,22 +42,17 @@ if (yearFilter !== 'all') {
 }
 
 if (verifiedFilter === 'verified') {
-  countQuery = countQuery.eq("verified", true);
-} else if (verifiedFilter === 'review') {
-  countQuery = countQuery.eq("verified", false).eq("status", "processed");
+  countQuery = countQuery.eq("is_verified", true);
 } else if (verifiedFilter === 'unverified') {
-  countQuery = countQuery.is("verified", null);
+  countQuery = countQuery.eq("is_verified", false);
 }
 
 if (stageFilter !== 'all') {
   countQuery = countQuery.eq("stage", stageFilter as any);
 }
 
-if (playerSearch && playerMatchIds.length > 0) {
-  countQuery = countQuery.in("id", playerMatchIds);
-} else if (playerSearch && playerMatchIds.length === 0) {
-  // No matches found for this player
-  countQuery = countQuery.eq("id", "00000000-0000-0000-0000-000000000000"); // Invalid ID to return 0 results
+if (playerSearch) {
+  countQuery = countQuery.or(`mvp_name.ilike.%${playerSearch}%`);
 }
 
 const { count } = await countQuery;
@@ -76,15 +60,15 @@ const totalPages = Math.ceil((count || 0) / MATCHES_PER_PAGE);
 
 // Build data query with same filters
 let dataQuery = supa((Astro.locals as any).runtime)
-  .from("v_matches_with_primary_context")
-  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, game_year, boxscore_url, status, verified, league_id, season_id, tournament_id");
+  .from("match_analytics_mart")
+  .select("*");
 
 if (leagueFilter !== 'all') {
-  dataQuery = dataQuery.eq("season_id", leagueFilter);
+  dataQuery = dataQuery.contains("season_ids", [leagueFilter]);
 }
 
 if (tournamentFilter !== 'all') {
-  dataQuery = dataQuery.eq("tournament_id", tournamentFilter);
+  dataQuery = dataQuery.contains("tournament_ids", [tournamentFilter]);
 }
 
 if (teamFilter !== 'all') {
@@ -96,22 +80,17 @@ if (yearFilter !== 'all') {
 }
 
 if (verifiedFilter === 'verified') {
-  dataQuery = dataQuery.eq("verified", true);
-} else if (verifiedFilter === 'review') {
-  dataQuery = dataQuery.eq("verified", false).eq("status", "processed");
+  dataQuery = dataQuery.eq("is_verified", true);
 } else if (verifiedFilter === 'unverified') {
-  dataQuery = dataQuery.is("verified", null);
+  dataQuery = dataQuery.eq("is_verified", false);
 }
 
 if (stageFilter !== 'all') {
   dataQuery = dataQuery.eq("stage", stageFilter as any);
 }
 
-if (playerSearch && playerMatchIds.length > 0) {
-  dataQuery = dataQuery.in("id", playerMatchIds);
-} else if (playerSearch && playerMatchIds.length === 0) {
-  // No matches found for this player
-  dataQuery = dataQuery.eq("id", "00000000-0000-0000-0000-000000000000");
+if (playerSearch) {
+  dataQuery = dataQuery.or(`mvp_name.ilike.%${playerSearch}%`);
 }
 
 const { data: matchesData, error } = await dataQuery
@@ -120,44 +99,38 @@ const { data: matchesData, error } = await dataQuery
 
 if (error) console.error(error);
 
-// Get team info
-const teamIds = Array.from(new Set([
-  ...(matchesData ?? []).map((m: any) => m.team_a_id),
-  ...(matchesData ?? []).map((m: any) => m.team_b_id)
-].filter(Boolean)));
-
-const { data: matchTeamsData } = teamIds.length > 0 ? await supa((Astro.locals as any).runtime)
-  .from("teams")
-  .select("id, name, logo_url")
-  .in("id", teamIds) : { data: [] };
-
-const teamMap = new Map((matchTeamsData ?? []).map((t: any) => [t.id, t]));
-
-// Get league info (use season_id for accurate season lookup)
-const seasonIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.season_id).filter(Boolean)));
-const { data: matchLeaguesData } = seasonIds.length > 0 ? await supa((Astro.locals as any).runtime)
-  .from("league_calendar")
-  .select("season_id, league_id, league_name, season_number")
-  .in("season_id", seasonIds) : { data: [] };
-
-const leagueMap = new Map((matchLeaguesData ?? []).map((l: any) => [l.season_id, l]));
-
-// Get tournament info
-const tournamentIds = Array.from(new Set((matchesData ?? []).map((m: any) => m.tournament_id).filter(Boolean)));
-const { data: matchTournamentsData } = tournamentIds.length > 0 ? await supa((Astro.locals as any).runtime)
-  .from("tournaments")
-  .select("id, name")
-  .in("id", tournamentIds) : { data: [] };
-
-const tournamentMap = new Map((matchTournamentsData ?? []).map((t: any) => [t.id, t]));
-
-// Combine all data
+// Map match_analytics_mart to expected format
 const matches = (matchesData ?? []).map((m: any) => ({
-  ...m,
-  team_a: teamMap.get(m.team_a_id),
-  team_b: teamMap.get(m.team_b_id),
-  league: leagueMap.get(m.season_id),
-  tournament: tournamentMap.get(m.tournament_id),
+  id: m.match_id,
+  played_at: m.played_at,
+  team_a_id: m.team_a_id,
+  team_b_id: m.team_b_id,
+  score_a: m.score_a,
+  score_b: m.score_b,
+  stage: m.stage,
+  game_year: m.game_year,
+  boxscore_url: null, // Not in mart
+  status: m.is_verified ? 'verified' : 'unverified',
+  verified: m.is_verified,
+  team_a: {
+    id: m.team_a_id,
+    name: m.team_a_name,
+    logo_url: m.team_a_logo,
+  },
+  team_b: {
+    id: m.team_b_id,
+    name: m.team_b_name,
+    logo_url: m.team_b_logo,
+  },
+  league: m.league_name ? {
+    season_id: m.season_ids?.[0],
+    league_name: m.league_name,
+    season_number: null, // Not available in mart
+  } : null,
+  tournament: m.tournament_name ? {
+    id: m.tournament_ids?.[0],
+    name: m.tournament_name,
+  } : null,
 }));
 
 // Generate page numbers for pagination
@@ -181,9 +154,9 @@ function getPageNumbers(current: number, total: number): number[] {
 const pageNumbers = getPageNumbers(currentPage, totalPages);
 
 // Fetch filter options
-// Get available leagues/seasons
+// Get available leagues/seasons from league_season_performance_mart
 const { data: filterLeaguesData } = await supa((Astro.locals as any).runtime)
-  .from("league_calendar")
+  .from("league_season_performance_mart")
   .select("season_id, league_name, season_number")
   .order("league_name", { ascending: true });
 
@@ -192,39 +165,39 @@ const leagueOptions = (filterLeaguesData ?? []).map((l: any) => ({
   label: `${l.league_name}${l.season_number ? ` S${l.season_number}` : ''}`
 }));
 
-// Get available tournaments
+// Get available tournaments from tournament_performance_mart
 const { data: filterTournamentsData } = await supa((Astro.locals as any).runtime)
-  .from("tournaments")
-  .select("id, name")
-  .order("name", { ascending: true });
+  .from("tournament_performance_mart")
+  .select("tournament_id, tournament_name")
+  .order("tournament_name", { ascending: true });
 
 const tournamentOptions = (filterTournamentsData ?? []).map((t: any) => ({
-  value: t.id,
-  label: t.name
+  value: t.tournament_id,
+  label: t.tournament_name
 }));
 
-// Get available teams
+// Get available teams from team_analytics_mart
 const { data: filterTeamsData } = await supa((Astro.locals as any).runtime)
-  .from("teams")
-  .select("id, name")
-  .order("name", { ascending: true });
+  .from("team_analytics_mart")
+  .select("team_id, team_name")
+  .order("team_name", { ascending: true });
 
 const teamOptions = (filterTeamsData ?? []).map((t: any) => ({
-  value: t.id,
-  label: t.name
+  value: t.team_id,
+  label: t.team_name
 }));
 
-// Get available years
+// Get available years from match_analytics_mart
 const { data: yearsData } = await supa((Astro.locals as any).runtime)
-  .from("v_matches_with_primary_context")
+  .from("match_analytics_mart")
   .select("game_year")
   .not("game_year", "is", null);
 
 const uniqueYears = [...new Set((yearsData ?? []).map((y: any) => y.game_year))].filter(Boolean).sort().reverse();
 
-// Get available stages
+// Get available stages from match_analytics_mart
 const { data: stagesData } = await supa((Astro.locals as any).runtime)
-  .from("v_matches_with_primary_context")
+  .from("match_analytics_mart")
   .select("stage")
   .not("stage", "is", null);
 

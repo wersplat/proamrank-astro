@@ -19,29 +19,55 @@ const { data: playerData } = await supa(Astro.locals)
   .eq("id", id!)
   .maybeSingle();
 
-// Get player performance view data
+// Use player_performance_mart for optimized performance data
 const { data: perfData } = await supa(Astro.locals)
-  .from("player_performance_view")
-  .select("*")
-  .eq("id", id!)
-  .maybeSingle();
-
-// Get player global rating data
-const { data: globalRatingData } = await supa(Astro.locals)
-  .from("v_player_global_rating")
+  .from("player_performance_mart")
   .select("*")
   .eq("player_id", id!)
   .maybeSingle();
 
-// Get current team info if player has one
+// Get player tracking data (career highs, milestones, etc.) from player_stats_tracking_mart
+const { data: trackingData } = await supa(Astro.locals)
+  .from("player_stats_tracking_mart")
+  .select("*")
+  .eq("player_id", id!)
+  .maybeSingle();
+
+// Get player form/streak data from player_hot_streak_mart
+const { data: streakData } = await supa(Astro.locals)
+  .from("player_hot_streak_mart")
+  .select("*")
+  .eq("player_id", id!)
+  .maybeSingle();
+
+// Combine data for global rating (use performance mart data)
+const globalRatingData = perfData ? {
+  player_id: perfData.player_id,
+  gamertag: perfData.gamertag,
+  position: perfData.position,
+  global_rating: perfData.global_rating,
+  rating_tier: perfData.rating_tier,
+  total_games: perfData.games_played,
+  game_impact: perfData.avg_points, // Use avg_points as impact metric
+} : null;
+
+// Get current team info if player has one - use team_analytics_mart
 let currentTeam = null;
 if (playerData?.current_team_id) {
   const { data: teamData } = await supa(Astro.locals)
-    .from("teams")
-    .select("id, name, logo_url, global_rank")
-    .eq("id", playerData.current_team_id)
+    .from("team_analytics_mart")
+    .select("team_id, team_name, logo_url, elo_rating, current_rp")
+    .eq("team_id", playerData.current_team_id)
     .maybeSingle();
-  currentTeam = teamData;
+  
+  if (teamData) {
+    currentTeam = {
+      id: teamData.team_id,
+      name: teamData.team_name,
+      logo_url: teamData.logo_url,
+      global_rank: null, // Not in mart but not critical for display
+    };
+  }
 }
 
 // Get recent games (limited for initial display)
@@ -108,9 +134,11 @@ const games = (statsData ?? []).map((s: any) => {
 });
 
 const player = playerData;
-const performance = perfData;
+const performance = perfData; // From player_performance_mart
 const recentGames = games;
 const globalRating = globalRatingData;
+const careerTracking = trackingData; // From player_stats_tracking_mart
+const formStreak = streakData; // From player_hot_streak_mart
 
 if (!player) {
   return Astro.redirect("/players");

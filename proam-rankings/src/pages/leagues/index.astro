@@ -13,9 +13,9 @@ const gameYearFilter = Astro.url.searchParams.get('year') || 'all';
 const statusFilter = Astro.url.searchParams.get('status') || 'all';
 const searchQuery = Astro.url.searchParams.get('search') || '';
 
-// Build query with filters
+// Build query with filters - use league_season_performance_mart for optimized performance
 let query = supa((Astro.locals as any).runtime)
-  .from("league_calendar")
+  .from("league_season_performance_mart")
   .select("*", { count: 'exact' });
 
 if (gameYearFilter !== 'all') {
@@ -37,9 +37,9 @@ const { count } = await query;
 
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
-// Fetch leagues with pagination and filters
+// Fetch leagues with pagination and filters from league_season_performance_mart
 let dataQuery = supa((Astro.locals as any).runtime)
-  .from("league_calendar")
+  .from("league_season_performance_mart")
   .select("*");
 
 if (gameYearFilter !== 'all') {
@@ -62,18 +62,19 @@ const { data, error } = await dataQuery
   .range(offset, offset + ITEMS_PER_PAGE - 1);
 
 if (error) console.error(error);
-const leagues = data ?? [];
 
-// Fetch tier labels for each league season from event_strength_metrics_mv
-const seasonIds = (leagues ?? []).map((l: any) => l.season_id).filter(Boolean);
-const { data: leagueTiers } = seasonIds.length > 0
-  ? await supa((Astro.locals as any).runtime)
-      .from("event_strength_metrics_mv")
-      .select("season_id, tier_label")
-      .in("season_id", seasonIds)
-  : { data: [] };
-
-const tierMap = new Map((leagueTiers ?? []).map((t: any) => [t.season_id, t.tier_label]));
+// Map to expected format (league_season_performance_mart has different field names)
+const leagues = (data ?? []).map((l: any) => ({
+  season_id: l.season_id,
+  league_name: l.league_name,
+  league_logo: null, // Not in mart, but can be added
+  season_number: l.season_number,
+  game_year: l.game_year,
+  start_date: null, // Not in mart
+  end_date: null, // Not in mart
+  is_active: l.is_active,
+  tier: l.league_tier, // From mart
+}));
 
 // Tier badge colors to match tournaments
 const tierColors: Record<string, string> = {
@@ -84,9 +85,9 @@ const tierColors: Record<string, string> = {
   'T5': 'bg-gray-900 text-gray-300 border-gray-500',
 };
 
-// Get available game years for filter
+// Get available game years for filter from mart
 const { data: gameYears } = await supa((Astro.locals as any).runtime)
-  .from("league_calendar")
+  .from("league_season_performance_mart")
   .select("game_year")
   .not("game_year", "is", null)
   .order("game_year", { ascending: false });
@@ -227,9 +228,9 @@ const filtersActive = hasActiveFilters(
                 {league.is_active && (
                   <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-900 text-green-300">Active</span>
                 )}
-                {tierMap.get(league.season_id) && (
-                  <span class={`mt-1 inline-block px-2 py-0.5 rounded text-xs font-bold border ${tierColors[tierMap.get(league.season_id) as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
-                    {tierMap.get(league.season_id)}
+                {league.tier && (
+                  <span class={`mt-1 inline-block px-2 py-0.5 rounded text-xs font-bold border ${tierColors[league.tier as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
+                    {league.tier}
                   </span>
                 )}
               </div>

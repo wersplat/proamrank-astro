@@ -13,19 +13,36 @@ if (!id) {
   return Astro.redirect("/teams");
 }
 
-// Get team basic info
+// Use team_analytics_mart for optimized team data
 const { data: teamData } = await supa((Astro.locals as any).runtime)
-  .from("teams")
-  .select("id, name, logo_url, global_rank, current_rp, elo_rating, hybrid_score, leaderboard_tier")
-  .eq("id", id)
-  .maybeSingle();
-
-// Get team performance data
-const { data: perfData } = await supa((Astro.locals as any).runtime)
-  .from("team_performance_view")
+  .from("team_analytics_mart")
   .select("*")
   .eq("team_id", id)
   .maybeSingle();
+
+// Get team momentum and form data from team_momentum_indicators_mart
+const { data: momentumData } = await supa((Astro.locals as any).runtime)
+  .from("team_momentum_indicators_mart")
+  .select("*")
+  .eq("team_id", id)
+  .maybeSingle();
+
+// Get roster analysis from roster_value_comparison_mart
+const { data: rosterData } = await supa((Astro.locals as any).runtime)
+  .from("roster_value_comparison_mart")
+  .select("*")
+  .eq("team_id", id)
+  .maybeSingle();
+
+// Map team_analytics_mart data to expected format
+const perfData = teamData ? {
+  team_id: teamData.team_id,
+  elo_rating: teamData.elo_rating,
+  current_rp: teamData.current_rp,
+  win_percentage: teamData.win_percentage,
+  matches_won: teamData.wins,
+  matches_lost: teamData.losses,
+} : null;
 
 // Get current roster
 const { data: roster } = await supa((Astro.locals as any).runtime)
@@ -101,10 +118,23 @@ const { data: yearStats } = await supa((Astro.locals as any).runtime)
   .eq("team_id", id)
   .order("game_year", { ascending: false });
 
-const team = teamData;
+// Map to expected format for template compatibility
+const team = teamData ? {
+  id: teamData.team_id,
+  name: teamData.team_name,
+  logo_url: teamData.logo_url,
+  global_rank: null, // Not in mart
+  current_rp: teamData.current_rp,
+  elo_rating: teamData.elo_rating,
+  hybrid_score: null, // Not in mart
+  leaderboard_tier: teamData.rp_tier,
+} : null;
+
 const performance = perfData;
 const players = roster ?? [];
 const allMatches = matches;
+const momentum = momentumData;
+const rosterAnalysis = rosterData;
 
 if (!team) {
   return Astro.redirect("/teams");
