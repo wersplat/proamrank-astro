@@ -18,8 +18,30 @@ type Badge = {
   maxProgress?: number;
 };
 
+type AchievementProgress = {
+  totalAchievementsEarned: number;
+  nextAchievementAlert?: string | null;
+  pointsToNextMilestone?: number | null;
+  reboundsToNextMilestone?: number | null;
+  assistsToNextMilestone?: number | null;
+  activeStreakType?: string | null;
+  activeStreakLength?: number | null;
+  streakLastGame?: string | null;
+  count50PtGames: number;
+  count40PtGames: number;
+  countTripleDoubles: number;
+  countDoubleDoubles: number;
+  count20AssistGames: number;
+  count20ReboundGames: number;
+  careerPoints: number;
+  careerAssists: number;
+  careerRebounds: number;
+  careerGames: number;
+};
+
 export default function Badges({ player, playerId }: BadgesProps) {
   const [badges, setBadges] = useState<Badge[]>([]);
+  const [achievementProgress, setAchievementProgress] = useState<AchievementProgress | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all');
@@ -30,15 +52,25 @@ export default function Badges({ player, playerId }: BadgesProps) {
         setLoading(true);
         setError(null);
 
-        // Fetch badges from API
+        // Fetch badges and achievement progress from API
         const response = await fetch(`/api/player-badges?playerId=${playerId}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch badges');
         }
 
-        const badges: Badge[] = await response.json();
-        setBadges(badges);
+        const data = await response.json();
+        
+        // Handle both old format (array) and new format (object with badges & achievementProgress)
+        if (Array.isArray(data)) {
+          // Old format: just array of badges
+          setBadges(data);
+          setAchievementProgress(null);
+        } else {
+          // New format: object with badges and achievementProgress
+          setBadges(data.badges || []);
+          setAchievementProgress(data.achievementProgress || null);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load badges');
       } finally {
@@ -96,7 +128,14 @@ export default function Badges({ player, playerId }: BadgesProps) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-white">Badges & Achievements</h2>
+        <div>
+          <h2 className="text-xl font-bold text-white">Badges & Achievements</h2>
+          {achievementProgress && (
+            <p className="text-sm text-neutral-400 mt-1">
+              🏆 {achievementProgress.totalAchievementsEarned} Total Achievements Earned
+            </p>
+          )}
+        </div>
         {badges.length > 0 && (
         <div className="flex gap-2">
           <button
@@ -133,10 +172,96 @@ export default function Badges({ player, playerId }: BadgesProps) {
         )}
       </div>
 
+      {/* Achievement Progress from achievement_eligibility_mart */}
+      {achievementProgress && (
+        <div className="space-y-4 mb-6">
+          {/* Active Streak */}
+          {achievementProgress.activeStreakType && (
+            <div className="rounded-lg border border-orange-800/50 p-4 bg-orange-900/10">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🔥</span>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-orange-300">Active Streak</h3>
+                  <p className="text-white font-bold">
+                    {achievementProgress.activeStreakLength} {achievementProgress.activeStreakType}
+                  </p>
+                  {achievementProgress.streakLastGame && (
+                    <p className="text-xs text-neutral-400 mt-1">
+                      Last: {new Date(achievementProgress.streakLastGame).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Next Milestone Alert */}
+          {achievementProgress.nextAchievementAlert && (
+            <div className="rounded-lg border border-yellow-800/50 p-4 bg-yellow-900/10">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🎯</span>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-yellow-300">Close to Milestone!</h3>
+                  <p className="text-white font-medium">{achievementProgress.nextAchievementAlert}</p>
+                  <div className="flex gap-4 mt-2 text-sm">
+                    {achievementProgress.pointsToNextMilestone !== null && achievementProgress.pointsToNextMilestone !== undefined && (
+                      <span className="text-neutral-300">
+                        <span className="text-yellow-400 font-semibold">{achievementProgress.pointsToNextMilestone}</span> points away
+                      </span>
+                    )}
+                    {achievementProgress.assistsToNextMilestone !== null && achievementProgress.assistsToNextMilestone !== undefined && (
+                      <span className="text-neutral-300">
+                        <span className="text-yellow-400 font-semibold">{achievementProgress.assistsToNextMilestone}</span> assists away
+                      </span>
+                    )}
+                    {achievementProgress.reboundsToNextMilestone !== null && achievementProgress.reboundsToNextMilestone !== undefined && (
+                      <span className="text-neutral-300">
+                        <span className="text-yellow-400 font-semibold">{achievementProgress.reboundsToNextMilestone}</span> rebounds away
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Milestone Achievements */}
+          <div className="rounded-lg border border-neutral-800 p-4 bg-neutral-900">
+            <h3 className="text-sm font-semibold mb-3 text-neutral-300">Career Milestones</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-400">{achievementProgress.count50PtGames}</div>
+                <div className="text-xs text-neutral-400">50-Point Games</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-400">{achievementProgress.count40PtGames}</div>
+                <div className="text-xs text-neutral-400">40-Point Games</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-400">{achievementProgress.countTripleDoubles}</div>
+                <div className="text-xs text-neutral-400">Triple-Doubles</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-cyan-400">{achievementProgress.countDoubleDoubles}</div>
+                <div className="text-xs text-neutral-400">Double-Doubles</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count20AssistGames}</div>
+                <div className="text-xs text-neutral-400">20-Assist Games</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-orange-400">{achievementProgress.count20ReboundGames}</div>
+                <div className="text-xs text-neutral-400">20-Rebound Games</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Progress Summary */}
       {badges.length > 0 && (
       <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900 mb-6">
-        <h3 className="text-lg font-semibold mb-4 text-white">Progress Summary</h3>
+        <h3 className="text-lg font-semibold mb-4 text-white">Badges Progress</h3>
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <div className="flex justify-between mb-2">
@@ -146,13 +271,13 @@ export default function Badges({ player, playerId }: BadgesProps) {
             <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-blue-500 to-green-400 transition-all duration-300"
-                style={{ width: `${(unlockedCount / totalCount) * 100}%` }}
+                style={{ width: `${totalCount > 0 ? (unlockedCount / totalCount) * 100 : 0}%` }}
               />
             </div>
           </div>
           <div className="text-center min-w-[80px]">
             <div className="text-2xl font-bold text-blue-400">
-              {Math.round((unlockedCount / totalCount) * 100)}%
+              {totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0}%
             </div>
             <div className="text-neutral-400 text-sm">Complete</div>
           </div>
