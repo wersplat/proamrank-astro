@@ -58,6 +58,26 @@ const { data: standings } = await supa((Astro.locals as any).runtime)
   .eq("season_id", seasonId)
   .order("wins", { ascending: false });
 
+// Fetch tier label for this season from event_strength_metrics_mv
+let leagueTier: string | null = null;
+if (seasonId) {
+  const { data: tierRow } = await supa((Astro.locals as any).runtime)
+    .from("event_strength_metrics_mv")
+    .select("tier_label")
+    .eq("season_id", seasonId)
+    .maybeSingle();
+  leagueTier = tierRow?.tier_label ?? null;
+}
+
+// Tier badge colors to match tournaments
+const tierColors: Record<string, string> = {
+  'T1': 'bg-purple-900 text-purple-300 border-purple-500',
+  'T2': 'bg-blue-900 text-blue-300 border-blue-500',
+  'T3': 'bg-green-900 text-green-300 border-green-500',
+  'T4': 'bg-yellow-900 text-yellow-300 border-yellow-500',
+  'T5': 'bg-gray-900 text-gray-300 border-gray-500',
+};
+
 // Fetch teams data separately and merge with standings
 let teamsWithData = standings ?? [];
 if (standings && standings.length > 0) {
@@ -199,6 +219,7 @@ const leagueInfoForTabs = {
   is_active: league.is_active,
   entry_fee: entryFee,
   prize_pool: prizePool,
+  tier: leagueTier,
   lg_url: leagueInfo?.lg_url,
   lg_discord: leagueInfo?.lg_discord,
   twitch_url: leagueInfo?.twitch_url,
@@ -227,6 +248,11 @@ const leagueInfoForTabs = {
         <div class="flex-1">
           <h1 class="text-3xl font-bold mb-2">{league.league_name}</h1>
           <div class="flex flex-wrap gap-4 text-sm mb-3">
+            {leagueTier && (
+              <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColors[leagueTier as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
+                {leagueTier} Tier
+              </span>
+            )}
             <div>
               <span class="text-neutral-400">Season:</span>
               <span class="ml-2 font-semibold">{league.season_number ?? '-'}</span>

@@ -64,6 +64,26 @@ const { data, error } = await dataQuery
 if (error) console.error(error);
 const leagues = data ?? [];
 
+// Fetch tier labels for each league season from event_strength_metrics_mv
+const seasonIds = (leagues ?? []).map((l: any) => l.season_id).filter(Boolean);
+const { data: leagueTiers } = seasonIds.length > 0
+  ? await supa((Astro.locals as any).runtime)
+      .from("event_strength_metrics_mv")
+      .select("season_id, tier_label")
+      .in("season_id", seasonIds)
+  : { data: [] };
+
+const tierMap = new Map((leagueTiers ?? []).map((t: any) => [t.season_id, t.tier_label]));
+
+// Tier badge colors to match tournaments
+const tierColors: Record<string, string> = {
+  'T1': 'bg-purple-900 text-purple-300 border-purple-500',
+  'T2': 'bg-blue-900 text-blue-300 border-blue-500',
+  'T3': 'bg-green-900 text-green-300 border-green-500',
+  'T4': 'bg-yellow-900 text-yellow-300 border-yellow-500',
+  'T5': 'bg-gray-900 text-gray-300 border-gray-500',
+};
+
 // Get available game years for filter
 const { data: gameYears } = await supa((Astro.locals as any).runtime)
   .from("league_calendar")
@@ -206,6 +226,11 @@ const filtersActive = hasActiveFilters(
                 <h2 class="font-bold text-lg truncate">{league.league_name}</h2>
                 {league.is_active && (
                   <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-900 text-green-300">Active</span>
+                )}
+                {tierMap.get(league.season_id) && (
+                  <span class={`mt-1 inline-block px-2 py-0.5 rounded text-xs font-bold border ${tierColors[tierMap.get(league.season_id) as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
+                    {tierMap.get(league.season_id)} Tier
+                  </span>
                 )}
               </div>
             </div>

@@ -94,6 +94,7 @@ type LeagueInfo = {
   is_active?: boolean;
   entry_fee?: number;
   prize_pool?: number;
+  tier?: string;
   lg_url?: string;
   lg_discord?: string;
   twitch_url?: string;
@@ -855,6 +856,27 @@ export default function LeagueTabsIsland({
           <div className="space-y-4">
             {leagueInfo ? (
               <>
+                {leagueInfo.tier && (
+                  <div>
+                    <div className="text-sm text-neutral-400 mb-1">Tier</div>
+                    {/* Match tournament styling */}
+                    <span
+                      className={`px-3 py-1 rounded text-sm font-bold border ${
+                        leagueInfo.tier === 'T1'
+                          ? 'bg-purple-900 text-purple-300 border-purple-500'
+                          : leagueInfo.tier === 'T2'
+                          ? 'bg-blue-900 text-blue-300 border-blue-500'
+                          : leagueInfo.tier === 'T3'
+                          ? 'bg-green-900 text-green-300 border-green-500'
+                          : leagueInfo.tier === 'T4'
+                          ? 'bg-yellow-900 text-yellow-300 border-yellow-500'
+                          : 'bg-gray-900 text-gray-300 border-gray-500'
+                      }`}
+                    >
+                      {leagueInfo.tier} Tier
+                    </span>
+                  </div>
+                )}
                 <div className="grid gap-4 sm:grid-cols-2">
                   {leagueInfo.season_number && (
                     <div>
