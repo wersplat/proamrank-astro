@@ -226,6 +226,24 @@ if (openTournamentData) {
       .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id")
       .in("id", openMatchIds);
 
+    // Get team data for tournament teams (they might not be in season matches)
+    const tournamentTeamIds = Array.from(new Set([
+      ...(openMatchDetails ?? []).map((m: any) => m.team_a_id),
+      ...(openMatchDetails ?? []).map((m: any) => m.team_b_id)
+    ].filter(Boolean)));
+
+    const { data: tournamentTeamsData } = tournamentTeamIds.length > 0 ? await supa((Astro.locals as any).runtime)
+      .from("teams")
+      .select("id, name, logo_url")
+      .in("id", tournamentTeamIds) : { data: [] };
+
+    // Add tournament teams to teamMap
+    (tournamentTeamsData ?? []).forEach((t: any) => {
+      if (!teamMap.has(t.id)) {
+        teamMap.set(t.id, t);
+      }
+    });
+
     // Combine match details with stage/series info and team data
     openMatches = (openMatchDetails ?? []).map((match: any) => {
       const matchInfo = openMatchesData?.find((m: any) => m.match_id === match.id);
@@ -273,6 +291,24 @@ if (playoffTournamentData) {
       .from("v_matches_with_primary_context")
       .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id")
       .in("id", playoffMatchIds);
+
+    // Get team data for tournament teams (they might not be in season matches)
+    const playoffTeamIds = Array.from(new Set([
+      ...(playoffMatchDetails ?? []).map((m: any) => m.team_a_id),
+      ...(playoffMatchDetails ?? []).map((m: any) => m.team_b_id)
+    ].filter(Boolean)));
+
+    const { data: playoffTeamsData } = playoffTeamIds.length > 0 ? await supa((Astro.locals as any).runtime)
+      .from("teams")
+      .select("id, name, logo_url")
+      .in("id", playoffTeamIds) : { data: [] };
+
+    // Add playoff tournament teams to teamMap
+    (playoffTeamsData ?? []).forEach((t: any) => {
+      if (!teamMap.has(t.id)) {
+        teamMap.set(t.id, t);
+      }
+    });
 
     // Combine match details with stage/series info and team data
     playoffMatches = (playoffMatchDetails ?? []).map((match: any) => {
