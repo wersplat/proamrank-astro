@@ -58,16 +58,26 @@ if (searchQuery) {
 
 const { data, error } = await dataQuery
   .order("is_active", { ascending: false })
-  .order("start_date", { ascending: false })
+  .order("last_match_date", { ascending: false })
   .range(offset, offset + ITEMS_PER_PAGE - 1);
 
 if (error) console.error(error);
 
+// Get league logos from leagues_info table
+const leagueIds = Array.from(new Set((data ?? []).map((l: any) => l.league_id).filter(Boolean)));
+const { data: leagueLogos } = leagueIds.length > 0 ? await supa((Astro.locals as any).runtime)
+  .from("leagues_info")
+  .select("id, lg_logo_url")
+  .in("id", leagueIds) : { data: [] };
+
+const logoMap = new Map((leagueLogos ?? []).map((l: any) => [l.id, l.lg_logo_url]));
+
 // Map to expected format (league_season_performance_mart has different field names)
 const leagues = (data ?? []).map((l: any) => ({
   season_id: l.season_id,
+  league_id: l.league_id,
   league_name: l.league_name,
-  league_logo: null, // Not in mart, but can be added
+  league_logo: logoMap.get(l.league_id),
   season_number: l.season_number,
   game_year: l.game_year,
   start_date: null, // Not in mart

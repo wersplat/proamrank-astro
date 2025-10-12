@@ -185,12 +185,41 @@ const topBlocks = (playerStats ?? [])
   }));
 
 // Get full player statistics for league statistics tab from player_league_season_stats_mart
-const { data: fullPlayerStats } = await supa((Astro.locals as any).runtime)
+const { data: fullPlayerStatsRaw } = await supa((Astro.locals as any).runtime)
   .from("player_league_season_stats_mart")
   .select("*")
   .eq("season_id", seasonId)
   .gte("games_played", 1)
   .order("ppg", { ascending: false});
+
+// Map mart fields to expected component fields
+const fullPlayerStats = (fullPlayerStatsRaw ?? []).map((p: any) => ({
+  player_id: p.player_id,
+  player_gamertag: p.gamertag,
+  games_played: p.games_played,
+  points: p.total_points,
+  rebounds: p.total_rebounds,
+  assists: p.total_assists,
+  steals: p.total_steals,
+  blocks: p.total_blocks,
+  turnovers: p.total_turnovers || 0,
+  fouls: p.total_fouls || 0,
+  fgm: p.total_fgm || 0,
+  fga: p.total_fga || 0,
+  ftm: p.total_ftm || 0,
+  fta: p.total_fta || 0,
+  three_points_made: p.total_threes || 0,
+  three_points_attempted: p.total_three_attempts || 0,
+  plus_minus: 0,
+  performance_score: 0,
+  avg_points: p.ppg,
+  avg_rebounds: p.rpg,
+  avg_assists: p.apg,
+  avg_steals: p.spg,
+  avg_blocks: p.bpg,
+  avg_turnovers: p.tpg || 0,
+  avg_fouls: p.fpg || 0,
+}));
 
 // Fetch Open Tournament data
 let openTournament = null;

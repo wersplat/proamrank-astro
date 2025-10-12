@@ -110,7 +110,7 @@ const matches = (matchesData ?? []).map((m: any) => ({
   stage: m.stage,
   game_year: m.game_year,
   boxscore_url: null, // Not in mart
-  status: m.is_verified ? 'verified' : 'unverified',
+  status: m.is_verified ? 'verified' : 'processed', // 'processed' for under review
   verified: m.is_verified,
   team_a: {
     id: m.team_a_id,

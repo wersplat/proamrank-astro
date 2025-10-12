@@ -118,15 +118,29 @@ const { data: yearStats } = await supa((Astro.locals as any).runtime)
   .eq("team_id", id)
   .order("game_year", { ascending: false });
 
+// Fetch global_rank from teams table since it's not in the mart
+let globalRank = null;
+let hybridScore = null;
+if (teamData) {
+  const { data: rankData } = await supa((Astro.locals as any).runtime)
+    .from("teams")
+    .select("global_rank, hybrid_score")
+    .eq("id", id)
+    .maybeSingle();
+  
+  globalRank = rankData?.global_rank;
+  hybridScore = rankData?.hybrid_score;
+}
+
 // Map to expected format for template compatibility
 const team = teamData ? {
   id: teamData.team_id,
   name: teamData.team_name,
   logo_url: teamData.logo_url,
-  global_rank: null, // Not in mart
+  global_rank: globalRank,
   current_rp: teamData.current_rp,
   elo_rating: teamData.elo_rating,
-  hybrid_score: null, // Not in mart
+  hybrid_score: hybridScore,
   leaderboard_tier: teamData.rp_tier,
 } : null;
 

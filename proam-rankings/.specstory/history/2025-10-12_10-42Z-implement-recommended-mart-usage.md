@@ -2300,3 +2300,353 @@ All the changes maintain backward compatibility with existing templates and comp
 
 ---
 
+_**User (2025-10-12 00:45Z)**_
+
+player stats table now shows no names or stats, the team page shows no global rank, leagues page not showing league logos, matches page table no longer showing the verifed or under review badge
+Home global ranking table empty
+
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user is reporting several issues after implementing the marts:
+1. Player stats table shows no names or stats
+2. Team page shows no global rank
+3. Leagues page not showing league logos
+4. Matches page table no longer showing verified/under review badges
+5. Home global ranking table empty
+
+Let me analyze what went wrong:
+
+1. **Home global ranking table empty**: I changed it to use `team_analytics_mart` but there might be no data in the mart, or the games_played filter might be too restrictive.
+
+2. **Team page shows no global rank**: I set `global_rank: null` since it's not in the mart. But we should fetch it from the teams table separately or calculate a rank.
+
+3. **Leagues page not showing league logos**: I set `league_logo: null` since it's not in the mart. We need to fetch this separately.
+
+4. **Matches page verified badge**: The mapping might be wrong for the verified status.
+
+5. **Player stats table**: Need to check what's happening with the player stats.
+
+Let me fix these issues one by one.</details></think>
+
+---
+
+I see the issues. The mart implementation is missing some fields that aren't in the marts but are still needed for display. Let me fix these issues:
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/RankTableIsland.tsx
+
+---
+
+<think><details><summary>Thought Process</summary>The RankTableIsland component looks fine. The issue is likely that the `team_analytics_mart` might not have data, or my filter is too restrictive. Let me check the homepage query and fix the issues:
+
+1. Remove the `gte('games_played', 1)` filter as it might be filtering out teams
+2. Make sure we're ordering correctly
+3. Fix the league logos issue
+4. Fix the matches verified badge issue
+5. Fix the team global rank issue</details></think>
+
+---
+
+Let me fix the Homepage first - the issue might be with the filter or the mart not having data:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 2
+
+```diff
+@@ -5,6 +5,7 @@
+  import "../styles/global.css";
+  
+- // Use team_analytics_mart for optimized performance
+- const { data, error } = await supa(Astro.locals.runtime)
++ // Try team_analytics_mart first, fall back to teams table if mart is empty
++ let data, error;
++ const { data: martData, error: martError } = await supa(Astro.locals.runtime)
+    .from("team_analytics_mart")
+    .select(`
+```
+
+**Chunk 2**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -14,5 +15,4 @@
+      elo_rating,
+      current_rp,
+-     global_rank,
+      rp_tier,
+      wins,
+```
+
+**Chunk 3**
+Lines added: 25, lines removed: undefined
+
+```diff
+@@ -26,4 +26,29 @@
+    .limit(100);
+  
++ // If mart is empty or has error, fall back to teams table
++ if (!martData || martData.length === 0 || martError) {
++   const { data: teamsData, error: teamsError } = await supa(Astro.locals.runtime)
++     .from("teams")
++     .select(`
++       id,
++       name,
++       logo_url,
++       elo_rating,
++       current_rp,
++       global_rank,
++       leaderboard_tier,
++       hybrid_score
++     `)
++     .eq("is_active", true)
++     .order("hybrid_score", { ascending: false })
++     .limit(100);
++   
++   data = teamsData;
++   error = teamsError;
++ } else {
++   data = martData;
++   error = martError;
++ }
++ 
+  if (error) console.error(error);
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to fix the mapping to handle both sources:</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 6, lines removed: 9
+
+```diff
+@@ -54,16 +54,13 @@
+  
+  // Map to expected format (maintaining compatibility with existing component)
+- const rows = (data ?? []).map(team => ({
+-   team_id: team.team_id,
+-   team_name: team.team_name,
++ const rows = (data ?? []).map((team: any) => ({
++   team_id: team.team_id || team.id,
++   team_name: team.team_name || team.name,
+    logo_url: team.logo_url,
+    elo_rating: team.elo_rating,
+    current_rp: team.current_rp,
+-   global_rank: team.global_rank,
+-   leaderboard_tier: team.rp_tier,
+-   hybrid_score: Math.round((team.win_percentage || 0) * 10 + (team.elo_rating || 1500) / 10),
+-   wins: team.wins,
+-   losses: team.losses,
+-   win_percentage: team.win_percentage,
++   global_rank: team.global_rank || null,
++   leaderboard_tier: team.rp_tier || team.leaderboard_tier,
++   hybrid_score: team.hybrid_score || Math.round((team.win_percentage || 0) * 10 + (team.elo_rating || 1500) / 10),
+  }));
+  ---
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me fix the leagues page to fetch league logos:</details></think>
+
+---
+
+Now let me fix the Leagues page to fetch league logos:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/index.astro</summary>
+
+**Chunk 1**
+Lines added: 12, lines removed: 2
+
+```diff
+@@ -59,14 +59,24 @@
+  const { data, error } = await dataQuery
+    .order("is_active", { ascending: false })
+-   .order("start_date", { ascending: false })
++   .order("last_match_date", { ascending: false })
+    .range(offset, offset + ITEMS_PER_PAGE - 1);
+  
+  if (error) console.error(error);
++ 
++ // Get league logos from leagues_info table
++ const leagueIds = Array.from(new Set((data ?? []).map((l: any) => l.league_id).filter(Boolean)));
++ const { data: leagueLogos } = leagueIds.length > 0 ? await supa((Astro.locals as any).runtime)
++   .from("leagues_info")
++   .select("id, lg_logo_url")
++   .in("id", leagueIds) : { data: [] };
++ 
++ const logoMap = new Map((leagueLogos ?? []).map((l: any) => [l.id, l.lg_logo_url]));
+  
+  // Map to expected format (league_season_performance_mart has different field names)
+  const leagues = (data ?? []).map((l: any) => ({
+    season_id: l.season_id,
++   league_id: l.league_id,
+    league_name: l.league_name,
+-   league_logo: null, // Not in mart, but can be added
++   league_logo: logoMap.get(l.league_id),
+    season_number: l.season_number,
+    game_year: l.game_year,
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me fix the matches page verified badge issue. The problem is in the status mapping:</details></think>
+
+---
+
+Now let me fix the Matches page to show the verified/under review badges correctly:
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx
+
+---
+
+<think><details><summary>Thought Process</summary>The MatchesListIsland component checks for `match.verified === true` and `match.status === 'processed' && match.verified === false`. 
+
+But in my mapping in the matches page, I set:
+```typescript
+status: m.is_verified ? 'verified' : 'unverified',
+verified: m.is_verified,
+```
+
+So the status is 'verified' or 'unverified', not 'processed'. I need to fix this mapping.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matches/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -111,5 +111,5 @@
+    game_year: m.game_year,
+    boxscore_url: null, // Not in mart
+-   status: m.is_verified ? 'verified' : 'unverified',
++   status: m.is_verified ? 'verified' : 'processed', // 'processed' for under review
+    verified: m.is_verified,
+    team_a: {
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to fix the team page to show global_rank. Since global_rank isn't in team_analytics_mart, I need to either:
+1. Fetch it separately from the teams table
+2. Calculate a rank based on the data we have
+
+Let me fetch it separately:</details></think>
+
+---
+
+Now let me fix the Team page to show global rank by fetching it separately:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 16, lines removed: 2
+
+```diff
+@@ -119,13 +119,27 @@
+    .order("game_year", { ascending: false });
+  
++ // Fetch global_rank from teams table since it's not in the mart
++ let globalRank = null;
++ let hybridScore = null;
++ if (teamData) {
++   const { data: rankData } = await supa((Astro.locals as any).runtime)
++     .from("teams")
++     .select("global_rank, hybrid_score")
++     .eq("id", id)
++     .maybeSingle();
++   
++   globalRank = rankData?.global_rank;
++   hybridScore = rankData?.hybrid_score;
++ }
++ 
+  // Map to expected format for template compatibility
+  const team = teamData ? {
+    id: teamData.team_id,
+    name: teamData.team_name,
+    logo_url: teamData.logo_url,
+-   global_rank: null, // Not in mart
++   global_rank: globalRank,
+    current_rp: teamData.current_rp,
+    elo_rating: teamData.elo_rating,
+-   hybrid_score: null, // Not in mart
++   hybrid_score: hybridScore,
+    leaderboard_tier: teamData.rp_tier,
+  } : null;
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to address the "player stats table shows no names or stats" issue. Let me check which player stats table is being referred to. It could be:
+1. The player games tab on the player profile page
+2. The league player statistics tab
+3. Something else
+
+Let me check the player tabs component to see if there's an issue with how we're passing data:</details></think>
+
+---
+
+Now let me check which player stats table is having issues. Let me look at the player league season stats:
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx
+
+---
+
+
+
+---
+
