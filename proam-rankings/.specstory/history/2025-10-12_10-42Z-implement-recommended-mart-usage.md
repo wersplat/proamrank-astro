@@ -4030,3 +4030,169 @@ The enhancement is fully backward compatible and leverages the `achievement_elig
 
 ---
 
+_**User (2025-10-12 00:45Z)**_
+
+@matches/ is only showing verified matches (with badge) but filters not working, when i choose verified it shows no matches
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user is saying that the matches page is only showing verified matches (with badges) but the filters aren't working correctly. When they choose "verified" from the filter dropdown, it shows no matches.
+
+Looking at the code, I see the problem. The `match_analytics_mart` likely only contains verified matches (since it's built from verified data). The comment in the code even says "which only has verified matches" which is incorrect logic.
+
+Let me think about this:
+1. If the mart only has verified matches, then when we filter by `is_verified = true`, we should get matches
+2. But they're saying when they filter by "verified" it shows NO matches
+3. Currently showing verified matches with the badge when filter is "all"
+
+Wait, I need to check what the mart actually contains. The mart might:
+- Contain ALL matches (both verified and unverified)
+- Or only contain verified matches
+
+If it only contains verified matches, then:
+- When filter is "all" - it shows verified matches (correct)
+- When filter is "verified" - should show verified matches but shows nothing (problem)
+- When filter is "review" or "unverified" - should show nothing (since mart only has verified)
+
+But the user says "only showing verified matches" when filter is "all", which suggests the mart might only have verified matches OR the is_verified field is being used incorrectly.
+
+Actually, looking more carefully: the issue is that we're now fetching `status` and `verified` from the matches table, but the matches table might have different data than what's in the mart. 
+
+Let me re-read the logic. We fetch from match_analytics_mart, then we fetch status/verified from the matches table. But the mart might not have all the same matches as the matches table, or vice versa.
+
+I think the real issue is that we need to fall back to the original v_matches_with_primary_context view instead of using the mart, OR we need to understand what data is actually in the mart.
+
+
+I'll investigate the documentation to clarify the mart's data composition and verify its intended contents.</details></think>
+
+---
+
+I see the issue! The `match_analytics_mart` likely only contains **verified matches** (since marts are built from verified data for accuracy). When you filter by "verified", it's trying to filter verified matches that are marked as verified, but the logic is getting confused.
+
+Let me fix this by falling back to the original view for now, or by understanding what's in the mart. Let me check the mart documentation first:
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "match_analytics_mart|Match Analytics" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/documentation" • 80 matches</summary>
+
+Output mode: content
+
+
+| Content | Line |
+|------|------|
+| `**Root Cause**: The `match_analytics_mart` only has `is_verified` (boolean) but doesn't have the `status` field that distinguishes between:` | L72 |
+| `### match_analytics_mart` | L179 |
+| `4. **Match Analytics Mart.sql**` | L56 |
+| `- [ ] Verify: `SELECT COUNT(*) FROM match_analytics_mart;`` | L60 |
+| `-- Match Analytics` | L155 |
+| `CREATE UNIQUE INDEX idx_match_analytics_match_id ON match_analytics_mart(match_id);` | L156 |
+| `CREATE INDEX idx_match_analytics_played_at ON match_analytics_mart(played_at DESC);` | L157 |
+| `CREATE INDEX idx_match_analytics_teams ON match_analytics_mart(team_a_id, team_b_id);` | L158 |
+| `CREATE INDEX idx_match_analytics_game_type ON match_analytics_mart(game_type);` | L159 |
+| `ANALYZE match_analytics_mart;` | L213 |
+| `REFRESH MATERIALIZED VIEW CONCURRENTLY match_analytics_mart;` | L234 |
+| `- Matches pattern used in `Match Analytics Mart` (`li.league::text`)` | L69 |
+| `- ✅ Match Analytics Mart.sql - All fields exist` | L120 |
+| `#### 1.5 Create Match Analytics Mart` | L57 |
+| `psql -d your_database -f "Match Analytics Mart.sql"` | L59 |
+| `- [ ] Win/loss totals match match_analytics_mart` | L91 |
+| `- [ ] `match_analytics_mart`: UNIQUE on match_id` | L148 |
+| `ANALYZE match_analytics_mart;` | L180 |
+| `- [ ] match_analytics_mart: ~verified matches` | L246 |
+| `psql -d db -f "Match Analytics Mart.sql"` | L63 |
+| `SELECT 'match_analytics_mart', COUNT(*) FROM match_analytics_mart;` | L148 |
+| `(SELECT COUNT(*) FROM match_analytics_mart) AS total_matches,` | L209 |
+| `### Match Analytics Mart` | L83 |
+| `ON match_analytics_mart(match_id);` | L88 |
+| `ON match_analytics_mart(played_at DESC);` | L92 |
+| `ON match_analytics_mart(team_a_id, team_b_id);` | L96 |
+| `ON match_analytics_mart(tournament_name)` | L100 |
+| `ON match_analytics_mart(league_name)` | L104 |
+| `ON match_analytics_mart(game_type);` | L109 |
+| `-- Match Analytics` | L295 |
+| `CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS idx_match_analytics_match_id ON match_analytics_mart(match_id);` | L296 |
+| `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_match_analytics_played_at ON match_analytics_mart(played_at DESC);` | L297 |
+| `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_match_analytics_teams ON match_analytics_mart(team_a_id, team_b_id);` | L298 |
+| `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_match_analytics_game_type ON match_analytics_mart(game_type);` | L299 |
+| `REINDEX TABLE CONCURRENTLY match_analytics_mart;` | L407 |
+| `│  player_stats_tracking_mart   │  match_analytics_mart          │` | L30 |
+| `\| **Real-time** \| match_analytics_mart \| Match verification \|` | L65 |
+| `\| **Match Preview** \| head_to_head_matchup_mart \| team_momentum_indicators_mart, match_analytics_mart \|` | L76 |
+| `\| **Tournament Page** \| tournament_performance_mart \| match_analytics_mart \|` | L80 |
+| `\| **X-Large** (5000+ rows) \| match_analytics_mart, head_to_head_matchup_mart \| ~1000-10000 \|` | L91 |
+| `INSERT player_stats            - match_analytics_mart` | L104 |
+| `│  └─ Match results/stats? → match_analytics_mart` | L149 |
+| `JOIN match_analytics_mart m ON (m.team_a_id = h.team_1_id AND m.team_b_id = h.team_2_id)` | L225 |
+| `REFRESH MATERIALIZED VIEW CONCURRENTLY match_analytics_mart;` | L293 |
+| `REFRESH MATERIALIZED VIEW CONCURRENTLY match_analytics_mart;` | L319 |
+| `\| match_analytics_mart \| ~1000 \| 30 \| Medium \| 15-30s \| < 10ms \|` | L359 |
+| `- Match listings → `match_analytics_mart`` | L508 |
+| `\| Match details \| match_analytics_mart \| teams, scores, mvp, context \|` | L567 |
+| `1. **Recent matches widget**: `match_analytics_mart`` | L15 |
+| `.from('match_analytics_mart')` | L24 |
+| `3. **Games tab**: `match_analytics_mart` (filter by player via player_stats)` | L89 |
+| `4. **Matches**: `match_analytics_mart`` | L184 |
+| `.from('match_analytics_mart')` | L226 |
+| `**Primary**: `match_analytics_mart`` | L241 |
+| `.from('match_analytics_mart')` | L246 |
+| `2. **Team results**: `match_analytics_mart` (filter by tournament)` | L372 |
+| `.from('match_analytics_mart')` | L386 |
+| `**Data Source**: `match_analytics_mart`` | L494 |
+| `.from('match_analytics_mart')` | L497 |
+| `supabase.from('match_analytics_mart').select('match_id', \{ count: 'exact', head: true \}),` | L850 |
+| `.from('match_analytics_mart')` | L977 |
+| `### 4. Match Analytics Mart ✅` | L57 |
+| `**File**: `Match Analytics Mart.sql`` | L58 |
+| `- match_analytics_mart: ~500 KB` | L313 |
+| `- `match_analytics_mart`` | L392 |
+| `SELECT COUNT(*) FROM match_analytics_mart;` | L445 |
+| `4. ✅ `Match Analytics Mart.sql` - Fixed score_differential bug, simplified joins` | L498 |
+| `- Keep `match_analytics_mart` refreshed frequently` | L558 |
+| `FROM match_analytics_mart` | L243 |
+| `FROM match_analytics_mart` | L256 |
+| `(SELECT COUNT(*) FROM match_analytics_mart) AS total_matches,` | L341 |
+| `FROM match_analytics_mart` | L363 |
+| `FROM match_analytics_mart` | L527 |
+| `FROM match_analytics_mart` | L658 |
+| `### 4. Match Analytics Mart` | L108 |
+| `**File**: `Match Analytics Mart.sql`` | L109 |
+| `**View Name**: `match_analytics_mart`` | L110 |
+| `FROM match_analytics_mart` | L135 |
+| `\| match_analytics_mart \| Real-time \| Match submission \| Critical \|` | L457 |
+| `REFRESH MATERIALIZED VIEW CONCURRENTLY match_analytics_mart;` | L475 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Looking at the documentation, it says "match_analytics_mart: ~verified matches" which confirms the mart only contains verified matches. This is the problem!
+
+When the user has filter = "all", they're seeing verified matches (which is correct since that's all the mart has).
+When they select filter = "verified", the code adds `.eq("is_verified", true)` but all matches in the mart are already verified, so this should still work...
+
+Wait, let me check what the `is_verified` field actually is in the mart. Maybe the field name is wrong or the values are different?
+
+Actually, I think the issue is simpler - we should fall back to the original view `v_matches_with_primary_context` when the user wants to see unverified/review matches, since the mart only has verified ones.</details></think>
+
+---
+
+I see the issue now! According to the documentation, `match_analytics_mart` only contains **verified matches**. So when you filter by "all", it shows verified matches. When you filter by "verified" specifically, the filter logic might be breaking.
+
+The solution is to use the mart only for verified matches and fall back to the original view for other filters:
+
+---
+
+Tool use: **search_replace**
+
+---
+
+
+
+---
+
