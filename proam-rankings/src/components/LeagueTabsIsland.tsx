@@ -368,12 +368,16 @@ export default function LeagueTabsIsland({
                           href={`/teams/${team.team_id}`}
                           className="hover:text-blue-400 flex items-center gap-2"
                         >
-                          {team.logo_url && (
+                          {team.logo_url ? (
                             <img
                               src={team.logo_url}
                               alt=""
-                              className="h-6 w-6 rounded"
+                              className="h-6 w-6 rounded object-cover"
                             />
+                          ) : (
+                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                              {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+                            </div>
                           )}
                           {team.team_name}
                         </a>
@@ -428,12 +432,16 @@ export default function LeagueTabsIsland({
                           href={`/teams/${team.team_id}`}
                           className="hover:text-blue-400 flex items-center gap-2"
                         >
-                          {team.logo_url && (
+                          {team.logo_url ? (
                             <img
                               src={team.logo_url}
                               alt=""
-                              className="h-6 w-6 rounded"
+                              className="h-6 w-6 rounded object-cover"
                             />
+                          ) : (
+                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                              {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+                            </div>
                           )}
                           {team.team_name}
                         </a>
@@ -508,12 +516,16 @@ export default function LeagueTabsIsland({
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1">
-                        {match.team_a?.logo_url && (
+                        {match.team_a?.logo_url ? (
                           <img
                             src={match.team_a.logo_url}
                             alt=""
-                            className="h-8 w-8 rounded"
+                            className="h-8 w-8 rounded object-cover"
                           />
+                        ) : (
+                          <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                            {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+                          </div>
                         )}
                         <div className="text-sm">{match.team_a?.name || "Team A"}</div>
                         <div className="text-lg font-bold">{match.score_a ?? 0}</div>
@@ -522,12 +534,16 @@ export default function LeagueTabsIsland({
                       <div className="flex items-center gap-3 flex-1 justify-end">
                         <div className="text-lg font-bold">{match.score_b ?? 0}</div>
                         <div className="text-sm">{match.team_b?.name || "Team B"}</div>
-                        {match.team_b?.logo_url && (
+                        {match.team_b?.logo_url ? (
                           <img
                             src={match.team_b.logo_url}
                             alt=""
-                            className="h-8 w-8 rounded"
+                            className="h-8 w-8 rounded object-cover"
                           />
+                        ) : (
+                          <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                            {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+                          </div>
                         )}
                       </div>
                     </div>

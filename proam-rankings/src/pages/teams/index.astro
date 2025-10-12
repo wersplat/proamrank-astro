@@ -220,12 +220,18 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
             class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
           >
             <div class="flex items-center gap-3 mb-3">
-              <img 
-                src={team.logo_url || `${import.meta.env.PUBLIC_ASSETS_BASE || ""}/logos/${team.id}.webp`}
-                alt={team.name || "Team"}
-                class="h-12 w-12 rounded"
-                loading="lazy"
-              />
+              {team.logo_url ? (
+                <img 
+                  src={team.logo_url}
+                  alt={team.name || "Team"}
+                  class="h-12 w-12 rounded object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="h-12 w-12 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                  {team.name?.substring(0, 2).toUpperCase() || '??'}
+                </div>
+              )}
               <div class="flex-1 min-w-0">
                 <h2 class="font-bold text-lg truncate">{team.name}</h2>
                 {team.leaderboard_tier && (

@@ -37,12 +37,18 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
           <tr key={r.team_id} className="border-b border-neutral-800 hover:bg-neutral-900">
             <td className="py-2 text-neutral-400">#{idx + 1}</td>
             <td className="py-2 flex items-center gap-2">
-              <img 
-                src={r.logo_url || `${import.meta.env.PUBLIC_ASSETS_BASE || ""}/logos/${r.team_id}.webp`} 
-                alt="" 
-                className="h-6 w-6 rounded" 
-                loading="lazy" 
-              />
+              {r.logo_url ? (
+                <img 
+                  src={r.logo_url} 
+                  alt="" 
+                  className="h-6 w-6 rounded object-cover" 
+                  loading="lazy" 
+                />
+              ) : (
+                <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                  {r.team_name?.substring(0, 2).toUpperCase() || '??'}
+                </div>
+              )}
               {r.team_name}
             </td>
             <td className="text-right font-medium">{Math.round(r.hybrid_score ?? 0)}</td>

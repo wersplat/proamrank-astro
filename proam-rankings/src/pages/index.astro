@@ -81,8 +81,14 @@ const rows = (data ?? []).map((team: any) => ({
         {rows.map((r: typeof rows[0]) => (
           <article class="rounded border border-neutral-800 p-3">
             <header class="flex items-center gap-3">
-              <img src={r.logo_url || `${import.meta.env.PUBLIC_ASSETS_BASE || ""}/logos/${r.team_id}.webp` }
-                   alt="" class="h-8 w-8 rounded" loading="lazy" />
+              {r.logo_url ? (
+                <img src={r.logo_url}
+                   alt="" class="h-8 w-8 rounded object-cover" loading="lazy" />
+              ) : (
+                <div class="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                  {r.team_name?.substring(0, 2).toUpperCase() || '??'}
+                </div>
+              )}
               <div class="font-semibold">{r.team_name}</div>
               {r.leaderboard_tier && (
                 <div class="ml-auto text-xs font-bold text-neutral-400">{r.leaderboard_tier}</div>

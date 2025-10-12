@@ -113,8 +113,12 @@ export default function BracketDisplay({
                     <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2 flex-1 min-w-0">
-                          {match.team_a?.logo_url && (
-                            <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                          {match.team_a?.logo_url ? (
+                            <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                          ) : (
+                            <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                              {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+                            </div>
                           )}
                           <span className="truncate">{match.team_a?.name || "TBD"}</span>
                         </div>
@@ -124,8 +128,12 @@ export default function BracketDisplay({
                     <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2 flex-1 min-w-0">
-                          {match.team_b?.logo_url && (
-                            <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                          {match.team_b?.logo_url ? (
+                            <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                          ) : (
+                            <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                              {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+                            </div>
                           )}
                           <span className="truncate">{match.team_b?.name || "TBD"}</span>
                         </div>
@@ -172,8 +180,12 @@ export default function BracketDisplay({
                         <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
                           <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-1 min-w-0">
-                              {match.team_a?.logo_url && (
-                                <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                              {match.team_a?.logo_url ? (
+                                <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                              ) : (
+                                <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                  {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+                                </div>
                               )}
                               <span className="truncate">{match.team_a?.name || "TBD"}</span>
                             </div>
@@ -183,8 +195,12 @@ export default function BracketDisplay({
                         <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
                           <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-1 min-w-0">
-                              {match.team_b?.logo_url && (
-                                <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                              {match.team_b?.logo_url ? (
+                                <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                              ) : (
+                                <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                  {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+                                </div>
                               )}
                               <span className="truncate">{match.team_b?.name || "TBD"}</span>
                             </div>
@@ -221,8 +237,12 @@ export default function BracketDisplay({
                           <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
                             <div className="flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2 flex-1 min-w-0">
-                                {match.team_a?.logo_url && (
-                                  <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                                {match.team_a?.logo_url ? (
+                                  <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                                ) : (
+                                  <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                    {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+                                  </div>
                                 )}
                                 <span className="truncate">{match.team_a?.name || "TBD"}</span>
                               </div>
@@ -232,8 +252,12 @@ export default function BracketDisplay({
                           <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
                             <div className="flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2 flex-1 min-w-0">
-                                {match.team_b?.logo_url && (
-                                  <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                                {match.team_b?.logo_url ? (
+                                  <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                                ) : (
+                                  <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                    {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+                                  </div>
                                 )}
                                 <span className="truncate">{match.team_b?.name || "TBD"}</span>
                               </div>
@@ -273,8 +297,12 @@ export default function BracketDisplay({
                   <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
-                        {match.team_a?.logo_url && (
-                          <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                        {match.team_a?.logo_url ? (
+                          <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                        ) : (
+                          <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                            {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+                          </div>
                         )}
                         <span className="truncate">{match.team_a?.name || "TBD"}</span>
                       </div>
@@ -284,8 +312,12 @@ export default function BracketDisplay({
                   <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
-                        {match.team_b?.logo_url && (
-                          <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                        {match.team_b?.logo_url ? (
+                          <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                        ) : (
+                          <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                            {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+                          </div>
                         )}
                         <span className="truncate">{match.team_b?.name || "TBD"}</span>
                       </div>
@@ -317,8 +349,12 @@ export default function BracketDisplay({
             <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  {match.team_a?.logo_url && (
-                    <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                  {match.team_a?.logo_url ? (
+                    <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                  ) : (
+                    <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                      {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+                    </div>
                   )}
                   <span className="truncate">{match.team_a?.name || "TBD"}</span>
                 </div>
@@ -328,8 +364,12 @@ export default function BracketDisplay({
             <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  {match.team_b?.logo_url && (
-                    <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded flex-shrink-0" />
+                  {match.team_b?.logo_url ? (
+                    <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                  ) : (
+                    <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                      {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+                    </div>
                   )}
                   <span className="truncate">{match.team_b?.name || "TBD"}</span>
                 </div>
@@ -440,8 +480,12 @@ export default function BracketDisplay({
                 }`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      {selectedMatch.team_a?.logo_url && (
-                        <img src={selectedMatch.team_a.logo_url} alt="" className="w-8 h-8 rounded" />
+                      {selectedMatch.team_a?.logo_url ? (
+                        <img src={selectedMatch.team_a.logo_url} alt="" className="w-8 h-8 rounded object-cover" />
+                      ) : (
+                        <div className="w-8 h-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                          {selectedMatch.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+                        </div>
                       )}
                       <span className="font-semibold">{selectedMatch.team_a?.name || "Team A"}</span>
                     </div>
@@ -455,8 +499,12 @@ export default function BracketDisplay({
                 }`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      {selectedMatch.team_b?.logo_url && (
-                        <img src={selectedMatch.team_b.logo_url} alt="" className="w-8 h-8 rounded" />
+                      {selectedMatch.team_b?.logo_url ? (
+                        <img src={selectedMatch.team_b.logo_url} alt="" className="w-8 h-8 rounded object-cover" />
+                      ) : (
+                        <div className="w-8 h-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                          {selectedMatch.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+                        </div>
                       )}
                       <span className="font-semibold">{selectedMatch.team_b?.name || "Team B"}</span>
                     </div>
