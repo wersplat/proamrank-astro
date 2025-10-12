@@ -60,8 +60,17 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
         }
 
         const data = await response.json();
-        setBadges(data.badges || []);
-        setAchievementProgress(data.achievementProgress);
+        
+        // Handle both old format (array) and new format (object with badges & achievementProgress)
+        if (Array.isArray(data)) {
+          // Old format: just array of badges
+          setBadges(data);
+          setAchievementProgress(null);
+        } else {
+          // New format: object with badges and achievementProgress
+          setBadges(data.badges || []);
+          setAchievementProgress(data.achievementProgress || null);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load badges');
       } finally {
