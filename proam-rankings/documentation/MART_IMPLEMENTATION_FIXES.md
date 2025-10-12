@@ -203,6 +203,42 @@ After deploying, verify:
 
 ---
 
+---
+
+### 6. Player Badges Page Now Shows Achievement Progress ✅ ENHANCED
+**Previous State**: Only showed unlocked badges from `player_awards` table.
+
+**Enhancement**: Now uses `achievement_eligibility_mart` to show:
+- 🔥 **Active streaks** (win streaks, scoring streaks, etc.)
+- 🎯 **Next milestone alerts** (e.g., "5 points away from 1000 career points")
+- 📊 **Career milestone counts** (50-point games, triple-doubles, etc.)
+- 🏆 **Total achievements earned**
+
+**Solution**:
+- Updated `/api/player-badges` to query `achievement_eligibility_mart`
+- Enhanced `PlayerBadgesIsland` component to display progress data
+- Added visual cards for streaks and milestone alerts
+- Files: `src/pages/api/player-badges.ts`, `src/components/PlayerBadgesIsland.tsx`
+
+```typescript
+// API now returns both badges and achievement progress
+const response = {
+  badges: [...unlocked badges...],
+  achievementProgress: {
+    totalAchievementsEarned: 15,
+    nextAchievementAlert: "Close to 1000 career points!",
+    pointsToNextMilestone: 5,
+    activeStreakType: "Game Streak",
+    activeStreakLength: 10,
+    count50PtGames: 3,
+    countTripleDoubles: 5,
+    // ... more milestone data
+  }
+};
+```
+
+---
+
 ## Files Modified
 
 1. `src/pages/index.astro` - Added fallback to teams table
@@ -210,4 +246,6 @@ After deploying, verify:
 3. `src/pages/leagues/index.astro` - Added league logo fetch
 4. `src/pages/matches/index.astro` - Fixed status field mapping
 5. `src/pages/leagues/[id].astro` - Added player stats field mapping
+6. `src/pages/api/player-badges.ts` - Added achievement_eligibility_mart integration
+7. `src/components/PlayerBadgesIsland.tsx` - Enhanced to display achievement progress
 
