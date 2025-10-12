@@ -1,10 +1,10 @@
-# League Tournament Brackets - Implementation Summary
+# Tournament Brackets - Implementation Summary
 
 ## What Was Implemented
 
 ### 1. BracketDisplay Component (`src/components/BracketDisplay.tsx`)
 
-A flexible, reusable bracket visualization component with the following features:
+A flexible, reusable bracket visualization component used by both tournaments and leagues with the following features:
 
 **Format Support:**
 - ✅ Single Elimination (standard playoff brackets)
@@ -32,7 +32,29 @@ A flexible, reusable bracket visualization component with the following features
 - `renderSwiss()`: Renders Swiss system rounds
 - `renderRoundRobin()`: Renders round robin matches
 
-### 2. LeagueTabsIsland Integration (`src/components/LeagueTabsIsland.tsx`)
+### 2. TournamentTabsIsland Integration (`src/components/TournamentTabsIsland.tsx`)
+
+Enhanced the existing tournament tabs component:
+
+**Changes:**
+- Added "Brackets" tab (ID: 5, before Information which moved to 6)
+- Imported BracketDisplay component
+- Added BracketMatch type for bracket data structure
+- Added bracket data preparation logic:
+  - Filters matches to exclude "Regular Season"
+  - Derives winner_id from match scores
+  - Assigns series_number for ordering
+  - Extracts champion from standings
+- Renders BracketDisplay component with tournament data
+- Shows empty state when no bracket matches exist
+
+**UI Behavior:**
+- Brackets tab appears for all tournaments
+- Automatically displays bracket when playoff/bracket matches exist
+- No configuration needed - uses existing match and standings data
+- Information tab moved from position 5 to 6
+
+### 3. LeagueTabsIsland Integration (`src/components/LeagueTabsIsland.tsx`)
 
 Enhanced the existing league tabs component:
 
@@ -52,7 +74,7 @@ Enhanced the existing league tabs component:
 - Shows helpful empty state messages when no brackets exist
 - Seamless integration with existing tab system
 
-### 3. League Page Data Fetching (`src/pages/leagues/[id].astro`)
+### 4. League Page Data Fetching (`src/pages/leagues/[id].astro`)
 
 Implemented comprehensive data fetching for tournament brackets:
 
@@ -70,7 +92,7 @@ league_open → league_open_matches → v_matches_with_primary_context → teams
 league_playoff → league_playoff_matches → v_matches_with_primary_context → teams → BracketDisplay
 ```
 
-### 4. Documentation (`LEAGUE_TOURNAMENT_BRACKETS.md`)
+### 5. Documentation (`LEAGUE_TOURNAMENT_BRACKETS.md` & `IMPLEMENTATION_SUMMARY.md`)
 
 Comprehensive documentation including:
 - Database structure explanation
@@ -115,12 +137,20 @@ The implementation handles all stage enum values:
 ## Files Created/Modified
 
 ### Created:
-1. `/src/components/BracketDisplay.tsx` (547 lines)
+1. `/src/components/BracketDisplay.tsx` (547 lines) - Reusable bracket visualization
 2. `/LEAGUE_TOURNAMENT_BRACKETS.md` (comprehensive documentation)
 3. `/IMPLEMENTATION_SUMMARY.md` (this file)
 
 ### Modified:
-1. `/src/components/LeagueTabsIsland.tsx`
+1. `/src/components/TournamentTabsIsland.tsx`
+   - Added BracketDisplay import
+   - Added BracketMatch type
+   - Added bracket data preparation logic (filter, winner derivation, champion extraction)
+   - Added Brackets tab (ID: 5)
+   - Moved Information tab from ID 5 to ID 6
+   - Added bracket rendering with empty state
+
+2. `/src/components/LeagueTabsIsland.tsx`
    - Added BracketDisplay import
    - Added BracketMatch and TournamentData types
    - Added openTournament and playoffTournament props
@@ -128,32 +158,58 @@ The implementation handles all stage enum values:
    - Added Brackets tab (ID: 6)
    - Added tournament selector and bracket rendering
 
-2. `/src/pages/leagues/[id].astro`
+3. `/src/pages/leagues/[id].astro`
    - Added open tournament data fetching
    - Added playoff tournament data fetching
    - Added match detail enrichment
    - Passed new props to LeagueTabsIsland
 
+4. `/LEAGUE_TOURNAMENT_BRACKETS.md`
+   - Updated to cover both tournament and league brackets
+   - Added TournamentTabsIsland integration section
+
+5. `/IMPLEMENTATION_SUMMARY.md`
+   - Updated to reflect tournament brackets addition
+
 ## Testing Checklist
 
 To verify the implementation works:
 
-- [ ] Navigate to a league season page
-- [ ] Verify "Brackets" tab appears in navigation
+### Tournament Pages:
+- [ ] Navigate to a tournament page (e.g., `/tournaments/[tournament-id]`)
+- [ ] Verify "Brackets" tab appears at position 5 (before Information)
+- [ ] Click "Brackets" tab
+- [ ] If no bracket matches, verify empty state message displays
+- [ ] If bracket matches exist, verify bracket displays
+- [ ] Verify matches display with correct teams and scores
+- [ ] Click a match in bracket, verify modal opens with details
+- [ ] Verify winner highlighting (green text)
+- [ ] Verify loser indication (strikethrough)
+- [ ] Verify format badge displays correctly (Single/Double Elim, Swiss, etc.)
+- [ ] Verify champion displays if tournament is complete
+- [ ] Verify tournament metadata (prize pool, dates) displays
+
+### League Pages:
+- [ ] Navigate to a league season page (e.g., `/leagues/[season-id]`)
+- [ ] Verify "Brackets" tab appears in navigation (position 6)
 - [ ] Click "Brackets" tab
 - [ ] If no tournaments, verify empty state message displays
 - [ ] If tournaments exist, verify bracket displays
 - [ ] If both tournaments exist, verify toggle buttons appear
 - [ ] Click tournament type toggle, verify bracket switches
+- [ ] Verify open tournament bracket displays correctly
+- [ ] Verify playoff tournament bracket displays correctly
 - [ ] Verify matches display with correct teams and scores
 - [ ] Click a match, verify modal opens with details
 - [ ] Close modal, verify it closes properly
+
+### General:
 - [ ] Verify winner highlighting (green text)
 - [ ] Verify loser indication (strikethrough)
 - [ ] Verify format badge displays correctly
 - [ ] Verify tournament metadata (champion, prize, dates) displays
 - [ ] Test on mobile - verify horizontal scroll works
-- [ ] Test different bracket formats if available
+- [ ] Test different bracket formats if available (single/double elim, Swiss, round robin)
 
 ## Match Contexts Integration
 
@@ -267,7 +323,16 @@ For questions or issues:
 
 ## Conclusion
 
-The league tournament brackets feature is fully implemented and ready for use. The system is flexible enough to support various tournament formats and can be easily extended with additional features in the future.
+The tournament brackets feature is fully implemented for both standalone tournaments and league-specific tournaments (open and playoff). The system is flexible enough to support various tournament formats and can be easily extended with additional features in the future.
+
+**Key Achievements:**
+- ✅ Reusable BracketDisplay component works for all tournament types
+- ✅ Tournament pages now have Brackets tab (before Information)
+- ✅ League pages have Brackets tab with Open/Playoff toggle
+- ✅ Automatic format detection (single/double elimination, Swiss, round robin)
+- ✅ Winner highlighting and champion display
+- ✅ Responsive design with mobile support
+- ✅ Comprehensive documentation
 
 **Status: ✅ Complete and Ready for Testing**
 

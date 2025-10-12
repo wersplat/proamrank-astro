@@ -2376,3 +2376,274 @@ The implementation is complete and ready for use! The system will automatically 
 
 ---
 
+_**User (2025-10-12 00:45Z)**_
+
+add a bracket tab to tournaments as well, and move it before information
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user wants me to add a bracket tab to tournaments as well, and move it before the information tab. This is a new feature request, so I should understand what they're asking for:
+
+1. Add a "Brackets" tab to the TournamentTabsIsland component (similar to what we just did for LeagueTabsIsland)
+2. Move the Brackets tab to appear before the Information tab
+
+Since the user accepted the changes to LeagueTabsIsland and the league pages, and now they're asking for this new feature, I believe they want me to start implementing it. However, I'm still in plan mode based on the system reminder, so I should create a plan first.
+
+Let me think about what needs to be done:
+
+1. Modify TournamentTabsIsland component to add Brackets tab
+2. The tournament already has matches, so we need to identify which matches should show in brackets vs regular matches
+3. Tournaments might have different structures - we need to check how tournament data is currently fetched
+4. Reorder tabs so Brackets comes before Information
+
+This is a straightforward extension of what we just did, so I should create a quick plan and ask if they want me to proceed.</details></think>
+
+---
+
+I'll create a plan to add brackets to tournaments and reorder the tabs.
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx
+
+---
+
+<think><details><summary>Thought Process</summary>Good, I can see the TournamentTabsIsland structure. The tabs are currently:
+0. Standings
+1. Teams
+2. Matches
+3. Player Statistics
+4. Top Performers
+5. Information
+
+The user wants to add a Brackets tab before Information. So it should be:
+0. Standings
+1. Teams
+2. Matches
+3. Player Statistics
+4. Top Performers
+5. Brackets (NEW)
+6. Information
+
+For tournaments, the matches already have stage information, so we can use the existing BracketDisplay component. We just need to filter/organize the matches that have stage data to show as brackets.
+
+Let me create a plan for this.</details></think>
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How are tournament matches fetched in the tournament page?" • **14** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/pages/tournaments/[id].astro` | L109-175 |
+| `src/pages/tournaments/[id].astro` | L65 |
+| `src/pages/tournaments/index.astro` | L70 |
+| `src/pages/tournaments/[id].astro` | L62-113 |
+| `src/pages/tournaments/[id].astro` | L169-233 |
+| `src/pages/tournaments/[id].astro` | L294-341 |
+| `src/pages/tournaments/index.astro` | L67-113 |
+| `src/pages/tournaments/index.astro` | L181-225 |
+| `src/pages/tournaments/index.astro` | L222-258 |
+| `src/pages/tournaments/[id].astro` | L231-271 |
+| `src/pages/tournaments/index.astro` | L251-304 |
+| `src/pages/tournaments/index.astro` | L108-144 |
+| `src/pages/tournaments/[id].astro` | L266-298 |
+| `src/pages/tournaments/index.astro` | L139-185 |
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! I can see that tournaments already fetch matches with the `stage` field from `v_matches_with_primary_context`. The matches already have stage information, which is exactly what we need for brackets.
+
+So the plan is:
+1. Add BracketDisplay import to TournamentTabsIsland
+2. Add Brackets tab before Information (tab ID 5)
+3. Renumber Information to tab ID 6
+4. Filter matches that have stage values (not "Regular Season") to display in brackets
+5. Pass the necessary data to BracketDisplay
+
+The tournament matches already have:
+- team_a, team_b (with names and logos)
+- score_a, score_b
+- stage
+- winner_id (can be derived from scores)
+- played_at
+
+So we should be able to reuse the BracketDisplay component directly. The matches are already being fetched, we just need to prepare them for bracket display.</details></think>
+
+---
+
+Perfect! I can see tournaments already fetch matches with `stage` information. Here's my plan:
+
+## Plan: Add Brackets Tab to Tournaments
+
+### Implementation Steps
+
+1. **Update TournamentTabsIsland Component** (`src/components/TournamentTabsIsland.tsx`)
+   - Import BracketDisplay component
+   - Add BracketMatch type (reuse from LeagueTabsIsland)
+   - Reorder tabs: insert "Brackets" at position 5 (before Information which moves to 6)
+   - Filter matches with stage data (exclude "Regular Season") for bracket display
+   - Render BracketDisplay in the Brackets tab
+   - Pass tournament info as champion if status is completed and champion exists in results
+
+2. **Prepare Bracket Data**
+   - Tournament matches already have `stage`, `team_a`, `team_b`, `score_a`, `score_b`
+   - Derive `winner_id` from scores (team with higher score)
+   - Add `series_number` based on match order within each stage
+   - Filter to only playoff/bracket matches (those with stage != "Regular Season")
+
+3. **Tournament Page** (`src/pages/tournaments/[id].astro`)
+   - No changes needed - matches already include stage information
+   - The existing tournament data already has champion info in results
+
+### Tab Order (New):
+- 0: Standings
+- 1: Teams  
+- 2: Matches
+- 3: Player Statistics
+- 4: Top Performers
+- 5: **Brackets** (NEW)
+- 6: Information (moved from 5)
+
+### Data Flow:
+Tournaments → Existing matches with stage → Filter bracket matches → BracketDisplay
+
+Would you like me to proceed with implementing this plan?
+
+---
+
+_**User (2025-10-12 00:45Z)**_
+
+yes proceed
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user said "yes proceed", which means they want me to execute the plan. However, the system reminder says I'm still in plan mode and must not make any edits or run any non-readonly tools until explicitly instructed. 
+
+But the user just explicitly said "yes proceed", which is an instruction to proceed with implementation. So I should now execute the plan.
+
+Let me implement the changes:
+1. Update TournamentTabsIsland.tsx to add brackets tab
+2. Reorder the tabs to put Brackets before Information
+3. Add the bracket display logic</details></think>
+
+---
+
+I'll now implement the brackets tab for tournaments.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -1,3 +1,4 @@
+  import { useState } from "react";
++ import BracketDisplay from "./BracketDisplay";
+  
+  type PlayerStat = {
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to add the BracketMatch type and update the tab ordering.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 14, lines removed: undefined
+
+```diff
+@@ -78,4 +78,18 @@
+    tournament?: { id: string; name: string | null };
+  };
++ 
++ type BracketMatch = {
++   id: string;
++   played_at: string;
++   team_a_id: string;
++   team_b_id: string;
++   score_a: number | null;
++   score_b: number | null;
++   stage: string | null;
++   series_number: number | null;
++   winner_id: string | null;
++   team_a?: { name: string | null; logo_url: string | null };
++   team_b?: { name: string | null; logo_url: string | null };
++ };
+  
+  type TopPlayerStat = {
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the tabs array to reorder them and add the Brackets tab before Information.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 1
+
+```diff
+@@ -179,5 +179,6 @@
+      { id: 3, label: "Player Statistics" },
+      { id: 4, label: "Top Performers" },
+-     { id: 5, label: "Information" },
++     { id: 5, label: "Brackets" },
++     { id: 6, label: "Information" },
+    ];
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to:
+1. Add logic to prepare bracket matches from regular matches
+2. Find the champion from standings
+3. Add the Brackets tab rendering section
+4. Update the Information tab ID from 5 to 6
+
+Let me first add logic after the tab change handler to prepare bracket data.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+---
+
+
+
+---
+

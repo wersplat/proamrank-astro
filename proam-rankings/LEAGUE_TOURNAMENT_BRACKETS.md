@@ -1,8 +1,8 @@
-# League Tournament Brackets Implementation
+# Tournament Brackets Implementation
 
 ## Overview
 
-This document describes the implementation of tournament bracket tracking and display for league open and playoff tournaments.
+This document describes the implementation of tournament bracket tracking and display for both standalone tournaments and league-specific tournaments (open and playoff).
 
 ## Database Structure
 
@@ -67,7 +67,7 @@ For league matches, there are three contexts:
 
 Location: `src/components/BracketDisplay.tsx`
 
-A flexible bracket visualization component that automatically detects and renders different tournament formats:
+A flexible, reusable bracket visualization component that automatically detects and renders different tournament formats. Used by both `TournamentTabsIsland` and `LeagueTabsIsland`.
 
 **Supported Formats:**
 - **Single Elimination**: Standard bracket tree (Finals, Semi Finals, Round 1-4)
@@ -102,6 +102,27 @@ The component analyzes the `stage` field of matches to determine format:
 - Responsive design with horizontal scrolling for wide brackets
 - Automatic format badge display
 - Champion highlighting when tournament is complete
+
+### TournamentTabsIsland Integration
+
+Location: `src/components/TournamentTabsIsland.tsx`
+
+**Bracket Data Preparation:**
+- Filters matches to exclude "Regular Season" (keeps only bracket matches)
+- Derives `winner_id` from match scores automatically
+- Assigns `series_number` based on match order
+- Gets champion from standings (team with `final_placement === 1`)
+
+**New Tab:**
+- Tab ID 5: "Brackets" (inserted before Information)
+- Tab ID 6: "Information" (moved from 5)
+- Automatically displays bracket when playoff matches with stage data exist
+- Shows helpful empty state when no bracket matches available
+
+**Features:**
+- No additional props needed - uses existing matches and standings data
+- Seamless integration with existing tournament data structure
+- Automatic bracket format detection based on stage values
 
 ### LeagueTabsIsland Integration
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import BracketDisplay from "./BracketDisplay";
 
 type PlayerStat = {
   player_name: string;
@@ -75,6 +76,20 @@ type Match = {
   team_a?: { name: string | null; logo_url: string | null };
   team_b?: { name: string | null; logo_url: string | null };
   tournament?: { id: string; name: string | null };
+};
+
+type BracketMatch = {
+  id: string;
+  played_at: string;
+  team_a_id: string;
+  team_b_id: string;
+  score_a: number | null;
+  score_b: number | null;
+  stage: string | null;
+  series_number: number | null;
+  winner_id: string | null;
+  team_a?: { name: string | null; logo_url: string | null };
+  team_b?: { name: string | null; logo_url: string | null };
 };
 
 type TopPlayerStat = {
@@ -163,7 +178,8 @@ export default function TournamentTabsIsland({
     { id: 2, label: "Matches" },
     { id: 3, label: "Player Statistics" },
     { id: 4, label: "Top Performers" },
-    { id: 5, label: "Information" },
+    { id: 5, label: "Brackets" },
+    { id: 6, label: "Information" },
   ];
 
   // Pagination for matches
@@ -229,6 +245,38 @@ export default function TournamentTabsIsland({
     const comparison = aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
     return sortDirection === 'asc' ? comparison : -comparison;
   });
+
+  // Prepare bracket matches (filter out regular season, add series numbers and winner_id)
+  const bracketMatches: BracketMatch[] = matches
+    .filter(m => m.stage && m.stage !== "Regular Season")
+    .map((m, idx) => {
+      // Determine winner based on scores
+      let winner_id: string | null = null;
+      if (m.score_a !== null && m.score_b !== null) {
+        if (m.score_a > m.score_b) {
+          winner_id = m.team_a_id;
+        } else if (m.score_b > m.score_a) {
+          winner_id = m.team_b_id;
+        }
+      }
+      
+      return {
+        id: m.id,
+        played_at: m.played_at,
+        team_a_id: m.team_a_id,
+        team_b_id: m.team_b_id,
+        score_a: m.score_a,
+        score_b: m.score_b,
+        stage: m.stage,
+        series_number: idx + 1, // Simple ordering by match index
+        winner_id,
+        team_a: m.team_a,
+        team_b: m.team_b,
+      };
+    });
+
+  // Get champion name (first place team)
+  const champion = standings.find(s => s.final_placement === 1)?.team_name || null;
 
   // Reset to page 1 when switching tabs
   const handleTabChange = (tabId: number) => {
@@ -897,8 +945,32 @@ export default function TournamentTabsIsland({
           </div>
         )}
 
-        {/* Information Tab */}
+        {/* Brackets Tab */}
         {activeTab === 5 && (
+          <div>
+            {bracketMatches.length > 0 ? (
+              <BracketDisplay
+                matches={bracketMatches}
+                tournamentName={tournamentInfo?.tournament_name || "Tournament"}
+                champion={champion}
+                prizePool={tournamentInfo?.prize_pool}
+                status={tournamentInfo?.status}
+                startDate={tournamentInfo?.start_date}
+                finalsDate={tournamentInfo?.end_date}
+              />
+            ) : (
+              <div className="text-center py-12 text-neutral-400">
+                <p className="text-lg mb-2">No bracket available yet.</p>
+                <p className="text-sm">
+                  The tournament bracket will appear here once playoff matches are scheduled.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Information Tab */}
+        {activeTab === 6 && (
           <div className="space-y-4">
             {tournamentInfo ? (
               <>
