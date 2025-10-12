@@ -165,6 +165,7 @@ type LeagueTabsProps = {
   playerStats?: PlayerStatFull[];
   openTournament?: TournamentData | null;
   playoffTournament?: TournamentData | null;
+  seasonPlayoffs?: TournamentData | null;
 };
 
 export default function LeagueTabsIsland({
@@ -179,6 +180,7 @@ export default function LeagueTabsIsland({
   playerStats: leaguePlayerStats = [],
   openTournament = null,
   playoffTournament = null,
+  seasonPlayoffs = null,
 }: LeagueTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [matchesPage, setMatchesPage] = useState(1);
@@ -190,7 +192,7 @@ export default function LeagueTabsIsland({
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<keyof PlayerStatFull>('avg_points');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff'>('open');
+  const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff' | 'season'>('season');
 
   const tabs = [
     { id: 0, label: "Standings" },
@@ -198,8 +200,8 @@ export default function LeagueTabsIsland({
     { id: 2, label: "Matches" },
     { id: 3, label: "Player Statistics" },
     { id: 4, label: "Top Performers" },
-    { id: 5, label: "Information" },
-    { id: 6, label: "Brackets" },
+    { id: 5, label: "Brackets" },
+    { id: 6, label: "Information" },
   ];
 
   // Pagination for matches
@@ -881,8 +883,100 @@ export default function LeagueTabsIsland({
           </div>
         )}
 
-        {/* Information Tab */}
+        {/* Brackets Tab */}
         {activeTab === 5 && (
+          <div>
+            {/* Show toggle if any brackets exist */}
+            {(seasonPlayoffs || openTournament || playoffTournament) && (
+              <div className="mb-6 flex gap-2">
+                {seasonPlayoffs && (
+                  <button
+                    onClick={() => setSelectedTournamentType('season')}
+                    className={`px-4 py-2 rounded transition ${
+                      selectedTournamentType === 'season'
+                        ? 'bg-blue-600 text-white font-semibold'
+                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+                    }`}
+                  >
+                    Season Playoffs
+                  </button>
+                )}
+                {openTournament && (
+                  <button
+                    onClick={() => setSelectedTournamentType('open')}
+                    className={`px-4 py-2 rounded transition ${
+                      selectedTournamentType === 'open'
+                        ? 'bg-blue-600 text-white font-semibold'
+                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+                    }`}
+                  >
+                    Open Tournament
+                  </button>
+                )}
+                {playoffTournament && (
+                  <button
+                    onClick={() => setSelectedTournamentType('playoff')}
+                    className={`px-4 py-2 rounded transition ${
+                      selectedTournamentType === 'playoff'
+                        ? 'bg-blue-600 text-white font-semibold'
+                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+                    }`}
+                  >
+                    Playoff Tournament
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Display selected tournament bracket */}
+            {selectedTournamentType === 'season' && seasonPlayoffs ? (
+              <BracketDisplay
+                matches={seasonPlayoffs.matches}
+                tournamentName={`${leagueInfo?.league_name || 'League'} - Season ${leagueInfo?.season_number || ''} Playoffs`}
+                champion={seasonPlayoffs.champion}
+                prizePool={seasonPlayoffs.prize}
+                status={seasonPlayoffs.status}
+                startDate={seasonPlayoffs.start_date}
+                finalsDate={seasonPlayoffs.finals_date}
+              />
+            ) : selectedTournamentType === 'open' && openTournament ? (
+              <BracketDisplay
+                matches={openTournament.matches}
+                tournamentName={`${leagueInfo?.league_name || 'League'} - Open Tournament`}
+                champion={openTournament.champion}
+                prizePool={openTournament.prize}
+                status={openTournament.status}
+                startDate={openTournament.start_date}
+                finalsDate={openTournament.finals_date}
+              />
+            ) : selectedTournamentType === 'playoff' && playoffTournament ? (
+              <BracketDisplay
+                matches={playoffTournament.matches}
+                tournamentName={`${leagueInfo?.league_name || 'League'} - Playoffs`}
+                champion={playoffTournament.champion}
+                prizePool={playoffTournament.prize}
+                status={playoffTournament.status}
+                startDate={playoffTournament.start_date}
+                finalsDate={playoffTournament.finals_date}
+              />
+            ) : (
+              <div className="text-center py-12 text-neutral-400">
+                <p className="text-lg mb-2">No brackets available yet.</p>
+                <p className="text-sm">
+                  {selectedTournamentType === 'season' 
+                    ? 'Season playoff matches will appear here once they have playoff stage designations.'
+                    : selectedTournamentType === 'open' 
+                    ? 'The open tournament bracket will appear here once matches are scheduled.'
+                    : 'The playoff bracket will appear here once matches are scheduled.'
+                  }
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Information Tab */}
+        {activeTab === 6 && (
           <div className="space-y-4">
             {leagueInfo ? (
               <>
@@ -1014,74 +1108,6 @@ export default function LeagueTabsIsland({
             ) : (
               <div className="text-center py-8 text-neutral-400">
                 No league information available.
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Brackets Tab */}
-        {activeTab === 6 && (
-          <div>
-            {/* Show toggle only if both tournaments exist */}
-            {(openTournament || playoffTournament) && (
-              <div className="mb-6 flex gap-2">
-                {openTournament && (
-                  <button
-                    onClick={() => setSelectedTournamentType('open')}
-                    className={`px-4 py-2 rounded transition ${
-                      selectedTournamentType === 'open'
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
-                    }`}
-                  >
-                    Open Tournament
-                  </button>
-                )}
-                {playoffTournament && (
-                  <button
-                    onClick={() => setSelectedTournamentType('playoff')}
-                    className={`px-4 py-2 rounded transition ${
-                      selectedTournamentType === 'playoff'
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
-                    }`}
-                  >
-                    Playoff Tournament
-                  </button>
-                )}
-              </div>
-            )}
-
-            {/* Display selected tournament bracket */}
-            {selectedTournamentType === 'open' && openTournament ? (
-              <BracketDisplay
-                matches={openTournament.matches}
-                tournamentName={`${leagueInfo?.league_name || 'League'} - Open Tournament`}
-                champion={openTournament.champion}
-                prizePool={openTournament.prize}
-                status={openTournament.status}
-                startDate={openTournament.start_date}
-                finalsDate={openTournament.finals_date}
-              />
-            ) : selectedTournamentType === 'playoff' && playoffTournament ? (
-              <BracketDisplay
-                matches={playoffTournament.matches}
-                tournamentName={`${leagueInfo?.league_name || 'League'} - Playoffs`}
-                champion={playoffTournament.champion}
-                prizePool={playoffTournament.prize}
-                status={playoffTournament.status}
-                startDate={playoffTournament.start_date}
-                finalsDate={playoffTournament.finals_date}
-              />
-            ) : (
-              <div className="text-center py-12 text-neutral-400">
-                <p className="text-lg mb-2">No tournament brackets available yet.</p>
-                <p className="text-sm">
-                  {selectedTournamentType === 'open' 
-                    ? 'The open tournament bracket will appear here once matches are scheduled.'
-                    : 'The playoff bracket will appear here once matches are scheduled.'
-                  }
-                </p>
               </div>
             )}
           </div>

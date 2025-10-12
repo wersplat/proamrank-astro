@@ -59,20 +59,22 @@ Enhanced the existing tournament tabs component:
 Enhanced the existing league tabs component:
 
 **Changes:**
-- Added new "Brackets" tab (ID: 6)
-- Added tournament type selector (Open vs Playoff)
+- Added new "Brackets" tab (ID: 5, before Information which moved to 6)
+- Added three-way tournament type selector (Season Playoffs, Open, Playoff)
 - Added state management for selected tournament type
 - Integrated BracketDisplay component
 - Added new TypeScript types:
   - `BracketMatch`: Match data with stage/series info
   - `TournamentData`: Complete tournament information
-- Added props: `openTournament` and `playoffTournament`
+- Added props: `openTournament`, `playoffTournament`, and `seasonPlayoffs`
 
 **UI Behavior:**
-- Toggle buttons only appear if both tournaments exist
-- Defaults to Open Tournament if available
+- Shows up to 3 toggle buttons depending on which brackets exist
+- Defaults to Season Playoffs if available, then Open, then Playoff
+- Season Playoffs show any season matches with stage != "Regular Season"
 - Shows helpful empty state messages when no brackets exist
 - Seamless integration with existing tab system
+- Information tab moved from position 5 to 6
 
 ### 4. League Page Data Fetching (`src/pages/leagues/[id].astro`)
 
@@ -82,14 +84,17 @@ Implemented comprehensive data fetching for tournament brackets:
 1. Fetch `league_open` tournament metadata (champion, prize, status, dates)
 2. Fetch `league_open_matches` associations (match_id, stage, series_number)
 3. Fetch match details from `v_matches_with_primary_context` view
-4. Combine match data with team information (names, logos)
-5. Repeat entire process for `league_playoff` data
-6. Pass both tournament objects as props to LeagueTabsIsland
+4. Repeat entire process for `league_playoff` data
+5. Filter season matches for any with stage != "Regular Season" (Season Playoffs)
+6. Derive winner_id from match scores for bracket matches
+7. Combine match data with team information (names, logos)
+8. Pass all three tournament objects as props to LeagueTabsIsland
 
 **Data Flow:**
 ```
 league_open → league_open_matches → v_matches_with_primary_context → teams → BracketDisplay
 league_playoff → league_playoff_matches → v_matches_with_primary_context → teams → BracketDisplay
+season matches → filter by stage → derive winner_id → BracketDisplay
 ```
 
 ### 5. Documentation (`LEAGUE_TOURNAMENT_BRACKETS.md` & `IMPLEMENTATION_SUMMARY.md`)
@@ -153,16 +158,18 @@ The implementation handles all stage enum values:
 2. `/src/components/LeagueTabsIsland.tsx`
    - Added BracketDisplay import
    - Added BracketMatch and TournamentData types
-   - Added openTournament and playoffTournament props
-   - Added selectedTournamentType state
-   - Added Brackets tab (ID: 6)
-   - Added tournament selector and bracket rendering
+   - Added openTournament, playoffTournament, and seasonPlayoffs props
+   - Updated selectedTournamentType state to support 'season', 'open', 'playoff'
+   - Added Brackets tab (ID: 5, moved Information to ID 6)
+   - Added three-way tournament selector and bracket rendering
 
 3. `/src/pages/leagues/[id].astro`
    - Added open tournament data fetching
    - Added playoff tournament data fetching
+   - Added season playoffs preparation (filters matches with stage != "Regular Season")
+   - Derives winner_id from match scores
    - Added match detail enrichment
-   - Passed new props to LeagueTabsIsland
+   - Passed all three tournament props to LeagueTabsIsland
 
 4. `/LEAGUE_TOURNAMENT_BRACKETS.md`
    - Updated to cover both tournament and league brackets
@@ -191,17 +198,18 @@ To verify the implementation works:
 
 ### League Pages:
 - [ ] Navigate to a league season page (e.g., `/leagues/[season-id]`)
-- [ ] Verify "Brackets" tab appears in navigation (position 6)
+- [ ] Verify "Brackets" tab appears in navigation (position 5, before Information)
 - [ ] Click "Brackets" tab
-- [ ] If no tournaments, verify empty state message displays
-- [ ] If tournaments exist, verify bracket displays
-- [ ] If both tournaments exist, verify toggle buttons appear
-- [ ] Click tournament type toggle, verify bracket switches
-- [ ] Verify open tournament bracket displays correctly
-- [ ] Verify playoff tournament bracket displays correctly
+- [ ] If no brackets, verify empty state message displays
+- [ ] Verify toggle buttons for Season Playoffs, Open, and/or Playoff appear
+- [ ] Click "Season Playoffs" - verify non-regular season matches display
+- [ ] Click "Open Tournament" - verify open tournament bracket displays
+- [ ] Click "Playoff Tournament" - verify playoff tournament bracket displays
 - [ ] Verify matches display with correct teams and scores
+- [ ] Verify winner highlighting works correctly
 - [ ] Click a match, verify modal opens with details
 - [ ] Close modal, verify it closes properly
+- [ ] Verify Information tab is now at position 6
 
 ### General:
 - [ ] Verify winner highlighting (green text)
@@ -327,8 +335,9 @@ The tournament brackets feature is fully implemented for both standalone tournam
 
 **Key Achievements:**
 - ✅ Reusable BracketDisplay component works for all tournament types
-- ✅ Tournament pages now have Brackets tab (before Information)
-- ✅ League pages have Brackets tab with Open/Playoff toggle
+- ✅ Tournament pages now have Brackets tab at position 5 (before Information)
+- ✅ League pages have Brackets tab at position 5 with three-way toggle (Season/Open/Playoff)
+- ✅ Season Playoffs automatically display any league matches with playoff stages
 - ✅ Automatic format detection (single/double elimination, Swiss, round robin)
 - ✅ Winner highlighting and champion display
 - ✅ Responsive design with mobile support

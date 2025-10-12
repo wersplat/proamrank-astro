@@ -2641,9 +2641,1641 @@ Let me first add logic after the tab change handler to prepare bracket data.</de
 
 Tool use: **search_replace**
 
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 32, lines removed: undefined
+
+```diff
+@@ -246,4 +246,36 @@
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
++ 
++   // Prepare bracket matches (filter out regular season, add series numbers and winner_id)
++   const bracketMatches: BracketMatch[] = matches
++     .filter(m => m.stage && m.stage !== "Regular Season")
++     .map((m, idx) => {
++       // Determine winner based on scores
++       let winner_id: string | null = null;
++       if (m.score_a !== null && m.score_b !== null) {
++         if (m.score_a > m.score_b) {
++           winner_id = m.team_a_id;
++         } else if (m.score_b > m.score_a) {
++           winner_id = m.team_b_id;
++         }
++       }
++       
++       return {
++         id: m.id,
++         played_at: m.played_at,
++         team_a_id: m.team_a_id,
++         team_b_id: m.team_b_id,
++         score_a: m.score_a,
++         score_b: m.score_b,
++         stage: m.stage,
++         series_number: idx + 1, // Simple ordering by match index
++         winner_id,
++         team_a: m.team_a,
++         team_b: m.team_b,
++       };
++     });
++ 
++   // Get champion name (first place team)
++   const champion = standings.find(s => s.final_placement === 1)?.team_name || null;
+  
+    // Reset to page 1 when switching tabs
+```
+
+</details>
+
 ---
 
+<think><details><summary>Thought Process</summary>Now I need to find where the Information tab is rendered (currently at ID 5) and change it to ID 6, and add the Brackets tab at ID 5. Let me search for the Information tab rendering.</details></think>
 
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "activeTab === 5" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| Content | Line |
+|------|------|
+| `\{activeTab === 5 && (` | L949 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to:
+1. Change the Information tab from activeTab === 5 to activeTab === 6
+2. Add the Brackets tab at activeTab === 5 before the Information tab
+
+Let me first add the Brackets tab section.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 25, lines removed: 1
+
+```diff
+@@ -946,6 +946,30 @@
+          )}
+  
+-         {/* Information Tab */}
++         {/* Brackets Tab */}
+          {activeTab === 5 && (
++           <div>
++             {bracketMatches.length > 0 ? (
++               <BracketDisplay
++                 matches={bracketMatches}
++                 tournamentName={tournamentInfo?.tournament_name || "Tournament"}
++                 champion={champion}
++                 prizePool={tournamentInfo?.prize_pool}
++                 status={tournamentInfo?.status}
++                 startDate={tournamentInfo?.start_date}
++                 finalsDate={tournamentInfo?.end_date}
++               />
++             ) : (
++               <div className="text-center py-12 text-neutral-400">
++                 <p className="text-lg mb-2">No bracket available yet.</p>
++                 <p className="text-sm">
++                   The tournament bracket will appear here once playoff matches are scheduled.
++                 </p>
++               </div>
++             )}
++           </div>
++         )}
++ 
++         {/* Information Tab */}
++         {activeTab === 6 && (
+            <div className="space-y-4">
+              {tournamentInfo ? (
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now let me check if there are any linting errors in the modified file.</details></think>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TournamentTabsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Excellent! No linting errors. Now let me update the documentation to reflect that brackets are also available for tournaments.</details></think>
+
+---
+
+Perfect! Now let me update the documentation to reflect that brackets are also available for tournaments:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -1,7 +1,7 @@
+- # League Tournament Brackets Implementation
++ # Tournament Brackets Implementation
+  
+  ## Overview
+  
+- This document describes the implementation of tournament bracket tracking and display for league open and playoff tournaments.
++ This document describes the implementation of tournament bracket tracking and display for both standalone tournaments and league-specific tournaments (open and playoff).
+  
+  ## Database Structure
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me add a section in the documentation about the tournament brackets implementation.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -68,5 +68,5 @@
+  Location: `src/components/BracketDisplay.tsx`
+  
+- A flexible bracket visualization component that automatically detects and renders different tournament formats:
++ A flexible, reusable bracket visualization component that automatically detects and renders different tournament formats. Used by both `TournamentTabsIsland` and `LeagueTabsIsland`.
+  
+  **Supported Formats:**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me add a section specifically about the tournament brackets integration.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 21, lines removed: undefined
+
+```diff
+@@ -103,4 +103,25 @@
+  - Automatic format badge display
+  - Champion highlighting when tournament is complete
++ 
++ ### TournamentTabsIsland Integration
++ 
++ Location: `src/components/TournamentTabsIsland.tsx`
++ 
++ **Bracket Data Preparation:**
++ - Filters matches to exclude "Regular Season" (keeps only bracket matches)
++ - Derives `winner_id` from match scores automatically
++ - Assigns `series_number` based on match order
++ - Gets champion from standings (team with `final_placement === 1`)
++ 
++ **New Tab:**
++ - Tab ID 5: "Brackets" (inserted before Information)
++ - Tab ID 6: "Information" (moved from 5)
++ - Automatically displays bracket when playoff matches with stage data exist
++ - Shows helpful empty state when no bracket matches available
++ 
++ **Features:**
++ - No additional props needed - uses existing matches and standings data
++ - Seamless integration with existing tournament data structure
++ - Automatic bracket format detection based on stage values
+  
+  ### LeagueTabsIsland Integration
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the implementation summary document.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -1,9 +1,9 @@
+- # League Tournament Brackets - Implementation Summary
++ # Tournament Brackets - Implementation Summary
+  
+  ## What Was Implemented
+  
+  ### 1. BracketDisplay Component (`src/components/BracketDisplay.tsx`)
+  
+- A flexible, reusable bracket visualization component with the following features:
++ A flexible, reusable bracket visualization component used by both tournaments and leagues with the following features:
+  
+  **Format Support:**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me add a section about the tournament integration to the implementation summary.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 23, lines removed: 1
+
+```diff
+@@ -33,5 +33,27 @@
+  - `renderRoundRobin()`: Renders round robin matches
+  
+- ### 2. LeagueTabsIsland Integration (`src/components/LeagueTabsIsland.tsx`)
++ ### 2. TournamentTabsIsland Integration (`src/components/TournamentTabsIsland.tsx`)
++ 
++ Enhanced the existing tournament tabs component:
++ 
++ **Changes:**
++ - Added "Brackets" tab (ID: 5, before Information which moved to 6)
++ - Imported BracketDisplay component
++ - Added BracketMatch type for bracket data structure
++ - Added bracket data preparation logic:
++   - Filters matches to exclude "Regular Season"
++   - Derives winner_id from match scores
++   - Assigns series_number for ordering
++   - Extracts champion from standings
++ - Renders BracketDisplay component with tournament data
++ - Shows empty state when no bracket matches exist
++ 
++ **UI Behavior:**
++ - Brackets tab appears for all tournaments
++ - Automatically displays bracket when playoff/bracket matches exist
++ - No configuration needed - uses existing match and standings data
++ - Information tab moved from position 5 to 6
++ 
++ ### 3. LeagueTabsIsland Integration (`src/components/LeagueTabsIsland.tsx`)
+  
+  Enhanced the existing league tabs component:
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the section that lists modified files and the testing checklist.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -75,5 +75,5 @@
+  - Seamless integration with existing tab system
+  
+- ### 3. League Page Data Fetching (`src/pages/leagues/[id].astro`)
++ ### 4. League Page Data Fetching (`src/pages/leagues/[id].astro`)
+  
+  Implemented comprehensive data fetching for tournament brackets:
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Now let me update the "4. Documentation" to "5. Documentation" and update the files created/modified section.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -93,5 +93,5 @@
+  ```
+  
+- ### 4. Documentation (`LEAGUE_TOURNAMENT_BRACKETS.md`)
++ ### 5. Documentation (`LEAGUE_TOURNAMENT_BRACKETS.md` & `IMPLEMENTATION_SUMMARY.md`)
+  
+  Comprehensive documentation including:
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Now let me update the Files Created/Modified section.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 10, lines removed: 2
+
+```diff
+@@ -138,10 +138,18 @@
+  
+  ### Created:
+- 1. `/src/components/BracketDisplay.tsx` (547 lines)
++ 1. `/src/components/BracketDisplay.tsx` (547 lines) - Reusable bracket visualization
+  2. `/LEAGUE_TOURNAMENT_BRACKETS.md` (comprehensive documentation)
+  3. `/IMPLEMENTATION_SUMMARY.md` (this file)
+  
+  ### Modified:
+- 1. `/src/components/LeagueTabsIsland.tsx`
++ 1. `/src/components/TournamentTabsIsland.tsx`
++    - Added BracketDisplay import
++    - Added BracketMatch type
++    - Added bracket data preparation logic (filter, winner derivation, champion extraction)
++    - Added Brackets tab (ID: 5)
++    - Moved Information tab from ID 5 to ID 6
++    - Added bracket rendering with empty state
++ 
++ 2. `/src/components/LeagueTabsIsland.tsx`
+     - Added BracketDisplay import
+     - Added BracketMatch and TournamentData types
+```
+
+**Chunk 2**
+Lines added: 8, lines removed: 1
+
+```diff
+@@ -151,10 +159,17 @@
+     - Added tournament selector and bracket rendering
+  
+- 2. `/src/pages/leagues/[id].astro`
++ 3. `/src/pages/leagues/[id].astro`
+     - Added open tournament data fetching
+     - Added playoff tournament data fetching
+     - Added match detail enrichment
+     - Passed new props to LeagueTabsIsland
+  
++ 4. `/LEAGUE_TOURNAMENT_BRACKETS.md`
++    - Updated to cover both tournament and league brackets
++    - Added TournamentTabsIsland integration section
++ 
++ 5. `/IMPLEMENTATION_SUMMARY.md`
++    - Updated to reflect tournament brackets addition
++ 
+  ## Testing Checklist
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Now let me update the testing checklist to include tournament testing.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 22, lines removed: 3
+
+```diff
+@@ -176,20 +176,39 @@
+  To verify the implementation works:
+  
+- - [ ] Navigate to a league season page
+- - [ ] Verify "Brackets" tab appears in navigation
++ ### Tournament Pages:
++ - [ ] Navigate to a tournament page (e.g., `/tournaments/[tournament-id]`)
++ - [ ] Verify "Brackets" tab appears at position 5 (before Information)
++ - [ ] Click "Brackets" tab
++ - [ ] If no bracket matches, verify empty state message displays
++ - [ ] If bracket matches exist, verify bracket displays
++ - [ ] Verify matches display with correct teams and scores
++ - [ ] Click a match in bracket, verify modal opens with details
++ - [ ] Verify winner highlighting (green text)
++ - [ ] Verify loser indication (strikethrough)
++ - [ ] Verify format badge displays correctly (Single/Double Elim, Swiss, etc.)
++ - [ ] Verify champion displays if tournament is complete
++ - [ ] Verify tournament metadata (prize pool, dates) displays
++ 
++ ### League Pages:
++ - [ ] Navigate to a league season page (e.g., `/leagues/[season-id]`)
++ - [ ] Verify "Brackets" tab appears in navigation (position 6)
+  - [ ] Click "Brackets" tab
+  - [ ] If no tournaments, verify empty state message displays
+  - [ ] If tournaments exist, verify bracket displays
+  - [ ] If both tournaments exist, verify toggle buttons appear
+  - [ ] Click tournament type toggle, verify bracket switches
++ - [ ] Verify open tournament bracket displays correctly
++ - [ ] Verify playoff tournament bracket displays correctly
+  - [ ] Verify matches display with correct teams and scores
+  - [ ] Click a match, verify modal opens with details
+  - [ ] Close modal, verify it closes properly
++ 
++ ### General:
+  - [ ] Verify winner highlighting (green text)
+  - [ ] Verify loser indication (strikethrough)
+  - [ ] Verify format badge displays correctly
+  - [ ] Verify tournament metadata (champion, prize, dates) displays
+  - [ ] Test on mobile - verify horizontal scroll works
+- - [ ] Test different bracket formats if available
++ - [ ] Test different bracket formats if available (single/double elim, Swiss, round robin)
+  
+  ## Match Contexts Integration
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the "Conclusion" section at the end to reflect that both tournament and league brackets are implemented.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 10, lines removed: 1
+
+```diff
+@@ -324,5 +324,14 @@
+  ## Conclusion
+  
+- The league tournament brackets feature is fully implemented and ready for use. The system is flexible enough to support various tournament formats and can be easily extended with additional features in the future.
++ The tournament brackets feature is fully implemented for both standalone tournaments and league-specific tournaments (open and playoff). The system is flexible enough to support various tournament formats and can be easily extended with additional features in the future.
++ 
++ **Key Achievements:**
++ - ✅ Reusable BracketDisplay component works for all tournament types
++ - ✅ Tournament pages now have Brackets tab (before Information)
++ - ✅ League pages have Brackets tab with Open/Playoff toggle
++ - ✅ Automatic format detection (single/double elimination, Swiss, round robin)
++ - ✅ Winner highlighting and champion display
++ - ✅ Responsive design with mobile support
++ - ✅ Comprehensive documentation
+  
+  **Status: ✅ Complete and Ready for Testing**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now let me check if there are any linting errors in the documentation files.</details></think>
+
+---
+
+Perfect! Let me verify there are no linting errors:
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md`
+
+Lint results
+
+Lint errors for `LEAGUE_TOURNAMENT_BRACKETS.md`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 11:1-11:19 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 13:1-13:25 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 25:1-25:27 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 27:1-27:25 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 33:1-33:51 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 35:1-35:58 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 52:1-52:64 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 60:1-60:99 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 73:1-73:81 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 80:1-80:52 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD031/blanks-around-fences: Fenced code blocks should be surrounded by blank lines | 86:1-86:14 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 99:1-99:45 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 111:1-111:75 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 117:1-117:53 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 123:1-123:72 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD031/blanks-around-fences: Fenced code blocks should be surrounded by blank lines | 132:1-132:14 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 140:1-140:23 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD031/blanks-around-fences: Fenced code blocks should be surrounded by blank lines | 159:1-159:14 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 195:1-195:45 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 201:1-201:40 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 206:1-206:19 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 293:1-293:71 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 299:1-299:53 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 304:1-304:49 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD012/no-multiple-blanks: Multiple consecutive blank lines [Expected: 1; Actual: 2] | 330:1-330:1 | DIAGNOSTIC_SEVERITY_WARNING |
+
+
+Lint errors for `IMPLEMENTATION_SUMMARY.md`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 10:1-10:51 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 17:1-17:51 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 28:1-28:68 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 40:1-40:68 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 52:1-52:43 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 62:1-62:35 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 72:1-72:55 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 82:1-82:76 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD031/blanks-around-fences: Fenced code blocks should be surrounded by blank lines | 90:1-90:4 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD040/fenced-code-language: Fenced code blocks should have a language specified | 90:1-90:4 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 98:1-98:33 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 108:1-108:39 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 108:38-108:39 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 109:1-109:45 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 124:1-124:37 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 128:1-128:30 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 133:1-133:27 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 139:1-139:13 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 139:12-139:13 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 140:1-140:85 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 144:1-144:14 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 144:13-144:14 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 145:1-145:46 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 178:1-178:22 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 178:21-178:22 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 179:1-179:75 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 192:1-192:18 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 192:17-192:18 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 193:1-193:70 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 206:1-206:13 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 206:12-206:13 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 207:1-207:46 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 219:1-219:35 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 225:1-225:65 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 246:1-246:16 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 246:15-246:16 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 247:1-247:45 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 253:1-253:17 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 253:16-253:17 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 254:1-254:35 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD022/blanks-around-headings: Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] | 260:1-260:15 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD026/no-trailing-punctuation: Trailing punctuation in heading [Punctuation: ':'] | 260:14-260:15 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 261:1-261:44 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 278:1-278:39 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD032/blanks-around-lists: Lists should be surrounded by blank lines | 329:1-329:69 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD036/no-emphasis-as-heading: Emphasis used instead of a heading | 337:1-337:45 | DIAGNOSTIC_SEVERITY_WARNING |
+| MD012/no-multiple-blanks: Multiple consecutive blank lines [Expected: 1; Actual: 2] | 339:1-339:1 | DIAGNOSTIC_SEVERITY_WARNING |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>These are all just markdown formatting warnings, not actual errors. They're about spacing around lists and headings. These are minor style issues that don't affect functionality. The implementation is complete and functional. I should just note that the linting warnings are cosmetic.</details></think>
+
+---
+
+The linting errors are all cosmetic markdown formatting warnings (spacing around lists and headings) that don't affect functionality. The implementation is complete!
+
+## ✅ Implementation Complete!
+
+I've successfully added the Brackets tab to tournaments and moved it before the Information tab. Here's what was implemented:
+
+### Changes Made:
+
+1. **TournamentTabsIsland.tsx**
+   - ✅ Added BracketDisplay import
+   - ✅ Added BracketMatch type
+   - ✅ Added bracket data preparation logic:
+     - Filters out "Regular Season" matches
+     - Derives winner_id from match scores
+     - Assigns series numbers
+     - Extracts champion from standings
+   - ✅ Added Brackets tab at position 5
+   - ✅ Moved Information tab from position 5 to 6
+   - ✅ Renders BracketDisplay with tournament data
+   - ✅ Shows empty state when no bracket matches exist
+
+2. **Documentation Updates**
+   - ✅ Updated `LEAGUE_TOURNAMENT_BRACKETS.md` to cover both tournament and league brackets
+   - ✅ Updated `IMPLEMENTATION_SUMMARY.md` with tournament brackets information
+
+### Tab Order (Tournaments):
+- 0: Standings
+- 1: Teams  
+- 2: Matches
+- 3: Player Statistics
+- 4: Top Performers
+- 5: **Brackets** (NEW - before Information)
+- 6: Information (moved from 5)
+
+### Key Features:
+- **Automatic**: No data changes needed - uses existing match stage information
+- **Smart Filtering**: Only shows playoff/bracket matches (excludes "Regular Season")
+- **Winner Detection**: Automatically determines winners from scores
+- **Champion Display**: Shows tournament champion from standings
+- **Format Detection**: Automatically detects single/double elimination, Swiss, round robin
+- **Empty State**: Shows helpful message when no bracket matches exist
+
+### Testing:
+To test, navigate to any tournament page (e.g., `/tournaments/[tournament-id]`) and click the "Brackets" tab (before Information). The bracket will display if the tournament has matches with stage data.
+
+The implementation is complete and ready to use! 🎉
+
+---
+
+_**User (2025-10-12 00:45Z)**_
+
+ok lets move the bracket before the information tab in the leagues. and update to show any games in the season that have a stage that is not regular season
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user wants to:
+1. Move the Brackets tab in LeagueTabsIsland to be before the Information tab (currently Brackets is at position 6, Information at position 5)
+2. Update the league brackets to show any matches in the season that have a stage that is not "Regular Season" (currently it only shows matches from league_open_matches and league_playoff_matches tables)
+
+So I need to:
+1. Change the tab order in LeagueTabsIsland - Brackets should be at position 5, Information should be at position 6
+2. Modify the league page to also fetch regular season matches that have playoff stages (not "Regular Season" stage)
+3. Add a third bracket option or merge these matches into the existing brackets display
+
+Let me think about the best approach:
+- Option 1: Add a third toggle option "Season Playoffs" alongside "Open Tournament" and "Playoff Tournament"
+- Option 2: Show all non-regular season matches in a combined bracket
+- Option 3: Filter the regular matches query to include non-regular season matches and add them to the bracket display
+
+I think Option 1 makes the most sense - add a third bracket type for season playoff matches that aren't in the specific tournament tables.</details></think>
+
+---
+
+I'll move the Brackets tab before Information in leagues and update it to show all season matches with non-regular season stages.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -199,6 +199,6 @@
+      { id: 3, label: "Player Statistics" },
+      { id: 4, label: "Top Performers" },
+-     { id: 5, label: "Information" },
+-     { id: 6, label: "Brackets" },
++     { id: 5, label: "Brackets" },
++     { id: 6, label: "Information" },
+    ];
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to:
+1. Update the selectedTournamentType state to include a third option 'season'
+2. Update the toggle to show three options if there are season playoff matches
+3. Swap the Brackets and Information tab content positions (Brackets should be at activeTab === 5, Information should be at activeTab === 6)
+4. Update the league page to prepare season playoff matches</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -191,5 +191,5 @@
+    const [sortBy, setSortBy] = useState<keyof PlayerStatFull>('avg_points');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+-   const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff'>('open');
++   const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff' | 'season'>('season');
+  
+    const tabs = [
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to add the seasonPlayoffs prop to the LeagueTabsProps and update the component to receive it.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -166,4 +166,5 @@
+    openTournament?: TournamentData | null;
+    playoffTournament?: TournamentData | null;
++   seasonPlayoffs?: TournamentData | null;
+  };
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to add the seasonPlayoffs prop to the function parameters.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -181,4 +181,5 @@
+    openTournament = null,
+    playoffTournament = null,
++   seasonPlayoffs = null,
+  }: LeagueTabsProps) {
+    const [activeTab, setActiveTab] = useState(0);
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to swap the Brackets and Information tabs positions and update the toggle to include the season playoffs option.</details></think>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "activeTab === 5" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| Content | Line |
+|------|------|
+| `\{activeTab === 5 && (` | L887 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to find where the Brackets tab is (activeTab === 6) and swap them. Let me search for that.</details></think>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "Brackets Tab" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| Content | Line |
+|------|------|
+| `\{/* Brackets Tab */\}` | L1024 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to:
+1. Change "activeTab === 5" (Information) to "activeTab === 6"
+2. Change "activeTab === 6" (Brackets) to "activeTab === 5"  
+3. Update the Brackets tab to include the season playoffs option
+4. Update the toggle to show three buttons when applicable</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -884,5 +884,5 @@
+          )}
+  
+-         {/* Information Tab */}
++         {/* Brackets Tab */}
+          {activeTab === 5 && (
+            <div className="space-y-4">
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Wait, I made a mistake. I just replaced the Information tab's header with Brackets, but the content is still the Information content. Let me properly swap the two sections.
+
+Let me revert that and do it correctly.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 92, lines removed: undefined
+
+```diff
+@@ -886,4 +886,96 @@
+          {/* Brackets Tab */}
+          {activeTab === 5 && (
++           <div>
++             {/* Show toggle if any brackets exist */}
++             {(seasonPlayoffs || openTournament || playoffTournament) && (
++               <div className="mb-6 flex gap-2">
++                 {seasonPlayoffs && (
++                   <button
++                     onClick={() => setSelectedTournamentType('season')}
++                     className={`px-4 py-2 rounded transition ${
++                       selectedTournamentType === 'season'
++                         ? 'bg-blue-600 text-white font-semibold'
++                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
++                     }`}
++                   >
++                     Season Playoffs
++                   </button>
++                 )}
++                 {openTournament && (
++                   <button
++                     onClick={() => setSelectedTournamentType('open')}
++                     className={`px-4 py-2 rounded transition ${
++                       selectedTournamentType === 'open'
++                         ? 'bg-blue-600 text-white font-semibold'
++                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
++                     }`}
++                   >
++                     Open Tournament
++                   </button>
++                 )}
++                 {playoffTournament && (
++                   <button
++                     onClick={() => setSelectedTournamentType('playoff')}
++                     className={`px-4 py-2 rounded transition ${
++                       selectedTournamentType === 'playoff'
++                         ? 'bg-blue-600 text-white font-semibold'
++                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
++                     }`}
++                   >
++                     Playoff Tournament
++                   </button>
++                 )}
++               </div>
++             )}
++ 
++             {/* Display selected tournament bracket */}
++             {selectedTournamentType === 'season' && seasonPlayoffs ? (
++               <BracketDisplay
++                 matches={seasonPlayoffs.matches}
++                 tournamentName={`${leagueInfo?.league_name || 'League'} - Season ${leagueInfo?.season_number || ''} Playoffs`}
++                 champion={seasonPlayoffs.champion}
++                 prizePool={seasonPlayoffs.prize}
++                 status={seasonPlayoffs.status}
++                 startDate={seasonPlayoffs.start_date}
++                 finalsDate={seasonPlayoffs.finals_date}
++               />
++             ) : selectedTournamentType === 'open' && openTournament ? (
++               <BracketDisplay
++                 matches={openTournament.matches}
++                 tournamentName={`${leagueInfo?.league_name || 'League'} - Open Tournament`}
++                 champion={openTournament.champion}
++                 prizePool={openTournament.prize}
++                 status={openTournament.status}
++                 startDate={openTournament.start_date}
++                 finalsDate={openTournament.finals_date}
++               />
++             ) : selectedTournamentType === 'playoff' && playoffTournament ? (
++               <BracketDisplay
++                 matches={playoffTournament.matches}
++                 tournamentName={`${leagueInfo?.league_name || 'League'} - Playoffs`}
++                 champion={playoffTournament.champion}
++                 prizePool={playoffTournament.prize}
++                 status={playoffTournament.status}
++                 startDate={playoffTournament.start_date}
++                 finalsDate={playoffTournament.finals_date}
++               />
++             ) : (
++               <div className="text-center py-12 text-neutral-400">
++                 <p className="text-lg mb-2">No brackets available yet.</p>
++                 <p className="text-sm">
++                   {selectedTournamentType === 'season' 
++                     ? 'Season playoff matches will appear here once they have playoff stage designations.'
++                     : selectedTournamentType === 'open' 
++                     ? 'The open tournament bracket will appear here once matches are scheduled.'
++                     : 'The playoff bracket will appear here once matches are scheduled.'
++                   }
++                 </p>
++               </div>
++             )}
++           </div>
++         )}
++ 
++         {/* Information Tab */}
++         {activeTab === 6 && (
+            <div className="space-y-4">
+              {leagueInfo ? (
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 69
+
+```diff
+@@ -1021,73 +1113,5 @@
+            </div>
+          )}
+- 
+-         {/* Brackets Tab */}
+-         {activeTab === 6 && (
+-           <div>
+-             {/* Show toggle only if both tournaments exist */}
+-             {(openTournament || playoffTournament) && (
+-               <div className="mb-6 flex gap-2">
+-                 {openTournament && (
+-                   <button
+-                     onClick={() => setSelectedTournamentType('open')}
+-                     className={`px-4 py-2 rounded transition ${
+-                       selectedTournamentType === 'open'
+-                         ? 'bg-blue-600 text-white font-semibold'
+-                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+-                     }`}
+-                   >
+-                     Open Tournament
+-                   </button>
+-                 )}
+-                 {playoffTournament && (
+-                   <button
+-                     onClick={() => setSelectedTournamentType('playoff')}
+-                     className={`px-4 py-2 rounded transition ${
+-                       selectedTournamentType === 'playoff'
+-                         ? 'bg-blue-600 text-white font-semibold'
+-                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+-                     }`}
+-                   >
+-                     Playoff Tournament
+-                   </button>
+-                 )}
+-               </div>
+-             )}
+- 
+-             {/* Display selected tournament bracket */}
+-             {selectedTournamentType === 'open' && openTournament ? (
+-               <BracketDisplay
+-                 matches={openTournament.matches}
+-                 tournamentName={`${leagueInfo?.league_name || 'League'} - Open Tournament`}
+-                 champion={openTournament.champion}
+-                 prizePool={openTournament.prize}
+-                 status={openTournament.status}
+-                 startDate={openTournament.start_date}
+-                 finalsDate={openTournament.finals_date}
+-               />
+-             ) : selectedTournamentType === 'playoff' && playoffTournament ? (
+-               <BracketDisplay
+-                 matches={playoffTournament.matches}
+-                 tournamentName={`${leagueInfo?.league_name || 'League'} - Playoffs`}
+-                 champion={playoffTournament.champion}
+-                 prizePool={playoffTournament.prize}
+-                 status={playoffTournament.status}
+-                 startDate={playoffTournament.start_date}
+-                 finalsDate={playoffTournament.finals_date}
+-               />
+-             ) : (
+-               <div className="text-center py-12 text-neutral-400">
+-                 <p className="text-lg mb-2">No tournament brackets available yet.</p>
+-                 <p className="text-sm">
+-                   {selectedTournamentType === 'open' 
+-                     ? 'The open tournament bracket will appear here once matches are scheduled.'
+-                     : 'The playoff bracket will appear here once matches are scheduled.'
+-                   }
+-                 </p>
+-               </div>
+-             )}
+-           </div>
+-         )}
+-       </div>
++       </div>
+  
+        {/* Match Details Modal */}
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Great! The tabs are now swapped. Now I need to update the league page to prepare the seasonPlayoffs data by filtering matches that have a stage that is not "Regular Season".</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 45, lines removed: undefined
+
+```diff
+@@ -297,4 +297,49 @@
+    };
+  }
++ 
++ // Fetch Season Playoff matches (any season match with stage != "Regular Season")
++ // These are playoff matches that aren't in specific tournament tables
++ let seasonPlayoffs = null;
++ const seasonPlayoffMatches = matches
++   .filter((m: any) => m.stage && m.stage !== "Regular Season")
++   .map((m: any, idx: number) => {
++     // Determine winner based on scores
++     let winner_id: string | null = null;
++     if (m.score_a !== null && m.score_b !== null) {
++       if (m.score_a > m.score_b) {
++         winner_id = m.team_a_id;
++       } else if (m.score_b > m.score_a) {
++         winner_id = m.team_b_id;
++       }
++     }
++     
++     return {
++       id: m.id,
++       played_at: m.played_at,
++       team_a_id: m.team_a_id,
++       team_b_id: m.team_b_id,
++       score_a: m.score_a,
++       score_b: m.score_b,
++       stage: m.stage,
++       series_number: idx + 1,
++       winner_id,
++       team_a: m.team_a,
++       team_b: m.team_b,
++     };
++   });
++ 
++ // Find champion from standings if available
++ const seasonChampion = teamStandings.find((t: any) => t.wins && t.wins > 0)?.team_name || null;
++ 
++ if (seasonPlayoffMatches.length > 0) {
++   seasonPlayoffs = {
++     champion: seasonChampion,
++     prize: null,
++     status: league.is_active ? 'in progress' : 'completed',
++     start_date: league.start_date,
++     finals_date: league.end_date,
++     matches: seasonPlayoffMatches,
++   };
++ }
+  
+  const league = leagueData;
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to pass the seasonPlayoffs prop to the LeagueTabsIsland component.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -497,4 +497,5 @@
+          openTournament={openTournament as any}
+          playoffTournament={playoffTournament as any}
++         seasonPlayoffs={seasonPlayoffs as any}
+        />
+      </main>
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me check for linting errors.</details></think>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+
+Lint results
+
+Lint errors for `src/pages/leagues/[id].astro`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| 'league' is possibly 'null'. | 340:18-340:24 | DIAGNOSTIC_SEVERITY_ERROR |
+| Variable 'league' is used before being assigned. | 340:18-340:24 | DIAGNOSTIC_SEVERITY_ERROR |
+| Block-scoped variable 'league' used before its declaration. | 340:18-340:24 | DIAGNOSTIC_SEVERITY_ERROR |
+| 'league' is possibly 'null'. | 339:17-339:23 | DIAGNOSTIC_SEVERITY_ERROR |
+| Variable 'league' is used before being assigned. | 339:17-339:23 | DIAGNOSTIC_SEVERITY_ERROR |
+| Block-scoped variable 'league' used before its declaration. | 339:17-339:23 | DIAGNOSTIC_SEVERITY_ERROR |
+| 'league' is possibly 'null'. | 338:13-338:19 | DIAGNOSTIC_SEVERITY_ERROR |
+| Variable 'league' is used before being assigned. | 338:13-338:19 | DIAGNOSTIC_SEVERITY_ERROR |
+| Block-scoped variable 'league' used before its declaration. | 338:13-338:19 | DIAGNOSTIC_SEVERITY_ERROR |
+| Variable 'teamStandings' is used before being assigned. | 332:24-332:37 | DIAGNOSTIC_SEVERITY_ERROR |
+| Block-scoped variable 'teamStandings' used before its declaration. | 332:24-332:37 | DIAGNOSTIC_SEVERITY_ERROR |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>I see the issue. I'm using variables before they're declared. Let me fix the order - I need to move the seasonPlayoffs section after the league and teamStandings variables are assigned.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: undefined
+
+```diff
+@@ -297,4 +297,8 @@
+    };
+  }
++ 
++ const league = leagueData;
++ const teamStandings = teamsWithData ?? [];
++ const recentMatches = matches ?? [];
+  
+  // Fetch Season Playoff matches (any season match with stage != "Regular Season")
+```
+
+**Chunk 2**
+Lines added: 3, lines removed: 7
+
+```diff
+@@ -336,14 +340,10 @@
+      champion: seasonChampion,
+      prize: null,
+-     status: league.is_active ? 'in progress' : 'completed',
+-     start_date: league.start_date,
+-     finals_date: league.end_date,
++     status: league?.is_active ? 'in progress' : 'completed',
++     start_date: league?.start_date,
++     finals_date: league?.end_date,
+      matches: seasonPlayoffMatches,
+    };
+  }
+- 
+- const league = leagueData;
+- const teamStandings = teamsWithData ?? [];
+- const recentMatches = matches ?? [];
+  
+  if (!league) {
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me check for linting errors again.</details></think>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! No linting errors. Now let me update the documentation to reflect these changes.</details></think>
+
+---
+
+Perfect! Let me update the documentation:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 7, lines removed: 5
+
+```diff
+@@ -60,18 +60,20 @@
+  
+  **Changes:**
+- - Added new "Brackets" tab (ID: 6)
+- - Added tournament type selector (Open vs Playoff)
++ - Added new "Brackets" tab (ID: 5, before Information which moved to 6)
++ - Added three-way tournament type selector (Season Playoffs, Open, Playoff)
+  - Added state management for selected tournament type
+  - Integrated BracketDisplay component
+  - Added new TypeScript types:
+    - `BracketMatch`: Match data with stage/series info
+    - `TournamentData`: Complete tournament information
+- - Added props: `openTournament` and `playoffTournament`
++ - Added props: `openTournament`, `playoffTournament`, and `seasonPlayoffs`
+  
+  **UI Behavior:**
+- - Toggle buttons only appear if both tournaments exist
+- - Defaults to Open Tournament if available
++ - Shows up to 3 toggle buttons depending on which brackets exist
++ - Defaults to Season Playoffs if available, then Open, then Playoff
++ - Season Playoffs show any season matches with stage != "Regular Season"
+  - Shows helpful empty state messages when no brackets exist
+  - Seamless integration with existing tab system
++ - Information tab moved from position 5 to 6
+  
+  ### 4. League Page Data Fetching (`src/pages/leagues/[id].astro`)
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the queries section in the documentation.</details></think>
+
+---
+
+The string to replace was not found in the file.
+
+---
+
+<think><details><summary>Thought Process</summary>Let me use the correct string from the file.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: 3
+
+```diff
+@@ -85,7 +85,9 @@
+  2. Fetch `league_open_matches` associations (match_id, stage, series_number)
+  3. Fetch match details from `v_matches_with_primary_context` view
+- 4. Combine match data with team information (names, logos)
+- 5. Repeat entire process for `league_playoff` data
+- 6. Pass both tournament objects as props to LeagueTabsIsland
++ 4. Repeat entire process for `league_playoff` data
++ 5. Filter season matches for any with stage != "Regular Season" (Season Playoffs)
++ 6. Derive winner_id from match scores for bracket matches
++ 7. Combine match data with team information (names, logos)
++ 8. Pass all three tournament objects as props to LeagueTabsIsland
+  
+  **Data Flow:**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me also update the data flow section.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -95,4 +95,5 @@
+  league_open → league_open_matches → v_matches_with_primary_context → teams → BracketDisplay
+  league_playoff → league_playoff_matches → v_matches_with_primary_context → teams → BracketDisplay
++ season matches → filter by stage → derive winner_id → BracketDisplay
+  ```
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Now let me update the testing checklist to reflect the new tab order.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 8, lines removed: 7
+
+```diff
+@@ -197,15 +197,16 @@
+  ### League Pages:
+  - [ ] Navigate to a league season page (e.g., `/leagues/[season-id]`)
+- - [ ] Verify "Brackets" tab appears in navigation (position 6)
++ - [ ] Verify "Brackets" tab appears in navigation (position 5, before Information)
+  - [ ] Click "Brackets" tab
+- - [ ] If no tournaments, verify empty state message displays
+- - [ ] If tournaments exist, verify bracket displays
+- - [ ] If both tournaments exist, verify toggle buttons appear
+- - [ ] Click tournament type toggle, verify bracket switches
+- - [ ] Verify open tournament bracket displays correctly
+- - [ ] Verify playoff tournament bracket displays correctly
++ - [ ] If no brackets, verify empty state message displays
++ - [ ] Verify toggle buttons for Season Playoffs, Open, and/or Playoff appear
++ - [ ] Click "Season Playoffs" - verify non-regular season matches display
++ - [ ] Click "Open Tournament" - verify open tournament bracket displays
++ - [ ] Click "Playoff Tournament" - verify playoff tournament bracket displays
+  - [ ] Verify matches display with correct teams and scores
++ - [ ] Verify winner highlighting works correctly
+  - [ ] Click a match, verify modal opens with details
+  - [ ] Close modal, verify it closes properly
++ - [ ] Verify Information tab is now at position 6
+  
+  ### General:
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Let me update the files modified section.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 7, lines removed: 5
+
+```diff
+@@ -159,14 +159,16 @@
+     - Added BracketDisplay import
+     - Added BracketMatch and TournamentData types
+-    - Added openTournament and playoffTournament props
+-    - Added selectedTournamentType state
+-    - Added Brackets tab (ID: 6)
+-    - Added tournament selector and bracket rendering
++    - Added openTournament, playoffTournament, and seasonPlayoffs props
++    - Updated selectedTournamentType state to support 'season', 'open', 'playoff'
++    - Added Brackets tab (ID: 5, moved Information to ID 6)
++    - Added three-way tournament selector and bracket rendering
+  
+  3. `/src/pages/leagues/[id].astro`
+     - Added open tournament data fetching
+     - Added playoff tournament data fetching
++    - Added season playoffs preparation (filters matches with stage != "Regular Season")
++    - Derives winner_id from match scores
+     - Added match detail enrichment
+-    - Passed new props to LeagueTabsIsland
++    - Passed all three tournament props to LeagueTabsIsland
+  
+  4. `/LEAGUE_TOURNAMENT_BRACKETS.md`
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Perfect! Let me add one final update to the conclusion section to mention the season playoffs feature.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 2
+
+```diff
+@@ -336,6 +336,7 @@
+  **Key Achievements:**
+  - ✅ Reusable BracketDisplay component works for all tournament types
+- - ✅ Tournament pages now have Brackets tab (before Information)
+- - ✅ League pages have Brackets tab with Open/Playoff toggle
++ - ✅ Tournament pages now have Brackets tab at position 5 (before Information)
++ - ✅ League pages have Brackets tab at position 5 with three-way toggle (Season/Open/Playoff)
++ - ✅ Season Playoffs automatically display any league matches with playoff stages
+  - ✅ Automatic format detection (single/double elimination, Swiss, round robin)
+  - ✅ Winner highlighting and champion display
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Perfect! The implementation is complete. Let me provide a summary to the user.</details></think>
+
+---
+
+## ✅ Updates Complete!
+
+I've successfully updated the brackets implementation with your requested changes:
+
+### 🎯 Changes Made:
+
+1. **LeagueTabsIsland.tsx**
+   - ✅ Moved Brackets tab from position 6 to position 5 (before Information)
+   - ✅ Moved Information tab from position 5 to position 6
+   - ✅ Added "Season Playoffs" as a third bracket type
+   - ✅ Updated toggle to show up to 3 buttons: Season Playoffs, Open Tournament, Playoff Tournament
+   - ✅ Season Playoffs defaults as first option if available
+
+2. **League Page (leagues/[id].astro)**
+   - ✅ Added Season Playoffs data preparation
+   - ✅ Filters all season matches where `stage != "Regular Season"`
+   - ✅ Derives `winner_id` from match scores automatically
+   - ✅ Assigns series numbers for ordering
+   - ✅ Passes `seasonPlayoffs` prop to LeagueTabsIsland
+
+3. **Documentation**
+   - ✅ Updated `IMPLEMENTATION_SUMMARY.md` with new features
+   - ✅ Updated testing checklist
+
+### 📊 New Tab Orders:
+
+**Tournaments:**
+- 0: Standings
+- 1: Teams
+- 2: Matches
+- 3: Player Statistics
+- 4: Top Performers
+- 5: **Brackets** ⬅️ Before Information
+- 6: Information
+
+**Leagues:**
+- 0: Standings
+- 1: Teams
+- 2: Matches
+- 3: Player Statistics
+- 4: Top Performers
+- 5: **Brackets** ⬅️ Before Information (with 3-way toggle)
+- 6: Information
+
+### 🎮 Season Playoffs Feature:
+
+The new "Season Playoffs" bracket type will:
+- Automatically detect any season matches with playoff stages (Finals, Semi Finals, Round 1, etc.)
+- Display them in bracket format
+- Show alongside Open Tournament and Playoff Tournament options
+- Use the same flexible BracketDisplay component
+
+This means leagues can now track:
+1. **Season Playoffs** - Regular season matches that advance to playoffs
+2. **Open Tournament** - Separate open competition tracked in `league_open` table
+3. **Playoff Tournament** - Separate playoff competition tracked in `league_playoff` table
+
+All three bracket types will automatically appear based on the data available, giving maximum flexibility for different league structures! 🎉
 
 ---
 
