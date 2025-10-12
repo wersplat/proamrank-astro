@@ -165,7 +165,6 @@ type LeagueTabsProps = {
   playerStats?: PlayerStatFull[];
   openTournament?: TournamentData | null;
   playoffTournament?: TournamentData | null;
-  seasonPlayoffs?: TournamentData | null;
 };
 
 export default function LeagueTabsIsland({
@@ -180,7 +179,6 @@ export default function LeagueTabsIsland({
   playerStats: leaguePlayerStats = [],
   openTournament = null,
   playoffTournament = null,
-  seasonPlayoffs = null,
 }: LeagueTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [matchesPage, setMatchesPage] = useState(1);
@@ -192,7 +190,7 @@ export default function LeagueTabsIsland({
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<keyof PlayerStatFull>('avg_points');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff' | 'season'>('season');
+  const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff'>('open');
 
   const tabs = [
     { id: 0, label: "Standings" },
@@ -886,21 +884,9 @@ export default function LeagueTabsIsland({
         {/* Brackets Tab */}
         {activeTab === 5 && (
           <div>
-            {/* Show toggle if any brackets exist */}
-            {(seasonPlayoffs || openTournament || playoffTournament) && (
+            {/* Show toggle only if both tournaments exist */}
+            {(openTournament || playoffTournament) && (
               <div className="mb-6 flex gap-2">
-                {seasonPlayoffs && (
-                  <button
-                    onClick={() => setSelectedTournamentType('season')}
-                    className={`px-4 py-2 rounded transition ${
-                      selectedTournamentType === 'season'
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
-                    }`}
-                  >
-                    Season Playoffs
-                  </button>
-                )}
                 {openTournament && (
                   <button
                     onClick={() => setSelectedTournamentType('open')}
@@ -929,17 +915,7 @@ export default function LeagueTabsIsland({
             )}
 
             {/* Display selected tournament bracket */}
-            {selectedTournamentType === 'season' && seasonPlayoffs ? (
-              <BracketDisplay
-                matches={seasonPlayoffs.matches}
-                tournamentName={`${leagueInfo?.league_name || 'League'} - Season ${leagueInfo?.season_number || ''} Playoffs`}
-                champion={seasonPlayoffs.champion}
-                prizePool={seasonPlayoffs.prize}
-                status={seasonPlayoffs.status}
-                startDate={seasonPlayoffs.start_date}
-                finalsDate={seasonPlayoffs.finals_date}
-              />
-            ) : selectedTournamentType === 'open' && openTournament ? (
+            {selectedTournamentType === 'open' && openTournament ? (
               <BracketDisplay
                 matches={openTournament.matches}
                 tournamentName={`${leagueInfo?.league_name || 'League'} - Open Tournament`}
@@ -961,11 +937,9 @@ export default function LeagueTabsIsland({
               />
             ) : (
               <div className="text-center py-12 text-neutral-400">
-                <p className="text-lg mb-2">No brackets available yet.</p>
+                <p className="text-lg mb-2">No tournament brackets available yet.</p>
                 <p className="text-sm">
-                  {selectedTournamentType === 'season' 
-                    ? 'Season playoff matches will appear here once they have playoff stage designations.'
-                    : selectedTournamentType === 'open' 
+                  {selectedTournamentType === 'open' 
                     ? 'The open tournament bracket will appear here once matches are scheduled.'
                     : 'The playoff bracket will appear here once matches are scheduled.'
                   }

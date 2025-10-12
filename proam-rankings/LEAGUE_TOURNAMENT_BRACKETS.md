@@ -56,10 +56,16 @@ VALUES ('match-uuid', 'season-uuid', 'Finals', 1);
 
 ### Context Types
 
-For league matches, there are three contexts:
-1. **Regular Season**: Matches with `season_id` in `matches` table, not in tournament match tables
-2. **Open Tournament**: Matches linked via `league_open_matches`
-3. **Playoff Tournament**: Matches linked via `league_playoff_matches`
+For league matches, there are two tournament contexts (plus regular season):
+1. **Regular Season**: Matches with `stage = "Regular Season"` - shown in Matches tab only
+2. **Open Tournament**: Matches linked via `league_open_matches` table
+3. **Playoff Tournament**: Matches linked via `league_playoff_matches` table
+
+**Important:** Each season has exactly two tournaments:
+- **Open Tournament**: Tracked in `league_open` and `league_open_matches` tables
+- **Playoff Tournament**: Tracked in `league_playoff` and `league_playoff_matches` tables
+- Matches are associated with tournaments via the `league_open_matches` or `league_playoff_matches` tables
+- The `stage` field determines bracket structure within each tournament
 
 ## Component Architecture
 
@@ -137,10 +143,12 @@ Location: `src/components/LeagueTabsIsland.tsx`
 ```
 
 **New Tab:**
-- Tab ID 6: "Brackets"
+- Tab ID 5: "Brackets" (moved Information from 5 to 6)
 - Toggle between "Open Tournament" and "Playoff Tournament"
-- Only shows toggle if both tournaments exist
+- Only shows toggle buttons for tournaments that have data
+- Defaults to Open Tournament if available
 - Renders BracketDisplay component for selected tournament
+- Each league season has exactly two possible tournaments
 
 ### League Page Data Fetching
 
@@ -151,9 +159,10 @@ Location: `src/pages/leagues/[id].astro`
 1. Query `league_open` table for open tournament metadata
 2. Query `league_open_matches` to get match IDs and stages
 3. Fetch full match details from `v_matches_with_primary_context`
-4. Combine match data with team information (logos, names)
-5. Repeat for `league_playoff` and `league_playoff_matches`
-6. Pass both tournament objects to `LeagueTabsIsland`
+4. Repeat for `league_playoff` and `league_playoff_matches`
+5. Derive winner_id from scores for bracket matches
+6. Combine match data with team information (logos, names)
+7. Pass both tournament objects to `LeagueTabsIsland`
 
 **Example Query Structure:**
 ```typescript

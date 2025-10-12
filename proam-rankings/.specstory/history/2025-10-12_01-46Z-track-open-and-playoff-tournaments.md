@@ -4279,3 +4279,1085 @@ All three bracket types will automatically appear based on the data available, g
 
 ---
 
+_**User (2025-10-12 00:45Z)**_
+
+still use the league_open_matches and leagu_playoff_matches tables to determine if it is an open or playoffs
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user wants me to modify the logic so that:
+1. Season Playoffs should only show matches that are NOT in league_open_matches or league_playoff_matches
+2. This way, matches are categorized correctly based on which table they're in:
+   - league_open_matches → Open Tournament
+   - league_playoff_matches → Playoff Tournament  
+   - Season matches with playoff stages but NOT in either table → Season Playoffs
+
+I need to update the league page to:
+1. Get the match IDs from league_open_matches and league_playoff_matches
+2. Filter out those match IDs when creating the seasonPlayoffs
+3. Only show matches that have playoff stages AND are not in the tournament match tables
+
+This makes sense because it properly segregates the matches based on their tournament association.</details></think>
+
+---
+
+I'll update the logic to properly use the `league_open_matches` and `league_playoff_matches` tables to determine tournament association.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 24, lines removed: 2
+
+```diff
+@@ -303,8 +303,30 @@
+  
+  // Fetch Season Playoff matches (any season match with stage != "Regular Season")
+- // These are playoff matches that aren't in specific tournament tables
++ // Exclude matches that are in league_open_matches or league_playoff_matches tables
+  let seasonPlayoffs = null;
++ 
++ // Get match IDs from open and playoff tournament tables
++ const { data: allOpenMatchIds } = await supa((Astro.locals as any).runtime)
++   .from("league_open_matches")
++   .select("match_id")
++   .eq("season_id", seasonId);
++ 
++ const { data: allPlayoffMatchIds } = await supa((Astro.locals as any).runtime)
++   .from("league_playoff_matches")
++   .select("match_id")
++   .eq("season_id", seasonId);
++ 
++ const tournamentMatchIds = new Set([
++   ...(allOpenMatchIds ?? []).map((m: any) => m.match_id).filter(Boolean),
++   ...(allPlayoffMatchIds ?? []).map((m: any) => m.match_id).filter(Boolean),
++ ]);
++ 
++ // Filter season matches: must have playoff stage AND not be in tournament tables
+  const seasonPlayoffMatches = matches
+-   .filter((m: any) => m.stage && m.stage !== "Regular Season")
++   .filter((m: any) => 
++     m.stage && 
++     m.stage !== "Regular Season" && 
++     !tournamentMatchIds.has(m.id)
++   )
+    .map((m: any, idx: number) => {
+      // Determine winner based on scores
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Good! Now I need to update the documentation to reflect this important filtering logic.</details></think>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Great, no errors. Now I should update the documentation to clarify this important logic about how matches are categorized.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 11, lines removed: 4
+
+```diff
+@@ -57,8 +57,15 @@
+  ### Context Types
+  
+- For league matches, there are three contexts:
+- 1. **Regular Season**: Matches with `season_id` in `matches` table, not in tournament match tables
+- 2. **Open Tournament**: Matches linked via `league_open_matches`
+- 3. **Playoff Tournament**: Matches linked via `league_playoff_matches`
++ For league matches, there are three bracket contexts (plus regular season):
++ 1. **Regular Season**: Matches with `stage = "Regular Season"` - shown in Matches tab only
++ 2. **Season Playoffs**: Matches with playoff stages (Finals, Semi Finals, etc.) that are NOT in `league_open_matches` or `league_playoff_matches`
++ 3. **Open Tournament**: Matches linked via `league_open_matches` table
++ 4. **Playoff Tournament**: Matches linked via `league_playoff_matches` table
++ 
++ **Important:** The determination is hierarchical:
++ - If a match is in `league_open_matches` → Open Tournament bracket
++ - Else if in `league_playoff_matches` → Playoff Tournament bracket
++ - Else if has playoff stage (not "Regular Season") → Season Playoffs bracket
++ - Else → Regular season (Matches tab only)
+  
+  ## Component Architecture
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Good, now let me update the documentation further to explain this logic in the League Page Data Fetching section.</details></think>
+
+---
+
+The string to replace was not found in the file.
+
+---
+
+<think><details><summary>Thought Process</summary>Let me get the exact text from the file first.</details></think>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md
+
+---
+
+<think><details><summary>Thought Process</summary>I see, let me update the correct section.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 6, lines removed: 3
+
+```diff
+@@ -159,7 +159,10 @@
+  2. Query `league_open_matches` to get match IDs and stages
+  3. Fetch full match details from `v_matches_with_primary_context`
+- 4. Combine match data with team information (logos, names)
+- 5. Repeat for `league_playoff` and `league_playoff_matches`
+- 6. Pass both tournament objects to `LeagueTabsIsland`
++ 4. Repeat for `league_playoff` and `league_playoff_matches`
++ 5. Query ALL match IDs from both tournament tables
++ 6. Filter season matches: playoff stages AND NOT in tournament tables = Season Playoffs
++ 7. Derive winner_id from scores for bracket matches
++ 8. Combine match data with team information (logos, names)
++ 9. Pass all three tournament objects to `LeagueTabsIsland`
+  
+  **Example Query Structure:**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I should add an example showing the exclusion logic. Let me update that example section.</details></think>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md
+
+---
+
+<think><details><summary>Thought Process</summary>Good, let me add a new example showing the Season Playoffs filtering logic.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 12, lines removed: undefined
+
+```diff
+@@ -196,4 +196,16 @@
+    team_b: teamMap.get(match.team_b_id),
+  }));
++ 
++ // 5. Filter for Season Playoffs (exclude tournament matches)
++ const tournamentMatchIds = new Set([
++   ...openMatchIds,
++   ...playoffMatchIds
++ ]);
++ 
++ const seasonPlayoffMatches = allSeasonMatches.filter(m => 
++   m.stage && 
++   m.stage !== "Regular Season" &&
++   !tournamentMatchIds.has(m.id)
++ );
+  ```
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Good! Now let me update the IMPLEMENTATION_SUMMARY.md to explain this logic as well.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 11, lines removed: 4
+
+```diff
+@@ -86,8 +86,15 @@
+  3. Fetch match details from `v_matches_with_primary_context` view
+  4. Repeat entire process for `league_playoff` data
+- 5. Filter season matches for any with stage != "Regular Season" (Season Playoffs)
+- 6. Derive winner_id from match scores for bracket matches
+- 7. Combine match data with team information (names, logos)
+- 8. Pass all three tournament objects as props to LeagueTabsIsland
++ 5. Query ALL match IDs from both `league_open_matches` and `league_playoff_matches`
++ 6. Filter season matches: playoff stages AND NOT in tournament tables = Season Playoffs
++ 7. Derive winner_id from match scores for bracket matches
++ 8. Combine match data with team information (names, logos)
++ 9. Pass all three tournament objects as props to LeagueTabsIsland
++ 
++ **Match Categorization:**
++ - Matches in `league_open_matches` → Open Tournament bracket
++ - Matches in `league_playoff_matches` → Playoff Tournament bracket
++ - Matches with playoff stage but NOT in either table → Season Playoffs bracket
++ - This ensures each match appears in only one bracket category
+  
+  **Data Flow:**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now let me verify everything is correct and create a final summary.</details></think>
+
+---
+
+Perfect! I've updated the implementation to properly use the `league_open_matches` and `league_playoff_matches` tables for categorization.
+
+## ✅ Final Implementation Summary
+
+### Key Updates Made:
+
+1. **Proper Match Categorization** (`src/pages/leagues/[id].astro`)
+   - ✅ Queries ALL match IDs from `league_open_matches` table
+   - ✅ Queries ALL match IDs from `league_playoff_matches` table
+   - ✅ Creates exclusion set of tournament match IDs
+   - ✅ Season Playoffs only includes matches that:
+     - Have a playoff stage (not "Regular Season") AND
+     - Are NOT in `league_open_matches` AND
+     - Are NOT in `league_playoff_matches`
+
+2. **Tab Positioning**
+   - ✅ Brackets moved to position 5 (before Information)
+   - ✅ Information moved to position 6
+
+3. **Three-Way Toggle** (`src/components/LeagueTabsIsland.tsx`)
+   - ✅ Season Playoffs button
+   - ✅ Open Tournament button
+   - ✅ Playoff Tournament button
+   - ✅ Only shows buttons for brackets that have data
+
+### 📋 Match Categorization Logic:
+
+```
+For each match in the league season:
+
+1. Is match_id in league_open_matches?
+   → YES: Show in "Open Tournament" bracket
+   → NO: Continue to step 2
+
+2. Is match_id in league_playoff_matches?
+   → YES: Show in "Playoff Tournament" bracket
+   → NO: Continue to step 3
+
+3. Does match have playoff stage (not "Regular Season")?
+   → YES: Show in "Season Playoffs" bracket
+   → NO: Regular season match (Matches tab only)
+```
+
+This ensures:
+- Each match appears in only ONE bracket category
+- Tournament associations in the database tables determine categorization
+- Season Playoffs is for matches with playoff stages that aren't in separate tournaments
+- Maximum flexibility for different league structures
+
+### 🎯 Final Tab Order (Both Tournament & League):
+
+**Position 5: Brackets** ⬅️ Before Information  
+**Position 6: Information**
+
+The implementation is complete and properly uses the database tables to determine bracket categorization! 🎉
+
+---
+
+_**User (2025-10-12 00:45Z)**_
+
+only two tournaments a season, open and playoffs
+
+---
+
+_**Assistant (default)**_
+
+<think><details><summary>Thought Process</summary>The user is clarifying that there are only two tournaments per season: open and playoffs. So I should remove the "Season Playoffs" option and only keep "Open Tournament" and "Playoff Tournament". The season playoffs concept should be removed.
+
+Let me update the code to remove the seasonPlayoffs functionality and simplify to just open and playoff tournaments.</details></think>
+
+---
+
+I'll simplify to only show Open Tournament and Playoff Tournament brackets, removing the Season Playoffs option.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -166,5 +166,4 @@
+    openTournament?: TournamentData | null;
+    playoffTournament?: TournamentData | null;
+-   seasonPlayoffs?: TournamentData | null;
+  };
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the function parameters and remove the seasonPlayoffs parameter.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -180,5 +180,4 @@
+    openTournament = null,
+    playoffTournament = null,
+-   seasonPlayoffs = null,
+  }: LeagueTabsProps) {
+    const [activeTab, setActiveTab] = useState(0);
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the state to only support 'open' or 'playoff', not 'season'.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -191,5 +191,5 @@
+    const [sortBy, setSortBy] = useState<keyof PlayerStatFull>('avg_points');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+-   const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff' | 'season'>('season');
++   const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff'>('open');
+  
+    const tabs = [
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the Brackets tab content to remove the Season Playoffs option and simplify to just the two tournament types.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 14
+
+```diff
+@@ -885,19 +885,7 @@
+          {activeTab === 5 && (
+            <div>
+-             {/* Show toggle if any brackets exist */}
+-             {(seasonPlayoffs || openTournament || playoffTournament) && (
++             {/* Show toggle only if both tournaments exist */}
++             {(openTournament || playoffTournament) && (
+                <div className="mb-6 flex gap-2">
+-                 {seasonPlayoffs && (
+-                   <button
+-                     onClick={() => setSelectedTournamentType('season')}
+-                     className={`px-4 py-2 rounded transition ${
+-                       selectedTournamentType === 'season'
+-                         ? 'bg-blue-600 text-white font-semibold'
+-                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+-                     }`}
+-                   >
+-                     Season Playoffs
+-                   </button>
+-                 )}
+                  {openTournament && (
+                    <button
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 11
+
+```diff
+@@ -928,15 +916,5 @@
+  
+              {/* Display selected tournament bracket */}
+-             {selectedTournamentType === 'season' && seasonPlayoffs ? (
+-               <BracketDisplay
+-                 matches={seasonPlayoffs.matches}
+-                 tournamentName={`${leagueInfo?.league_name || 'League'} - Season ${leagueInfo?.season_number || ''} Playoffs`}
+-                 champion={seasonPlayoffs.champion}
+-                 prizePool={seasonPlayoffs.prize}
+-                 status={seasonPlayoffs.status}
+-                 startDate={seasonPlayoffs.start_date}
+-                 finalsDate={seasonPlayoffs.finals_date}
+-               />
+-             ) : selectedTournamentType === 'open' && openTournament ? (
++             {selectedTournamentType === 'open' && openTournament ? (
+                <BracketDisplay
+                  matches={openTournament.matches}
+```
+
+**Chunk 3**
+Lines added: 2, lines removed: 4
+
+```diff
+@@ -960,9 +938,7 @@
+              ) : (
+                <div className="text-center py-12 text-neutral-400">
+-                 <p className="text-lg mb-2">No brackets available yet.</p>
++                 <p className="text-lg mb-2">No tournament brackets available yet.</p>
+                  <p className="text-sm">
+-                   {selectedTournamentType === 'season' 
+-                     ? 'Season playoff matches will appear here once they have playoff stage designations.'
+-                     : selectedTournamentType === 'open' 
++                   {selectedTournamentType === 'open' 
+                      ? 'The open tournament bracket will appear here once matches are scheduled.'
+                      : 'The playoff bracket will appear here once matches are scheduled.'
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to remove the seasonPlayoffs data fetching from the league page.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 67
+
+```diff
+@@ -301,71 +301,4 @@
+  const teamStandings = teamsWithData ?? [];
+  const recentMatches = matches ?? [];
+- 
+- // Fetch Season Playoff matches (any season match with stage != "Regular Season")
+- // Exclude matches that are in league_open_matches or league_playoff_matches tables
+- let seasonPlayoffs = null;
+- 
+- // Get match IDs from open and playoff tournament tables
+- const { data: allOpenMatchIds } = await supa((Astro.locals as any).runtime)
+-   .from("league_open_matches")
+-   .select("match_id")
+-   .eq("season_id", seasonId);
+- 
+- const { data: allPlayoffMatchIds } = await supa((Astro.locals as any).runtime)
+-   .from("league_playoff_matches")
+-   .select("match_id")
+-   .eq("season_id", seasonId);
+- 
+- const tournamentMatchIds = new Set([
+-   ...(allOpenMatchIds ?? []).map((m: any) => m.match_id).filter(Boolean),
+-   ...(allPlayoffMatchIds ?? []).map((m: any) => m.match_id).filter(Boolean),
+- ]);
+- 
+- // Filter season matches: must have playoff stage AND not be in tournament tables
+- const seasonPlayoffMatches = matches
+-   .filter((m: any) => 
+-     m.stage && 
+-     m.stage !== "Regular Season" && 
+-     !tournamentMatchIds.has(m.id)
+-   )
+-   .map((m: any, idx: number) => {
+-     // Determine winner based on scores
+-     let winner_id: string | null = null;
+-     if (m.score_a !== null && m.score_b !== null) {
+-       if (m.score_a > m.score_b) {
+-         winner_id = m.team_a_id;
+-       } else if (m.score_b > m.score_a) {
+-         winner_id = m.team_b_id;
+-       }
+-     }
+-     
+-     return {
+-       id: m.id,
+-       played_at: m.played_at,
+-       team_a_id: m.team_a_id,
+-       team_b_id: m.team_b_id,
+-       score_a: m.score_a,
+-       score_b: m.score_b,
+-       stage: m.stage,
+-       series_number: idx + 1,
+-       winner_id,
+-       team_a: m.team_a,
+-       team_b: m.team_b,
+-     };
+-   });
+- 
+- // Find champion from standings if available
+- const seasonChampion = teamStandings.find((t: any) => t.wins && t.wins > 0)?.team_name || null;
+- 
+- if (seasonPlayoffMatches.length > 0) {
+-   seasonPlayoffs = {
+-     champion: seasonChampion,
+-     prize: null,
+-     status: league?.is_active ? 'in progress' : 'completed',
+-     start_date: league?.start_date,
+-     finals_date: league?.end_date,
+-     matches: seasonPlayoffMatches,
+-   };
+- }
+  
+  if (!league) {
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to remove the seasonPlayoffs prop from the LeagueTabsIsland component call.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -452,5 +452,4 @@
+          openTournament={openTournament as any}
+          playoffTournament={playoffTournament as any}
+-         seasonPlayoffs={seasonPlayoffs as any}
+        />
+      </main>
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the documentation to reflect that there are only two tournaments per season.</details></think>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Great! Now let me update the documentation to reflect that there are only two tournaments per season.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 8, lines removed: 9
+
+```diff
+@@ -57,15 +57,14 @@
+  ### Context Types
+  
+- For league matches, there are three bracket contexts (plus regular season):
++ For league matches, there are two tournament contexts (plus regular season):
+  1. **Regular Season**: Matches with `stage = "Regular Season"` - shown in Matches tab only
+- 2. **Season Playoffs**: Matches with playoff stages (Finals, Semi Finals, etc.) that are NOT in `league_open_matches` or `league_playoff_matches`
+- 3. **Open Tournament**: Matches linked via `league_open_matches` table
+- 4. **Playoff Tournament**: Matches linked via `league_playoff_matches` table
++ 2. **Open Tournament**: Matches linked via `league_open_matches` table
++ 3. **Playoff Tournament**: Matches linked via `league_playoff_matches` table
+  
+- **Important:** The determination is hierarchical:
+- - If a match is in `league_open_matches` → Open Tournament bracket
+- - Else if in `league_playoff_matches` → Playoff Tournament bracket
+- - Else if has playoff stage (not "Regular Season") → Season Playoffs bracket
+- - Else → Regular season (Matches tab only)
++ **Important:** Each season has exactly two tournaments:
++ - **Open Tournament**: Tracked in `league_open` and `league_open_matches` tables
++ - **Playoff Tournament**: Tracked in `league_playoff` and `league_playoff_matches` tables
++ - Matches are associated with tournaments via the `league_open_matches` or `league_playoff_matches` tables
++ - The `stage` field determines bracket structure within each tournament
+  
+  ## Component Architecture
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the example query structure to remove the season playoffs filtering.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 5
+
+```diff
+@@ -159,9 +159,7 @@
+  3. Fetch full match details from `v_matches_with_primary_context`
+  4. Repeat for `league_playoff` and `league_playoff_matches`
+- 5. Query ALL match IDs from both tournament tables
+- 6. Filter season matches: playoff stages AND NOT in tournament tables = Season Playoffs
+- 7. Derive winner_id from scores for bracket matches
+- 8. Combine match data with team information (logos, names)
+- 9. Pass all three tournament objects to `LeagueTabsIsland`
++ 5. Derive winner_id from scores for bracket matches
++ 6. Combine match data with team information (logos, names)
++ 7. Pass both tournament objects to `LeagueTabsIsland`
+  
+  **Example Query Structure:**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me also remove the example that shows filtering for season playoffs.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 12
+
+```diff
+@@ -193,16 +193,4 @@
+    team_b: teamMap.get(match.team_b_id),
+  }));
+- 
+- // 5. Filter for Season Playoffs (exclude tournament matches)
+- const tournamentMatchIds = new Set([
+-   ...openMatchIds,
+-   ...playoffMatchIds
+- ]);
+- 
+- const seasonPlayoffMatches = allSeasonMatches.filter(m => 
+-   m.stage && 
+-   m.stage !== "Regular Season" &&
+-   !tournamentMatchIds.has(m.id)
+- );
+  ```
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the implementation summary to reflect this simplification.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 6, lines removed: 5
+
+```diff
+@@ -61,16 +61,17 @@
+  **Changes:**
+  - Added new "Brackets" tab (ID: 5, before Information which moved to 6)
+- - Added three-way tournament type selector (Season Playoffs, Open, Playoff)
++ - Added tournament type selector (Open Tournament vs Playoff Tournament)
+  - Added state management for selected tournament type
+  - Integrated BracketDisplay component
+  - Added new TypeScript types:
+    - `BracketMatch`: Match data with stage/series info
+    - `TournamentData`: Complete tournament information
+- - Added props: `openTournament`, `playoffTournament`, and `seasonPlayoffs`
++ - Added props: `openTournament` and `playoffTournament`
+  
+  **UI Behavior:**
+- - Shows up to 3 toggle buttons depending on which brackets exist
+- - Defaults to Season Playoffs if available, then Open, then Playoff
+- - Season Playoffs show any season matches with stage != "Regular Season"
++ - Shows toggle buttons for Open and Playoff tournaments
++ - Only shows buttons for tournaments that have data
++ - Defaults to Open Tournament if available, otherwise Playoff
++ - Each league season has exactly two possible tournaments
+  - Shows helpful empty state messages when no brackets exist
+  - Seamless integration with existing tab system
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me update the queries section to remove references to season playoffs.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: 7
+
+```diff
+@@ -87,15 +87,13 @@
+  3. Fetch match details from `v_matches_with_primary_context` view
+  4. Repeat entire process for `league_playoff` data
+- 5. Query ALL match IDs from both `league_open_matches` and `league_playoff_matches`
+- 6. Filter season matches: playoff stages AND NOT in tournament tables = Season Playoffs
+- 7. Derive winner_id from match scores for bracket matches
+- 8. Combine match data with team information (names, logos)
+- 9. Pass all three tournament objects as props to LeagueTabsIsland
++ 5. Derive winner_id from match scores for bracket matches
++ 6. Combine match data with team information (names, logos)
++ 7. Pass both tournament objects as props to LeagueTabsIsland
+  
+  **Match Categorization:**
+  - Matches in `league_open_matches` → Open Tournament bracket
+  - Matches in `league_playoff_matches` → Playoff Tournament bracket
+- - Matches with playoff stage but NOT in either table → Season Playoffs bracket
+- - This ensures each match appears in only one bracket category
++ - Each league season has exactly two tournaments: Open and Playoff
++ - Matches are associated via the respective tournament match tables
+  
+  **Data Flow:**
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me also remove the reference to "season matches" from the data flow.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -101,5 +101,4 @@
+  league_open → league_open_matches → v_matches_with_primary_context → teams → BracketDisplay
+  league_playoff → league_playoff_matches → v_matches_with_primary_context → teams → BracketDisplay
+- season matches → filter by stage → derive winner_id → BracketDisplay
+  ```
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me also update the modified files section to remove the seasonPlayoffs reference.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 7, lines removed: 8
+
+```diff
+@@ -164,16 +164,15 @@
+     - Added BracketDisplay import
+     - Added BracketMatch and TournamentData types
+-    - Added openTournament, playoffTournament, and seasonPlayoffs props
+-    - Updated selectedTournamentType state to support 'season', 'open', 'playoff'
++    - Added openTournament and playoffTournament props
++    - Updated selectedTournamentType state to support 'open' and 'playoff'
+     - Added Brackets tab (ID: 5, moved Information to ID 6)
+-    - Added three-way tournament selector and bracket rendering
++    - Added two-way tournament selector and bracket rendering
+  
+  3. `/src/pages/leagues/[id].astro`
+-    - Added open tournament data fetching
+-    - Added playoff tournament data fetching
+-    - Added season playoffs preparation (filters matches with stage != "Regular Season")
++    - Added open tournament data fetching from `league_open` and `league_open_matches`
++    - Added playoff tournament data fetching from `league_playoff` and `league_playoff_matches`
+     - Derives winner_id from match scores
+-    - Added match detail enrichment
+-    - Passed all three tournament props to LeagueTabsIsland
++    - Added match detail enrichment with team data
++    - Passed both tournament props to LeagueTabsIsland
+  
+  4. `/LEAGUE_TOURNAMENT_BRACKETS.md`
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Let me update the testing checklist to remove season playoffs references.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 3
+
+```diff
+@@ -205,9 +205,9 @@
+  - [ ] Verify "Brackets" tab appears in navigation (position 5, before Information)
+  - [ ] Click "Brackets" tab
+- - [ ] If no brackets, verify empty state message displays
+- - [ ] Verify toggle buttons for Season Playoffs, Open, and/or Playoff appear
+- - [ ] Click "Season Playoffs" - verify non-regular season matches display
++ - [ ] If no tournaments, verify empty state message displays
++ - [ ] Verify toggle buttons for Open and/or Playoff tournaments appear
+  - [ ] Click "Open Tournament" - verify open tournament bracket displays
+  - [ ] Click "Playoff Tournament" - verify playoff tournament bracket displays
++ - [ ] Verify only matches in tournament tables are shown (not regular season)
+  - [ ] Verify matches display with correct teams and scores
+  - [ ] Verify winner highlighting works correctly
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me update the key achievements to remove the season playoffs mention.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/IMPLEMENTATION_SUMMARY.md</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 2
+
+```diff
+@@ -341,6 +341,7 @@
+  - ✅ Reusable BracketDisplay component works for all tournament types
+  - ✅ Tournament pages now have Brackets tab at position 5 (before Information)
+- - ✅ League pages have Brackets tab at position 5 with three-way toggle (Season/Open/Playoff)
+- - ✅ Season Playoffs automatically display any league matches with playoff stages
++ - ✅ League pages have Brackets tab at position 5 with two-way toggle (Open/Playoff)
++ - ✅ Each league season supports exactly two tournaments: Open and Playoff
++ - ✅ Tournaments tracked via `league_open_matches` and `league_playoff_matches` tables
+  - ✅ Automatic format detection (single/double elimination, Swiss, round robin)
+  - ✅ Winner highlighting and champion display
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! The implementation is now simplified to only two tournaments per season. Let me verify everything is correct with linting.</details></think>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! All the code is clean. Let me update the LeagueTabsIsland Integration section in the documentation to clarify the two tournaments.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/LEAGUE_TOURNAMENT_BRACKETS.md</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: 2
+
+```diff
+@@ -144,8 +144,10 @@
+  
+  **New Tab:**
+- - Tab ID 6: "Brackets"
++ - Tab ID 5: "Brackets" (moved Information from 5 to 6)
+  - Toggle between "Open Tournament" and "Playoff Tournament"
+- - Only shows toggle if both tournaments exist
++ - Only shows toggle buttons for tournaments that have data
++ - Defaults to Open Tournament if available
+  - Renders BracketDisplay component for selected tournament
++ - Each league season has exactly two possible tournaments
+  
+  ### League Page Data Fetching
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Perfect! The implementation is now simplified and clean. Let me create a final summary for the user.</details></think>
+
+---
+
+Perfect! I've simplified the implementation to only support the two tournaments per season: Open and Playoff.
+
+## ✅ Final Updates Complete!
+
+### Changes Made:
+
+1. **LeagueTabsIsland.tsx**
+   - ✅ Removed `seasonPlayoffs` prop
+   - ✅ Updated state to only support `'open' | 'playoff'` (removed `'season'`)
+   - ✅ Removed Season Playoffs button from toggle
+   - ✅ Only shows Open Tournament and Playoff Tournament options
+   - ✅ Brackets tab remains at position 5 (before Information at 6)
+
+2. **League Page (leagues/[id].astro)**
+   - ✅ Removed all Season Playoffs data fetching logic
+   - ✅ Only fetches Open Tournament data from `league_open` and `league_open_matches`
+   - ✅ Only fetches Playoff Tournament data from `league_playoff` and `league_playoff_matches`
+   - ✅ Passes only two tournament props to component
+
+3. **Documentation**
+   - ✅ Updated to reflect two tournaments per season
+   - ✅ Clarified that tournaments are tracked via their respective tables
+   - ✅ Removed all Season Playoffs references
+
+### 🎯 Final Structure:
+
+**League Season Tournaments (2 per season):**
+1. **Open Tournament** 
+   - Tracked in `league_open` table
+   - Matches linked via `league_open_matches`
+   - Shows in "Open Tournament" bracket
+
+2. **Playoff Tournament**
+   - Tracked in `league_playoff` table
+   - Matches linked via `league_playoff_matches`
+   - Shows in "Playoff Tournament" bracket
+
+**Tab Order (Both Tournaments & Leagues):**
+- 0: Standings
+- 1: Teams
+- 2: Matches
+- 3: Player Statistics
+- 4: Top Performers
+- 5: **Brackets** (Open/Playoff toggle)
+- 6: Information
+
+The implementation is now clean and correctly reflects that each league season has exactly two tournaments! 🎉
+
+---
+

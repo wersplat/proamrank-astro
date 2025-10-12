@@ -301,51 +301,6 @@ const league = leagueData;
 const teamStandings = teamsWithData ?? [];
 const recentMatches = matches ?? [];
 
-// Fetch Season Playoff matches (any season match with stage != "Regular Season")
-// These are playoff matches that aren't in specific tournament tables
-let seasonPlayoffs = null;
-const seasonPlayoffMatches = matches
-  .filter((m: any) => m.stage && m.stage !== "Regular Season")
-  .map((m: any, idx: number) => {
-    // Determine winner based on scores
-    let winner_id: string | null = null;
-    if (m.score_a !== null && m.score_b !== null) {
-      if (m.score_a > m.score_b) {
-        winner_id = m.team_a_id;
-      } else if (m.score_b > m.score_a) {
-        winner_id = m.team_b_id;
-      }
-    }
-    
-    return {
-      id: m.id,
-      played_at: m.played_at,
-      team_a_id: m.team_a_id,
-      team_b_id: m.team_b_id,
-      score_a: m.score_a,
-      score_b: m.score_b,
-      stage: m.stage,
-      series_number: idx + 1,
-      winner_id,
-      team_a: m.team_a,
-      team_b: m.team_b,
-    };
-  });
-
-// Find champion from standings if available
-const seasonChampion = teamStandings.find((t: any) => t.wins && t.wins > 0)?.team_name || null;
-
-if (seasonPlayoffMatches.length > 0) {
-  seasonPlayoffs = {
-    champion: seasonChampion,
-    prize: null,
-    status: league?.is_active ? 'in progress' : 'completed',
-    start_date: league?.start_date,
-    finals_date: league?.end_date,
-    matches: seasonPlayoffMatches,
-  };
-}
-
 if (!league) {
   return Astro.redirect("/leagues");
 }
@@ -496,7 +451,6 @@ const leagueInfoForTabs = {
         playerStats={fullPlayerStats as any}
         openTournament={openTournament as any}
         playoffTournament={playoffTournament as any}
-        seasonPlayoffs={seasonPlayoffs as any}
       />
     </main>
   </body>
