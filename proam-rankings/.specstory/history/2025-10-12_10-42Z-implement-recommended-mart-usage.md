@@ -5242,3 +5242,223 @@ Lines added: 3, lines removed: 2
 
 ---
 
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/player/tabs/Badges.tsx</summary>
+
+**Chunk 1**
+Lines added: 16, lines removed: 12
+
+```diff
+@@ -231,27 +231,31 @@
+              <h3 className="text-sm font-semibold mb-3 text-neutral-300">Career Milestones</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-purple-400">{achievementProgress.count50PtGames}</div>
+-                 <div className="text-xs text-neutral-400">50-Point Games</div>
++                 <div className="text-xs text-neutral-400">50+ Point Games</div>
+                </div>
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-blue-400">{achievementProgress.count40PtGames}</div>
+-                 <div className="text-xs text-neutral-400">40-Point Games</div>
++                 <div className="text-xs text-neutral-400">40+ Point Games</div>
++               </div>
++               <div className="text-center p-2 rounded bg-neutral-800/50">
++                 <div className="text-2xl font-bold text-indigo-400">{achievementProgress.count30PtGames}</div>
++                 <div className="text-xs text-neutral-400">30+ Point Games</div>
+                </div>
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-green-400">{achievementProgress.countTripleDoubles}</div>
+                  <div className="text-xs text-neutral-400">Triple-Doubles</div>
+                </div>
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-cyan-400">{achievementProgress.countDoubleDoubles}</div>
+                  <div className="text-xs text-neutral-400">Double-Doubles</div>
+                </div>
+-               <div className="text-center">
+-                 <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count20AssistGames}</div>
+-                 <div className="text-xs text-neutral-400">20-Assist Games</div>
++               <div className="text-center p-2 rounded bg-neutral-800/50">
++                 <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count10AssistGames}</div>
++                 <div className="text-xs text-neutral-400">10+ Assist Games</div>
+                </div>
+-               <div className="text-center">
+-                 <div className="text-2xl font-bold text-orange-400">{achievementProgress.count20ReboundGames}</div>
+-                 <div className="text-xs text-neutral-400">20-Rebound Games</div>
++               <div className="text-center p-2 rounded bg-neutral-800/50">
++                 <div className="text-2xl font-bold text-orange-400">{achievementProgress.count10ReboundGames}</div>
++                 <div className="text-xs text-neutral-400">10+ Rebound Games</div>
+                </div>
+              </div>
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>I also need to update the PlayerBadgesIsland.tsx component with the same changes for consistency, even though it might not be used currently.</details></think>
+
+---
+
+Let me also update the `PlayerBadgesIsland.tsx` component to match:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/PlayerBadgesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 2
+
+```diff
+@@ -30,8 +30,9 @@
+    count50PtGames: number;
+    count40PtGames: number;
++   count30PtGames: number;
+    countTripleDoubles: number;
+    countDoubleDoubles: number;
+-   count20AssistGames: number;
+-   count20ReboundGames: number;
++   count10AssistGames: number;
++   count10ReboundGames: number;
+    careerPoints: number;
+    careerAssists: number;
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now let me update the milestone UI in PlayerBadgesIsland.tsx to match the player/tabs/Badges.tsx component.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/PlayerBadgesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 16, lines removed: 12
+
+```diff
+@@ -231,27 +231,31 @@
+              <h3 className="text-sm font-semibold mb-3 text-neutral-300">Career Milestones</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-purple-400">{achievementProgress.count50PtGames}</div>
+-                 <div className="text-xs text-neutral-400">50-Point Games</div>
++                 <div className="text-xs text-neutral-400">50+ Point Games</div>
+                </div>
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-blue-400">{achievementProgress.count40PtGames}</div>
+-                 <div className="text-xs text-neutral-400">40-Point Games</div>
++                 <div className="text-xs text-neutral-400">40+ Point Games</div>
++               </div>
++               <div className="text-center p-2 rounded bg-neutral-800/50">
++                 <div className="text-2xl font-bold text-indigo-400">{achievementProgress.count30PtGames}</div>
++                 <div className="text-xs text-neutral-400">30+ Point Games</div>
+                </div>
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-green-400">{achievementProgress.countTripleDoubles}</div>
+                  <div className="text-xs text-neutral-400">Triple-Doubles</div>
+                </div>
+-               <div className="text-center">
++               <div className="text-center p-2 rounded bg-neutral-800/50">
+                  <div className="text-2xl font-bold text-cyan-400">{achievementProgress.countDoubleDoubles}</div>
+                  <div className="text-xs text-neutral-400">Double-Doubles</div>
+                </div>
+-               <div className="text-center">
+-                 <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count20AssistGames}</div>
+-                 <div className="text-xs text-neutral-400">20-Assist Games</div>
++               <div className="text-center p-2 rounded bg-neutral-800/50">
++                 <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count10AssistGames}</div>
++                 <div className="text-xs text-neutral-400">10+ Assist Games</div>
+                </div>
+-               <div className="text-center">
+-                 <div className="text-2xl font-bold text-orange-400">{achievementProgress.count20ReboundGames}</div>
+-                 <div className="text-xs text-neutral-400">20-Rebound Games</div>
++               <div className="text-center p-2 rounded bg-neutral-800/50">
++                 <div className="text-2xl font-bold text-orange-400">{achievementProgress.count10ReboundGames}</div>
++                 <div className="text-xs text-neutral-400">10+ Rebound Games</div>
+                </div>
+              </div>
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now the Badges tab should display:
+1. Active streaks (if any)
+2. Milestone alerts (if close to a milestone)
+3. Career milestone counts including:
+   - 50+ point games
+   - 40+ point games
+   - 30+ point games
+   - Triple-doubles
+   - Double-doubles
+   - 10+ assist games
+   - 10+ rebound games
+4. Unlocked badges list
+
+The data now comes from two marts:
+- achievement_eligibility_mart - for milestone progress, alerts, streaks, career totals
+- player_stats_tracking_mart - for the specific game counts (30+, 40+, 50+ point games, etc.)
+
+This should fix the issue and show all the game counts correctly!</details></think>
+
+---
+
+Perfect! I've now properly integrated both marts to show the achievement data:
+
+## What Changed
+
+The API endpoint (`/api/player-badges`) now fetches from **two marts**:
+
+1. **`achievement_eligibility_mart`** - Provides:
+   - Total achievements earned
+   - Next milestone alerts
+   - Points/assists to next milestone
+   - Active streaks
+   - Career totals (points, assists, rebounds, games)
+
+2. **`player_stats_tracking_mart`** - Provides:
+   - `count_50pt_games` ✅
+   - `count_40pt_games` ✅
+   - `count_30pt_games` ✅
+   - `count_triple_doubles` ✅
+   - `count_double_doubles` ✅
+   - `count_10ast_games` (10+ assist games)
+   - `count_10reb_games` (10+ rebound games)
+
+## Now Displaying on Badges Tab:
+
+The Player Badges tab now shows a comprehensive achievement dashboard:
+- 🏆 Total achievements earned (in header)
+- 🔥 Active streaks (if player has any)
+- 🎯 Milestone alerts (when close to career milestones)
+- 📊 **Career Milestones Grid** showing:
+  - 50+ point games
+  - 40+ point games  
+  - 30+ point games
+  - Triple-doubles
+  - Double-doubles
+  - 10+ assist games
+  - 10+ rebound games
+- ✅ All unlocked badges
+
+The milestone counts should now display correctly! Clear your browser cache if you still see the old UI.
+
+---
+
