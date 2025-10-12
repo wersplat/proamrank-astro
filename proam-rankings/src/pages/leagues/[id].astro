@@ -199,7 +199,103 @@ const { data: fullPlayerStats } = await supa((Astro.locals as any).runtime)
   .select("*")
   .eq("league_season_id", seasonId)
   .gte("games_played", 1)
-  .order("avg_points", { ascending: false });
+  .order("avg_points", { ascending: false});
+
+// Fetch Open Tournament data
+let openTournament = null;
+const { data: openTournamentData } = await supa((Astro.locals as any).runtime)
+  .from("league_open")
+  .select("open_champion, open_prize, status, start_date, finals_date")
+  .eq("season_id", seasonId)
+  .maybeSingle();
+
+if (openTournamentData) {
+  // Fetch open tournament matches
+  const { data: openMatchesData } = await supa((Astro.locals as any).runtime)
+    .from("league_open_matches")
+    .select("match_id, stage, series_number")
+    .eq("season_id", seasonId);
+
+  // Get match details for open tournament
+  const openMatchIds = (openMatchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
+  let openMatches: any[] = [];
+  
+  if (openMatchIds.length > 0) {
+    const { data: openMatchDetails } = await supa((Astro.locals as any).runtime)
+      .from("v_matches_with_primary_context")
+      .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id")
+      .in("id", openMatchIds);
+
+    // Combine match details with stage/series info and team data
+    openMatches = (openMatchDetails ?? []).map((match: any) => {
+      const matchInfo = openMatchesData?.find((m: any) => m.match_id === match.id);
+      return {
+        ...match,
+        stage: matchInfo?.stage ?? null,
+        series_number: matchInfo?.series_number ?? null,
+        team_a: teamMap.get(match.team_a_id),
+        team_b: teamMap.get(match.team_b_id),
+      };
+    });
+  }
+
+  openTournament = {
+    champion: openTournamentData.open_champion,
+    prize: openTournamentData.open_prize,
+    status: openTournamentData.status,
+    start_date: openTournamentData.start_date,
+    finals_date: openTournamentData.finals_date,
+    matches: openMatches,
+  };
+}
+
+// Fetch Playoff Tournament data
+let playoffTournament = null;
+const { data: playoffTournamentData } = await supa((Astro.locals as any).runtime)
+  .from("league_playoff")
+  .select("playoff_champion, playoff_prize, status, start_date, finals_date")
+  .eq("season_id", seasonId)
+  .maybeSingle();
+
+if (playoffTournamentData) {
+  // Fetch playoff tournament matches
+  const { data: playoffMatchesData } = await supa((Astro.locals as any).runtime)
+    .from("league_playoff_matches")
+    .select("match_id, stage, series_number")
+    .eq("season_id", seasonId);
+
+  // Get match details for playoff tournament
+  const playoffMatchIds = (playoffMatchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
+  let playoffMatches: any[] = [];
+  
+  if (playoffMatchIds.length > 0) {
+    const { data: playoffMatchDetails } = await supa((Astro.locals as any).runtime)
+      .from("v_matches_with_primary_context")
+      .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id")
+      .in("id", playoffMatchIds);
+
+    // Combine match details with stage/series info and team data
+    playoffMatches = (playoffMatchDetails ?? []).map((match: any) => {
+      const matchInfo = playoffMatchesData?.find((m: any) => m.match_id === match.id);
+      return {
+        ...match,
+        stage: matchInfo?.stage ?? null,
+        series_number: matchInfo?.series_number ?? null,
+        team_a: teamMap.get(match.team_a_id),
+        team_b: teamMap.get(match.team_b_id),
+      };
+    });
+  }
+
+  playoffTournament = {
+    champion: playoffTournamentData.playoff_champion,
+    prize: playoffTournamentData.playoff_prize,
+    status: playoffTournamentData.status,
+    start_date: playoffTournamentData.start_date,
+    finals_date: playoffTournamentData.finals_date,
+    matches: playoffMatches,
+  };
+}
 
 const league = leagueData;
 const teamStandings = teamsWithData ?? [];
@@ -353,6 +449,8 @@ const leagueInfoForTabs = {
         topBlocks={topBlocks as any}
         leagueInfo={leagueInfoForTabs as any}
         playerStats={fullPlayerStats as any}
+        openTournament={openTournament as any}
+        playoffTournament={playoffTournament as any}
       />
     </main>
   </body>
