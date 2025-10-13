@@ -26,10 +26,20 @@ export const GET: APIRoute = async ({ url, locals }) => {
       .eq('player_id', playerId)
       .single();
 
-    // Also fetch already unlocked awards
+    // Also fetch already unlocked awards with match details
     const { data: playerAwards, error: awardsError } = await supa(locals)
       .from('player_awards')
-      .select('*')
+      .select(`
+        *,
+        match:matches!player_awards_match_id_fkey(
+          id,
+          played_at,
+          score_a,
+          score_b,
+          team_a:teams!matches_team_a_id_fkey(name),
+          team_b:teams!matches_team_b_id_fkey(name)
+        )
+      `)
       .eq('player_id', playerId)
       .order('awarded_at', { ascending: false });
 
@@ -103,6 +113,16 @@ export const GET: APIRoute = async ({ url, locals }) => {
         return descriptions[key] || `Achieved ${title} badge`;
       };
 
+      // Build gameData from match info
+      const gameData = award.match ? {
+        played_at: award.match.played_at,
+        team_a_name: award.match.team_a?.name || 'Team A',
+        team_b_name: award.match.team_b?.name || 'Team B',
+        score_a: award.match.score_a,
+        score_b: award.match.score_b,
+        player_stats: award.stats // Include the stats from the award
+      } : undefined;
+
       return {
         id: award.id,
         name: award.title,
@@ -113,7 +133,9 @@ export const GET: APIRoute = async ({ url, locals }) => {
         unlocked: true,
         unlockedAt: award.awarded_at,
         progress: undefined,
-        maxProgress: undefined
+        maxProgress: undefined,
+        match_id: award.match_id,
+        gameData
       };
     });
 

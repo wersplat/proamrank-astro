@@ -16,6 +16,15 @@ type Badge = {
   unlockedAt?: string;
   progress?: number;
   maxProgress?: number;
+  match_id?: string;
+  gameData?: {
+    played_at: string;
+    team_a_name: string;
+    team_b_name: string;
+    score_a: number;
+    score_b: number;
+    player_stats?: any;
+  };
 };
 
 type AchievementProgress = {
@@ -46,6 +55,7 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all');
+  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
 
   useEffect(() => {
     const fetchBadges = async () => {
@@ -293,14 +303,17 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
       {/* Badges Grid */}
       {badges.length > 0 && (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredBadges.map((badge) => (
+        {filteredBadges.map((badge) => {
+          const isClickable = badge.unlocked && badge.match_id && badge.gameData;
+          return (
           <div 
             key={badge.id}
+            onClick={() => isClickable && setSelectedBadge(badge)}
             className={`rounded-lg border p-6 transition-all duration-200 ${
               badge.unlocked 
                 ? 'border-neutral-700 bg-neutral-800' 
                 : 'border-neutral-800 bg-neutral-900 opacity-60'
-            }`}
+            } ${isClickable ? 'cursor-pointer hover:border-blue-500 hover:shadow-lg' : ''}`}
           >
             <div className="flex items-center gap-4 mb-4">
               <div className={`text-3xl ${badge.unlocked ? '' : 'opacity-50'}`}>
@@ -321,9 +334,16 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
             </p>
 
             {badge.unlocked ? (
-              <div className="flex items-center gap-2 text-green-400 text-sm font-semibold">
-                <span>✓</span>
-                <span>Unlocked {badge.unlockedAt ? new Date(badge.unlockedAt).toLocaleDateString() : ''}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-green-400 text-sm font-semibold">
+                  <span>✓</span>
+                  <span>Unlocked {badge.unlockedAt ? new Date(badge.unlockedAt).toLocaleDateString() : ''}</span>
+                </div>
+                {isClickable && (
+                  <div className="text-blue-400 text-xs">
+                    🎮 View Game
+                  </div>
+                )}
               </div>
             ) : (
               <div>
@@ -348,7 +368,8 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
       )}
 
@@ -363,6 +384,104 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
       {loading && (
         <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
           <p className="text-neutral-400">Loading badges...</p>
+        </div>
+      )}
+
+      {/* Game Details Modal */}
+      {selectedBadge && selectedBadge.gameData && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedBadge(null)}
+        >
+          <div 
+            className="bg-neutral-900 rounded-lg border border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-white">Achievement Unlocked</h3>
+                <button
+                  onClick={() => setSelectedBadge(null)}
+                  className="text-neutral-400 hover:text-white text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              
+              {/* Achievement Info */}
+              <div className="mb-6 text-center p-4 bg-neutral-800 rounded-lg">
+                <div className="text-4xl mb-2">{selectedBadge.icon}</div>
+                <h4 className="text-lg font-bold text-white mb-1">{selectedBadge.name}</h4>
+                <p className="text-sm text-neutral-400 mb-2">{selectedBadge.description}</p>
+                <div className="flex items-center justify-center gap-2 text-green-400 text-sm">
+                  <span>✓</span>
+                  <span>Unlocked {selectedBadge.unlockedAt ? new Date(selectedBadge.unlockedAt).toLocaleDateString() : ''}</span>
+                </div>
+              </div>
+
+              {/* Game Details */}
+              <div className="space-y-4">
+                <h4 className="text-lg font-semibold text-white border-b border-neutral-800 pb-2">Game Details</h4>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <div className="text-neutral-400 text-sm">Date</div>
+                    <div className="text-white">
+                      {new Date(selectedBadge.gameData.played_at).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-neutral-400 text-sm">Match ID</div>
+                    <div className="text-white text-sm font-mono">{selectedBadge.match_id}</div>
+                  </div>
+                </div>
+
+                {/* Teams and Score */}
+                <div className="bg-neutral-800 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 text-center">
+                      <div className="text-white font-semibold mb-1">{selectedBadge.gameData.team_a_name}</div>
+                      <div className="text-2xl font-bold text-blue-400">{selectedBadge.gameData.score_a}</div>
+                    </div>
+                    <div className="text-neutral-500 px-4">vs</div>
+                    <div className="flex-1 text-center">
+                      <div className="text-white font-semibold mb-1">{selectedBadge.gameData.team_b_name}</div>
+                      <div className="text-2xl font-bold text-blue-400">{selectedBadge.gameData.score_b}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Player Stats */}
+                {selectedBadge.gameData.player_stats && (
+                  <div>
+                    <h5 className="text-sm font-semibold text-neutral-300 mb-2">Your Performance</h5>
+                    <div className="bg-neutral-800 rounded-lg p-4">
+                      <div className="grid grid-cols-3 gap-4 text-center">
+                        {selectedBadge.gameData.player_stats.per_game?.points !== undefined && (
+                          <div>
+                            <div className="text-2xl font-bold text-white">{selectedBadge.gameData.player_stats.per_game.points}</div>
+                            <div className="text-xs text-neutral-400">Points</div>
+                          </div>
+                        )}
+                        {selectedBadge.gameData.player_stats.per_game?.assists !== undefined && (
+                          <div>
+                            <div className="text-2xl font-bold text-white">{selectedBadge.gameData.player_stats.per_game.assists}</div>
+                            <div className="text-xs text-neutral-400">Assists</div>
+                          </div>
+                        )}
+                        {selectedBadge.gameData.player_stats.per_game?.rebounds !== undefined && (
+                          <div>
+                            <div className="text-2xl font-bold text-white">{selectedBadge.gameData.player_stats.per_game.rebounds}</div>
+                            <div className="text-xs text-neutral-400">Rebounds</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
