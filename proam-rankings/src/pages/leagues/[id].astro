@@ -93,19 +93,12 @@ if (standings && standings.length > 0) {
       .select("id, global_rank, hybrid_score, leaderboard_tier, lg_conf")
       .in("id", teamIds);
     
-    // Get team roster entries to find division assignments
-    const { data: rosterData } = await supa((Astro.locals as any).runtime)
-      .from("team_rosters")
-      .select("team_id, division_id")
-      .eq("season_id", seasonId)
-      .in("team_id", teamIds);
-    
-    // Merge teams data with standings, conference info, and division assignments
+    // Merge teams data with standings and conference info
     teamsWithData = standings.map((standing: any) => {
       const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
-      const roster = rosterData?.find((r: any) => r.team_id === standing.team_id);
-      const division = roster?.division_id ? divisions?.find((d: any) => d.id === roster.division_id) : null;
       const conference = teamData?.lg_conf ? conferences?.find((c: any) => c.id === teamData.lg_conf) : null;
+      // Find division by looking up which division this conference belongs to
+      const division = conference ? divisions?.find((d: any) => d.conference_id === conference.id) : null;
       
       return {
         ...standing,
