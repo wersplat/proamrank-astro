@@ -13650,6 +13650,7 @@ export type Database = {
           count_dbl_ast_reb: number | null
           count_dbl_pt_ast: number | null
           count_dbl_pt_reb: number | null
+          count_double_doubles: number | null
           count_triple_doubles: number | null
           current_team: string | null
           current_team_id: string | null
@@ -17484,6 +17485,8 @@ export type Database = {
         | "Road to 25K"
         | "Association"
         | "USA Basketball"
+        | "HOF EU"
+        | "UPA EU"
       player_position:
         | "Point Guard"
         | "Shooting Guard"
@@ -17724,6 +17727,8 @@ export const Constants = {
         "Road to 25K",
         "Association",
         "USA Basketball",
+        "HOF EU",
+        "UPA EU",
       ],
       player_position: [
         "Point Guard",

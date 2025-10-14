@@ -1,3 +1,9 @@
+-- Fix double doubles count in player_stats_tracking_mart
+-- This adds the missing count_double_doubles column
+
+-- Drop existing view and recreate with the fix
+DROP MATERIALIZED VIEW IF EXISTS player_stats_tracking_mart CASCADE;
+
 CREATE MATERIALIZED VIEW player_stats_tracking_mart AS
 WITH player_history AS (
     SELECT
@@ -120,9 +126,16 @@ LEFT JOIN teams t ON p.current_team_id = t.id
 LEFT JOIN recent_games recent ON p.id = recent.player_id
 GROUP BY p.id, p.gamertag, p.position, p.current_team_id, t.name, pgr.global_rating, pgr.rating_tier;
 
--- Indexes for optimal performance
+-- Recreate indexes for optimal performance
 -- UNIQUE index required for concurrent refreshes
 CREATE UNIQUE INDEX idx_pstm_player_id_unique ON player_stats_tracking_mart(player_id);
 CREATE INDEX idx_pstm_global_rating ON player_stats_tracking_mart(global_rating DESC);
 CREATE INDEX idx_pstm_career_points ON player_stats_tracking_mart(career_points DESC);
 CREATE INDEX idx_pstm_current_team ON player_stats_tracking_mart(current_team_id) WHERE current_team_id IS NOT NULL;
+
+-- Verify the column exists
+SELECT column_name, data_type 
+FROM information_schema.columns 
+WHERE table_name = 'player_stats_tracking_mart' 
+AND column_name = 'count_double_doubles';
+
