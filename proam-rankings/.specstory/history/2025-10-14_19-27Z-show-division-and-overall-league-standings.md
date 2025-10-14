@@ -7036,3 +7036,201 @@ The standings now display exactly as you requested:
 
 ---
 
+_**User (2025-10-14 22:06Z)**_
+
+i updated the types and added table lg_division_conferences
+
+---
+
+_**Assistant (claude-4.5-sonnet-thinking)**_
+
+<think><details><summary>Thought Process</summary>The user has updated the types and added a new table called `lg_division_conferences`. This suggests that the relationship between divisions and conferences is now stored in a separate junction/join table rather than `lg_divisions.conference_id`.
+
+Let me read the types file to understand the new structure.</details></think>
+
+---
+
+Let me check the updated types to understand the new table structure:
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "lg_division_conferences:" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/lib/db.types.ts" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/lib/db.types.ts` | `lg_division_conferences: \{` | L2780 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! So now there's a junction table `lg_division_conferences` that links divisions to conferences with:
+- `division_id` 
+- `conference_id`
+- `id` (primary key)
+- `created_at`
+
+This is a many-to-many relationship, meaning:
+- A division can have multiple conferences
+- A conference can belong to multiple divisions (though this seems less likely in sports)
+
+I need to update the backend query to use this new junction table instead of `lg_divisions.conference_id`.</details></think>
+
+---
+
+Perfect! Now I need to update the backend to use the new junction table `lg_division_conferences`. Let me update the queries:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: undefined
+
+```diff
+@@ -84,4 +84,9 @@
+    .order("display_order", { ascending: true });
+  
++ // Fetch division-conference relationships
++ const { data: divisionConferences } = await supa((Astro.locals as any).runtime)
++   .from("lg_division_conferences")
++   .select("*");
++ 
+  // Fetch teams data separately and merge with standings
+  let teamsWithData = standings ?? [];
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the logic where we merge teams data to use the new junction table to determine which division a team belongs to. Since:
+1. Teams → Conferences (via `teams.lg_conf`)
+2. Conferences → Divisions (via `lg_division_conferences`)
+
+I need to look up the conference in the junction table to find its division.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: 3
+
+```diff
+@@ -99,10 +99,12 @@
+        .in("id", teamIds);
+      
+-     // Merge teams data with standings and conference info
++     // Merge teams data with standings, conference info, and division info
+      teamsWithData = standings.map((standing: any) => {
+        const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
+        const conference = teamData?.lg_conf ? conferences?.find((c: any) => c.id === teamData.lg_conf) : null;
+-       // Find division by looking up which division this conference belongs to
+-       const division = conference ? divisions?.find((d: any) => d.conference_id === conference.id) : null;
++       
++       // Find division by looking up which division this conference belongs to via junction table
++       const divisionLink = conference ? divisionConferences?.find((dc: any) => dc.conference_id === conference.id) : null;
++       const division = divisionLink ? divisions?.find((d: any) => d.id === divisionLink.division_id) : null;
+        
+        return {
+```
+
+**Chunk 2**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -120,5 +122,4 @@
+            abbr: division.abbr,
+            division_logo: division.division_logo,
+-           conference_id: division.conference_id,
+            display_order: division.display_order
+          } : null
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to also pass the `divisionConferences` data to the frontend component so it can properly filter conferences by division when displaying the standings.</details></think>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "conferences={conferences as any}" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro" • 0 matches</summary>
+
+Output mode: content
+
+
+_No matches found_
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Let me find where we pass props to the LeagueTabsIsland component.</details></think>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "LeagueTabsIsland" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro" • 2 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/pages/leagues/[id].astro` | `import LeagueTabsIsland from "../../components/LeagueTabsIsland";` | L3 |
+| `src/pages/leagues/[id].astro` | `<LeagueTabsIsland` | L535 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Good, I can see where the props are passed. Now I need to add the `divisionConferences` prop.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -548,4 +548,5 @@
+          conferences={conferences as any}
+          divisions={divisions as any}
++         divisionConferences={divisionConferences as any}
+        />
+      </main>
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the fronten</details></think>
+
+---
+

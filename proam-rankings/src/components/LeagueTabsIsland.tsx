@@ -54,8 +54,13 @@ type Division = {
   name: string;
   abbr: string | null;
   division_logo: string | null;
-  conference_id: string | null;
   display_order: number | null;
+};
+
+type DivisionConference = {
+  id: string;
+  division_id: string;
+  conference_id: string;
 };
 
 type Team = {
@@ -85,7 +90,6 @@ type Team = {
     name: string;
     abbr: string | null;
     division_logo: string | null;
-    conference_id: string | null;
     display_order: number | null;
   } | null;
 };
@@ -197,6 +201,7 @@ type LeagueTabsProps = {
   playoffTournament?: TournamentData | null;
   conferences?: Conference[];
   divisions?: Division[];
+  divisionConferences?: DivisionConference[];
 };
 
 export default function LeagueTabsIsland({
@@ -213,6 +218,7 @@ export default function LeagueTabsIsland({
   playoffTournament = null,
   conferences = [],
   divisions = [],
+  divisionConferences = [],
 }: LeagueTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [matchesPage, setMatchesPage] = useState(1);
@@ -385,9 +391,13 @@ export default function LeagueTabsIsland({
                 {divisions && divisions.length > 0 ? (
                   <div className="space-y-8">
                     {divisions.map((division) => {
-                      // Get all conferences in this division
-                      const divisionConferences = conferences?.filter(
-                        conf => divisions.find(d => d.id === division.id && d.conference_id === conf.id)
+                      // Get all conferences in this division via junction table
+                      const divisionConfIds = divisionConferences
+                        ?.filter(dc => dc.division_id === division.id)
+                        .map(dc => dc.conference_id) || [];
+                      
+                      const conferencesInDivision = conferences?.filter(
+                        conf => divisionConfIds.includes(conf.id)
                       ) || [];
                       
                       // Get all teams whose conference belongs to this division
@@ -487,9 +497,9 @@ export default function LeagueTabsIsland({
                           </div>
 
                           {/* Conference Standings within this Division */}
-                          {divisionConferences.length > 0 && (
+                          {conferencesInDivision.length > 0 && (
                             <div className="space-y-4 ml-4">
-                              {divisionConferences.map((conference) => {
+                              {conferencesInDivision.map((conference) => {
                                 const conferenceTeams = divisionTeams
                                   .filter(team => team.conference?.id === conference.id)
                                   .sort((a, b) => {

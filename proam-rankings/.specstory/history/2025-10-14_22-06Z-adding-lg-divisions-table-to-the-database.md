@@ -3440,3 +3440,258 @@ Now you can run the file and it will use `REFRESH MATERIALIZED VIEW CONCURRENTLY
 
 ---
 
+_**User (2025-10-14 22:06Z)**_
+
+i need to be able to have multiple conferences in a division
+
+---
+
+_**Assistant (claude-4.5-sonnet-thinking)**_
+
+<think><details><summary>Thought Process</summary>The user wants to allow multiple conferences in a division. Currently, the `lg_divisions` table has a single `conference_id` column that references one conference. To allow multiple conferences per division, I need to:
+
+1. Remove the `conference_id` foreign key from `lg_divisions` table
+2. Create a junction table (many-to-many relationship) between divisions and conferences
+
+Let me update the SQL to handle this properly.</details></think>
+
+---
+
+I need to restructure the relationship. Instead of a single `conference_id` in the `lg_divisions` table, we need a many-to-many relationship. Let me update the SQL to create a junction table:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/lg_divisions_complete.sql</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -13,5 +13,4 @@
+      abbr TEXT,
+      division_logo TEXT,
+-     conference_id UUID REFERENCES public.lg_conf(id) ON DELETE SET NULL,
+      season_id UUID REFERENCES public.league_seasons(id) ON DELETE CASCADE,
+      league_id UUID REFERENCES public.leagues_info(id) ON DELETE CASCADE,
+```
+
+**Chunk 2**
+Lines added: 23, lines removed: 3
+
+```diff
+@@ -23,14 +22,34 @@
+  
+  -- Add indexes
+- CREATE INDEX IF NOT EXISTS idx_lg_divisions_conference_id ON public.lg_divisions(conference_id);
+  CREATE INDEX IF NOT EXISTS idx_lg_divisions_season_id ON public.lg_divisions(season_id);
+  CREATE INDEX IF NOT EXISTS idx_lg_divisions_league_id ON public.lg_divisions(league_id);
+  CREATE INDEX IF NOT EXISTS idx_lg_divisions_display_order ON public.lg_divisions(display_order);
+  
+  -- Add comments
+- COMMENT ON TABLE public.lg_divisions IS 'League divisions within conferences - subdivides conference into competitive groups';
+- COMMENT ON COLUMN public.lg_divisions.conference_id IS 'Parent conference this division belongs to';
++ COMMENT ON TABLE public.lg_divisions IS 'League divisions - can contain multiple conferences';
+  COMMENT ON COLUMN public.lg_divisions.season_id IS 'Season this division is active in';
+  COMMENT ON COLUMN public.lg_divisions.display_order IS 'Order for displaying divisions (lower numbers first)';
++ 
++ -- ============================================================================
++ -- CREATE JUNCTION TABLE FOR DIVISIONS AND CONFERENCES (Many-to-Many)
++ -- ============================================================================
++ 
++ CREATE TABLE IF NOT EXISTS public.lg_division_conferences (
++     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
++     division_id UUID NOT NULL REFERENCES public.lg_divisions(id) ON DELETE CASCADE,
++     conference_id UUID NOT NULL REFERENCES public.lg_conf(id) ON DELETE CASCADE,
++     created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
++     
++     CONSTRAINT unique_division_conference UNIQUE (division_id, conference_id)
++ );
++ 
++ -- Add indexes for junction table
++ CREATE INDEX IF NOT EXISTS idx_lg_division_conferences_division_id ON public.lg_division_conferences(division_id);
++ CREATE INDEX IF NOT EXISTS idx_lg_division_conferences_conference_id ON public.lg_division_conferences(conference_id);
++ 
++ -- Add comments
++ COMMENT ON TABLE public.lg_division_conferences IS 'Junction table linking divisions to conferences (many-to-many relationship)';
++ COMMENT ON COLUMN public.lg_division_conferences.division_id IS 'Division reference';
++ COMMENT ON COLUMN public.lg_division_conferences.conference_id IS 'Conference reference';
+  
+  -- ============================================================================
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the league_division_standings view to handle the many-to-many relationship with conferences. The view currently joins to lg_conf via conference_id, but now we need to join through the junction table.</details></think>
+
+---
+
+Now I need to update the `league_division_standings` view to handle multiple conferences:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/lg_divisions_complete.sql</summary>
+
+**Chunk 1**
+Lines added: 18, lines removed: 3
+
+```diff
+@@ -120,7 +120,22 @@
+      ld.division_logo,
+      ld.display_order AS division_display_order,
+-     ld.conference_id,
+-     lgc.name AS conference_name,
+-     lgc.abbr AS conference_abbr,
++     -- Aggregate conferences for this division
++     (
++         SELECT ARRAY_AGG(ldc.conference_id)
++         FROM lg_division_conferences ldc
++         WHERE ldc.division_id = dtr.division_id
++     ) AS conference_ids,
++     (
++         SELECT ARRAY_AGG(lgc2.name)
++         FROM lg_division_conferences ldc
++         JOIN lg_conf lgc2 ON ldc.conference_id = lgc2.id
++         WHERE ldc.division_id = dtr.division_id
++     ) AS conference_names,
++     (
++         SELECT ARRAY_AGG(lgc2.abbr)
++         FROM lg_division_conferences ldc
++         JOIN lg_conf lgc2 ON ldc.conference_id = lgc2.id
++         WHERE ldc.division_id = dtr.division_id
++     ) AS conference_abbrs,
+      dtr.team_id,
+      dtr.team_name,
+```
+
+**Chunk 2**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -168,5 +183,4 @@
+  LEFT JOIN lg_divisions ld ON dtr.division_id = ld.id
+  LEFT JOIN league_seasons ls ON dtr.season_id = ls.id
+- LEFT JOIN lg_conf lgc ON ld.conference_id = lgc.id
+  ORDER BY dtr.season_id, ld.display_order, division_rank;
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Good! Now the structure allows multiple conferences per division. Let me make sure the verification queries are updated to show the new junction table as well.</details></think>
+
+---
+
+Now let me update the verification queries to include the new junction table:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/lg_divisions_complete.sql</summary>
+
+**Chunk 1**
+Lines added: 6, lines removed: 2
+
+```diff
+@@ -640,9 +640,13 @@
+  -- ============================================================================
+  
+- -- Verify table exists
++ -- Verify lg_divisions table exists
+  SELECT 'lg_divisions table created' AS status, COUNT(*) AS row_count 
+  FROM pg_tables WHERE tablename = 'lg_divisions';
+  
+- -- Verify column added
++ -- Verify junction table exists
++ SELECT 'lg_division_conferences junction table created' AS status, COUNT(*) AS row_count 
++ FROM pg_tables WHERE tablename = 'lg_division_conferences';
++ 
++ -- Verify division_id column added to team_rosters
+  SELECT 'division_id column added to team_rosters' AS status
+  FROM information_schema.columns 
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now I've successfully updated the structure to support multiple conferences per division using a many-to-many relationship. Let me summarize what changed:
+
+1. Removed `conference_id` from `lg_divisions` table
+2. Created a new junction table `lg_division_conferences` for the many-to-many relationship
+3. Updated the `league_division_standings` view to return arrays of conference IDs, names, and abbreviations instead of single values
+4. Updated verification queries to check for the junction table
+
+The user should now be able to run this and have divisions that can contain multiple conferences.</details></think>
+
+---
+
+Perfect! I've updated the SQL to support **multiple conferences per division** using a many-to-many relationship. Here's what changed:
+
+## Changes Made:
+
+### 1. **Removed** `conference_id` from `lg_divisions` table
+   - Divisions are no longer limited to one conference
+
+### 2. **Created** new junction table `lg_division_conferences`
+   ```sql
+   CREATE TABLE lg_division_conferences (
+       id UUID PRIMARY KEY,
+       division_id UUID REFERENCES lg_divisions(id),
+       conference_id UUID REFERENCES lg_conf(id),
+       UNIQUE (division_id, conference_id)
+   );
+   ```
+
+### 3. **Updated** `league_division_standings` view
+   - Now returns **arrays** instead of single values:
+     - `conference_ids` (array of UUIDs)
+     - `conference_names` (array of text)
+     - `conference_abbrs` (array of text)
+
+## Usage Examples:
+
+### Create a division:
+```sql
+INSERT INTO lg_divisions (name, abbr, season_id, league_id)
+VALUES ('Eastern Division', 'EAST', 'season-id', 'league-id')
+RETURNING id;
+```
+
+### Assign multiple conferences to the division:
+```sql
+-- Add first conference
+INSERT INTO lg_division_conferences (division_id, conference_id)
+VALUES ('division-id', 'conference-1-id');
+
+-- Add second conference
+INSERT INTO lg_division_conferences (division_id, conference_id)
+VALUES ('division-id', 'conference-2-id');
+```
+
+### Query divisions with their conferences:
+```sql
+SELECT 
+    ld.name AS division_name,
+    ARRAY_AGG(lgc.name) AS conference_names
+FROM lg_divisions ld
+LEFT JOIN lg_division_conferences ldc ON ld.id = ldc.division_id
+LEFT JOIN lg_conf lgc ON ldc.conference_id = lgc.id
+GROUP BY ld.id, ld.name;
+```
+
+The file is ready to run!
+
+---
+

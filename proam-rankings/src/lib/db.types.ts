@@ -2777,6 +2777,42 @@ export type Database = {
           },
         ]
       }
+      lg_division_conferences: {
+        Row: {
+          conference_id: string
+          created_at: string
+          division_id: string
+          id: string
+        }
+        Insert: {
+          conference_id: string
+          created_at?: string
+          division_id: string
+          id?: string
+        }
+        Update: {
+          conference_id?: string
+          created_at?: string
+          division_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lg_division_conferences_conference_id_fkey"
+            columns: ["conference_id"]
+            isOneToOne: false
+            referencedRelation: "lg_conf"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lg_division_conferences_division_id_fkey"
+            columns: ["division_id"]
+            isOneToOne: false
+            referencedRelation: "lg_divisions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lg_divisions: {
         Row: {
           abbr: string | null
@@ -11460,9 +11496,9 @@ export type Database = {
       }
       league_division_standings: {
         Row: {
-          conference_abbr: string | null
-          conference_id: string | null
-          conference_name: string | null
+          conference_abbrs: string[] | null
+          conference_ids: string[] | null
+          conference_names: string[] | null
           division_abbr: string | null
           division_display_order: number | null
           division_id: string | null
@@ -11492,13 +11528,6 @@ export type Database = {
             columns: ["division_id"]
             isOneToOne: false
             referencedRelation: "lg_divisions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "lg_divisions_conference_id_fkey"
-            columns: ["conference_id"]
-            isOneToOne: false
-            referencedRelation: "lg_conf"
             referencedColumns: ["id"]
           },
           {

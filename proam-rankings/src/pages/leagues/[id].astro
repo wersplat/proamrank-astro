@@ -83,6 +83,11 @@ const { data: divisions } = await supa((Astro.locals as any).runtime)
   .eq("season_id", seasonId)
   .order("display_order", { ascending: true });
 
+// Fetch division-conference relationships
+const { data: divisionConferences } = await supa((Astro.locals as any).runtime)
+  .from("lg_division_conferences")
+  .select("*");
+
 // Fetch teams data separately and merge with standings
 let teamsWithData = standings ?? [];
 if (standings && standings.length > 0) {
@@ -93,12 +98,14 @@ if (standings && standings.length > 0) {
       .select("id, global_rank, hybrid_score, leaderboard_tier, lg_conf")
       .in("id", teamIds);
     
-    // Merge teams data with standings and conference info
+    // Merge teams data with standings, conference info, and division info
     teamsWithData = standings.map((standing: any) => {
       const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
       const conference = teamData?.lg_conf ? conferences?.find((c: any) => c.id === teamData.lg_conf) : null;
-      // Find division by looking up which division this conference belongs to
-      const division = conference ? divisions?.find((d: any) => d.conference_id === conference.id) : null;
+      
+      // Find division by looking up which division this conference belongs to via junction table
+      const divisionLink = conference ? divisionConferences?.find((dc: any) => dc.conference_id === conference.id) : null;
+      const division = divisionLink ? divisions?.find((d: any) => d.id === divisionLink.division_id) : null;
       
       return {
         ...standing,
@@ -114,7 +121,6 @@ if (standings && standings.length > 0) {
           name: division.name,
           abbr: division.abbr,
           division_logo: division.division_logo,
-          conference_id: division.conference_id,
           display_order: division.display_order
         } : null
       };
@@ -541,6 +547,7 @@ const leagueInfoForTabs = {
         playoffTournament={playoffTournament as any}
         conferences={conferences as any}
         divisions={divisions as any}
+        divisionConferences={divisionConferences as any}
       />
     </main>
   </body>
