@@ -362,67 +362,236 @@ export default function LeagueTabsIsland({
               </div>
             ) : (
               <>
-                {/* Overall Standings */}
+                {/* Overall Standings - Separated by Division */}
                 <div>
-                  <h3 className="text-lg font-bold mb-3 text-neutral-200">Overall Standings</h3>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead className="bg-neutral-950 text-neutral-300">
-                        <tr>
-                          <th className="text-left py-2 px-4">Rank</th>
-                          <th className="text-left py-2 px-4">Team</th>
-                          <th className="text-right py-2 px-4">W</th>
-                          <th className="text-right py-2 px-4">L</th>
-                          <th className="text-right py-2 px-4">Win %</th>
-                          <th className="text-right py-2 px-4">PF</th>
-                          <th className="text-right py-2 px-4">PA</th>
-                          <th className="text-right py-2 px-4">ELO</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-neutral-800">
-                        {standings.map((team, idx) => (
-                          <tr key={team.team_id} className="hover:bg-neutral-900">
-                            <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
-                            <td className="py-2 px-4">
-                              <a
-                                href={`/teams/${team.team_id}`}
-                                className="hover:text-blue-400 flex items-center gap-2"
-                              >
-                                {team.logo_url ? (
-                                  <img
-                                    src={team.logo_url}
-                                    alt=""
-                                    className="h-6 w-6 rounded object-cover"
-                                  />
-                                ) : (
-                                  <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
-                                    {team.team_name?.substring(0, 2).toUpperCase() || '??'}
-                                  </div>
+                  <h3 className="text-lg font-bold mb-4 text-neutral-200">Overall Standings</h3>
+                  {conferences && conferences.length > 0 ? (
+                    // Group standings by division/conference
+                    <div className="space-y-6">
+                      {conferences.map((conf) => {
+                        const confTeams = standings
+                          .filter(team => team.conference?.id === conf.id)
+                          .sort((a, b) => {
+                            if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+                              return (b.wins ?? 0) - (a.wins ?? 0);
+                            }
+                            return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+                          });
+
+                        if (confTeams.length === 0) return null;
+
+                        const isDivision = conf.name?.toLowerCase().includes('division');
+
+                        return (
+                          <div key={conf.id}>
+                            <div className="flex items-center gap-2 mb-2">
+                              {conf.conf_logo && (
+                                <img
+                                  src={conf.conf_logo}
+                                  alt={conf.name || ""}
+                                  className="h-6 w-6 rounded object-contain"
+                                />
+                              )}
+                              <h4 className={`text-md font-semibold ${isDivision ? 'text-blue-300' : 'text-neutral-300'}`}>
+                                {conf.name || "Conference"}
+                                {conf.abbr && (
+                                  <span className="ml-2 text-xs text-neutral-500">({conf.abbr})</span>
                                 )}
-                                {team.team_name}
-                              </a>
-                            </td>
-                            <td className="py-2 px-4 text-right font-semibold">
-                              {team.wins ?? 0}
-                            </td>
-                            <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                            <td className="py-2 px-4 text-right">
-                              {team.win_percentage?.toFixed(1) ?? "-"}%
-                            </td>
-                            <td className="py-2 px-4 text-right">
-                              {team.points_for ?? 0}
-                            </td>
-                            <td className="py-2 px-4 text-right">
-                              {team.points_against ?? 0}
-                            </td>
-                            <td className="py-2 px-4 text-right text-neutral-400">
-                              {team.elo_rating ? Math.round(team.elo_rating) : "-"}
-                            </td>
+                              </h4>
+                            </div>
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-sm">
+                                <thead className="bg-neutral-950 text-neutral-300">
+                                  <tr>
+                                    <th className="text-left py-2 px-4">Rank</th>
+                                    <th className="text-left py-2 px-4">Team</th>
+                                    <th className="text-right py-2 px-4">W</th>
+                                    <th className="text-right py-2 px-4">L</th>
+                                    <th className="text-right py-2 px-4">Win %</th>
+                                    <th className="text-right py-2 px-4">PF</th>
+                                    <th className="text-right py-2 px-4">PA</th>
+                                    <th className="text-right py-2 px-4">ELO</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-neutral-800">
+                                  {confTeams.map((team, idx) => (
+                                    <tr key={team.team_id} className="hover:bg-neutral-900">
+                                      <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                                      <td className="py-2 px-4">
+                                        <a
+                                          href={`/teams/${team.team_id}`}
+                                          className="hover:text-blue-400 flex items-center gap-2"
+                                        >
+                                          {team.logo_url ? (
+                                            <img
+                                              src={team.logo_url}
+                                              alt=""
+                                              className="h-6 w-6 rounded object-cover"
+                                            />
+                                          ) : (
+                                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                                              {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+                                            </div>
+                                          )}
+                                          {team.team_name}
+                                        </a>
+                                      </td>
+                                      <td className="py-2 px-4 text-right font-semibold">
+                                        {team.wins ?? 0}
+                                      </td>
+                                      <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+                                      <td className="py-2 px-4 text-right">
+                                        {team.win_percentage?.toFixed(1) ?? "-"}%
+                                      </td>
+                                      <td className="py-2 px-4 text-right">
+                                        {team.points_for ?? 0}
+                                      </td>
+                                      <td className="py-2 px-4 text-right">
+                                        {team.points_against ?? 0}
+                                      </td>
+                                      <td className="py-2 px-4 text-right text-neutral-400">
+                                        {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      
+                      {/* Teams without division assignment */}
+                      {(() => {
+                        const unassignedTeams = standings.filter(team => !team.conference);
+                        if (unassignedTeams.length === 0) return null;
+                        
+                        return (
+                          <div>
+                            <h4 className="text-md font-semibold text-neutral-400 mb-2">Unassigned</h4>
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-sm">
+                                <thead className="bg-neutral-950 text-neutral-300">
+                                  <tr>
+                                    <th className="text-left py-2 px-4">Rank</th>
+                                    <th className="text-left py-2 px-4">Team</th>
+                                    <th className="text-right py-2 px-4">W</th>
+                                    <th className="text-right py-2 px-4">L</th>
+                                    <th className="text-right py-2 px-4">Win %</th>
+                                    <th className="text-right py-2 px-4">PF</th>
+                                    <th className="text-right py-2 px-4">PA</th>
+                                    <th className="text-right py-2 px-4">ELO</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-neutral-800">
+                                  {unassignedTeams.map((team, idx) => (
+                                    <tr key={team.team_id} className="hover:bg-neutral-900">
+                                      <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                                      <td className="py-2 px-4">
+                                        <a
+                                          href={`/teams/${team.team_id}`}
+                                          className="hover:text-blue-400 flex items-center gap-2"
+                                        >
+                                          {team.logo_url ? (
+                                            <img
+                                              src={team.logo_url}
+                                              alt=""
+                                              className="h-6 w-6 rounded object-cover"
+                                            />
+                                          ) : (
+                                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                                              {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+                                            </div>
+                                          )}
+                                          {team.team_name}
+                                        </a>
+                                      </td>
+                                      <td className="py-2 px-4 text-right font-semibold">
+                                        {team.wins ?? 0}
+                                      </td>
+                                      <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+                                      <td className="py-2 px-4 text-right">
+                                        {team.win_percentage?.toFixed(1) ?? "-"}%
+                                      </td>
+                                      <td className="py-2 px-4 text-right">
+                                        {team.points_for ?? 0}
+                                      </td>
+                                      <td className="py-2 px-4 text-right">
+                                        {team.points_against ?? 0}
+                                      </td>
+                                      <td className="py-2 px-4 text-right text-neutral-400">
+                                        {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  ) : (
+                    // No divisions - show all teams in single table
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead className="bg-neutral-950 text-neutral-300">
+                          <tr>
+                            <th className="text-left py-2 px-4">Rank</th>
+                            <th className="text-left py-2 px-4">Team</th>
+                            <th className="text-right py-2 px-4">W</th>
+                            <th className="text-right py-2 px-4">L</th>
+                            <th className="text-right py-2 px-4">Win %</th>
+                            <th className="text-right py-2 px-4">PF</th>
+                            <th className="text-right py-2 px-4">PA</th>
+                            <th className="text-right py-2 px-4">ELO</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody className="divide-y divide-neutral-800">
+                          {standings.map((team, idx) => (
+                            <tr key={team.team_id} className="hover:bg-neutral-900">
+                              <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                              <td className="py-2 px-4">
+                                <a
+                                  href={`/teams/${team.team_id}`}
+                                  className="hover:text-blue-400 flex items-center gap-2"
+                                >
+                                  {team.logo_url ? (
+                                    <img
+                                      src={team.logo_url}
+                                      alt=""
+                                      className="h-6 w-6 rounded object-cover"
+                                    />
+                                  ) : (
+                                    <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                                      {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+                                    </div>
+                                  )}
+                                  {team.team_name}
+                                </a>
+                              </td>
+                              <td className="py-2 px-4 text-right font-semibold">
+                                {team.wins ?? 0}
+                              </td>
+                              <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+                              <td className="py-2 px-4 text-right">
+                                {team.win_percentage?.toFixed(1) ?? "-"}%
+                              </td>
+                              <td className="py-2 px-4 text-right">
+                                {team.points_for ?? 0}
+                              </td>
+                              <td className="py-2 px-4 text-right">
+                                {team.points_against ?? 0}
+                              </td>
+                              <td className="py-2 px-4 text-right text-neutral-400">
+                                {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
 
                 {/* Conference/Division Standings */}
