@@ -69,6 +69,13 @@ const tierColors: Record<string, string> = {
   'T5': 'bg-gray-900 text-gray-300 border-gray-500',
 };
 
+// Fetch conferences for this season
+const { data: conferences } = await supa((Astro.locals as any).runtime)
+  .from("lg_conf")
+  .select("*")
+  .eq("season", seasonId)
+  .order("name", { ascending: true });
+
 // Fetch teams data separately and merge with standings
 let teamsWithData = standings ?? [];
 if (standings && standings.length > 0) {
@@ -76,15 +83,22 @@ if (standings && standings.length > 0) {
   if (teamIds.length > 0) {
     const { data: teamsData } = await supa((Astro.locals as any).runtime)
       .from("teams")
-      .select("id, global_rank, hybrid_score, leaderboard_tier")
+      .select("id, global_rank, hybrid_score, leaderboard_tier, lg_conf")
       .in("id", teamIds);
     
-    // Merge teams data with standings
+    // Merge teams data with standings and conference info
     teamsWithData = standings.map((standing: any) => {
       const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
+      const conference = teamData?.lg_conf ? conferences?.find((c: any) => c.id === teamData.lg_conf) : null;
       return {
         ...standing,
-        teams: teamData
+        teams: teamData,
+        conference: conference ? {
+          id: conference.id,
+          name: conference.name,
+          abbr: conference.abbr,
+          conf_logo: conference.conf_logo
+        } : null
       };
     });
   }
@@ -507,6 +521,7 @@ const leagueInfoForTabs = {
         playerStats={fullPlayerStats as any}
         openTournament={openTournament as any}
         playoffTournament={playoffTournament as any}
+        conferences={conferences as any}
       />
     </main>
   </body>
