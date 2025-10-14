@@ -38,9 +38,13 @@ season_team_context AS (
         t.name AS team_name,
         tr.joined_at,
         tr.left_at,
-        tr.is_captain
+        tr.is_captain,
+        tr.division_id,
+        ld.name AS division_name,
+        ld.abbr AS division_abbr
     FROM team_rosters tr
     JOIN teams t ON tr.team_id = t.id
+    LEFT JOIN lg_divisions ld ON tr.division_id = ld.id
     WHERE tr.season_id IS NOT NULL
     ORDER BY tr.player_id, tr.season_id, tr.left_at NULLS FIRST, tr.joined_at DESC
 ),
@@ -68,6 +72,9 @@ SELECT
     stc.team_id AS season_team_id,
     stc.team_name AS season_team_name,
     stc.is_captain,
+    stc.division_id,
+    stc.division_name,
+    stc.division_abbr,
     
     -- Games & Dates
     psg.games_played,

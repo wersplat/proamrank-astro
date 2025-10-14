@@ -22,6 +22,7 @@ season_team_stats AS (
     SELECT 
         m.primary_season_id AS season_id,
         tr.team_id,
+        tr.division_id,
         COUNT(DISTINCT m.id) AS games_played,
         SUM(CASE WHEN m.winner_id = tr.team_id THEN 1 ELSE 0 END) AS wins,
         SUM(CASE WHEN m.winner_id != tr.team_id AND m.winner_id IS NOT NULL THEN 1 ELSE 0 END) AS losses
@@ -29,7 +30,20 @@ season_team_stats AS (
     JOIN team_rosters tr ON (tr.team_id = m.team_a_id OR tr.team_id = m.team_b_id) 
         AND tr.season_id = m.primary_season_id
     WHERE m.primary_season_id IS NOT NULL AND m.verified = TRUE
-    GROUP BY m.primary_season_id, tr.team_id
+    GROUP BY m.primary_season_id, tr.team_id, tr.division_id
+),
+season_division_stats AS (
+    SELECT
+        sts.season_id,
+        sts.division_id,
+        ld.name AS division_name,
+        COUNT(DISTINCT sts.team_id) AS teams_in_division,
+        SUM(sts.games_played) AS division_total_games,
+        AVG(sts.wins::float / NULLIF(sts.games_played, 0)) AS division_avg_win_pct
+    FROM season_team_stats sts
+    LEFT JOIN lg_divisions ld ON sts.division_id = ld.id
+    WHERE sts.division_id IS NOT NULL
+    GROUP BY sts.season_id, sts.division_id, ld.name
 ),
 season_playoff_info AS (
     SELECT
@@ -111,7 +125,23 @@ SELECT
         WHERE sts.season_id = ls.id
         ORDER BY sts.wins DESC, (sts.wins::float / NULLIF(sts.games_played, 0)) DESC
         LIMIT 1
-    ) AS best_record_team
+    ) AS best_record_team,
+    (
+        SELECT COUNT(DISTINCT division_id) 
+        FROM lg_divisions 
+        WHERE season_id = ls.id
+    ) AS total_divisions,
+    (
+        SELECT json_agg(json_build_object(
+            'division_id', division_id,
+            'division_name', division_name,
+            'teams_in_division', teams_in_division,
+            'division_total_games', division_total_games,
+            'division_avg_win_pct', ROUND(division_avg_win_pct::numeric, 3)
+        ))
+        FROM season_division_stats
+        WHERE season_id = ls.id
+    ) AS division_stats
 FROM league_seasons ls
 LEFT JOIN leagues_info li ON ls.league_id = li.id
 LEFT JOIN season_match_stats sms ON ls.id = sms.season_id

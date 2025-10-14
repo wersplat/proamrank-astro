@@ -42,6 +42,18 @@ team_roster_summary AS (
     WHERE left_at IS NULL
     GROUP BY team_id
 ),
+current_division_context AS (
+    SELECT DISTINCT ON (tr.team_id)
+        tr.team_id,
+        tr.division_id,
+        ld.name AS division_name,
+        ld.abbr AS division_abbr,
+        ld.season_id AS division_season_id
+    FROM team_rosters tr
+    LEFT JOIN lg_divisions ld ON tr.division_id = ld.id
+    WHERE tr.left_at IS NULL AND tr.division_id IS NOT NULL
+    ORDER BY tr.team_id, tr.joined_at DESC
+),
 team_rating_summary AS (
     SELECT 
         tr.team_id,
@@ -103,9 +115,14 @@ SELECT
         WHEN t.current_rp >= 400 THEN 'Contender'
         WHEN t.current_rp >= 200 THEN 'Challenger'
         ELSE 'Prospect'
-    END AS rp_tier
+    END AS rp_tier,
+    cdc.division_id,
+    cdc.division_name,
+    cdc.division_abbr,
+    cdc.division_season_id
 FROM teams t
 LEFT JOIN team_match_summary tms ON t.id = tms.team_id
 LEFT JOIN team_achievements ta ON t.id = ta.team_id
 LEFT JOIN team_roster_summary trs ON t.id = trs.team_id
-LEFT JOIN team_rating_summary tras ON t.id = tras.team_id;
+LEFT JOIN team_rating_summary tras ON t.id = tras.team_id
+LEFT JOIN current_division_context cdc ON t.id = cdc.team_id;

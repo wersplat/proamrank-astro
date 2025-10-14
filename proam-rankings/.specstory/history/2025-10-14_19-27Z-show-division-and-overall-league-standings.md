@@ -1725,9 +1725,3625 @@ I understand - you want the Overall Standings section to also be separated by di
 
 Tool use: **search_replace**
 
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1371, lines removed: 1202
+
+```diff
+@@ -363,1208 +363,1377 @@
+              ) : (
+                <>
+-                 {/* Overall Standings */}
++                 {/* Overall Standings - Separated by Division */}
+...
+-                   <h3 className="text-lg font-bold mb-3 text-neutral-200">Overall Standings</h3>
+-                   <div className="overflow-x-auto">
+-                     <table className="w-full text-sm">
+-                       <thead className="bg-neutral-950 text-neutral-300">
+-                         <tr>
+-                           <th className="text-left py-2 px-4">Rank</th>
+-                           <th className="text-left py-2 px-4">Team</th>
+-                           <th className="text-right py-2 px-4">W</th>
+-                           <th className="text-right py-2 px-4">L</th>
+-                           <th className="text-right py-2 px-4">Win %</th>
+-                           <th className="text-right py-2 px-4">PF</th>
+-                           <th className="text-right py-2 px-4">PA</th>
+-                           <th className="text-right py-2 px-4">ELO</th>
+-                         </tr>
+-                       </thead>
+-                       <tbody className="divide-y divide-neutral-800">
+-                         {standings.map((team, idx) => (
+-                           <tr key={team.team_id} className="hover:bg-neutral-900">
+-                             <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+-                             <td className="py-2 px-4">
+-                               <a
+-                                 href={`/teams/${team.team_id}`}
+-                                 className="hover:text-blue-400 flex items-center gap-2"
+-                               >
+-                                 {team.logo_url ? (
+-                                   <img
+-                                     src={team.logo_url}
+-                                     alt=""
+-                                     className="h-6 w-6 rounded object-cover"
+-                                   />
+-                                 ) : (
+-                                   <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                                     {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+-                                   </div>
+-                                 )}
+-                                 {team.team_name}
+-                               </a>
+-                             </td>
+-                             <td className="py-2 px-4 text-right font-semibold">
+-                               {team.wins ?? 0}
+-                             </td>
+-                             <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+-                             <td className="py-2 px-4 text-right">
+-                               {team.win_percentage?.toFixed(1) ?? "-"}%
+-                             </td>
+-                             <td className="py-2 px-4 text-right">
+-                               {team.points_for ?? 0}
+-                             </td>
+-                             <td className="py-2 px-4 text-right">
+-                               {team.points_against ?? 0}
+-                             </td>
+-                             <td className="py-2 px-4 text-right text-neutral-400">
+-                               {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+-                             </td>
+-                           </tr>
+-                         ))}
+-                       </tbody>
+-                     </table>
+-                   </div>
+-                 </div>
+- 
+-                 {/* Conference/Division Standings */}
+-                 {conferences && conferences.length > 0 && (() => {
+-                   // Separate conferences and divisions
+-                   const divisionGroups = conferences.filter(conf => 
+-                     conf.name?.toLowerCase().includes('division')
+-                   );
+-                   const conferenceGroups = conferences.filter(conf => 
+-                     !conf.name?.toLowerCase().includes('division')
+-                   );
+- 
+-                   return (
+-                     <>
+-                       {/* Show Conference Standings First */}
+-                       {conferenceGroups.map((conference) => {
+-                         const conferenceTeams = standings
+-                           .filter(team => team.conference?.id === conference.id)
+-                           .sort((a, b) => {
+-                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+-                               return (b.wins ?? 0) - (a.wins ?? 0);
+-                             }
+-                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+-                           });
+- 
+-                         if (conferenceTeams.length === 0) return null;
+- 
+-                         return (
+-                           <div key={conference.id}>
+-                             <div className="flex items-center gap-3 mb-3">
+-                               {conference.conf_logo && (
+-                                 <img
+-                                   src={conference.conf_logo}
+-                                   alt={conference.name || "Conference"}
+-                                   className="h-8 w-8 rounded object-contain"
+-                                 />
+-                               )}
+-                               <h3 className="text-lg font-bold text-neutral-200">
+-                                 {conference.name || "Conference"}
+-                                 {conference.abbr && (
+-                                   <span className="ml-2 text-sm text-neutral-400">({conference.abbr})</span>
+-                                 )}
+-                               </h3>
+-                             </div>
+-                             <div className="overflow-x-auto">
+-                               <table className="w-full text-sm">
+-                                 <thead className="bg-neutral-950 text-neutral-300">
+-                                   <tr>
+-                                     <th className="text-left py-2 px-4">Rank</th>
+-                                     <th className="text-left py-2 px-4">Team</th>
+-                                     <th className="text-right py-2 px-4">W</th>
+-                                     <th className="text-right py-2 px-4">L</th>
+-                                     <th className="text-right py-2 px-4">Win %</th>
+-                                     <th className="text-right py-2 px-4">PF</th>
+-                                     <th className="text-right py-2 px-4">PA</th>
+-                                     <th className="text-right py-2 px-4">ELO</th>
+-                                   </tr>
+-                                 </thead>
+-                                 <tbody className="divide-y divide-neutral-800">
+-                                   {conferenceTeams.map((team, idx) => (
+-                                     <tr key={team.team_id} className="hover:bg-neutral-900">
+-                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+-                                       <td className="py-2 px-4">
+-                                         <a
+-                                           href={`/teams/${team.team_id}`}
+-                                           className="hover:text-blue-400 flex items-center gap-2"
+-                                         >
+-                                           {team.logo_url ? (
+-                                             <img
+-                                               src={team.logo_url}
+-                                               alt=""
+-                                               className="h-6 w-6 rounded object-cover"
+-                                             />
+-                                           ) : (
+-                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+-                                             </div>
+-                                           )}
+-                                           {team.team_name}
+-                                         </a>
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right font-semibold">
+-                                         {team.wins ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.win_percentage?.toFixed(1) ?? "-"}%
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_for ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_against ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right text-neutral-400">
+-                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+-                                       </td>
+-                                     </tr>
+-                                   ))}
+-                                 </tbody>
+-                               </table>
+-                             </div>
+-                           </div>
+-                         );
+-                       })}
+- 
+-                       {/* Show Division Standings */}
+-                       {divisionGroups.map((division) => {
+-                         const divisionTeams = standings
+-                           .filter(team => team.conference?.id === division.id)
+-                           .sort((a, b) => {
+-                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+-                               return (b.wins ?? 0) - (a.wins ?? 0);
+-                             }
+-                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+-                           });
+- 
+-                         if (divisionTeams.length === 0) return null;
+- 
+-                         return (
+-                           <div key={division.id}>
+-                             <div className="flex items-center gap-3 mb-3">
+-                               {division.conf_logo && (
+-                                 <img
+-                                   src={division.conf_logo}
+-                                   alt={division.name || "Division"}
+-                                   className="h-8 w-8 rounded object-contain"
+-                                 />
+-                               )}
+-                               <h3 className="text-lg font-bold text-blue-300">
+-                                 {division.name || "Division"}
+-                                 {division.abbr && (
+-                                   <span className="ml-2 text-sm text-neutral-400">({division.abbr})</span>
+-                                 )}
+-                               </h3>
+-                             </div>
+-                             <div className="overflow-x-auto">
+-                               <table className="w-full text-sm">
+-                                 <thead className="bg-neutral-950 text-neutral-300">
+-                                   <tr>
+-                                     <th className="text-left py-2 px-4">Rank</th>
+-                                     <th className="text-left py-2 px-4">Team</th>
+-                                     <th className="text-right py-2 px-4">W</th>
+-                                     <th className="text-right py-2 px-4">L</th>
+-                                     <th className="text-right py-2 px-4">Win %</th>
+-                                     <th className="text-right py-2 px-4">PF</th>
+-                                     <th className="text-right py-2 px-4">PA</th>
+-                                     <th className="text-right py-2 px-4">ELO</th>
+-                                   </tr>
+-                                 </thead>
+-                                 <tbody className="divide-y divide-neutral-800">
+-                                   {divisionTeams.map((team, idx) => (
+-                                     <tr key={team.team_id} className="hover:bg-neutral-900">
+-                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+-                                       <td className="py-2 px-4">
+-                                         <a
+-                                           href={`/teams/${team.team_id}`}
+-                                           className="hover:text-blue-400 flex items-center gap-2"
+-                                         >
+-                                           {team.logo_url ? (
+-                                             <img
+-                                               src={team.logo_url}
+-                                               alt=""
+-                                               className="h-6 w-6 rounded object-cover"
+-                                             />
+-                                           ) : (
+-                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+-                                             </div>
+-                                           )}
+-                                           {team.team_name}
+-                                         </a>
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right font-semibold">
+-                                         {team.wins ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.win_percentage?.toFixed(1) ?? "-"}%
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_for ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_against ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right text-neutral-400">
+-                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+-                                       </td>
+-                                     </tr>
+-                                   ))}
+-                                 </tbody>
+-                               </table>
+-                             </div>
+-                           </div>
+-                         );
+-                       })}
+-                     </>
+-                   );
+-                 })()}
+-               </>
+-             )}
+-           </div>
+-         )}
+- 
+-         {/* Teams Tab */}
+-         {activeTab === 1 && (
+-           <div className="overflow-x-auto">
+-             {standings.length === 0 ? (
+-               <div className="text-center py-8 text-neutral-400">
+-                 No teams available.
+-               </div>
+-             ) : (
+-               <table className="w-full text-sm">
+-                 <thead className="bg-neutral-950 text-neutral-300">
+-                   <tr>
+-                     <th className="text-left py-2 px-4">Team</th>
+-                     <th className="text-right py-2 px-4">Global Rank</th>
+-                     <th className="text-right py-2 px-4">Rating</th>
+-                     <th className="text-right py-2 px-4">Tier</th>
+-                     <th className="text-right py-2 px-4">ELO</th>
+-                   </tr>
+-                 </thead>
+-                 <tbody className="divide-y divide-neutral-800">
+-                   {standings.map((team) => (
+-                     <tr key={team.team_id} className="hover:bg-neutral-900">
+-                       <td className="py-2 px-4">
+-                         <a
+-                           href={`/teams/${team.team_id}`}
+-                           className="hover:text-blue-400 flex items-center gap-2"
+-                         >
+-                           {team.logo_url ? (
+-                             <img
+-                               src={team.logo_url}
+-                               alt=""
+-                               className="h-6 w-6 rounded object-cover"
+-                             />
+-                           ) : (
+-                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+-                             </div>
+-                           )}
+-                           {team.team_name}
+-                         </a>
+-                       </td>
+-                       <td className="py-2 px-4 text-right text-neutral-400">
+-                         #{team.teams?.global_rank ?? "-"}
+-                       </td>
+-                       <td className="py-2 px-4 text-right">
+-                         {team.teams?.hybrid_score ? (
+-                           <span className="font-semibold text-blue-400">
+-                             {team.teams.hybrid_score.toFixed(0)}
+-                           </span>
+-                         ) : (
+-                           "-"
+-                         )}
+-                       </td>
+-                       <td className="py-2 px-4 text-right">
+-                         {team.teams?.leaderboard_tier ? (
+-                           <span
+-                             className={`px-2 py-1 rounded text-xs font-bold ${
+-                               team.teams.leaderboard_tier === "S"
+-                                 ? "bg-red-900 text-red-300"
+-                                 : team.teams.leaderboard_tier === "A"
+-                                 ? "bg-orange-900 text-orange-300"
+-                                 : team.teams.leaderboard_tier === "B"
+-                                 ? "bg-green-900 text-green-300"
+-                                 : team.teams.leaderboard_tier === "C"
+-                                 ? "bg-blue-900 text-blue-300"
+-                                 : "bg-neutral-800 text-neutral-300"
+-                             }`}
+-                           >
+-                             {team.teams.leaderboard_tier}
+-                           </span>
+-                         ) : (
+-                           "-"
+-                         )}
+-                       </td>
+-                       <td className="py-2 px-4 text-right text-neutral-400">
+-                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+-                       </td>
+-                     </tr>
+-                   ))}
+-                 </tbody>
+-               </table>
+-             )}
+-           </div>
+-         )}
+- 
+-         {/* Matches Tab */}
+-         {activeTab === 2 && (
+-           <div>
+-             {/* Matches count and page info */}
+-             {matches.length > 0 && (
+-               <div className="mb-4 text-sm text-neutral-400">
+-                 Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, matches.length)} of {matches.length} matches
+-               </div>
+-             )}
+- 
+-             <div className="space-y-2">
+-               {matches.length === 0 ? (
+-                 <div className="text-center py-8 text-neutral-400">
+-                   No matches found.
+-                 </div>
+-               ) : (
+-                 paginatedMatches.map((match) => (
+-                   <div
+-                     key={match.id}
+-                     onClick={() => handleMatchClick(match)}
+-                     className={`rounded-lg border border-neutral-800 p-4 transition ${
+-                       match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
+-                     }`}
+-                   >
+-                     <div className="flex items-center justify-between">
+-                       <div className="flex items-center gap-3 flex-1">
+-                         {match.team_a?.logo_url ? (
+-                           <img
+-                             src={match.team_a.logo_url}
+-                             alt=""
+-                             className="h-8 w-8 rounded object-cover"
+-                           />
+-                         ) : (
+-                           <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                             {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
+-                           </div>
+-                         )}
+-                         <div className="text-sm">{match.team_a?.name || "Team A"}</div>
+-                         <div className="text-lg font-bold">{match.score_a ?? 0}</div>
+-                       </div>
+-                       <div className="px-4 text-neutral-500">vs</div>
+-                       <div className="flex items-center gap-3 flex-1 justify-end">
+-                         <div className="text-lg font-bold">{match.score_b ?? 0}</div>
+-                         <div className="text-sm">{match.team_b?.name || "Team B"}</div>
+-                         {match.team_b?.logo_url ? (
+-                           <img
+-                             src={match.team_b.logo_url}
+-                             alt=""
+-                             className="h-8 w-8 rounded object-cover"
+-                           />
+-                         ) : (
+-                           <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                             {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
+-                           </div>
+-                         )}
+-                       </div>
+-                     </div>
+-                     <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
+-                       <span>{new Date(match.played_at).toLocaleDateString()}</span>
+-                       {match.stage && <span>• {match.stage}</span>}
+-                       {getVerificationBadge(match)}
+-                       {match.boxscore_url && (
+-                         <span className="ml-auto text-blue-400">
+-                           📊 View boxscore
+-                         </span>
+-                       )}
+-                     </div>
+-                   </div>
+-                 ))
+-               )}
+-             </div>
+- 
+-             {/* Pagination Controls */}
+-             {totalMatchPages > 1 && (
+-               <div className="mt-6 flex items-center justify-center gap-2 flex-wrap">
+-                 <button
+-                   onClick={() => setMatchesPage(matchesPage - 1)}
+-                   disabled={matchesPage === 1}
+-                   className={`px-4 py-2 rounded transition ${
+-                     matchesPage === 1
+-                       ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
+-                       : "bg-neutral-800 hover:bg-neutral-700"
+-                   }`}
+-                 >
+-                   ← Previous
+-                 </button>
+- 
+-                 <div className="flex gap-1">
+-                   {matchPageNumbers.map((pageNum) => (
+-                     <button
+-                       key={pageNum}
+-                       onClick={() => setMatchesPage(pageNum)}
+-                       className={`px-3 py-2 rounded transition ${
+-                         pageNum === matchesPage
+-                           ? "bg-blue-600 text-white font-semibold"
+-                           : "bg-neutral-800 hover:bg-neutral-700"
+-                       }`}
+-                     >
+-                       {pageNum}
+-                     </button>
+-                   ))}
+-                 </div>
+- 
+-                 <button
+-                   onClick={() => setMatchesPage(matchesPage + 1)}
+-                   disabled={matchesPage === totalMatchPages}
+-                   className={`px-4 py-2 rounded transition ${
+-                     matchesPage === totalMatchPages
+-                       ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
+-                       : "bg-neutral-800 hover:bg-neutral-700"
+-                   }`}
+-                 >
+-                   Next →
+-                 </button>
+-               </div>
+-             )}
+-           </div>
+-         )}
+- 
+-         {/* Player Statistics Tab */}
+-         {activeTab === 3 && (
+-           <div>
+-             {sortedPlayerStats.length === 0 ? (
+-               <div className="text-center py-8 text-neutral-400">
+-                 No player statistics available.
+-               </div>
+-             ) : (
+-               <>
+-                 <div className="mb-4 text-sm text-neutral-400">
+-                   {sortedPlayerStats.length} player{sortedPlayerStats.length !== 1 ? 's' : ''} • Click column headers to sort
+-                 </div>
+-                 <div className="overflow-x-auto">
+-                   <table className="w-full text-sm">
+-                     <thead className="bg-neutral-950 text-neutral-300">
+-                       <tr>
+-                         <th className="text-left py-2 px-4 sticky left-0 bg-neutral-950 z-10">Player</th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('games_played')}
+-                         >
+-                           GP {sortBy === 'games_played' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('avg_points')}
+-                         >
+-                           PPG {sortBy === 'avg_points' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('avg_rebounds')}
+-                         >
+-                           RPG {sortBy === 'avg_rebounds' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('avg_assists')}
+-                         >
+-                           APG {sortBy === 'avg_assists' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('avg_steals')}
+-                         >
+-                           SPG {sortBy === 'avg_steals' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('avg_blocks')}
+-                         >
+-                           BPG {sortBy === 'avg_blocks' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('avg_turnovers')}
+-                         >
+-                           TOV {sortBy === 'avg_turnovers' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('fga')}
+-                         >
+-                           FG% {sortBy === 'fga' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('three_points_attempted')}
+-                         >
+-                           3P% {sortBy === 'three_points_attempted' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('fta')}
+-                         >
+-                           FT% {sortBy === 'fta' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('plus_minus')}
+-                         >
+-                           +/- {sortBy === 'plus_minus' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                         <th 
+-                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() => handleSort('performance_score')}
+-                         >
+-                           PS {sortBy === 'performance_score' && (sortDirection === 'asc' ? '↑' : '↓')}
+-                         </th>
+-                       </tr>
+-                     </thead>
+-                     <tbody className="divide-y divide-neutral-800">
+-                       {sortedPlayerStats.map((player) => {
+-                         const fgPercentage = player.fga > 0 ? ((player.fgm / player.fga) * 100).toFixed(1) : '-';
+-                         const threePtPercentage = player.three_points_attempted > 0 
+-                           ? ((player.three_points_made / player.three_points_attempted) * 100).toFixed(1) 
+-                           : '-';
+-                         const ftPercentage = player.fta > 0 
+-                           ? ((player.ftm / player.fta) * 100).toFixed(1) 
+-                           : '0.0';
+-                         
+-                         return (
+-                           <tr key={player.player_id} className="hover:bg-neutral-900">
+-                             <td className="py-2 px-4 sticky left-0 bg-neutral-900 hover:bg-neutral-900">
+-                               <a
+-                                 href={`/players/${player.player_id}`}
+-                                 className="hover:text-blue-400 font-medium"
+-                               >
+-                                 {player.player_gamertag}
+-                               </a>
+-                             </td>
+-                             <td className="py-2 px-4 text-right">{player.games_played}</td>
+-                             <td className="py-2 px-4 text-right font-semibold text-blue-400">
+-                               {player.avg_points?.toFixed(1) ?? '-'}
+-                             </td>
+-                             <td className="py-2 px-4 text-right">
+-                               {player.avg_rebounds?.toFixed(1) ?? '-'}
+-                             </td>
+-                             <td className="py-2 px-4 text-right text-green-400">
+-                               {player.avg_assists?.toFixed(1) ?? '-'}
+-                             </td>
+-                             <td className="py-2 px-4 text-right text-yellow-400">
+-                               {player.avg_steals?.toFixed(1) ?? '-'}
+-                             </td>
+-                             <td className="py-2 px-4 text-right text-red-400">
+-                               {player.avg_blocks?.toFixed(1) ?? '-'}
+-                             </td>
+-                             <td className="py-2 px-4 text-right text-neutral-400">
+-                               {player.avg_turnovers?.toFixed(1) ?? '-'}
+-                             </td>
+-                             <td className="py-2 px-4 text-right">
+-                               {fgPercentage}%
+-                             </td>
+-                             <td className="py-2 px-4 text-right">
+-                               {threePtPercentage}%
+-                             </td>
+-                             <td className="py-2 px-4 text-right">
+-                               {ftPercentage}%
+-                             </td>
+-                             <td className="py-2 px-4 text-right">
+-                               <span className={player.plus_minus > 0 ? 'text-green-400' : player.plus_minus < 0 ? 'text-red-400' : ''}>
+-                                 {player.plus_minus > 0 ? '+' : ''}{player.plus_minus ?? 0}
+-                               </span>
+-                             </td>
+-                             <td className="py-2 px-4 text-right font-semibold text-purple-400">
+-                               {player.performance_score?.toFixed(1) ?? '-'}
+-                             </td>
+-                           </tr>
+-                         );
+-                       })}
+-                     </tbody>
+-                   </table>
++                   <h3 className="text-lg font-bold mb-4 text-neutral-200">Overall Standings</h3>
++                   {conferences && conferences.length > 0 ? (
++                     // Group standings by division/conference
++                     <div className="space-y-6">
++                       {conferences.map((conf) => {
++                         const confTeams = standings
++                           .filter(team => team.conference?.id === conf.id)
++                           .sort((a, b) => {
++                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
++                               return (b.wins ?? 0) - (a.wins ?? 0);
++                             }
++                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
++                           });
++ 
++                         if (confTeams.length === 0) return null;
++ 
++                         const isDivision = conf.name?.toLowerCase().includes('division');
++ 
++                         return (
++                           <div key={conf.id}>
++                             <div className="flex items-center gap-2 mb-2">
++                               {conf.conf_logo && (
++                                 <img
++                                   src={conf.conf_logo}
++                                   alt={conf.name || ""}
++                                   className="h-6 w-6 rounded object-contain"
++                                 />
++                               )}
++                               <h4 className={`text-md font-semibold ${isDivision ? 'text-blue-300' : 'text-neutral-300'}`}>
++                                 {conf.name || "Conference"}
++                                 {conf.abbr && (
++                                   <span className="ml-2 text-xs text-neutral-500">({conf.abbr})</span>
++                                 )}
++                               </h4>
++                             </div>
++                             <div className="overflow-x-auto">
++                               <table className="w-full text-sm">
++                                 <thead className="bg-neutral-950 text-neutral-300">
++                                   <tr>
++                                     <th className="text-left py-2 px-4">Rank</th>
++                                     <th className="text-left py-2 px-4">Team</th>
++                                     <th className="text-right py-2 px-4">W</th>
++                                     <th className="text-right py-2 px-4">L</th>
++                                     <th className="text-right py-2 px-4">Win %</th>
++                                     <th className="text-right py-2 px-4">PF</th>
++                                     <th className="text-right py-2 px-4">PA</th>
++                                     <th className="text-right py-2 px-4">ELO</th>
++                                   </tr>
++                                 </thead>
++                                 <tbody className="divide-y divide-neutral-800">
++                                   {confTeams.map((team, idx) => (
++                                     <tr key={team.team_id} className="hover:bg-neutral-900">
++                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
++                                       <td className="py-2 px-4">
++                                         <a
++                                           href={`/teams/${team.team_id}`}
++                                           className="hover:text-blue-400 flex items-center gap-2"
++                                         >
++                                           {team.logo_url ? (
++                                             <img
++                                               src={team.logo_url}
++                                               alt=""
++                                               className="h-6 w-6 rounded object-cover"
++                                             />
++                                           ) : (
++                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
++                                             </div>
++                                           )}
++                                           {team.team_name}
++                                         </a>
++                                       </td>
++                                       <td className="py-2 px-4 text-right font-semibold">
++                                         {team.wins ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.win_percentage?.toFixed(1) ?? "-"}%
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_for ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_against ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right text-neutral-400">
++                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
++                                       </td>
++                                     </tr>
++                                   ))}
++                                 </tbody>
++                               </table>
++                             </div>
++                           </div>
++                         );
++                       })}
++                       
++                       {/* Teams without division assignment */}
++                       {(() => {
++                         const unassignedTeams = standings.filter(team => !team.conference);
++                         if (unassignedTeams.length === 0) return null;
++                         
++                         return (
++                           <div>
++                             <h4 className="text-md font-semibold text-neutral-400 mb-2">Unassigned</h4>
++                             <div className="overflow-x-auto">
++                               <table className="w-full text-sm">
++                                 <thead className="bg-neutral-950 text-neutral-300">
++                                   <tr>
++                                     <th className="text-left py-2 px-4">Rank</th>
++                                     <th className="text-left py-2 px-4">Team</th>
++                                     <th className="text-right py-2 px-4">W</th>
++                                     <th className="text-right py-2 px-4">L</th>
++                                     <th className="text-right py-2 px-4">Win %</th>
++                                     <th className="text-right py-2 px-4">PF</th>
++                                     <th className="text-right py-2 px-4">PA</th>
++                                     <th className="text-right py-2 px-4">ELO</th>
++                                   </tr>
++                                 </thead>
++                                 <tbody className="divide-y divide-neutral-800">
++                                   {unassignedTeams.map((team, idx) => (
++                                     <tr key={team.team_id} className="hover:bg-neutral-900">
++                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
++                                       <td className="py-2 px-4">
++                                         <a
++                                           href={`/teams/${team.team_id}`}
++                                           className="hover:text-blue-400 flex items-center gap-2"
++                                         >
++                                           {team.logo_url ? (
++                                             <img
++                                               src={team.logo_url}
++                                               alt=""
++                                               className="h-6 w-6 rounded object-cover"
++                                             />
++                                           ) : (
++                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
++                                             </div>
++                                           )}
++                                           {team.team_name}
++                                         </a>
++                                       </td>
++                                       <td className="py-2 px-4 text-right font-semibold">
++                                         {team.wins ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.win_percentage?.toFixed(1) ?? "-"}%
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_for ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_against ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right text-neutral-400">
++                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
++                                       </td>
++                                     </tr>
++                                   ))}
++                                 </tbody>
++                               </table>
++                             </div>
++                           </div>
++                         );
++                       })()}
++                     </div>
++                   ) : (
++                     // No divisions - show all teams in single table
++                     <div className="overflow-x-auto">
++                       <table className="w-full text-sm">
++                         <thead className="bg-neutral-950 text-neutral-300">
++                           <tr>
++                             <th className="text-left py-2 px-4">Rank</th>
++                             <th className="text-left py-2 px-4">Team</th>
++                             <th className="text-right py-2 px-4">W</th>
++                             <th className="text-right py-2 px-4">L</th>
++                             <th className="text-right py-2 px-4">Win %</th>
++                             <th className="text-right py-2 px-4">PF</th>
++                             <th className="text-right py-2 px-4">PA</th>
++                             <th className="text-right py-2 px-4">ELO</th>
++                           </tr>
++                         </thead>
++                         <tbody className="divide-y divide-neutral-800">
++                           {standings.map((team, idx) => (
++                             <tr key={team.team_id} className="hover:bg-neutral-900">
++                               <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
++                               <td className="py-2 px-4">
++                                 <a
++                                   href={`/teams/${team.team_id}`}
++                                   className="hover:text-blue-400 flex items-center gap-2"
++                                 >
++                                   {team.logo_url ? (
++                                     <img
++                                       src={team.logo_url}
++                                       alt=""
++                                       className="h-6 w-6 rounded object-cover"
++                                     />
++                                   ) : (
++                                     <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                                       {team.team_name?.substring(0, 2).toUpperCase() || '??'}
++                                     </div>
++                                   )}
++                                   {team.team_name}
++                                 </a>
++                               </td>
++                               <td className="py-2 px-4 text-right font-semibold">
++                                 {team.wins ?? 0}
++                               </td>
++                               <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
++                               <td className="py-2 px-4 text-right">
++                                 {team.win_percentage?.toFixed(1) ?? "-"}%
++                               </td>
++                               <td className="py-2 px-4 text-right">
++                                 {team.points_for ?? 0}
++                               </td>
++                               <td className="py-2 px-4 text-right">
++                                 {team.points_against ?? 0}
++                               </td>
++                               <td className="py-2 px-4 text-right text-neutral-400">
++                                 {team.elo_rating ? Math.round(team.elo_rating) : "-"}
++                               </td>
++                             </tr>
++                           ))}
++                         </tbody>
++                       </table>
++                     </div>
++                   )}
++                 </div>
++ 
++                 {/* Conference/Division Standings */}
++                 {conferences && conferences.length > 0 && (() => {
++                   // Separate conferences and divisions
++                   const divisionGroups = conferences.filter(conf => 
++                     conf.name?.toLowerCase().includes('division')
++                   );
++                   const conferenceGroups = conferences.filter(conf => 
++                     !conf.name?.toLowerCase().includes('division')
++                   );
++ 
++                   return (
++                     <>
++                       {/* Show Conference Standings First */}
++                       {conferenceGroups.map((conference) => {
++                         const conferenceTeams = standings
++                           .filter(team => team.conference?.id === conference.id)
++                           .sort((a, b) => {
++                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
++                               return (b.wins ?? 0) - (a.wins ?? 0);
++                             }
++                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
++                           });
++ 
++                         if (conferenceTeams.length === 0) return null;
++ 
++                         return (
++                           <div key={conference.id}>
++                             <div className="flex items-center gap-3 mb-3">
++                               {conference.conf_logo && (
++                                 <img
++                                   src={conference.conf_logo}
++                                   alt={conference.name || "Conference"}
++                                   className="h-8 w-8 rounded object-contain"
++                                 />
++                               )}
++                               <h3 className="text-lg font-bold text-neutral-200">
++                                 {conference.name || "Conference"}
++                                 {conference.abbr && (
++                                   <span className="ml-2 text-sm text-neutral-400">({conference.abbr})</span>
++                                 )}
++                               </h3>
++                             </div>
++                             <div className="overflow-x-auto">
++                               <table className="w-full text-sm">
++                                 <thead className="bg-neutral-950 text-neutral-300">
++                                   <tr>
++                                     <th className="text-left py-2 px-4">Rank</th>
++                                     <th className="text-left py-2 px-4">Team</th>
++                                     <th className="text-right py-2 px-4">W</th>
++                                     <th className="text-right py-2 px-4">L</th>
++                                     <th className="text-right py-2 px-4">Win %</th>
++                                     <th className="text-right py-2 px-4">PF</th>
++                                     <th className="text-right py-2 px-4">PA</th>
++                                     <th className="text-right py-2 px-4">ELO</th>
++                                   </tr>
++                                 </thead>
++                                 <tbody className="divide-y divide-neutral-800">
++                                   {conferenceTeams.map((team, idx) => (
++                                     <tr key={team.team_id} className="hover:bg-neutral-900">
++                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
++                                       <td className="py-2 px-4">
++                                         <a
++                                           href={`/teams/${team.team_id}`}
++                                           className="hover:text-blue-400 flex items-center gap-2"
++                                         >
++                                           {team.logo_url ? (
++                                             <img
++                                               src={team.logo_url}
++                                               alt=""
++                                               className="h-6 w-6 rounded object-cover"
++                                             />
++                                           ) : (
++                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
++                                             </div>
++                                           )}
++                                           {team.team_name}
++                                         </a>
++                                       </td>
++                                       <td className="py-2 px-4 text-right font-semibold">
++                                         {team.wins ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.win_percentage?.toFixed(1) ?? "-"}%
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_for ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_against ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right text-neutral-400">
++                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
++                                       </td>
++                                     </tr>
++                                   ))}
++                                 </tbody>
++                               </table>
++                             </div>
++                           </div>
++                         );
++                       })}
++ 
++                       {/* Show Division Standings */}
++                       {divisionGroups.map((division) => {
++                         const divisionTeams = standings
++                           .filter(team => team.conference?.id === division.id)
++                           .sort((a, b) => {
++                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
++                               return (b.wins ?? 0) - (a.wins ?? 0);
++                             }
++                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
++                           });
++ 
++                         if (divisionTeams.length === 0) return null;
++ 
++                         return (
++                           <div key={division.id}>
++                             <div className="flex items-center gap-3 mb-3">
++                               {division.conf_logo && (
++                                 <img
++                                   src={division.conf_logo}
++                                   alt={division.name || "Division"}
++                                   className="h-8 w-8 rounded object-contain"
++                                 />
++                               )}
++                               <h3 className="text-lg font-bold text-blue-300">
++                                 {division.name || "Division"}
++                                 {division.abbr && (
++                                   <span className="ml-2 text-sm text-neutral-400">({division.abbr})</span>
++                                 )}
++                               </h3>
++                             </div>
++                             <div className="overflow-x-auto">
++                               <table className="w-full text-sm">
++                                 <thead className="bg-neutral-950 text-neutral-300">
++                                   <tr>
++                                     <th className="text-left py-2 px-4">Rank</th>
++                                     <th className="text-left py-2 px-4">Team</th>
++                                     <th className="text-right py-2 px-4">W</th>
++                                     <th className="text-right py-2 px-4">L</th>
++                                     <th className="text-right py-2 px-4">Win %</th>
++                                     <th className="text-right py-2 px-4">PF</th>
++                                     <th className="text-right py-2 px-4">PA</th>
++                                     <th className="text-right py-2 px-4">ELO</th>
++                                   </tr>
++                                 </thead>
++                                 <tbody className="divide-y divide-neutral-800">
++                                   {divisionTeams.map((team, idx) => (
++                                     <tr key={team.team_id} className="hover:bg-neutral-900">
++                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
++                                       <td className="py-2 px-4">
++                                         <a
++                                           href={`/teams/${team.team_id}`}
++                                           className="hover:text-blue-400 flex items-center gap-2"
++                                         >
++                                           {team.logo_url ? (
++                                             <img
++                                               src={team.logo_url}
++                                               alt=""
++                                               className="h-6 w-6 rounded object-cover"
++                                             />
++                                           ) : (
++                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
++                                             </div>
++                                           )}
++                                           {team.team_name}
++                                         </a>
++                                       </td>
++                                       <td className="py-2 px-4 text-right font-semibold">
++                                         {team.wins ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.win_percentage?.toFixed(1) ?? "-"}%
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_for ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right">
++                                         {team.points_against ?? 0}
++                                       </td>
++                                       <td className="py-2 px-4 text-right text-neutral-400">
++                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
++                                       </td>
++                                     </tr>
++                                   ))}
++                                 </tbody>
++                               </table>
++                             </div>
++                           </div>
++                         );
++                       })}
++                     </>
++                   );
++                 })()}
++               </>
++             )}
++           </div>
++         )}
++ 
++         {/* Teams Tab */}
++         {activeTab === 1 && (
++           <div className="overflow-x-auto">
++             {standings.length === 0 ? (
++               <div className="text-center py-8 text-neutral-400">
++                 No teams available.
++               </div>
++             ) : (
++               <table className="w-full text-sm">
++                 <thead className="bg-neutral-950 text-neutral-300">
++                   <tr>
++                     <th className="text-left py-2 px-4">Team</th>
++                     <th className="text-right py-2 px-4">Global Rank</th>
++                     <th className="text-right py-2 px-4">Rating</th>
++                     <th className="text-right py-2 px-4">Tier</th>
++                     <th className="text-right py-2 px-4">ELO</th>
++                   </tr>
++                 </thead>
++                 <tbody className="divide-y divide-neutral-800">
++                   {standings.map((team) => (
++                     <tr key={team.team_id} className="hover:bg-neutral-900">
++                       <td className="py-2 px-4">
++                         <a
++                           href={`/teams/${team.team_id}`}
++                           className="hover:text-blue-400 flex items-center gap-2"
++                         >
++                           {team.logo_url ? (
++                             <img
++                               src={team.logo_url}
++                               alt=""
++                               className="h-6 w-6 rounded object-cover"
++                             />
++                           ) : (
++                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
++                             </div>
++                           )}
++                           {team.team_name}
++                         </a>
++                       </td>
++                       <td className="py-2 px-4 text-right text-neutral-400">
++                         #{team.teams?.global_rank ?? "-"}
++                       </td>
++                       <td className="py-2 px-4 text-right">
++                         {team.teams?.hybrid_score ? (
++                           <span className="font-semibold text-blue-400">
++                             {team.teams.hybrid_score.toFixed(0)}
++                           </span>
++                         ) : (
++                           "-"
++                         )}
++                       </td>
++                       <td className="py-2 px-4 text-right">
++                         {team.teams?.leaderboard_tier ? (
++                           <span
++                             className={`px-2 py-1 rounded text-xs font-bold ${
++                               team.teams.leaderboard_tier === "S"
++                                 ? "bg-red-900 text-red-300"
++                                 : team.teams.leaderboard_tier === "A"
++                                 ? "bg-orange-900 text-orange-300"
++                                 : team.teams.leaderboard_tier === "B"
++                                 ? "bg-green-900 text-green-300"
++                                 : team.teams.leaderboard_tier === "C"
++                                 ? "bg-blue-900 text-blue-300"
++                                 : "bg-neutral-800 text-neutral-300"
++                             }`}
++                           >
++                             {team.teams.leaderboard_tier}
++                           </span>
++                         ) : (
++                           "-"
++                         )}
++                       </td>
++                       <td className="py-2 px-4 text-right text-neutral-400">
++                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
++                       </td>
++                     </tr>
++                   ))}
++                 </tbody>
++               </table>
++             )}
++           </div>
++         )}
++ 
++         {/* Matches Tab */}
++         {activeTab === 2 && (
++           <div>
++             {/* Matches count and page info */}
++             {matches.length > 0 && (
++               <div className="mb-4 text-sm text-neutral-400">
++                 Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, matches.length)} of {matches.length} matches
++               </div>
++             )}
++ 
++             <div className="space-y-2">
++               {matches.length === 0 ? (
++                 <div className="text-center py-8 text-neutral-400">
++                   No matches found.
++                 </div>
++               ) : (
++                 paginatedMatches.map((match) => (
++                   <div
++                     key={match.id}
++                     onClick={() => handleMatchClick(match)}
++                     className={`rounded-lg border border-neutral-800 p-4 transition ${
++                       match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
++                     }`}
++                   >
++                     <div className="flex items-center justify-between">
++                       <div className="flex items-center gap-3 flex-1">
++                         {match.team_a?.logo_url ? (
++                           <img
++                             src={match.team_a.logo_url}
++                             alt=""
++                             className="h-8 w-8 rounded object-cover"
++                           />
++                         ) : (
++                           <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                             {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
++                           </div>
++                         )}
++                         <div className="text-sm">{match.team_a?.name || "Team A"}</div>
++                         <div className="text-lg font-bold">{match.score_a ?? 0}</div>
++                       </div>
++                       <div className="px-4 text-neutral-500">vs</div>
++                       <div className="flex items-center gap-3 flex-1 justify-end">
++                         <div className="text-lg font-bold">{match.score_b ?? 0}</div>
++                         <div className="text-sm">{match.team_b?.name || "Team B"}</div>
++                         {match.team_b?.logo_url ? (
++                           <img
++                             src={match.team_b.logo_url}
++                             alt=""
++                             className="h-8 w-8 rounded object-cover"
++                           />
++                         ) : (
++                           <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                             {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
++                           </div>
++                         )}
++                       </div>
++                     </div>
++                     <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
++                       <span>{new Date(match.played_at).toLocaleDateString()}</span>
++                       {match.stage && <span>• {match.stage}</span>}
++                       {getVerificationBadge(match)}
++                       {match.boxscore_url && (
++                         <span className="ml-auto text-blue-400">
++                           📊 View boxscore
++                         </span>
++                       )}
++                     </div>
++                   </div>
++                 ))
++               )}
++             </div>
++ 
++             {/* Pagination Controls */}
++             {totalMatchPages > 1 && (
++               <div className="mt-6 flex items-center justify-center gap-2 flex-wrap">
++                 <button
++                   onClick={() => setMatchesPage(matchesPage - 1)}
++                   disabled={matchesPage === 1}
++                   className={`px-4 py-2 rounded transition ${
++                     matchesPage === 1
++                       ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
++                       : "bg-neutral-800 hover:bg-neutral-700"
++                   }`}
++                 >
++                   ← Previous
++                 </button>
++ 
++                 <div className="flex gap-1">
++                   {matchPageNumbers.map((pageNum) => (
++                     <button
++                       key={pageNum}
++                       onClick={() => setMatchesPage(pageNum)}
++                       className={`px-3 py-2 rounded transition ${
++                         pageNum === matchesPage
++                           ? "bg-blue-600 text-white font-semibold"
++                           : "bg-neutral-800 hover:bg-neutral-700"
++                       }`}
++                     >
++                       {pageNum}
++                     </button>
++                   ))}
+...
+-               </>
+-             )}
+-           </div>
+-         )}
+- 
+-         {/* Top Performers Tab */}
+-         {activeTab === 4 && (
+-           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+-             {topScorers.length > 0 && (
+-               <div className="rounded-lg border border-neutral-800 p-4">
+-                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
+-                   Points Per Game
+-                 </h3>
+-                 <div className="space-y-2">
+-                   {topScorers.map((player, idx) => (
+-                     <div
+-                       key={idx}
+-                       className="flex items-center justify-between text-sm"
+-                     >
+-                       <div className="flex items-center gap-2">
+-                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
+-                         <span>{player.player_name}</span>
+-                       </div>
+-                       <span className="font-bold text-blue-400">
+-                         {player.points_per_game?.toFixed(1)}
+-                       </span>
+-                     </div>
+-                   ))}
++ 
++                 <button
++                   onClick={() => setMatchesPage(matchesPage + 1)}
++                   disabled={matchesPage === totalMatchPages}
++                   className={`px-4 py-2 rounded transition ${
++                     matchesPage === totalMatchPages
++                       ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
++                       : "bg-neutral-800 hover:bg-neutral-700"
++                   }`}
++                 >
++                   Next →
++                 </button>
++               </div>
++             )}
++           </div>
++         )}
++ 
++         {/* Player Statistics Tab */}
++         {activeTab === 3 && (
++           <div>
++             {sortedPlayerStats.length === 0 ? (
++               <div className="text-center py-8 text-neutral-400">
++                 No player statistics available.
++               </div>
++             ) : (
++               <>
++                 <div className="mb-4 text-sm text-neutral-400">
++                   {sortedPlayerStats.length} player{sortedPlayerStats.length !== 1 ? 's' : ''} • Click column headers to sort
+...
+-               </div>
+-             )}
+-             {topAssists.length > 0 && (
+-               <div className="rounded-lg border border-neutral-800 p-4">
+-                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
+-                   Assists Per Game
+-                 </h3>
+-                 <div className="space-y-2">
+-                   {topAssists.map((player, idx) => (
+-                     <div
+-                       key={idx}
+-                       className="flex items-center justify-between text-sm"
+-                     >
+-                       <div className="flex items-center gap-2">
+-                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
+-                         <span>{player.player_name}</span>
+-                       </div>
+-                       <span className="font-bold text-green-400">
+-                         {player.assists_per_game?.toFixed(1)}
+-                       </span>
+-                     </div>
+-                   ))}
+-                 </div>
+-               </div>
+-             )}
+-             {topRebounders.length > 0 && (
+-               <div className="rounded-lg border border-neutral-800 p-4">
+-                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
+-                   Rebounds Per Game
+-                 </h3>
+-                 <div className="space-y-2">
+-                   {topRebounders.map((player, idx) => (
+-                     <div
+-                       key={idx}
+-                       className="flex items-center justify-between text-sm"
+-                     >
+-                       <div className="flex items-center gap-2">
+-                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
+-                         <span>{player.player_name}</span>
+-                       </div>
+-                       <span className="font-bold text-purple-400">
+-                         {player.rebounds_per_game?.toFixed(1)}
+-                       </span>
+-                     </div>
+-                   ))}
+-                 </div>
+-               </div>
+-             )}
+-             {topSteals.length > 0 && (
+-               <div className="rounded-lg border border-neutral-800 p-4">
+-                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
+-                   Steals Per Game
+-                 </h3>
+-                 <div className="space-y-2">
+-                   {topSteals.map((player, idx) => (
+-                     <div
+-                       key={idx}
+-                       className="flex items-center justify-between text-sm"
+-                     >
+-                       <div className="flex items-center gap-2">
+-                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
+-                         <span>{player.player_name}</span>
+-                       </div>
+-                       <span className="font-bold text-yellow-400">
+-                         {player.steals_per_game?.toFixed(1)}
+-                       </span>
+-                     </div>
+-                   ))}
+-                 </div>
+-               </div>
+-             )}
+-             {topBlocks.length > 0 && (
+-               <div className="rounded-lg border border-neutral-800 p-4">
+-                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
+-                   Blocks Per Game
+-                 </h3>
+-                 <div className="space-y-2">
+-                   {topBlocks.map((player, idx) => (
+-                     <div
+-                       key={idx}
+-                       className="flex items-center justify-between text-sm"
+-                     >
+-                       <div className="flex items-center gap-2">
+-                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
+-                         <span>{player.player_name}</span>
+-                       </div>
+-                       <span className="font-bold text-red-400">
+-                         {player.blocks_per_game?.toFixed(1)}
+-                       </span>
+-                     </div>
+-                   ))}
+-                 </div>
+-               </div>
+-             )}
+-             {topScorers.length === 0 &&
+-               topAssists.length === 0 &&
+-               topRebounders.length === 0 &&
+-               topSteals.length === 0 &&
+-               topBlocks.length === 0 && (
+-                 <div className="col-span-full text-center py-8 text-neutral-400">
+-                   No player statistics available.
+-                 </div>
+-               )}
+-           </div>
+-         )}
+- 
+-         {/* Brackets Tab */}
+-         {activeTab === 5 && (
+-           <div>
+-             {/* Show toggle only if both tournaments exist */}
+-             {(openTournament || playoffTournament) && (
+-               <div className="mb-6 flex gap-2">
+-                 {openTournament && (
+-                   <button
+-                     onClick={() => setSelectedTournamentType('open')}
+-                     className={`px-4 py-2 rounded transition ${
+-                       selectedTournamentType === 'open'
+-                         ? 'bg-blue-600 text-white font-semibold'
+-                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+-                     }`}
+-                   >
+-                     Open Tournament
+-                   </button>
+-                 )}
+-                 {playoffTournament && (
+-                   <button
+-                     onClick={() => setSelectedTournamentType('playoff')}
+-                     className={`px-4 py-2 rounded transition ${
+-                       selectedTournamentType === 'playoff'
+-                         ? 'bg-blue-600 text-white font-semibold'
+-                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+-                     }`}
+-                   >
+-                     Playoff Tournament
+-                   </button>
+-                 )}
+-               </div>
+-             )}
+- 
+-             {/* Display selected tournament bracket */}
+-             {selectedTournamentType === 'open' && openTournament ? (
+-               <BracketDisplay
+-                 matches={openTournament.matches}
+-                 tournamentName={`${leagueInfo?.league_name || 'League'} - Open Tournament`}
+-                 champion={openTournament.champion}
+-                 prizePool={openTournament.prize}
+-                 status={openTournament.status}
+-                 startDate={openTournament.start_date}
+-                 finalsDate={openTournament.finals_date}
+-               />
+-             ) : selectedTournamentType === 'playoff' && playoffTournament ? (
+-               <BracketDisplay
+-                 matches={playoffTournament.matches}
+-                 tournamentName={`${leagueInfo?.league_name || 'League'} - Playoffs`}
+-                 champion={playoffTournament.champion}
+-                 prizePool={playoffTournament.prize}
+-                 status={playoffTournament.status}
+-                 startDate={playoffTournament.start_date}
+-                 finalsDate={playoffTournament.finals_date}
+-               />
+-             ) : (
+-               <div className="text-center py-12 text-neutral-400">
+-                 <p className="text-lg mb-2">No tournament brackets available yet.</p>
+-                 <p className="text-sm">
+-                   {selectedTournamentType === 'open' 
+-                     ? 'The open tournament bracket will appear here once matches are scheduled.'
+-                     : 'The playoff bracket will appear here once matches are scheduled.'
+-                   }
+-                 </p>
+-               </div>
+-             )}
+-           </div>
+-         )}
+- 
+-         {/* Information Tab */}
+-         {activeTab === 6 && (
+-           <div className="space-y-4">
+-             {leagueInfo ? (
+-               <>
+-                 {leagueInfo.tier && (
+-                   <div>
+-                     <div className="text-sm text-neutral-400 mb-1">Tier</div>
+-                     {/* Match tournament styling */}
+-                     <span
+-                       className={`px-3 py-1 rounded text-sm font-bold border ${
+-                         leagueInfo.tier === 'T1'
+-                           ? 'bg-purple-900 text-purple-300 border-purple-500'
+-                           : leagueInfo.tier === 'T2'
+-                           ? 'bg-blue-900 text-blue-300 border-blue-500'
+-                           : leagueInfo.tier === 'T3'
+-                           ? 'bg-green-900 text-green-300 border-green-500'
+-                           : leagueInfo.tier === 'T4'
+-                           ? 'bg-yellow-900 text-yellow-300 border-yellow-500'
+-                           : 'bg-gray-900 text-gray-300 border-gray-500'
+-                       }`}
+-                     >
+-                       {leagueInfo.tier}
+-                     </span>
+-                   </div>
+-                 )}
+-                 <div className="grid gap-4 sm:grid-cols-2">
+-                   {leagueInfo.season_number && (
+-                     <div>
+-                       <div className="text-sm text-neutral-400 mb-1">Season</div>
+-                       <div className="text-lg font-semibold">
+-                         {leagueInfo.season_number}
+-                       </div>
+-                     </div>
+-                   )}
+-                   {leagueInfo.game_year && (
+-                     <div>
+-                       <div className="text-sm text-neutral-400 mb-1">Year</div>
+-                       <div className="text-lg font-semibold">
+-                         {leagueInfo.game_year}
+-                       </div>
+-                     </div>
+-                   )}
+-                   {leagueInfo.entry_fee && (
+-                     <div>
+-                       <div className="text-sm text-neutral-400 mb-1">Entry Fee</div>
+-                       <div className="text-lg font-semibold">
+-                         ${leagueInfo.entry_fee}
+-                       </div>
+-                     </div>
+-                   )}
+-                   {leagueInfo.prize_pool && (
+-                     <div>
+-                       <div className="text-sm text-neutral-400 mb-1">
+-                         Prize Pool
+-                       </div>
+-                       <div className="text-lg font-semibold text-green-400">
+-                         ${leagueInfo.prize_pool}
+-                       </div>
+-                     </div>
+-                   )}
+-                   {leagueInfo.start_date && (
+-                     <div>
+-                       <div className="text-sm text-neutral-400 mb-1">Start Date</div>
+-                       <div className="text-lg font-semibold">
+-                         {new Date(leagueInfo.start_date).toLocaleDateString()}
+-                       </div>
+-                     </div>
+-                   )}
+-                   {leagueInfo.end_date && (
+-                     <div>
+-                       <div className="text-sm text-neutral-400 mb-1">End Date</div>
+-                       <div className="text-lg font-semibold">
+-                         {new Date(leagueInfo.end_date).toLocaleDateString()}
+-                       </div>
+-                     </div>
+-                   )}
+-                 </div>
+- 
+-                 {(leagueInfo.lg_url ||
+-                   leagueInfo.lg_discord ||
+-                   leagueInfo.twitch_url ||
+-                   leagueInfo.twitter_id) && (
+-                   <div className="pt-4 border-t border-neutral-800">
+-                     <div className="text-sm text-neutral-400 mb-3">Links</div>
+-                     <div className="flex flex-wrap gap-2">
+-                       {leagueInfo.lg_url && (
+-                         <a
+-                           href={leagueInfo.lg_url}
+-                           target="_blank"
+-                           rel="noopener noreferrer"
+-                           className="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+-                         >
+-                           🌐 Website
+-                         </a>
+-                       )}
+-                       {leagueInfo.lg_discord && (
+-                         <a
+-                           href={leagueInfo.lg_discord}
+-                           target="_blank"
+-                           rel="noopener noreferrer"
+-                           className="px-4 py-2 rounded bg-indigo-900 hover:bg-indigo-800 transition text-sm"
+-                         >
+-                           💬 Discord
+-                         </a>
+-                       )}
+-                       {leagueInfo.twitch_url && (
+-                         <a
+-                           href={leagueInfo.twitch_url}
+-                           target="_blank"
+-                           rel="noopener noreferrer"
+-                           className="px-4 py-2 rounded bg-purple-900 hover:bg-purple-800 transition text-sm"
+-                         >
+-                           📺 Twitch
+-                         </a>
+-                       )}
+-                       {leagueInfo.twitter_id && (
+-                         <a
+-                           href={`https://twitter.com/${leagueInfo.twitter_id}`}
+-                           target="_blank"
+-                           rel="noopener noreferrer"
+-                           className="px-4 py-2 rounded bg-sky-900 hover:bg-sky-800 transition text-sm"
+-                         >
+-                           🐦 Twitter
+-                         </a>
+-                       )}
+-                     </div>
+-                   </div>
+-                 )}
+-               </>
+-             ) : (
+-               <div className="text-center py-8 text-neutral-400">
+-                 No league information available.
+-               </div>
+-             )}
+-           </div>
+-         )}
+-       </div>
+- 
+-       {/* Match Details Modal */}
+-       {selectedMatch && (
+-         <div
+-           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4"
+-           onClick={closeModal}
+-         >
+-           <div
+-             className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
+-             onClick={(e) => e.stopPropagation()}
+-           >
+-             <div className="p-3 sm:p-4 border-b border-neutral-800">
+-               <div className="flex items-start justify-between gap-2 mb-2">
+-                 <div className="flex-1 min-w-0">
+-                   <h2 className="text-base sm:text-lg md:text-xl font-bold break-words">
+-                     {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
+-                   </h2>
+-                   <span className="text-sm text-neutral-400">
+-                     {selectedMatch.score_a}-{selectedMatch.score_b}
+-                   </span>
+-                 </div>
+-                 <button onClick={closeModal} className="text-neutral-400 hover:text-white flex-shrink-0">
+-                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+-                   </svg>
+-                 </button>
+-               </div>
+-               <div className="flex items-center gap-2 text-xs text-neutral-500">
+-                 <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
+-                 {selectedMatch.stage && <span>• {selectedMatch.stage}</span>}
+-                 {getVerificationBadge(selectedMatch)}
+-               </div>
+-             </div>
+- 
+-             <div className="flex border-b border-neutral-800 overflow-x-auto scrollbar-thin">
+-               <button
+-                 onClick={() => setModalTab('screenshot')}
+-                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
+-                   modalTab === 'screenshot' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+-                 }`}
+-               >
+-                 Screenshot
+-               </button>
+-               <button
+-                 onClick={() => setModalTab('player-stats')}
+-                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
+-                   modalTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+-                 }`}
+-               >
+-                 Player Stats
+-               </button>
+-               <button
+-                 onClick={() => setModalTab('team-stats')}
+-                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
+-                   modalTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+-                 }`}
+-               >
+-                 Team Stats
+-               </button>
+-             </div>
+- 
+-             <div className="p-3 sm:p-4 overflow-y-auto max-h-[calc(95vh-160px)] sm:max-h-[calc(90vh-140px)]">
+-               {modalTab === 'screenshot' && selectedMatch.boxscore_url && (
+-                 <div className="flex justify-center">
+-                   <img src={selectedMatch.boxscore_url} alt="Box Score" className="max-w-full h-auto rounded" />
+-                 </div>
+-               )}
+- 
+-               {modalTab === 'player-stats' && (
+-                 <div className="overflow-x-auto">
+-                   {selectedMatch?.verified !== true && (
+-                     <div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">
+-                       <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+-                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+-                       </svg>
+-                       <span>Stats were derived from OCR and may contain errors. Only verified stats are entered into statistics tables.</span>
+-                     </div>
+-                   )}
+-                   {error && (
+-                     <div className="mb-4 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-300 text-sm">
+-                       {error}
++                 <div className="overflow-x-auto">
++                   <table className="w-full text-sm">
++                     <thead className="bg-neutral-950 text-neutral-300">
++                       <tr>
++                         <th className="text-left py-2 px-4 sticky left-0 bg-neutral-950 z-10">Player</th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('games_played')}
++                         >
++                           GP {sortBy === 'games_played' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('avg_points')}
++                         >
++                           PPG {sortBy === 'avg_points' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('avg_rebounds')}
++                         >
++                           RPG {sortBy === 'avg_rebounds' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('avg_assists')}
++                         >
++                           APG {sortBy === 'avg_assists' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('avg_steals')}
++                         >
++                           SPG {sortBy === 'avg_steals' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('avg_blocks')}
++                         >
++                           BPG {sortBy === 'avg_blocks' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('avg_turnovers')}
++                         >
++                           TOV {sortBy === 'avg_turnovers' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('fga')}
++                         >
++                           FG% {sortBy === 'fga' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('three_points_attempted')}
++                         >
++                           3P% {sortBy === 'three_points_attempted' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('fta')}
++                         >
++                           FT% {sortBy === 'fta' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('plus_minus')}
++                         >
++                           +/- {sortBy === 'plus_minus' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                         <th 
++                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
++                           onClick={() => handleSort('performance_score')}
++                         >
++                           PS {sortBy === 'performance_score' && (sortDirection === 'asc' ? '↑' : '↓')}
++                         </th>
++                       </tr>
++                     </thead>
++                     <tbody className="divide-y divide-neutral-800">
++                       {sortedPlayerStats.map((player) => {
++                         const fgPercentage = player.fga > 0 ? ((player.fgm / player.fga) * 100).toFixed(1) : '-';
++                         const threePtPercentage = player.three_points_attempted > 0 
++                           ? ((player.three_points_made / player.three_points_attempted) * 100).toFixed(1) 
++                           : '-';
++                         const ftPercentage = player.fta > 0 
++                           ? ((player.ftm / player.fta) * 100).toFixed(1) 
++                           : '0.0';
++                         
++                         return (
++                           <tr key={player.player_id} className="hover:bg-neutral-900">
++                             <td className="py-2 px-4 sticky left-0 bg-neutral-900 hover:bg-neutral-900">
++                               <a
++                                 href={`/players/${player.player_id}`}
++                                 className="hover:text-blue-400 font-medium"
++                               >
++                                 {player.player_gamertag}
++                               </a>
++                             </td>
++                             <td className="py-2 px-4 text-right">{player.games_played}</td>
++                             <td className="py-2 px-4 text-right font-semibold text-blue-400">
++                               {player.avg_points?.toFixed(1) ?? '-'}
++                             </td>
++                             <td className="py-2 px-4 text-right">
++                               {player.avg_rebounds?.toFixed(1) ?? '-'}
++                             </td>
++                             <td className="py-2 px-4 text-right text-green-400">
++                               {player.avg_assists?.toFixed(1) ?? '-'}
++                             </td>
++                             <td className="py-2 px-4 text-right text-yellow-400">
++                               {player.avg_steals?.toFixed(1) ?? '-'}
++                             </td>
++                             <td className="py-2 px-4 text-right text-red-400">
++                               {player.avg_blocks?.toFixed(1) ?? '-'}
++                             </td>
++                             <td className="py-2 px-4 text-right text-neutral-400">
++                               {player.avg_turnovers?.toFixed(1) ?? '-'}
++                             </td>
++                             <td className="py-2 px-4 text-right">
++                               {fgPercentage}%
++                             </td>
++                             <td className="py-2 px-4 text-right">
++                               {threePtPercentage}%
++                             </td>
++                             <td className="py-2 px-4 text-right">
++                               {ftPercentage}%
++                             </td>
++                             <td className="py-2 px-4 text-right">
++                               <span className={player.plus_minus > 0 ? 'text-green-400' : player.plus_minus < 0 ? 'text-red-400' : ''}>
++                                 {player.plus_minus > 0 ? '+' : ''}{player.plus_minus ?? 0}
++                               </span>
++                             </td>
++                             <td className="py-2 px-4 text-right font-semibold text-purple-400">
++                               {player.performance_score?.toFixed(1) ?? '-'}
++                             </td>
++                           </tr>
++                         );
++                       })}
++                     </tbody>
++                   </table>
++                 </div>
++               </>
++             )}
++           </div>
++         )}
++ 
++         {/* Top Performers Tab */}
++         {activeTab === 4 && (
++           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
++             {topScorers.length > 0 && (
++               <div className="rounded-lg border border-neutral-800 p-4">
++                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
++                   Points Per Game
++                 </h3>
++                 <div className="space-y-2">
++                   {topScorers.map((player, idx) => (
++                     <div
++                       key={idx}
++                       className="flex items-center justify-between text-sm"
++                     >
++                       <div className="flex items-center gap-2">
++                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
++                         <span>{player.player_name}</span>
++                       </div>
++                       <span className="font-bold text-blue-400">
++                         {player.points_per_game?.toFixed(1)}
++                       </span>
++                     </div>
++                   ))}
++                 </div>
++               </div>
++             )}
++             {topAssists.length > 0 && (
++               <div className="rounded-lg border border-neutral-800 p-4">
++                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
++                   Assists Per Game
++                 </h3>
++                 <div className="space-y-2">
++                   {topAssists.map((player, idx) => (
++                     <div
++                       key={idx}
++                       className="flex items-center justify-between text-sm"
++                     >
++                       <div className="flex items-center gap-2">
++                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
++                         <span>{player.player_name}</span>
++                       </div>
++                       <span className="font-bold text-green-400">
++                         {player.assists_per_game?.toFixed(1)}
++                       </span>
++                     </div>
++                   ))}
++                 </div>
++               </div>
++             )}
++             {topRebounders.length > 0 && (
++               <div className="rounded-lg border border-neutral-800 p-4">
++                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
++                   Rebounds Per Game
++                 </h3>
++                 <div className="space-y-2">
++                   {topRebounders.map((player, idx) => (
++                     <div
++                       key={idx}
++                       className="flex items-center justify-between text-sm"
++                     >
++                       <div className="flex items-center gap-2">
++                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
++                         <span>{player.player_name}</span>
++                       </div>
++                       <span className="font-bold text-purple-400">
++                         {player.rebounds_per_game?.toFixed(1)}
++                       </span>
++                     </div>
++                   ))}
++                 </div>
++               </div>
++             )}
++             {topSteals.length > 0 && (
++               <div className="rounded-lg border border-neutral-800 p-4">
++                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
++                   Steals Per Game
++                 </h3>
++                 <div className="space-y-2">
++                   {topSteals.map((player, idx) => (
++                     <div
++                       key={idx}
++                       className="flex items-center justify-between text-sm"
++                     >
++                       <div className="flex items-center gap-2">
++                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
++                         <span>{player.player_name}</span>
++                       </div>
++                       <span className="font-bold text-yellow-400">
++                         {player.steals_per_game?.toFixed(1)}
++                       </span>
++                     </div>
++                   ))}
++                 </div>
++               </div>
++             )}
++             {topBlocks.length > 0 && (
++               <div className="rounded-lg border border-neutral-800 p-4">
++                 <h3 className="font-bold mb-3 text-sm text-neutral-400">
++                   Blocks Per Game
++                 </h3>
++                 <div className="space-y-2">
++                   {topBlocks.map((player, idx) => (
++                     <div
++                       key={idx}
++                       className="flex items-center justify-between text-sm"
++                     >
++                       <div className="flex items-center gap-2">
++                         <span className="text-neutral-500 w-4">{idx + 1}.</span>
++                         <span>{player.player_name}</span>
++                       </div>
++                       <span className="font-bold text-red-400">
++                         {player.blocks_per_game?.toFixed(1)}
++                       </span>
++                     </div>
++                   ))}
++                 </div>
++               </div>
++             )}
++             {topScorers.length === 0 &&
++               topAssists.length === 0 &&
++               topRebounders.length === 0 &&
++               topSteals.length === 0 &&
++               topBlocks.length === 0 && (
++                 <div className="col-span-full text-center py-8 text-neutral-400">
++                   No player statistics available.
++                 </div>
++               )}
++           </div>
++         )}
++ 
++         {/* Brackets Tab */}
++         {activeTab === 5 && (
++           <div>
++             {/* Show toggle only if both tournaments exist */}
++             {(openTournament || playoffTournament) && (
++               <div className="mb-6 flex gap-2">
++                 {openTournament && (
++                   <button
++                     onClick={() => setSelectedTournamentType('open')}
++                     className={`px-4 py-2 rounded transition ${
++                       selectedTournamentType === 'open'
++                         ? 'bg-blue-600 text-white font-semibold'
++                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
++                     }`}
++                   >
++                     Open Tournament
++                   </button>
++                 )}
++                 {playoffTournament && (
++                   <button
++                     onClick={() => setSelectedTournamentType('playoff')}
++                     className={`px-4 py-2 rounded transition ${
++                       selectedTournamentType === 'playoff'
++                         ? 'bg-blue-600 text-white font-semibold'
++                         : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
++                     }`}
++                   >
++                     Playoff Tournament
++                   </button>
++                 )}
++               </div>
++             )}
++ 
++             {/* Display selected tournament bracket */}
++             {selectedTournamentType === 'open' && openTournament ? (
++               <BracketDisplay
++                 matches={openTournament.matches}
++                 tournamentName={`${leagueInfo?.league_name || 'League'} - Open Tournament`}
++                 champion={openTournament.champion}
++                 prizePool={openTournament.prize}
++                 status={openTournament.status}
++                 startDate={openTournament.start_date}
++                 finalsDate={openTournament.finals_date}
++               />
++             ) : selectedTournamentType === 'playoff' && playoffTournament ? (
++               <BracketDisplay
++                 matches={playoffTournament.matches}
++                 tournamentName={`${leagueInfo?.league_name || 'League'} - Playoffs`}
++                 champion={playoffTournament.champion}
++                 prizePool={playoffTournament.prize}
++                 status={playoffTournament.status}
++                 startDate={playoffTournament.start_date}
++                 finalsDate={playoffTournament.finals_date}
++               />
++             ) : (
++               <div className="text-center py-12 text-neutral-400">
++                 <p className="text-lg mb-2">No tournament brackets available yet.</p>
++                 <p className="text-sm">
++                   {selectedTournamentType === 'open' 
++                     ? 'The open tournament bracket will appear here once matches are scheduled.'
++                     : 'The playoff bracket will appear here once matches are scheduled.'
++                   }
++                 </p>
++               </div>
++             )}
++           </div>
++         )}
++ 
++         {/* Information Tab */}
++         {activeTab === 6 && (
++           <div className="space-y-4">
++             {leagueInfo ? (
++               <>
++                 {leagueInfo.tier && (
++                   <div>
++                     <div className="text-sm text-neutral-400 mb-1">Tier</div>
++                     {/* Match tournament styling */}
++                     <span
++                       className={`px-3 py-1 rounded text-sm font-bold border ${
++                         leagueInfo.tier === 'T1'
++                           ? 'bg-purple-900 text-purple-300 border-purple-500'
++                           : leagueInfo.tier === 'T2'
++                           ? 'bg-blue-900 text-blue-300 border-blue-500'
++                           : leagueInfo.tier === 'T3'
++                           ? 'bg-green-900 text-green-300 border-green-500'
++                           : leagueInfo.tier === 'T4'
++                           ? 'bg-yellow-900 text-yellow-300 border-yellow-500'
++                           : 'bg-gray-900 text-gray-300 border-gray-500'
++                       }`}
++                     >
++                       {leagueInfo.tier}
++                     </span>
++                   </div>
++                 )}
++                 <div className="grid gap-4 sm:grid-cols-2">
++                   {leagueInfo.season_number && (
++                     <div>
++                       <div className="text-sm text-neutral-400 mb-1">Season</div>
++                       <div className="text-lg font-semibold">
++                         {leagueInfo.season_number}
++                       </div>
++                     </div>
++                   )}
++                   {leagueInfo.game_year && (
++                     <div>
++                       <div className="text-sm text-neutral-400 mb-1">Year</div>
++                       <div className="text-lg font-semibold">
++                         {leagueInfo.game_year}
++                       </div>
++                     </div>
++                   )}
++                   {leagueInfo.entry_fee && (
++                     <div>
++                       <div className="text-sm text-neutral-400 mb-1">Entry Fee</div>
++                       <div className="text-lg font-semibold">
++                         ${leagueInfo.entry_fee}
++                       </div>
+...
+-                   )}
+-                   {loading ? (
+-                     <div className="text-center py-8 text-neutral-400">Loading stats...</div>
+-                   ) : playerStats.length > 0 ? (
+-                     (() => {
+-                       // Sort by team_a_id first, then by slot_index
+-                       const sortedStats = [...playerStats].sort((a, b) => {
+-                         // Team A players first
+-                         if (a.team_id === selectedMatch?.team_a_id && b.team_id !== selectedMatch?.team_a_id) return -1;
+-                         if (a.team_id !== selectedMatch?.team_a_id && b.team_id === selectedMatch?.team_a_id) return 1;
+-                         // Then by slot_index within each team
+-                         return (a.slot_index ?? 999) - (b.slot_index ?? 999);
+-                       });
+- 
+-                       return (
+-                         <table className="w-full text-sm">
+-                           <thead className="bg-neutral-950 text-neutral-300">
+-                             <tr>
+-                               <th className="text-left py-2 px-4">Player</th>
+-                               <th className="text-center py-2 px-4">GRD</th>
+-                               <th className="text-right py-2 px-4">PTS</th>
+-                               <th className="text-right py-2 px-4">REB</th>
+-                               <th className="text-right py-2 px-4">AST</th>
+-                               <th className="text-right py-2 px-4">STL</th>
+-                               <th className="text-right py-2 px-4">BLK</th>
+-                               <th className="text-right py-2 px-4">TO</th>
+-                               <th className="text-right py-2 px-4">PF</th>
+-                               <th className="text-right py-2 px-4">FG</th>
+-                               <th className="text-right py-2 px-4">3PT</th>
+-                               <th className="text-right py-2 px-4">FT</th>
+-                               <th className="text-right py-2 px-4">+/-</th>
+-                             </tr>
+-                           </thead>
+-                           <tbody className="divide-y divide-neutral-800">
+-                             {sortedStats.map((stat, idx) => {
+-                               const isTeamA = stat.team_id === selectedMatch?.team_a_id;
+-                               return (
+-                                 <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
+-                                   <td className="py-2 px-4">{stat.player_name}</td>
+-                                   <td className="text-center py-2 px-4">
+-                                     <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+-                                       {stat.grd || '-'}
+-                                     </span>
+-                                   </td>
+-                                   <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
+-                                   <td className="text-right py-2 px-4">{stat.rebounds}</td>
+-                                   <td className="text-right py-2 px-4">{stat.assists}</td>
+-                                   <td className="text-right py-2 px-4">{stat.steals}</td>
+-                                   <td className="text-right py-2 px-4">{stat.blocks}</td>
+-                                   <td className="text-right py-2 px-4">{stat.turnovers}</td>
+-                                   <td className="text-right py-2 px-4">{stat.fouls}</td>
+-                                   <td className="text-right py-2 px-4">{stat.fgm}/{stat.fga}</td>
+-                                   <td className="text-right py-2 px-4">{stat.three_points_made}/{stat.three_points_attempted}</td>
+-                                   <td className="text-right py-2 px-4">{stat.ftm}/{stat.fta}</td>
+-                                   <td className={`text-right py-2 px-4 font-semibold ${
+-                                     (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
+-                                     (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
+-                                     'text-neutral-400'
+-                                   }`}>
+-                                     {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
+-                                   </td>
+-                                 </tr>
+-                               );
+-                             })}
+-                           </tbody>
+-                         </table>
+-                       );
+-                     })()
+-                   ) : (
+-                     <div className="text-center py-8 text-neutral-400">No player stats available.</div>
+-                   )}
+-                 </div>
+-               )}
+- 
+-               {modalTab === 'team-stats' && (
+-                 <div className="overflow-x-auto">
+-                   {selectedMatch?.verified !== true && (
+-                     <div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">
+-                       <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+-                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+-                       </svg>
+-                       <span>Stats were derived from OCR and may contain errors. Only verified stats are entered into statistics tables.</span>
+-                     </div>
+-                   )}
+-                   {loading ? (
+-                     <div className="text-center py-8 text-neutral-400">Loading stats...</div>
+-                   ) : teamStats.length > 0 ? (
+-                     <table className="w-full text-sm">
+-                       <thead className="bg-neutral-950 text-neutral-300">
+-                         <tr>
+-                           <th className="text-left py-2 px-4">Team</th>
+-                           <th className="text-center py-2 px-4">GRD</th>
+-                           <th className="text-right py-2 px-4">PTS</th>
+-                           <th className="text-right py-2 px-4">REB</th>
+-                           <th className="text-right py-2 px-4">AST</th>
+-                           <th className="text-right py-2 px-4">STL</th>
+-                           <th className="text-right py-2 px-4">BLK</th>
+-                           <th className="text-right py-2 px-4">TO</th>
+-                           <th className="text-right py-2 px-4">PF</th>
+-                           <th className="text-right py-2 px-4">FG%</th>
+-                           <th className="text-right py-2 px-4">3PT%</th>
+-                           <th className="text-right py-2 px-4">FT%</th>
+-                           <th className="text-right py-2 px-4">+/-</th>
+-                         </tr>
+-                       </thead>
+-                       <tbody className="divide-y divide-neutral-800">
+-                         {teamStats.map((stat, idx) => {
+-                           const fgPct = stat.field_goals_attempted > 0
+-                             ? ((stat.field_goals_made / stat.field_goals_attempted) * 100).toFixed(1)
+-                             : '-';
+-                           const threePct = stat.three_points_attempted > 0
+-                             ? ((stat.three_points_made / stat.three_points_attempted) * 100).toFixed(1)
+-                             : '-';
+-                           const ftPct = stat.free_throws_attempted > 0
+-                             ? ((stat.free_throws_made / stat.free_throws_attempted) * 100).toFixed(1)
+-                             : '0.0';
+- 
+-                           return (
+-                             <tr key={idx} className="hover:bg-neutral-950">
+-                               <td className="py-2 px-4 font-semibold">{stat.teams?.name || 'Team'}</td>
+-                               <td className="text-center py-2 px-4">
+-                                 <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+-                                   {stat.grd || '-'}
+-                                 </span>
+-                               </td>
+-                               <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
+-                               <td className="text-right py-2 px-4">{stat.rebounds}</td>
+-                               <td className="text-right py-2 px-4">{stat.assists}</td>
+-                               <td className="text-right py-2 px-4">{stat.steals}</td>
+-                               <td className="text-right py-2 px-4">{stat.blocks}</td>
+-                               <td className="text-right py-2 px-4">{stat.turnovers}</td>
+-                               <td className="text-right py-2 px-4">{stat.fouls}</td>
+-                               <td className="text-right py-2 px-4">{fgPct}%</td>
+-                               <td className="text-right py-2 px-4">{threePct}%</td>
+-                               <td className="text-right py-2 px-4">{ftPct}%</td>
+-                               <td className={`text-right py-2 px-4 font-semibold ${
+-                                 (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
+-                                 (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
+-                                 'text-neutral-400'
+-                               }`}>
+-                                 {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
+-                               </td>
+-                             </tr>
+-                           );
+-                         })}
+-                       </tbody>
+-                     </table>
+-                   ) : (
+-                     <div className="text-center py-8 text-neutral-400">No team stats available.</div>
+-                   )}
+-                 </div>
+-               )}
+-             </div>
+-           </div>
+-         </div>
+-       )}
+-     </div>
+-   );
+- }
+- 
+- 
++                   )}
++                   {leagueInfo.prize_pool && (
++                     <div>
++                       <div className="text-sm text-neutral-400 mb-1">
++                         Prize Pool
++                       </div>
++                       <div className="text-lg font-semibold text-green-400">
++                         ${leagueInfo.prize_pool}
++                       </div>
++                     </div>
++                   )}
++                   {leagueInfo.start_date && (
++                     <div>
++                       <div className="text-sm text-neutral-400 mb-1">Start Date</div>
++                       <div className="text-lg font-semibold">
++                         {new Date(leagueInfo.start_date).toLocaleDateString()}
++                       </div>
++                     </div>
++                   )}
++                   {leagueInfo.end_date && (
++                     <div>
++                       <div className="text-sm text-neutral-400 mb-1">End Date</div>
++                       <div className="text-lg font-semibold">
++                         {new Date(leagueInfo.end_date).toLocaleDateString()}
++                       </div>
++                     </div>
++                   )}
++                 </div>
++ 
++                 {(leagueInfo.lg_url ||
++                   leagueInfo.lg_discord ||
++                   leagueInfo.twitch_url ||
++                   leagueInfo.twitter_id) && (
++                   <div className="pt-4 border-t border-neutral-800">
++                     <div className="text-sm text-neutral-400 mb-3">Links</div>
++                     <div className="flex flex-wrap gap-2">
++                       {leagueInfo.lg_url && (
++                         <a
++                           href={leagueInfo.lg_url}
++                           target="_blank"
++                           rel="noopener noreferrer"
++                           className="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
++                         >
++                           🌐 Website
++                         </a>
++                       )}
++                       {leagueInfo.lg_discord && (
++                         <a
++                           href={leagueInfo.lg_discord}
++                           target="_blank"
++                           rel="noopener noreferrer"
++                           className="px-4 py-2 rounded bg-indigo-900 hover:bg-indigo-800 transition text-sm"
++                         >
++                           💬 Discord
++                         </a>
++                       )}
++                       {leagueInfo.twitch_url && (
++                         <a
++                           href={leagueInfo.twitch_url}
++                           target="_blank"
++                           rel="noopener noreferrer"
++                           className="px-4 py-2 rounded bg-purple-900 hover:bg-purple-800 transition text-sm"
++                         >
++                           📺 Twitch
++                         </a>
++                       )}
++                       {leagueInfo.twitter_id && (
++                         <a
++                           href={`https://twitter.com/${leagueInfo.twitter_id}`}
++                           target="_blank"
++                           rel="noopener noreferrer"
++                           className="px-4 py-2 rounded bg-sky-900 hover:bg-sky-800 transition text-sm"
++                         >
++                           🐦 Twitter
++                         </a>
++                       )}
++                     </div>
++                   </div>
++                 )}
++               </>
++             ) : (
++               <div className="text-center py-8 text-neutral-400">
++                 No league information available.
++               </div>
++             )}
++           </div>
++         )}
++       </div>
++ 
++       {/* Match Details Modal */}
++       {selectedMatch && (
++         <div
++           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4"
++           onClick={closeModal}
++         >
++           <div
++             className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
++             onClick={(e) => e.stopPropagation()}
++           >
++             <div className="p-3 sm:p-4 border-b border-neutral-800">
++               <div className="flex items-start justify-between gap-2 mb-2">
++                 <div className="flex-1 min-w-0">
++                   <h2 className="text-base sm:text-lg md:text-xl font-bold break-words">
++                     {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
++                   </h2>
++                   <span className="text-sm text-neutral-400">
++                     {selectedMatch.score_a}-{selectedMatch.score_b}
++                   </span>
++                 </div>
++                 <button onClick={closeModal} className="text-neutral-400 hover:text-white flex-shrink-0">
++                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
++                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
++                   </svg>
++                 </button>
++               </div>
++               <div className="flex items-center gap-2 text-xs text-neutral-500">
++                 <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
++                 {selectedMatch.stage && <span>• {selectedMatch.stage}</span>}
++                 {getVerificationBadge(selectedMatch)}
++               </div>
++             </div>
++ 
++             <div className="flex border-b border-neutral-800 overflow-x-auto scrollbar-thin">
++               <button
++                 onClick={() => setModalTab('screenshot')}
++                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
++                   modalTab === 'screenshot' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
++                 }`}
++               >
++                 Screenshot
++               </button>
++               <button
++                 onClick={() => setModalTab('player-stats')}
++                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
++                   modalTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
++                 }`}
++               >
++                 Player Stats
++               </button>
++               <button
++                 onClick={() => setModalTab('team-stats')}
++                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
++                   modalTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
++                 }`}
++               >
++                 Team Stats
++               </button>
++             </div>
++ 
++             <div className="p-3 sm:p-4 overflow-y-auto max-h-[calc(95vh-160px)] sm:max-h-[calc(90vh-140px)]">
++               {modalTab === 'screenshot' && selectedMatch.boxscore_url && (
++                 <div className="flex justify-center">
++                   <img src={selectedMatch.boxscore_url} alt="Box Score" className="max-w-full h-auto rounded" />
++                 </div>
++               )}
++ 
++               {modalTab === 'player-stats' && (
++                 <div className="overflow-x-auto">
++                   {selectedMatch?.verified !== true && (
++                     <div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">
++                       <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
++                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
++                       </svg>
++                       <span>Stats were derived from OCR and may contain errors. Only verified stats are entered into statistics tables.</span>
++                     </div>
++                   )}
++                   {error && (
++                     <div className="mb-4 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-300 text-sm">
++                       {error}
++                     </div>
++                   )}
++                   {loading ? (
++                     <div className="text-center py-8 text-neutral-400">Loading stats...</div>
++                   ) : playerStats.length > 0 ? (
++                     (() => {
++                       // Sort by team_a_id first, then by slot_index
++                       const sortedStats = [...playerStats].sort((a, b) => {
++                         // Team A players first
++                         if (a.team_id === selectedMatch?.team_a_id && b.team_id !== selectedMatch?.team_a_id) return -1;
++                         if (a.team_id !== selectedMatch?.team_a_id && b.team_id === selectedMatch?.team_a_id) return 1;
++                         // Then by slot_index within each team
++                         return (a.slot_index ?? 999) - (b.slot_index ?? 999);
++                       });
++ 
++                       return (
++                         <table className="w-full text-sm">
++                           <thead className="bg-neutral-950 text-neutral-300">
++                             <tr>
++                               <th className="text-left py-2 px-4">Player</th>
++                               <th className="text-center py-2 px-4">GRD</th>
++                               <th className="text-right py-2 px-4">PTS</th>
++                               <th className="text-right py-2 px-4">REB</th>
++                               <th className="text-right py-2 px-4">AST</th>
++                               <th className="text-right py-2 px-4">STL</th>
++                               <th className="text-right py-2 px-4">BLK</th>
++                               <th className="text-right py-2 px-4">TO</th>
++                               <th className="text-right py-2 px-4">PF</th>
++                               <th className="text-right py-2 px-4">FG</th>
++                               <th className="text-right py-2 px-4">3PT</th>
++                               <th className="text-right py-2 px-4">FT</th>
++                               <th className="text-right py-2 px-4">+/-</th>
++                             </tr>
++                           </thead>
++                           <tbody className="divide-y divide-neutral-800">
++                             {sortedStats.map((stat, idx) => {
++                               const isTeamA = stat.team_id === selectedMatch?.team_a_id;
++                               return (
++                                 <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
++                                   <td className="py-2 px-4">{stat.player_name}</td>
++                                   <td className="text-center py-2 px-4">
++                                     <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
++                                       {stat.grd || '-'}
++                                     </span>
++                                   </td>
++                                   <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
++                                   <td className="text-right py-2 px-4">{stat.rebounds}</td>
++                                   <td className="text-right py-2 px-4">{stat.assists}</td>
++                                   <td className="text-right py-2 px-4">{stat.steals}</td>
++                                   <td className="text-right py-2 px-4">{stat.blocks}</td>
++                                   <td className="text-right py-2 px-4">{stat.turnovers}</td>
++                                   <td className="text-right py-2 px-4">{stat.fouls}</td>
++                                   <td className="text-right py-2 px-4">{stat.fgm}/{stat.fga}</td>
++                                   <td className="text-right py-2 px-4">{stat.three_points_made}/{stat.three_points_attempted}</td>
++                                   <td className="text-right py-2 px-4">{stat.ftm}/{stat.fta}</td>
++                                   <td className={`text-right py-2 px-4 font-semibold ${
++                                     (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
++                                     (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
++                                     'text-neutral-400'
++                                   }`}>
++                                     {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
++                                   </td>
++                                 </tr>
++                               );
++                             })}
++                           </tbody>
++                         </table>
++                       );
++                     })()
++                   ) : (
++                     <div className="text-center py-8 text-neutral-400">No player stats available.</div>
++                   )}
++                 </div>
++               )}
++ 
++               {modalTab === 'team-stats' && (
++                 <div className="overflow-x-auto">
++                   {selectedMatch?.verified !== true && (
++                     <div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">
++                       <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
++                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
++                       </svg>
++                       <span>Stats were derived from OCR and may contain errors. Only verified stats are entered into statistics tables.</span>
++                     </div>
++                   )}
++                   {loading ? (
++                     <div className="text-center py-8 text-neutral-400">Loading stats...</div>
++                   ) : teamStats.length > 0 ? (
++                     <table className="w-full text-sm">
++                       <thead className="bg-neutral-950 text-neutral-300">
++                         <tr>
++                           <th className="text-left py-2 px-4">Team</th>
++                           <th className="text-center py-2 px-4">GRD</th>
++                           <th className="text-right py-2 px-4">PTS</th>
++                           <th className="text-right py-2 px-4">REB</th>
++                           <th className="text-right py-2 px-4">AST</th>
++                           <th className="text-right py-2 px-4">STL</th>
++                           <th className="text-right py-2 px-4">BLK</th>
++                           <th className="text-right py-2 px-4">TO</th>
++                           <th className="text-right py-2 px-4">PF</th>
++                           <th className="text-right py-2 px-4">FG%</th>
++                           <th className="text-right py-2 px-4">3PT%</th>
++                           <th className="text-right py-2 px-4">FT%</th>
++                           <th className="text-right py-2 px-4">+/-</th>
++                         </tr>
++                       </thead>
++                       <tbody className="divide-y divide-neutral-800">
++                         {teamStats.map((stat, idx) => {
++                           const fgPct = stat.field_goals_attempted > 0
++                             ? ((stat.field_goals_made / stat.field_goals_attempted) * 100).toFixed(1)
++                             : '-';
++                           const threePct = stat.three_points_attempted > 0
++                             ? ((stat.three_points_made / stat.three_points_attempted) * 100).toFixed(1)
++                             : '-';
++                           const ftPct = stat.free_throws_attempted > 0
++                             ? ((stat.free_throws_made / stat.free_throws_attempted) * 100).toFixed(1)
++                             : '0.0';
++ 
++                           return (
++                             <tr key={idx} className="hover:bg-neutral-950">
++                               <td className="py-2 px-4 font-semibold">{stat.teams?.name || 'Team'}</td>
++                               <td className="text-center py-2 px-4">
++                                 <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
++                                   {stat.grd || '-'}
++                                 </span>
++                               </td>
++                               <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
++                               <td className="text-right py-2 px-4">{stat.rebounds}</td>
++                               <td className="text-right py-2 px-4">{stat.assists}</td>
++                               <td className="text-right py-2 px-4">{stat.steals}</td>
++                               <td className="text-right py-2 px-4">{stat.blocks}</td>
++                               <td className="text-right py-2 px-4">{stat.turnovers}</td>
++                               <td className="text-right py-2 px-4">{stat.fouls}</td>
++                               <td className="text-right py-2 px-4">{fgPct}%</td>
++                               <td className="text-right py-2 px-4">{threePct}%</td>
++                               <td className="text-right py-2 px-4">{ftPct}%</td>
++                               <td className={`text-right py-2 px-4 font-semibold ${
++                                 (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
++                                 (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
++                                 'text-neutral-400'
++                               }`}>
++                                 {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
++                               </td>
++                             </tr>
++                           );
++                         })}
++                       </tbody>
++                     </table>
++                   ) : (
++                     <div className="text-center py-8 text-neutral-400">No team stats available.</div>
++                   )}
++                 </div>
++               )}
++             </div>
++           </div>
++         </div>
++       )}
++     </div>
++   );
++ }
++ 
++ 
+```
+
+</details>
+
 ---
 
+<think><details><summary>Thought Process</summary>Good, I've updated the Overall Standings section. Now let me check for linting errors.</details></think>
 
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! No linting errors. Let me summarize what was changed for the user.</details></think>
+
+---
+
+Perfect! I've updated the Overall Standings section to be separated by division. Here's what changed:
+
+## Updated Overall Standings Section
+
+The **Overall Standings** now displays teams grouped by their division/conference assignments:
+
+### Key Features:
+
+1. **Division/Conference Grouping**: Each division/conference gets its own sub-section with:
+   - Division/Conference name header (with logo if available)
+   - Color coding: Divisions in **blue** (`text-blue-300`), Conferences in **neutral** (`text-neutral-300`)
+   - Teams ranked within their division/conference (1, 2, 3, etc.)
+
+2. **Unassigned Teams**: Teams without a division assignment are shown in a separate "Unassigned" section
+
+3. **Fallback Behavior**: If no divisions/conferences exist, it shows all teams in a single traditional table
+
+4. **Maintained Structure**:
+   - Same statistics columns (Rank, W, L, Win %, PF, PA, ELO)
+   - Teams sorted by wins and win percentage within each division
+   - All the existing hover effects and team links
+
+### Display Order:
+
+1. **Overall Standings** (main section)
+   - Division 1 teams (ranked 1-N within division)
+   - Division 2 teams (ranked 1-N within division)
+   - Conference A teams (if any)
+   - Conference B teams (if any)
+   - Unassigned teams (if any)
+
+2. **Conference Standings** (separate sections below)
+3. **Division Standings** (separate sections below)
+
+This gives you a comprehensive view showing how teams rank within their divisions while still maintaining the individual division standings sections for detailed analysis!
+
+---
+
+_**User (2025-10-14 22:06Z)**_
+
+ok i updated the types with a lg_division table
+
+---
+
+_**Assistant (claude-4.5-sonnet-thinking)**_
+
+<think><details><summary>Thought Process</summary>The user is informing me that they've updated the database schema with a new `lg_division` table. This suggests they might be changing from using `lg_conf` for both conferences and divisions to having separate tables. Let me check what they might need help with next.
+
+Since they just informed me of this change, I should:
+1. Ask if they need help updating the code to use the new `lg_division` table
+2. Or understand what the structure is and how it relates to the existing implementation
+
+Let me wait for more information or ask clarifying questions about what they need next.</details></think>
+
+---
+
+Great! Now that you have a separate `lg_division` table, we should update the implementation to use it. This will give you better separation between conferences and divisions.
+
+To help you update the code properly, I need to understand the structure of the new `lg_division` table. Can you tell me:
+
+1. What are the key fields in the `lg_division` table? (Similar to `lg_conf` with id, name, abbr, logo, league, season?)
+
+2. How are teams linked to divisions now? 
+   - Through `teams.lg_conf` for conference?
+   - And a new field like `teams.lg_division` for division?
+   - Or something else?
+
+3. Do you want to display:
+   - Conference standings (from `lg_conf`)
+   - Division standings (from `lg_division`)
+   - Or both together?
+
+Once you clarify this, I can update:
+- The backend query in `src/pages/leagues/[id].astro` to fetch from `lg_division`
+- The types in `src/components/LeagueTabsIsland.tsx`
+- The display logic to properly show conference and/or division standings
+
+---
+
+_**User (2025-10-14 22:06Z)**_
+
+1 read the types file its why it exists, otherwise use list_tables
+2. look you yourself
+3. Division Standings, and division group standings
+
+---
+
+_**Assistant (claude-4.5-sonnet-thinking)**_
+
+<think><details><summary>Thought Process</summary>The user is asking me to:
+1. Read the types file to understand the structure
+2. Look at the tables myself using list_tables
+3. They want Division Standings and division group standings
+
+Let me first check the types file and then use list_tables to understand the new lg_division table structure.</details></think>
+
+---
+
+Let me check the database structure to understand the new `lg_division` table:
+
+---
+
+Tool use: **mcp_supabase_list_tables**
+
+<details>
+          <summary>MCP tool call</summary>
+      
+*Called tool*: supabase - list_tables: Lists all tables in one or more schemas.
+
+*Parameters*:
+  * schemas: public
+
+*Result*:
+[{"schema":"public","name":"profiles","rls_enabled":true,"rows":4,"columns":[{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"email","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"app_role","data_type":"USER-DEFINED","format":"app_role","options":["nullable","updatable"],"enums":["admin","league_staff","user","editor","analyst","team_staff","player"]},{"name":"role","data_type":"text","format":"text","options":["updatable"],"default_value":"'user'::text"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"match_contexts_submitted_by_fkey","source":"public.match_contexts.submitted_by","target":"public.profiles.id"},{"name":"profiles_id_fkey","source":"public.profiles.id","target":"auth.users.id"}]},{"schema":"public","name":"tournament_groups","rls_enabled":true,"rows":4,"columns":[{"name":"name","data_type":"text","format":"text","options":["updatable"]},{"name":"description","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"max_teams","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"sort_order","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"Order in which groups are displayed"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"league_season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"status","data_type":"text","format":"text","options":["nullable","updatable"],"default_value":"'active'::text"},{"name":"advancement_count","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"2","comment":"Number of teams that advance from this group"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"event_group_members_group_id_fkey","source":"public.tournament_group_members.group_id","target":"public.tournament_groups.id"},{"name":"event_groups_league_season_id_fkey","source":"public.tournament_groups.league_season_id","target":"public.league_seasons.id"},{"name":"event_groups_tournament_id_fkey","source":"public.tournament_groups.tournament_id","target":"public.tournaments.id"},{"name":"group_matches_group_id_fkey","source":"public.group_matches.group_id","target":"public.tournament_groups.id"},{"name":"group_standings_group_id_fkey","source":"public.group_standings.group_id","target":"public.tournament_groups.id"},{"name":"match_points_group_id_fkey","source":"public.match_points.group_id","target":"public.tournament_groups.id"},{"name":"upcoming_matches_group_id_fkey","source":"public.upcoming_matches.group_id","target":"public.tournament_groups.id"}]},{"schema":"public","name":"alembic_version","rls_enabled":false,"rows":1,"columns":[{"name":"version_num","data_type":"character varying","format":"varchar","options":["updatable"]}],"primary_keys":["version_num"]},{"schema":"public","name":"match_contexts","rls_enabled":false,"rows":1331,"columns":[{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"submitted_by","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"is_primary","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"match_contexts_league_id_fkey","source":"public.match_contexts.league_id","target":"public.leagues_info.id"},{"name":"match_contexts_match_id_fkey","source":"public.match_contexts.match_id","target":"public.matches.id"},{"name":"match_contexts_season_id_fkey","source":"public.match_contexts.season_id","target":"public.league_seasons.id"},{"name":"match_contexts_submitted_by_fkey","source":"public.match_contexts.submitted_by","target":"public.profiles.id"},{"name":"match_contexts_tournament_id_fkey","source":"public.match_contexts.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"event_queue","rls_enabled":true,"rows":512,"columns":[{"name":"player_stats_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"last_error","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"status","data_type":"text","format":"text","options":["updatable"],"default_value":"'queued'::text","check":"status = ANY (ARRAY['queued'::text, 'processing'::text, 'done'::text, 'error'::text])"},{"name":"attempts","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"visible_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"id","data_type":"integer","format":"int4","options":["updatable"],"default_value":"nextval('event_queue_id_seq'::regclass)"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"event_queue_player_stats_id_fkey","source":"public.event_queue.player_stats_id","target":"public.player_stats.id"}]},{"schema":"public","name":"teams_pot_tracker","rls_enabled":true,"rows":11,"columns":[{"name":"team_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"placement","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"prize_amount","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifer"},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"Team Earnings","foreign_key_constraints":[{"name":"teams_pot_tracker_league_id_fkey","source":"public.teams_pot_tracker.league_id","target":"public.leagues_info.id"},{"name":"teams_pot_tracker_season_id_fkey","source":"public.teams_pot_tracker.season_id","target":"public.league_seasons.id"},{"name":"teams_pot_tracker_team_id_fkey","source":"public.teams_pot_tracker.team_id","target":"public.teams.id"},{"name":"teams_pot_tracker_tournament_id_fkey","source":"public.teams_pot_tracker.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"city_crews","rls_enabled":true,"rows":1,"columns":[{"name":"crewName","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"crewRank","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"crewLead","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"crewRegion","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"crew_logo","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Crew Logo"},{"name":"twitter_url","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Twitter Handle"},{"name":"discord_url","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Discord Server"},{"name":"twitch_url","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Twitch"},{"name":"website","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"youtube_url","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"YT"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"City Crew List","foreign_key_constraints":[{"name":"city_crews_crewLead_fkey","source":"public.city_crews.crewLead","target":"public.players.id"},{"name":"city_crews_crewRegion_fkey","source":"public.city_crews.crewRegion","target":"public.regions.id"},{"name":"players_crewName_fkey","source":"public.players.crewName","target":"public.city_crews.crewName"},{"name":"players_crew_affiliation_fkey","source":"public.players.crew_affiliation","target":"public.city_crews.id"}]},{"schema":"public","name":"match_mvp","rls_enabled":true,"rows":0,"columns":[{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"player_id","data_type":"uuid","format":"uuid","options":["updatable"]}],"primary_keys":["match_id"],"foreign_key_constraints":[{"name":"match_mvp_match_id_fkey","source":"public.match_mvp.match_id","target":"public.matches.id"},{"name":"match_mvp_player_id_fkey","source":"public.match_mvp.player_id","target":"public.players.id"}]},{"schema":"public","name":"rp_transactions","rls_enabled":true,"rows":23,"columns":[{"name":"team_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"amount","data_type":"integer","format":"int4","options":["updatable"]},{"name":"description","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"type","data_type":"text","format":"text","options":["updatable"],"check":"type = ANY (ARRAY['event'::text, 'bonus'::text, 'penalty'::text, 'adjustment'::text])"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"remaining_rp","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"last_decay_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Season Identifier"},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"rp_decay_start","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"30"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"rp_transactions_league_id_fkey","source":"public.rp_transactions.league_id","target":"public.leagues_info.id"},{"name":"rp_transactions_season_id_fkey","source":"public.rp_transactions.season_id","target":"public.league_seasons.id"},{"name":"rp_transactions_team_id_fkey","source":"public.rp_transactions.team_id","target":"public.teams.id"},{"name":"rp_transactions_tournament_id_fkey","source":"public.rp_transactions.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"playlist","rls_enabled":true,"rows":2,"columns":[{"name":"stream_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Season Identifier"},{"name":"team_a_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Team Identifier"},{"name":"team_b_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Team Identifier"},{"name":"winner_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Winner Team Identifier"},{"name":"game_no","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"stage","data_type":"USER-DEFINED","format":"stage","options":["nullable","updatable"],"enums":["Regular Season","Group Play","Round 1","Round 2","Round 3","Round 4","Semi Finals","Finals","Grand Finals","L1","L2","L3","L4","L5","W1","W2","W3","W4","LF","WF","Playoffs","Open"],"comment":"Tournament Stage"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"Stream Playlist","foreign_key_constraints":[{"name":"playlist_league_id_fkey","source":"public.playlist.league_id","target":"public.leagues_info.id"},{"name":"playlist_season_id_fkey","source":"public.playlist.season_id","target":"public.league_seasons.id"},{"name":"playlist_team_a_id_fkey","source":"public.playlist.team_a_id","target":"public.teams.id"},{"name":"playlist_team_b_id_fkey","source":"public.playlist.team_b_id","target":"public.teams.id"},{"name":"playlist_tournament_id_fkey","source":"public.playlist.tournament_id","target":"public.tournaments.id"},{"name":"playlist_winner_id_fkey","source":"public.playlist.winner_id","target":"public.teams.id"}]},{"schema":"public","name":"league_rp_values","rls_enabled":true,"rows":6,"columns":[{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"leagues","data_type":"USER-DEFINED","format":"leagues","options":["nullable","updatable"],"enums":["Unified Pro Am Association","UPA College","WR","MPBA","Rising Stars","Staten Island Basketball Association","Hall Of Fame League","Dunk League","Road to 25K","Association","USA Basketball","HOF EU","UPA EU"]},{"name":"event_tier","data_type":"USER-DEFINED","format":"event_tier","options":["nullable","updatable"],"enums":["T1","T2","T3","T4","T5"]},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"rp_max","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"player_rp_bonus","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"winner_rp","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"runner_up_rp","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"decay_rate","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"Rate of RP Decay"},{"name":"decay_days_start","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"How many days before decay begins"},{"name":"days_to_complete_decay","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"How long for entire RP is decayed"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"league_rp_values_league_id_fkey","source":"public.league_rp_values.league_id","target":"public.leagues_info.id"}]},{"schema":"public","name":"role_permissions","rls_enabled":true,"rows":20,"columns":[{"name":"permission","data_type":"text","format":"text","options":["updatable"]},{"name":"role","data_type":"USER-DEFINED","format":"app_role","options":["nullable","updatable"],"enums":["admin","league_staff","user","editor","analyst","team_staff","player"]},{"name":"id","data_type":"bigint","format":"int8","options":["identity","updatable"],"identity_generation":"ALWAYS"}],"primary_keys":["id"]},{"schema":"public","name":"player_awards","rls_enabled":true,"rows":55,"columns":[{"name":"rule_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"player_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"scope_key","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"title","data_type":"text","format":"text","options":["updatable"]},{"name":"tier","data_type":"USER-DEFINED","format":"achievement_tier","options":["updatable"],"enums":["bronze","silver","gold","platinum","common","rare","legendary","epic"]},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"match_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"stats","data_type":"jsonb","format":"jsonb","options":["nullable","updatable"]},{"name":"signature","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"asset_svg_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"asset_png_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"nft_mint_id","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"token_uri","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"level","data_type":"integer","format":"int4","options":["updatable"],"default_value":"1"},{"name":"awarded_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"issuer","data_type":"text","format":"text","options":["updatable"],"default_value":"'BodegaCatsGC'::text"},{"name":"sig_alg","data_type":"text","format":"text","options":["nullable","updatable"],"default_value":"'ed25519'::text"},{"name":"version","data_type":"text","format":"text","options":["updatable"],"default_value":"'1.0'::text"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"player_awards_league_id_fkey","source":"public.player_awards.league_id","target":"public.leagues_info.id"},{"name":"player_awards_match_id_fkey","source":"public.player_awards.match_id","target":"public.matches.id"},{"name":"player_awards_player_id_fkey","source":"public.player_awards.player_id","target":"public.players.id"},{"name":"player_awards_rule_id_fkey","source":"public.player_awards.rule_id","target":"public.achievement_rules.id"},{"name":"player_awards_season_id_fkey","source":"public.player_awards.season_id","target":"public.league_seasons.id"}]},{"schema":"public","name":"league_open_matches","rls_enabled":true,"rows":53,"columns":[{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"match_id","data_type":"uuid","format":"uuid","options":["nullable","updatable","unique"]},{"name":"stage","data_type":"USER-DEFINED","format":"stage","options":["nullable","updatable"],"enums":["Regular Season","Group Play","Round 1","Round 2","Round 3","Round 4","Semi Finals","Finals","Grand Finals","L1","L2","L3","L4","L5","W1","W2","W3","W4","LF","WF","Playoffs","Open"]},{"name":"series_number","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"League Open Games","foreign_key_constraints":[{"name":"league_open_matches_match_id_fkey","source":"public.league_open_matches.match_id","target":"public.matches.id"},{"name":"league_open_matches_season_id_fkey","source":"public.league_open_matches.season_id","target":"public.league_seasons.id"}]},{"schema":"public","name":"team_match_stats_submissions","rls_enabled":false,"rows":0,"columns":[{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"points","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"rebounds","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"assists","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"steals","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"blocks","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"turnovers","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"field_goals_made","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"field_goals_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"three_points_made","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"three_points_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"free_throws_made","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"free_throws_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"fouls","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"plus_minus","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"}],"primary_keys":["id"],"comment":"Team Match Stats Submissions for Review"},{"schema":"public","name":"team_match_stats","rls_enabled":true,"rows":2414,"columns":[{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"points","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"rebounds","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"assists","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"steals","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"blocks","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"turnovers","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"field_goals_made","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"field_goals_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"three_points_made","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"three_points_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"free_throws_made","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"free_throws_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"fouls","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"plus_minus","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"grd","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Team Grade"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"verified","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false","comment":"Verified & Locked Game Stat Rows"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"team_match_stats_match_id_fkey","source":"public.team_match_stats.match_id","target":"public.matches.id"},{"name":"team_match_stats_team_id_fkey","source":"public.team_match_stats.team_id","target":"public.teams.id"}]},{"schema":"public","name":"player_salary_tiers","rls_enabled":true,"rows":8,"columns":[{"name":"tier_name","data_type":"text","format":"text","options":["updatable"]},{"name":"min_value","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"max_value","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"multiplier","data_type":"numeric","format":"numeric","options":["updatable"]},{"name":"id","data_type":"integer","format":"int4","options":["updatable"],"default_value":"nextval('player_salary_tiers_id_seq'::regclass)"}],"primary_keys":["id"]},{"schema":"public","name":"leagues_info","rls_enabled":true,"rows":12,"columns":[{"name":"league","data_type":"USER-DEFINED","format":"leagues","options":["nullable","updatable","unique"],"enums":["Unified Pro Am Association","UPA College","WR","MPBA","Rising Stars","Staten Island Basketball Association","Hall Of Fame League","Dunk League","Road to 25K","Association","USA Basketball","HOF EU","UPA EU"]},{"name":"lg_logo_url","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"lg_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"lg_discord","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"twitter_id","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"twitch_url","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Twitch"},{"name":"sponsor_info","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"lg_rules_url","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"League Rules URL"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"League Information","foreign_key_constraints":[{"name":"achievement_rules_league_id_fkey","source":"public.achievement_rules.league_id","target":"public.leagues_info.id"},{"name":"awards_race_league_id_fkey","source":"public.awards_race.league_id","target":"public.leagues_info.id"},{"name":"draft_pool_league_id_fkey","source":"public.draft_pool.league_id","target":"public.leagues_info.id"},{"name":"event_results_league_id_fkey","source":"public.event_results.league_id","target":"public.leagues_info.id"},{"name":"league_rp_values_league_id_fkey","source":"public.league_rp_values.league_id","target":"public.leagues_info.id"},{"name":"league_seasons_league_id_fkey","source":"public.league_seasons.league_id","target":"public.leagues_info.id"},{"name":"league_seasons_league_name_fkey","source":"public.league_seasons.league_name","target":"public.leagues_info.league"},{"name":"leagues_info_sponsor_info_fkey","source":"public.leagues_info.sponsor_info","target":"public.sponsor_info.sponsor_name"},{"name":"lg_conf_league_fkey","source":"public.lg_conf.league","target":"public.leagues_info.id"},{"name":"match_contexts_league_id_fkey","source":"public.match_contexts.league_id","target":"public.leagues_info.id"},{"name":"match_submissions_league_id_fkey","source":"public.match_submissions.league_id","target":"public.leagues_info.id"},{"name":"matches_league_id_fkey","source":"public.matches.league_id","target":"public.leagues_info.id"},{"name":"past_champions_league_id_fkey","source":"public.past_champions.league_id","target":"public.leagues_info.id"},{"name":"past_champions_lg_logo_fkey","source":"public.past_champions.lg_logo","target":"public.leagues_info.lg_logo_url"},{"name":"player_awards_league_id_fkey","source":"public.player_awards.league_id","target":"public.leagues_info.id"},{"name":"player_badges_league_id_fkey","source":"public.player_badges.league_id","target":"public.leagues_info.id"},{"name":"player_rp_transactions_league_id_fkey","source":"public.player_rp_transactions.league_id","target":"public.leagues_info.id"},{"name":"playlist_league_id_fkey","source":"public.playlist.league_id","target":"public.leagues_info.id"},{"name":"ranking_points_league_id_fkey","source":"public.ranking_points.league_id","target":"public.leagues_info.id"},{"name":"rp_transactions_league_id_fkey","source":"public.rp_transactions.league_id","target":"public.leagues_info.id"},{"name":"team_rosters_league_id_fkey","source":"public.team_rosters.league_id","target":"public.leagues_info.id"},{"name":"teams_pot_tracker_league_id_fkey","source":"public.teams_pot_tracker.league_id","target":"public.leagues_info.id"},{"name":"tournaments_organizer_id_fkey","source":"public.tournaments.organizer_id","target":"public.leagues_info.id"},{"name":"tournaments_organizer_logo_url_fkey","source":"public.tournaments.organizer_logo_url","target":"public.leagues_info.lg_logo_url"},{"name":"upcoming_matches_league_id_fkey","source":"public.upcoming_matches.league_id","target":"public.leagues_info.id"},{"name":"lg_divisions_league_id_fkey","source":"public.lg_divisions.league_id","target":"public.leagues_info.id"}]},{"schema":"public","name":"kv_store_f16f1f5f","rls_enabled":true,"rows":0,"columns":[{"name":"key","data_type":"text","format":"text","options":["updatable"]},{"name":"value","data_type":"jsonb","format":"jsonb","options":["updatable"]}],"primary_keys":["key"]},{"schema":"public","name":"matches","rls_enabled":true,"rows":1331,"columns":[{"name":"team_a_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"team_b_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"winner_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"score_a","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"score_b","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"boxscore_url","data_type":"text","format":"text","options":["nullable","updatable","unique"],"comment":"boxscore from Storage Bucket"},{"name":"stage","data_type":"USER-DEFINED","format":"stage","options":["nullable","updatable"],"enums":["Regular Season","Group Play","Round 1","Round 2","Round 3","Round 4","Semi Finals","Finals","Grand Finals","L1","L2","L3","L4","L5","W1","W2","W3","W4","LF","WF","Playoffs","Open"]},{"name":"game_number","data_type":"smallint","format":"int2","options":["nullable","updatable"],"comment":"Season/Tournament Game Number"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Season"},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"],"comment":"Game Year"},{"name":"possible_duplicate_of","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"ID of possible duplicate match"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable","unique"],"default_value":"gen_random_uuid()"},{"name":"played_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"],"default_value":"now()"},{"name":"status","data_type":"character varying","format":"varchar","options":["nullable","updatable"],"default_value":"'pending'::character varying"},{"name":"verified","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false","comment":"Game Score Verified & Row Locked"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"group_matches_match_id_fkey","source":"public.group_matches.match_id","target":"public.matches.id"},{"name":"league_open_matches_match_id_fkey","source":"public.league_open_matches.match_id","target":"public.matches.id"},{"name":"match_contexts_match_id_fkey","source":"public.match_contexts.match_id","target":"public.matches.id"},{"name":"match_mvp_match_id_fkey","source":"public.match_mvp.match_id","target":"public.matches.id"},{"name":"match_points_match_id_fkey","source":"public.match_points.match_id","target":"public.matches.id"},{"name":"matches_league_id_fkey","source":"public.matches.league_id","target":"public.leagues_info.id"},{"name":"matches_possible_duplicate_of_fkey","source":"public.matches.possible_duplicate_of","target":"public.matches.id"},{"name":"matches_season_id_fkey","source":"public.matches.season_id","target":"public.league_seasons.id"},{"name":"matches_team_a_id_fkey","source":"public.matches.team_a_id","target":"public.teams.id"},{"name":"matches_team_b_id_fkey","source":"public.matches.team_b_id","target":"public.teams.id"},{"name":"matches_tournament_id_fkey","source":"public.matches.tournament_id","target":"public.tournaments.id"},{"name":"matches_winner_id_fkey","source":"public.matches.winner_id","target":"public.teams.id"},{"name":"ocr_validations_match_id_fkey","source":"public.ocr_validations.match_id","target":"public.matches.id"},{"name":"player_awards_match_id_fkey","source":"public.player_awards.match_id","target":"public.matches.id"},{"name":"player_rp_transactions_match_id_fkey","source":"public.player_rp_transactions.match_id","target":"public.matches.id"},{"name":"player_stats_match_id_fkey","source":"public.player_stats.match_id","target":"public.matches.id"},{"name":"team_match_stats_match_id_fkey","source":"public.team_match_stats.match_id","target":"public.matches.id"},{"name":"league_playoff_matches_match_id_fkey","source":"public.league_playoff_matches.match_id","target":"public.matches.id"}]},{"schema":"public","name":"salary_tiers","rls_enabled":true,"rows":5,"columns":[{"name":"salary_tier","data_type":"USER-DEFINED","format":"salary_tier","options":["updatable","unique"],"enums":["S","A","B","C","D"]},{"name":"label","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"multiplier","data_type":"numeric","format":"numeric","options":["updatable"]},{"name":"min_rating","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"max_rating","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"description","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"id","data_type":"bigint","format":"int8","options":["identity","updatable"],"identity_generation":"ALWAYS"}],"primary_keys":["id"]},{"schema":"public","name":"regions","rls_enabled":true,"rows":6,"columns":[{"name":"name","data_type":"text","format":"text","options":["updatable","unique"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"city_crews_crewRegion_fkey","source":"public.city_crews.crewRegion","target":"public.regions.id"}]},{"schema":"public","name":"past_champions","rls_enabled":true,"rows":107,"columns":[{"name":"season","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"team_name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"event_tier","data_type":"USER-DEFINED","format":"event_tier","options":["nullable","updatable"],"enums":["T1","T2","T3","T4","T5"]},{"name":"champion_logo","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Champion Logo URL"},{"name":"lg_logo","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"League Logo URL"},{"name":"console","data_type":"USER-DEFINED","format":"console","options":["nullable","updatable"],"enums":["Cross Play","Playstation","Xbox"]},{"name":"league_name","data_type":"USER-DEFINED","format":"leagues","options":["nullable","updatable"],"enums":["Unified Pro Am Association","UPA College","WR","MPBA","Rising Stars","Staten Island Basketball Association","Hall Of Fame League","Dunk League","Road to 25K","Association","USA Basketball","HOF EU","UPA EU"]},{"name":"year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"tournament_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable","unique"],"comment":"Season Unique Identifier"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"is_tournament","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false","check":"is_tournament = ANY (ARRAY[true, false])"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"past_champions_champion_logo_fkey","source":"public.past_champions.champion_logo","target":"public.teams.logo_url"},{"name":"past_champions_league_id_fkey","source":"public.past_champions.league_id","target":"public.leagues_info.id"},{"name":"past_champions_lg_logo_fkey","source":"public.past_champions.lg_logo","target":"public.leagues_info.lg_logo_url"},{"name":"past_champions_season_id_fkey","source":"public.past_champions.season_id","target":"public.league_seasons.id"},{"name":"past_champions_team_id_fkey","source":"public.past_champions.team_id","target":"public.teams.id"},{"name":"past_champions_team_name_fkey","source":"public.past_champions.team_name","target":"public.teams.name"},{"name":"past_champions_tournament_id_fkey","source":"public.past_champions.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"match_points","rls_enabled":true,"rows":31,"columns":[{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"group_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"points_earned","data_type":"integer","format":"int4","options":["updatable"]},{"name":"point_type","data_type":"text","format":"text","options":["updatable"],"check":"point_type = ANY (ARRAY['win_by_20_plus'::text, 'regular_win'::text, 'loss'::text, 'forfeit'::text])"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"match_points_group_id_fkey","source":"public.match_points.group_id","target":"public.tournament_groups.id"},{"name":"match_points_match_id_fkey","source":"public.match_points.match_id","target":"public.matches.id"},{"name":"match_points_team_id_fkey","source":"public.match_points.team_id","target":"public.teams.id"}]},{"schema":"public","name":"lg_conf","rls_enabled":true,"rows":8,"columns":[{"name":"name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"abbr","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"gm_yr","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"conf_logo","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"league","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"default_value":"gen_random_uuid()"},{"name":"season","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"League Conferences/Groups","foreign_key_constraints":[{"name":"lg_conf_league_fkey","source":"public.lg_conf.league","target":"public.leagues_info.id"},{"name":"lg_conf_season_fkey","source":"public.lg_conf.season","target":"public.league_seasons.id"},{"name":"teams_lg_conf_fkey","source":"public.teams.lg_conf","target":"public.lg_conf.id"},{"name":"lg_divisions_conference_id_fkey","source":"public.lg_divisions.conference_id","target":"public.lg_conf.id"}]},{"schema":"public","name":"league_seasons","rls_enabled":true,"rows":22,"columns":[{"name":"league_name","data_type":"USER-DEFINED","format":"leagues","options":["updatable"],"enums":["Unified Pro Am Association","UPA College","WR","MPBA","Rising Stars","Staten Island Basketball Association","Hall Of Fame League","Dunk League","Road to 25K","Association","USA Basketball","HOF EU","UPA EU"]},{"name":"season_number","data_type":"integer","format":"int4","options":["updatable"]},{"name":"start_date","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"]},{"name":"end_date","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"]},{"name":"year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"],"comment":"game year"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"entry_fee","data_type":"numeric","format":"numeric","options":["nullable","updatable"],"comment":"Registration Fee"},{"name":"prize_pool","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"Prize Pool"},{"name":"is_active","data_type":"boolean","format":"bool","options":["nullable","updatable"],"default_value":"false"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"}],"primary_keys":["id"],"comment":"Tracks sports league seasons","foreign_key_constraints":[{"name":"achievement_rules_season_id_fkey","source":"public.achievement_rules.season_id","target":"public.league_seasons.id"},{"name":"draft_pool_season_fkey","source":"public.draft_pool.season","target":"public.league_seasons.id"},{"name":"event_groups_league_season_id_fkey","source":"public.tournament_groups.league_season_id","target":"public.league_seasons.id"},{"name":"event_results_season_id_fkey","source":"public.event_results.season_id","target":"public.league_seasons.id"},{"name":"league_open_matches_season_id_fkey","source":"public.league_open_matches.season_id","target":"public.league_seasons.id"},{"name":"league_seasons_league_id_fkey","source":"public.league_seasons.league_id","target":"public.leagues_info.id"},{"name":"league_seasons_league_name_fkey","source":"public.league_seasons.league_name","target":"public.leagues_info.league"},{"name":"lg_conf_season_fkey","source":"public.lg_conf.season","target":"public.league_seasons.id"},{"name":"match_contexts_season_id_fkey","source":"public.match_contexts.season_id","target":"public.league_seasons.id"},{"name":"match_submissions_season_id_fkey","source":"public.match_submissions.season_id","target":"public.league_seasons.id"},{"name":"matches_season_id_fkey","source":"public.matches.season_id","target":"public.league_seasons.id"},{"name":"past_champions_season_id_fkey","source":"public.past_champions.season_id","target":"public.league_seasons.id"},{"name":"player_awards_season_id_fkey","source":"public.player_awards.season_id","target":"public.league_seasons.id"},{"name":"player_badges_season_id_fkey","source":"public.player_badges.season_id","target":"public.league_seasons.id"},{"name":"player_counters_season_id_fkey","source":"public.player_counters.season_id","target":"public.league_seasons.id"},{"name":"player_handles_season_id_fkey","source":"public.player_handles.season_id","target":"public.league_seasons.id"},{"name":"playlist_season_id_fkey","source":"public.playlist.season_id","target":"public.league_seasons.id"},{"name":"rp_transactions_season_id_fkey","source":"public.rp_transactions.season_id","target":"public.league_seasons.id"},{"name":"team_rosters_season_id_fkey","source":"public.team_rosters.season_id","target":"public.league_seasons.id"},{"name":"teams_pot_tracker_season_id_fkey","source":"public.teams_pot_tracker.season_id","target":"public.league_seasons.id"},{"name":"league_open_season_id_fkey","source":"public.league_open.season_id","target":"public.league_seasons.id"},{"name":"league_playoff_season_id_fkey","source":"public.league_playoff.season_id","target":"public.league_seasons.id"},{"name":"league_playoff_matches_season_id_fkey","source":"public.league_playoff_matches.season_id","target":"public.league_seasons.id"},{"name":"lg_divisions_season_id_fkey","source":"public.lg_divisions.season_id","target":"public.league_seasons.id"}]},{"schema":"public","name":"team_rosters","rls_enabled":true,"rows":1011,"columns":[{"name":"team_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"player_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"left_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identification"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identification"},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Season Identifier"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"is_captain","data_type":"boolean","format":"bool","options":["nullable","updatable"],"default_value":"false"},{"name":"is_player_coach","data_type":"boolean","format":"bool","options":["nullable","updatable"],"default_value":"false"},{"name":"joined_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"],"default_value":"now()"},{"name":"division_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Division assignment for this roster entry (nullable for backward compatibility)"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"team_rosters_league_id_fkey","source":"public.team_rosters.league_id","target":"public.leagues_info.id"},{"name":"team_rosters_player_id_fkey","source":"public.team_rosters.player_id","target":"public.players.id"},{"name":"team_rosters_season_id_fkey","source":"public.team_rosters.season_id","target":"public.league_seasons.id"},{"name":"team_rosters_team_id_fkey","source":"public.team_rosters.team_id","target":"public.teams.id"},{"name":"team_rosters_tournament_id_fkey","source":"public.team_rosters.tournament_id","target":"public.tournaments.id"},{"name":"fk_team_rosters_division_id","source":"public.team_rosters.division_id","target":"public.lg_divisions.id"}]},{"schema":"public","name":"match_submissions","rls_enabled":true,"rows":0,"columns":[{"name":"match_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"team_a_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"team_a_name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"team_b_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"team_b_name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"review_status","data_type":"text","format":"text","options":["nullable","updatable"],"check":"review_status = ANY (ARRAY['pending'::text, 'approved'::text, 'rejected'::text])"},{"name":"reviewed_by","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"reviewed_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"]},{"name":"review_notes","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"status","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"payload","data_type":"jsonb","format":"jsonb","options":["nullable","updatable"]},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"tx_hash","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"ipfs_cid","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"played_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Season Identifier"},{"name":"submissions_upload_url","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"R2 Storage URL"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"match results for review","foreign_key_constraints":[{"name":"match_submissions_league_id_fkey","source":"public.match_submissions.league_id","target":"public.leagues_info.id"},{"name":"match_submissions_season_id_fkey","source":"public.match_submissions.season_id","target":"public.league_seasons.id"},{"name":"match_submissions_team_a_id_fkey","source":"public.match_submissions.team_a_id","target":"public.teams.id"},{"name":"match_submissions_team_a_name_fkey","source":"public.match_submissions.team_a_name","target":"public.teams.name"},{"name":"match_submissions_team_b_id_fkey","source":"public.match_submissions.team_b_id","target":"public.teams.id"},{"name":"match_submissions_team_b_name_fkey","source":"public.match_submissions.team_b_name","target":"public.teams.name"},{"name":"match_submissions_tournament_id_fkey","source":"public.match_submissions.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"league_playoff_matches","rls_enabled":false,"rows":0,"columns":[{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"match_id","data_type":"uuid","format":"uuid","options":["nullable","updatable","unique"]},{"name":"stage","data_type":"USER-DEFINED","format":"stage","options":["nullable","updatable"],"enums":["Regular Season","Group Play","Round 1","Round 2","Round 3","Round 4","Semi Finals","Finals","Grand Finals","L1","L2","L3","L4","L5","W1","W2","W3","W4","LF","WF","Playoffs","Open"]},{"name":"series_number","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"league_playoff_matches_match_id_fkey","source":"public.league_playoff_matches.match_id","target":"public.matches.id"},{"name":"league_playoff_matches_season_id_fkey","source":"public.league_playoff_matches.season_id","target":"public.league_seasons.id"}]},{"schema":"public","name":"kv_store_10f5458b","rls_enabled":true,"rows":0,"columns":[{"name":"key","data_type":"text","format":"text","options":["updatable"]},{"name":"value","data_type":"jsonb","format":"jsonb","options":["updatable"]}],"primary_keys":["key"]},{"schema":"public","name":"event_results","rls_enabled":true,"rows":29,"columns":[{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"placement","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"rp_awarded","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"prize_amount","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"Cash Prize Amount"},{"name":"winner_banner_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"rp_decay_start_days","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"How many days for decay to begin"},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Season Identifier"},{"name":"remaining_rp","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"last_decay_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable","unique"],"default_value":"gen_random_uuid()"},{"name":"bonus_rp","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"total_rp","data_type":"integer","format":"int4","options":["generated","nullable","updatable"],"default_value":"(rp_awarded + bonus_rp)"},{"name":"awarded_at","data_type":"date","format":"date","options":["nullable","updatable"],"default_value":"CURRENT_DATE"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"event_results_league_id_fkey","source":"public.event_results.league_id","target":"public.leagues_info.id"},{"name":"event_results_season_id_fkey","source":"public.event_results.season_id","target":"public.league_seasons.id"},{"name":"event_results_team_id_fkey","source":"public.event_results.team_id","target":"public.teams.id"},{"name":"event_results_tournament_id_fkey","source":"public.event_results.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"achievements","rls_enabled":true,"rows":45,"columns":[{"name":"name","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"is_player","data_type":"boolean","format":"bool","options":["nullable","updatable"]},{"name":"is_team","data_type":"boolean","format":"bool","options":["nullable","updatable"]},{"name":"rarity","data_type":"USER-DEFINED","format":"achievement_rarity","options":["nullable","updatable"],"enums":["Common","Rare","Epic","Legendary"],"comment":"Achievement Rarity"},{"name":"category","data_type":"USER-DEFINED","format":"achievement_category","options":["nullable","updatable"],"enums":["Scoring","Assists","Defense","Rebounding","Mixed Stats","Streak & Longevity","Legendary"],"comment":"Achievement Category"},{"name":"description","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Achievement Description"},{"name":"type","data_type":"USER-DEFINED","format":"achievement_type","options":["nullable","updatable"],"enums":["Career Points Milestone","Single Game","Efficiency","Season","Career Milestones","Blocks","Steals","Lockdown","Streak","Longevity","Mixed Stats"],"comment":"Achievement Type"},{"name":"rp_value","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"RP Value"},{"name":"achievement_badge","data_type":"text","format":"text","options":["nullable","updatable","unique"],"comment":"Badge URL"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"Achievements List","foreign_key_constraints":[{"name":"achievement_rules_name_fkey","source":"public.achievement_rules.name","target":"public.achievements.name"}]},{"schema":"public","name":"tournaments","rls_enabled":true,"rows":19,"columns":[{"name":"name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"sponsor","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"start_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"end_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"prize_pool","data_type":"bigint","format":"int8","options":["nullable","updatable"]},{"name":"runner_up","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"place","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"organizer_logo_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"console","data_type":"USER-DEFINED","format":"console","options":["nullable","updatable"],"enums":["Cross Play","Playstation","Xbox"]},{"name":"banner_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"rules_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"status","data_type":"USER-DEFINED","format":"status","options":["nullable","updatable"],"enums":["scheduled","in progress","completed","under review","reviewed","approved"]},{"name":"tier","data_type":"USER-DEFINED","format":"event_tier","options":["nullable","updatable"],"enums":["T1","T2","T3","T4","T5"]},{"name":"max_rp","data_type":"smallint","format":"int2","options":["nullable","updatable"]},{"name":"description","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"decay_days","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"champion","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Champion"},{"name":"sponsor_logo","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Sponsor Logo"},{"name":"processed_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"organizer_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"awards_race_tournament_id_fkey","source":"public.awards_race.tournament_id","target":"public.tournaments.id"},{"name":"draft_pool_tournament_id_fkey","source":"public.draft_pool.tournament_id","target":"public.tournaments.id"},{"name":"event_groups_tournament_id_fkey","source":"public.tournament_groups.tournament_id","target":"public.tournaments.id"},{"name":"event_results_tournament_id_fkey","source":"public.event_results.tournament_id","target":"public.tournaments.id"},{"name":"match_contexts_tournament_id_fkey","source":"public.match_contexts.tournament_id","target":"public.tournaments.id"},{"name":"match_submissions_tournament_id_fkey","source":"public.match_submissions.tournament_id","target":"public.tournaments.id"},{"name":"matches_tournament_id_fkey","source":"public.matches.tournament_id","target":"public.tournaments.id"},{"name":"past_champions_tournament_id_fkey","source":"public.past_champions.tournament_id","target":"public.tournaments.id"},{"name":"player_badges_tournament_id_fkey","source":"public.player_badges.tournament_id","target":"public.tournaments.id"},{"name":"player_handles_tournament_id_fkey","source":"public.player_handles.tournament_id","target":"public.tournaments.id"},{"name":"player_rp_transactions_tournament_id_fkey","source":"public.player_rp_transactions.tournament_id","target":"public.tournaments.id"},{"name":"playlist_tournament_id_fkey","source":"public.playlist.tournament_id","target":"public.tournaments.id"},{"name":"ranking_points_tournament_id_fkey","source":"public.ranking_points.tournament_id","target":"public.tournaments.id"},{"name":"rp_transactions_tournament_id_fkey","source":"public.rp_transactions.tournament_id","target":"public.tournaments.id"},{"name":"team_rosters_tournament_id_fkey","source":"public.team_rosters.tournament_id","target":"public.tournaments.id"},{"name":"teams_pot_tracker_tournament_id_fkey","source":"public.teams_pot_tracker.tournament_id","target":"public.tournaments.id"},{"name":"tournaments_champion_fkey","source":"public.tournaments.champion","target":"public.teams.id"},{"name":"tournaments_organizer_id_fkey","source":"public.tournaments.organizer_id","target":"public.leagues_info.id"},{"name":"tournaments_organizer_logo_url_fkey","source":"public.tournaments.organizer_logo_url","target":"public.leagues_info.lg_logo_url"},{"name":"tournaments_place_fkey","source":"public.tournaments.place","target":"public.teams.id"},{"name":"tournaments_runner_up_fkey","source":"public.tournaments.runner_up","target":"public.teams.id"},{"name":"tournaments_sponsor_fkey","source":"public.tournaments.sponsor","target":"public.sponsor_info.sponsor_name"},{"name":"tournaments_sponsor_logo_fkey","source":"public.tournaments.sponsor_logo","target":"public.sponsor_info.sponsor_logo"},{"name":"upcoming_matches_tournament_id_fkey","source":"public.upcoming_matches.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"ranking_points","rls_enabled":true,"rows":0,"columns":[{"name":"team_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"source","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"points","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"expires_at","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"awarded_at","data_type":"date","format":"date","options":["nullable","updatable"],"default_value":"CURRENT_DATE"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"ranking_points_league_id_fkey","source":"public.ranking_points.league_id","target":"public.leagues_info.id"},{"name":"ranking_points_team_id_fkey","source":"public.ranking_points.team_id","target":"public.teams.id"},{"name":"ranking_points_tournament_id_fkey","source":"public.ranking_points.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"player_stats_submissions","rls_enabled":false,"rows":0,"columns":[{"name":"player_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"points","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"rebounds","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"assists","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"steals","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"blocks","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"turnovers","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"fouls","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"fga","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"Field Goals Attempted"},{"name":"plus_minus","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"player_name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"display_gt","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"display_gt_resolved_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable","unique"],"default_value":"gen_random_uuid()"},{"name":"ps","data_type":"double precision","format":"float8","options":["generated","nullable","updatable"],"default_value":"((((((points + rebounds) + assists) + steals) + blocks) - turnovers) - fouls)"},{"name":"created_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"],"default_value":"now()"},{"name":"fgm","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"'0'::smallint","comment":"Field Goals Made"},{"name":"three_points_made","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"three_points_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"ftm","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"fta","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"Player Match Stats Submissions for Review"},{"schema":"public","name":"ocr_validations","rls_enabled":true,"rows":101,"columns":[{"name":"match_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"player_stats_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"error","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"auto-corrected","data_type":"boolean","format":"bool","options":["nullable","updatable"]},{"name":"verified","data_type":"boolean","format":"bool","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"OCR validation errors","foreign_key_constraints":[{"name":"ocr_validations_match_id_fkey","source":"public.ocr_validations.match_id","target":"public.matches.id"},{"name":"ocr_validations_player_stats_id_fkey","source":"public.ocr_validations.player_stats_id","target":"public.player_stats.id"}]},{"schema":"public","name":"upcoming_matches","rls_enabled":true,"rows":0,"columns":[{"name":"team_a_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"team_b_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"scheduled_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"]},{"name":"stream_url","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"notes","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"group_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"round","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"match_number","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"status","data_type":"text","format":"text","options":["nullable","updatable"],"default_value":"'scheduled'::text"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"Stores information about upcoming matches including schedule and location","foreign_key_constraints":[{"name":"upcoming_matches_group_id_fkey","source":"public.upcoming_matches.group_id","target":"public.tournament_groups.id"},{"name":"upcoming_matches_league_id_fkey","source":"public.upcoming_matches.league_id","target":"public.leagues_info.id"},{"name":"upcoming_matches_team_a_id_fkey","source":"public.upcoming_matches.team_a_id","target":"public.teams.id"},{"name":"upcoming_matches_team_b_id_fkey","source":"public.upcoming_matches.team_b_id","target":"public.teams.id"},{"name":"upcoming_matches_tournament_id_fkey","source":"public.upcoming_matches.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"lg_divisions","rls_enabled":false,"rows":1,"columns":[{"name":"name","data_type":"text","format":"text","options":["updatable"]},{"name":"abbr","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"division_logo","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"conference_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Parent conference this division belongs to"},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Season this division is active in"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"display_order","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0","comment":"Order for displaying divisions (lower numbers first)"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"League divisions within conferences - subdivides conference into competitive groups","foreign_key_constraints":[{"name":"lg_divisions_conference_id_fkey","source":"public.lg_divisions.conference_id","target":"public.lg_conf.id"},{"name":"lg_divisions_season_id_fkey","source":"public.lg_divisions.season_id","target":"public.league_seasons.id"},{"name":"lg_divisions_league_id_fkey","source":"public.lg_divisions.league_id","target":"public.leagues_info.id"},{"name":"fk_team_rosters_division_id","source":"public.team_rosters.division_id","target":"public.lg_divisions.id"}]},{"schema":"public","name":"teams","rls_enabled":true,"rows":348,"columns":[{"name":"name","data_type":"text","format":"text","options":["updatable","unique"]},{"name":"logo_url","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"global_rank","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"leaderboard_tier","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"player_rank_score","data_type":"double precision","format":"float8","options":["nullable","updatable"]},{"name":"money_won","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"lg_conf","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Conference/Group"},{"name":"is_active","data_type":"boolean","format":"bool","options":["nullable","updatable"],"comment":"Active Team"},{"name":"team_twitter","data_type":"text","format":"text","options":["nullable","updatable","unique"],"comment":"Team Twitter Handle"},{"name":"hybrid_score","data_type":"real","format":"float4","options":["nullable","updatable"],"comment":"Team Hybrid Score"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable","unique"],"default_value":"gen_random_uuid()"},{"name":"current_rp","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"elo_rating","data_type":"double precision","format":"float8","options":["nullable","updatable"],"default_value":"1500"},{"name":"created_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"awards_race_team_id_fkey","source":"public.awards_race.team_id","target":"public.teams.id"},{"name":"event_group_members_team_id_fkey","source":"public.tournament_group_members.team_id","target":"public.teams.id"},{"name":"event_results_team_id_fkey","source":"public.event_results.team_id","target":"public.teams.id"},{"name":"group_standings_team_id_fkey","source":"public.group_standings.team_id","target":"public.teams.id"},{"name":"match_points_team_id_fkey","source":"public.match_points.team_id","target":"public.teams.id"},{"name":"match_submissions_team_a_id_fkey","source":"public.match_submissions.team_a_id","target":"public.teams.id"},{"name":"match_submissions_team_a_name_fkey","source":"public.match_submissions.team_a_name","target":"public.teams.name"},{"name":"match_submissions_team_b_id_fkey","source":"public.match_submissions.team_b_id","target":"public.teams.id"},{"name":"match_submissions_team_b_name_fkey","source":"public.match_submissions.team_b_name","target":"public.teams.name"},{"name":"matches_team_a_id_fkey","source":"public.matches.team_a_id","target":"public.teams.id"},{"name":"matches_team_b_id_fkey","source":"public.matches.team_b_id","target":"public.teams.id"},{"name":"matches_winner_id_fkey","source":"public.matches.winner_id","target":"public.teams.id"},{"name":"past_champions_champion_logo_fkey","source":"public.past_champions.champion_logo","target":"public.teams.logo_url"},{"name":"past_champions_team_id_fkey","source":"public.past_champions.team_id","target":"public.teams.id"},{"name":"past_champions_team_name_fkey","source":"public.past_champions.team_name","target":"public.teams.name"},{"name":"player_stats_team_id_fkey","source":"public.player_stats.team_id","target":"public.teams.id"},{"name":"players_currentTeamName_fkey","source":"public.players.currentTeamName","target":"public.teams.name"},{"name":"players_current_team_id_fkey","source":"public.players.current_team_id","target":"public.teams.id"},{"name":"playlist_team_a_id_fkey","source":"public.playlist.team_a_id","target":"public.teams.id"},{"name":"playlist_team_b_id_fkey","source":"public.playlist.team_b_id","target":"public.teams.id"},{"name":"playlist_winner_id_fkey","source":"public.playlist.winner_id","target":"public.teams.id"},{"name":"ranking_points_team_id_fkey","source":"public.ranking_points.team_id","target":"public.teams.id"},{"name":"rp_transactions_team_id_fkey","source":"public.rp_transactions.team_id","target":"public.teams.id"},{"name":"team_match_stats_team_id_fkey","source":"public.team_match_stats.team_id","target":"public.teams.id"},{"name":"team_rosters_team_id_fkey","source":"public.team_rosters.team_id","target":"public.teams.id"},{"name":"teams_lg_conf_fkey","source":"public.teams.lg_conf","target":"public.lg_conf.id"},{"name":"teams_pot_tracker_team_id_fkey","source":"public.teams_pot_tracker.team_id","target":"public.teams.id"},{"name":"tournaments_champion_fkey","source":"public.tournaments.champion","target":"public.teams.id"},{"name":"tournaments_place_fkey","source":"public.tournaments.place","target":"public.teams.id"},{"name":"tournaments_runner_up_fkey","source":"public.tournaments.runner_up","target":"public.teams.id"},{"name":"upcoming_matches_team_a_id_fkey","source":"public.upcoming_matches.team_a_id","target":"public.teams.id"},{"name":"upcoming_matches_team_b_id_fkey","source":"public.upcoming_matches.team_b_id","target":"public.teams.id"},{"name":"league_open_open_champion_fkey","source":"public.league_open.open_champion","target":"public.teams.name"},{"name":"league_playoff_playoff_champion_fkey","source":"public.league_playoff.playoff_champion","target":"public.teams.name"}]},{"schema":"public","name":"sponsor_info","rls_enabled":true,"rows":1,"columns":[{"name":"sponsor_logo","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"sponsor_name","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"sponsor_url","data_type":"text","format":"text","options":["nullable","updatable","unique"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"leagues_info_sponsor_info_fkey","source":"public.leagues_info.sponsor_info","target":"public.sponsor_info.sponsor_name"},{"name":"tournaments_sponsor_fkey","source":"public.tournaments.sponsor","target":"public.sponsor_info.sponsor_name"},{"name":"tournaments_sponsor_logo_fkey","source":"public.tournaments.sponsor_logo","target":"public.sponsor_info.sponsor_logo"}]},{"schema":"public","name":"event_tiers","rls_enabled":true,"rows":9,"columns":[{"name":"event_tier","data_type":"USER-DEFINED","format":"event_tier","options":["nullable","updatable"],"enums":["T1","T2","T3","T4","T5"]},{"name":"tier_name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"event_type","data_type":"USER-DEFINED","format":"event_type","options":["nullable","updatable"],"enums":["League","Tournament","match_event","player_stat_event"]},{"name":"is_tournament","data_type":"boolean","format":"bool","options":["nullable","updatable"]},{"name":"max_rp","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"player_rp_bonus","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"comment":"Event Tier List and Values"},{"schema":"public","name":"group_standings","rls_enabled":true,"rows":14,"columns":[{"name":"group_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"position","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"matches_played","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"wins","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"losses","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"points_for","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"points_against","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"point_differential","data_type":"integer","format":"int4","options":["generated","nullable","updatable"],"default_value":"(points_for - points_against)"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"group_standings_group_id_fkey","source":"public.group_standings.group_id","target":"public.tournament_groups.id"},{"name":"group_standings_team_id_fkey","source":"public.group_standings.team_id","target":"public.teams.id"}]},{"schema":"public","name":"league_open","rls_enabled":true,"rows":2,"columns":[{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"season_id","data_type":"uuid","format":"uuid","options":["updatable","unique"]},{"name":"team_count","data_type":"real","format":"float4","options":["nullable","updatable"],"default_value":"'0'::real"},{"name":"start_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"finals_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"open_prize","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"open_champion","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"hr_per_rd","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"tier_label","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"rp_value","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"status","data_type":"USER-DEFINED","format":"status","options":["nullable","updatable"],"enums":["scheduled","in progress","completed","under review","reviewed","approved"],"comment":"Open Status"}],"primary_keys":["id"],"comment":"League Season Open Tournaments","foreign_key_constraints":[{"name":"league_open_season_id_fkey","source":"public.league_open.season_id","target":"public.league_seasons.id"},{"name":"league_open_open_champion_fkey","source":"public.league_open.open_champion","target":"public.teams.name"}]},{"schema":"public","name":"update_race","rls_enabled":true,"rows":19,"columns":[{"name":"race_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"update_type","data_type":"text","format":"text","options":["updatable"],"check":"update_type = ANY (ARRAY['rank_change'::text, 'winner_selection'::text, 'nomination'::text, 'removal'::text, 'other'::text])"},{"name":"update_details","data_type":"jsonb","format":"jsonb","options":["nullable","updatable"]},{"name":"previous_rank","data_type":"smallint","format":"int2","options":["nullable","updatable"]},{"name":"new_rank","data_type":"smallint","format":"int2","options":["nullable","updatable"]},{"name":"updated_by","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"id","data_type":"bigint","format":"int8","options":["identity","updatable"],"identity_generation":"ALWAYS"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"update_race_race_id_fkey","source":"public.update_race.race_id","target":"public.awards_race.id"}]},{"schema":"public","name":"league_playoff","rls_enabled":true,"rows":0,"columns":[{"name":"season_id","data_type":"uuid","format":"uuid","options":["updatable","unique"]},{"name":"start_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"finals_date","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"playoff_prize","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"playoff_champion","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"hr_per_rd","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"tier","data_type":"USER-DEFINED","format":"event_tier","options":["nullable","updatable"],"enums":["T1","T2","T3","T4","T5"]},{"name":"rp_value","data_type":"numeric","format":"numeric","options":["nullable","updatable"]},{"name":"status","data_type":"USER-DEFINED","format":"status","options":["nullable","updatable"],"enums":["scheduled","in progress","completed","under review","reviewed","approved"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"team_count","data_type":"real","format":"float4","options":["nullable","updatable"],"default_value":"'0'::real"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"league_playoff_playoff_champion_fkey","source":"public.league_playoff.playoff_champion","target":"public.teams.name"},{"name":"league_playoff_season_id_fkey","source":"public.league_playoff.season_id","target":"public.league_seasons.id"}]},{"schema":"public","name":"tournament_group_members","rls_enabled":true,"rows":14,"columns":[{"name":"group_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"seed","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"event_group_members_group_id_fkey","source":"public.tournament_group_members.group_id","target":"public.tournament_groups.id"},{"name":"event_group_members_team_id_fkey","source":"public.tournament_group_members.team_id","target":"public.teams.id"}]},{"schema":"public","name":"group_matches","rls_enabled":true,"rows":17,"columns":[{"name":"group_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"round","data_type":"integer","format":"int4","options":["updatable"]},{"name":"match_number","data_type":"integer","format":"int4","options":["updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"group_matches_group_id_fkey","source":"public.group_matches.group_id","target":"public.tournament_groups.id"},{"name":"group_matches_match_id_fkey","source":"public.group_matches.match_id","target":"public.matches.id"}]},{"schema":"public","name":"player_counters","rls_enabled":true,"rows":411,"columns":[{"name":"player_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"scope","data_type":"USER-DEFINED","format":"counter_scope","options":["updatable"],"enums":["career","season","rolling10","game"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"game_window","data_type":"jsonb","format":"jsonb","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"pts_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"ast_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"reb_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"stl_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"blk_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"tov_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"fgm_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"fga_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"ftm_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"fta_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"tpm_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"tpa_total","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"games_played","data_type":"integer","format":"int4","options":["updatable"],"default_value":"0"},{"name":"has_50pt_game","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false"},{"name":"has_triple_double","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"player_counters_player_id_fkey","source":"public.player_counters.player_id","target":"public.players.id"},{"name":"player_counters_season_id_fkey","source":"public.player_counters.season_id","target":"public.league_seasons.id"}]},{"schema":"public","name":"player_badges","rls_enabled":true,"rows":0,"columns":[{"name":"player_wallet","data_type":"text","format":"text","options":["updatable"]},{"name":"badge_type","data_type":"text","format":"text","options":["updatable"]},{"name":"token_id","data_type":"bigint","format":"int8","options":["nullable","updatable"]},{"name":"tx_hash","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"ipfs_uri","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"match_id","data_type":"bigint","format":"int8","options":["updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"player_badges_league_id_fkey","source":"public.player_badges.league_id","target":"public.leagues_info.id"},{"name":"player_badges_season_id_fkey","source":"public.player_badges.season_id","target":"public.league_seasons.id"},{"name":"player_badges_tournament_id_fkey","source":"public.player_badges.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"user_roles","rls_enabled":true,"rows":4,"columns":[{"name":"user_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"role","data_type":"USER-DEFINED","format":"app_role","options":["nullable","updatable"],"enums":["admin","league_staff","user","editor","analyst","team_staff","player"]},{"name":"role_name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"id","data_type":"bigint","format":"int8","options":["identity","updatable"],"identity_generation":"ALWAYS"}],"primary_keys":["id"],"comment":"Application roles for each user.","foreign_key_constraints":[{"name":"user_roles_user_id_fkey","source":"public.user_roles.user_id","target":"auth.users.id"}]},{"schema":"public","name":"achievement_rules","rls_enabled":true,"rows":61,"columns":[{"name":"name","data_type":"text","format":"text","options":["updatable"]},{"name":"tier","data_type":"USER-DEFINED","format":"achievement_tier","options":["updatable"],"enums":["bronze","silver","gold","platinum","common","rare","legendary","epic"]},{"name":"scope","data_type":"USER-DEFINED","format":"achievement_scope","options":["updatable"],"enums":["per_game","season","career","streak","event"]},{"name":"game_year","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"predicate","data_type":"jsonb","format":"jsonb","options":["updatable"]},{"name":"window_size","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"window_predicate","data_type":"jsonb","format":"jsonb","options":["nullable","updatable"]},{"name":"award_template","data_type":"jsonb","format":"jsonb","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"requires_approval","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false"},{"name":"is_active","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"true"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"achievement_rules_league_id_fkey","source":"public.achievement_rules.league_id","target":"public.leagues_info.id"},{"name":"achievement_rules_name_fkey","source":"public.achievement_rules.name","target":"public.achievements.name"},{"name":"achievement_rules_season_id_fkey","source":"public.achievement_rules.season_id","target":"public.league_seasons.id"},{"name":"player_awards_rule_id_fkey","source":"public.player_awards.rule_id","target":"public.achievement_rules.id"}]},{"schema":"public","name":"player_stats","rls_enabled":true,"rows":7096,"columns":[{"name":"player_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"match_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"team_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"points","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"rebounds","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"assists","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"steals","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"blocks","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"turnovers","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"fouls","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"fga","data_type":"integer","format":"int4","options":["nullable","updatable"],"comment":"Field Goals Attempted"},{"name":"plus_minus","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"player_name","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"display_gt","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"display_gt_resolved_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"]},{"name":"slot_index","data_type":"smallint","format":"int2","options":["nullable","updatable"]},{"name":"grd","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Player Grade"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable","unique"],"default_value":"gen_random_uuid()"},{"name":"ps","data_type":"double precision","format":"float8","options":["generated","nullable","updatable"],"default_value":"((((((points + rebounds) + assists) + steals) + blocks) - turnovers) - fouls)"},{"name":"created_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"],"default_value":"now()"},{"name":"fgm","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"'0'::smallint","comment":"Field Goals Made"},{"name":"three_points_made","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"three_points_attempted","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"ftm","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"fta","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"needs_review","data_type":"boolean","format":"bool","options":["nullable","updatable"],"default_value":"false","comment":"Flag indicating stats need manual review due to validation errors"},{"name":"verified","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false","comment":"Verified and Locked Stat Row"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"ocr_validations_player_stats_id_fkey","source":"public.ocr_validations.player_stats_id","target":"public.player_stats.id"},{"name":"player_stats_match_id_fkey","source":"public.player_stats.match_id","target":"public.matches.id"},{"name":"player_stats_player_id_fkey","source":"public.player_stats.player_id","target":"public.players.id"},{"name":"player_stats_team_id_fkey","source":"public.player_stats.team_id","target":"public.teams.id"},{"name":"event_queue_player_stats_id_fkey","source":"public.event_queue.player_stats_id","target":"public.player_stats.id"}]},{"schema":"public","name":"draft_pool","rls_enabled":true,"rows":887,"columns":[{"name":"player_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"season","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"draft_rating","data_type":"integer","format":"int4","options":["nullable","updatable"]},{"name":"draft_notes","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournaments Identifier"},{"name":"declared_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"],"default_value":"now()"},{"name":"status","data_type":"text","format":"text","options":["nullable","updatable"],"default_value":"'available'::text"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["player_id"],"foreign_key_constraints":[{"name":"draft_pool_league_id_fkey","source":"public.draft_pool.league_id","target":"public.leagues_info.id"},{"name":"draft_pool_player_id_fkey","source":"public.draft_pool.player_id","target":"public.players.id"},{"name":"draft_pool_season_fkey","source":"public.draft_pool.season","target":"public.league_seasons.id"},{"name":"draft_pool_tournament_id_fkey","source":"public.draft_pool.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"player_rating_weights","rls_enabled":false,"rows":10,"columns":[{"name":"event_tier","data_type":"USER-DEFINED","format":"event_tier","options":["updatable"],"enums":["T1","T2","T3","T4","T5"]},{"name":"weight_multiplier","data_type":"numeric","format":"numeric","options":["updatable"]},{"name":"bonus_points","data_type":"integer","format":"int4","options":["updatable"]},{"name":"description","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"]},{"schema":"public","name":"webhook_config","rls_enabled":false,"rows":1,"columns":[{"name":"key","data_type":"text","format":"text","options":["updatable"]},{"name":"value","data_type":"text","format":"text","options":["updatable"]},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["key"]},{"schema":"public","name":"player_rp_transactions","rls_enabled":true,"rows":0,"columns":[{"name":"player_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"match_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"amount","data_type":"integer","format":"int4","options":["updatable"]},{"name":"description","data_type":"text","format":"text","options":["updatable"]},{"name":"type","data_type":"text","format":"text","options":["updatable"],"check":"type = ANY (ARRAY['event'::text, 'bonus'::text, 'penalty'::text, 'adjustment'::text, 'match'::text])"},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"player_rp_transactions_league_id_fkey","source":"public.player_rp_transactions.league_id","target":"public.leagues_info.id"},{"name":"player_rp_transactions_match_id_fkey","source":"public.player_rp_transactions.match_id","target":"public.matches.id"},{"name":"player_rp_transactions_player_id_fkey","source":"public.player_rp_transactions.player_id","target":"public.players.id"},{"name":"player_rp_transactions_tournament_id_fkey","source":"public.player_rp_transactions.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"player_handles","rls_enabled":true,"rows":16,"columns":[{"name":"player_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"primary_gt","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"alt_gt","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"game_year","data_type":"USER-DEFINED","format":"game_year","options":["nullable","updatable"],"enums":["2K16","2K17","2K18","2K19","2K20","2K21","2K22","2K23","2K24","2K25","2K26"]},{"name":"season_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"valid_to","data_type":"date","format":"date","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"valid_from","data_type":"date","format":"date","options":["nullable","updatable"],"default_value":"CURRENT_DATE"},{"name":"verified_at","data_type":"timestamp with time zone","format":"timestamptz","options":["nullable","updatable"],"default_value":"now()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"player_handles_player_id_fkey","source":"public.player_handles.player_id","target":"public.players.id"},{"name":"player_handles_season_id_fkey","source":"public.player_handles.season_id","target":"public.league_seasons.id"},{"name":"player_handles_tournament_id_fkey","source":"public.player_handles.tournament_id","target":"public.tournaments.id"}]},{"schema":"public","name":"players","rls_enabled":true,"rows":890,"columns":[{"name":"gamertag","data_type":"text","format":"text","options":["updatable","unique"]},{"name":"position","data_type":"USER-DEFINED","format":"player_position","options":["nullable","updatable"],"enums":["Point Guard","Shooting Guard","Lock","Power Forward","Center"]},{"name":"current_team_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"salary_tier","data_type":"USER-DEFINED","format":"salary_tier","options":["nullable","updatable"],"enums":["S","A","B","C","D"]},{"name":"is_rookie","data_type":"boolean","format":"bool","options":["nullable","updatable"]},{"name":"discord_id","data_type":"text","format":"text","options":["nullable","updatable","unique"],"comment":"Discord Handle"},{"name":"twitter_id","data_type":"text","format":"text","options":["nullable","updatable","unique"],"comment":"Twitter Handle"},{"name":"alternate_gamertag","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Old or Alternate Gamertag"},{"name":"crew_affiliation","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"City Crew Affiliaton"},{"name":"crewName","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Crew Name"},{"name":"currentTeamName","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Current Team Name"},{"name":"twitch","data_type":"text","format":"text","options":["nullable","updatable"],"comment":"Twitch Channel"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"performance_score","data_type":"double precision","format":"float8","options":["nullable","updatable"],"default_value":"0"},{"name":"player_rp","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"player_rank_score","data_type":"double precision","format":"float8","options":["nullable","updatable"],"default_value":"0"},{"name":"monthly_value","data_type":"integer","format":"int4","options":["nullable","updatable"],"default_value":"0"},{"name":"created_at","data_type":"timestamp without time zone","format":"timestamp","options":["nullable","updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"awards_race_player_id_fkey","source":"public.awards_race.player_id","target":"public.players.id"},{"name":"city_crews_crewLead_fkey","source":"public.city_crews.crewLead","target":"public.players.id"},{"name":"draft_pool_player_id_fkey","source":"public.draft_pool.player_id","target":"public.players.id"},{"name":"match_mvp_player_id_fkey","source":"public.match_mvp.player_id","target":"public.players.id"},{"name":"player_awards_player_id_fkey","source":"public.player_awards.player_id","target":"public.players.id"},{"name":"player_counters_player_id_fkey","source":"public.player_counters.player_id","target":"public.players.id"},{"name":"player_handles_player_id_fkey","source":"public.player_handles.player_id","target":"public.players.id"},{"name":"player_rp_transactions_player_id_fkey","source":"public.player_rp_transactions.player_id","target":"public.players.id"},{"name":"player_stats_player_id_fkey","source":"public.player_stats.player_id","target":"public.players.id"},{"name":"players_crewName_fkey","source":"public.players.crewName","target":"public.city_crews.crewName"},{"name":"players_crew_affiliation_fkey","source":"public.players.crew_affiliation","target":"public.city_crews.id"},{"name":"players_currentTeamName_fkey","source":"public.players.currentTeamName","target":"public.teams.name"},{"name":"players_current_team_id_fkey","source":"public.players.current_team_id","target":"public.teams.id"},{"name":"team_rosters_player_id_fkey","source":"public.team_rosters.player_id","target":"public.players.id"}]},{"schema":"public","name":"notifications","rls_enabled":true,"rows":26,"columns":[{"name":"user_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"title","data_type":"text","format":"text","options":["updatable"]},{"name":"message","data_type":"text","format":"text","options":["nullable","updatable"]},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"extensions.uuid_generate_v4()"},{"name":"type","data_type":"text","format":"text","options":["updatable"],"default_value":"'info'::text"},{"name":"read","data_type":"boolean","format":"bool","options":["updatable"],"default_value":"false"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"},{"name":"updated_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"notifications_user_id_fkey","source":"public.notifications.user_id","target":"auth.users.id"}]},{"schema":"public","name":"awards_race","rls_enabled":true,"rows":15,"columns":[{"name":"team_id","data_type":"uuid","format":"uuid","options":["updatable"]},{"name":"player_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"]},{"name":"award_type","data_type":"USER-DEFINED","format":"award_types","options":["nullable","updatable"],"enums":["Offensive MVP","Defensive MVP","Rookie of Tournament"]},{"name":"rank","data_type":"smallint","format":"int2","options":["nullable","updatable"]},{"name":"rp_bonus","data_type":"bigint","format":"int8","options":["nullable","updatable"]},{"name":"award_winner","data_type":"boolean","format":"bool","options":["nullable","updatable"]},{"name":"league_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"League Identifier"},{"name":"tournament_id","data_type":"uuid","format":"uuid","options":["nullable","updatable"],"comment":"Tournament Identifier"},{"name":"id","data_type":"uuid","format":"uuid","options":["updatable"],"default_value":"gen_random_uuid()"},{"name":"created_at","data_type":"timestamp with time zone","format":"timestamptz","options":["updatable"],"default_value":"now()"}],"primary_keys":["id"],"foreign_key_constraints":[{"name":"awards_race_league_id_fkey","source":"public.awards_race.league_id","target":"public.leagues_info.id"},{"name":"awards_race_player_id_fkey","source":"public.awards_race.player_id","target":"public.players.id"},{"name":"awards_race_team_id_fkey","source":"public.awards_race.team_id","target":"public.teams.id"},{"name":"awards_race_tournament_id_fkey","source":"public.awards_race.tournament_id","target":"public.tournaments.id"},{"name":"update_race_race_id_fkey","source":"public.update_race.race_id","target":"public.awards_race.id"}]}]
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "lg_division" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/lib/db.types.ts" • 23 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/lib/db.types.ts` | `lg_divisions: \{` | L2780 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_conference_id_fkey"` | L2816 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_league_id_fkey"` | L2823 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_league_id_fkey"` | L2830 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_league_id_fkey"` | L2837 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_league_id_fkey"` | L2844 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_league_id_fkey"` | L2851 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_league_id_fkey"` | L2858 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L2865 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L2872 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L2879 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L2886 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L2893 |
+| `src/lib/db.types.ts` | `referencedRelation: "lg_divisions"` | L8942 |
+| `src/lib/db.types.ts` | `referencedRelation: "lg_divisions"` | L11494 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_conference_id_fkey"` | L11498 |
+| `src/lib/db.types.ts` | `referencedRelation: "lg_divisions"` | L13013 |
+| `src/lib/db.types.ts` | `referencedRelation: "lg_divisions"` | L14265 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L14269 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L14276 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L14283 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L14290 |
+| `src/lib/db.types.ts` | `foreignKeyName: "lg_divisions_season_id_fkey"` | L14297 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now I can see the structure:
+
+1. `lg_divisions` table structure:
+   - id, name, abbr, division_logo
+   - conference_id (FK to lg_conf)
+   - season_id, league_id
+   - display_order (for sorting)
+
+2. `team_rosters` table has:
+   - division_id field that links to lg_divisions.id
+
+So the structure is:
+- Conferences (`lg_conf`) - top level groupings
+- Divisions (`lg_divisions`) - belong to conferences via conference_id
+- Teams assigned to divisions through `team_rosters.division_id`
+
+The user wants:
+1. Division Standings
+2. Division group standings
+
+So I need to update the code to:
+1. Fetch divisions from lg_divisions table (not just conferences from lg_conf)
+2. Link teams to divisions via team_rosters.division_id
+3. Display division standings grouped potentially by conference</details></think>
+
+---
+
+Perfect! Now I can see the structure. The `lg_divisions` table has:
+- `conference_id` linking divisions to conferences
+- Teams are linked to divisions via `team_rosters.division_id`
+
+Let me update the implementation to properly query and display division standings:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 7, lines removed: undefined
+
+```diff
+@@ -77,4 +77,11 @@
+    .order("name", { ascending: true });
+  
++ // Fetch divisions for this season
++ const { data: divisions } = await supa((Astro.locals as any).runtime)
++   .from("lg_divisions")
++   .select("*")
++   .eq("season_id", seasonId)
++   .order("display_order", { ascending: true });
++ 
+  // Fetch teams data separately and merge with standings
+  let teamsWithData = standings ?? [];
+```
+
+**Chunk 2**
+Lines added: 11, lines removed: 1
+
+```diff
+@@ -87,8 +94,18 @@
+        .in("id", teamIds);
+      
+-     // Merge teams data with standings and conference info
++     // Get team roster entries to find division assignments
++     const { data: rosterData } = await supa((Astro.locals as any).runtime)
++       .from("team_rosters")
++       .select("team_id, division_id")
++       .eq("season_id", seasonId)
++       .in("team_id", teamIds);
++     
++     // Merge teams data with standings, conference info, and division assignments
+      teamsWithData = standings.map((standing: any) => {
+        const teamData = teamsData?.find((t: any) => t.id === standing.team_id);
++       const roster = rosterData?.find((r: any) => r.team_id === standing.team_id);
++       const division = roster?.division_id ? divisions?.find((d: any) => d.id === roster.division_id) : null;
+        const conference = teamData?.lg_conf ? conferences?.find((c: any) => c.id === teamData.lg_conf) : null;
++       
+        return {
+          ...standing,
+```
+
+**Chunk 3**
+Lines added: 8, lines removed: undefined
+
+```diff
+@@ -99,4 +116,12 @@
+            abbr: conference.abbr,
+            conf_logo: conference.conf_logo
++         } : null,
++         division: division ? {
++           id: division.id,
++           name: division.name,
++           abbr: division.abbr,
++           division_logo: division.division_logo,
++           conference_id: division.conference_id,
++           display_order: division.display_order
+          } : null
+        };
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to pass the divisions array to the component and update the component types and logic to handle divisions separately from conferences.</details></think>
+
+---
+
+Now update the component props to pass divisions:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -548,4 +548,5 @@
+          playoffTournament={playoffTournament as any}
+          conferences={conferences as any}
++         divisions={divisions as any}
+        />
+      </main>
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the component types to include Division type and the division field on Team, and add divisions to the props. Then update the display logic to use divisions instead of conferences.</details></think>
+
+---
+
+Now update the component types and logic:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 9, lines removed: undefined
+
+```diff
+@@ -49,4 +49,13 @@
+    conf_logo: string | null;
+  };
++ 
++ type Division = {
++   id: string;
++   name: string;
++   abbr: string | null;
++   division_logo: string | null;
++   conference_id: string | null;
++   display_order: number | null;
++ };
+  
+  type Team = {
+```
+
+**Chunk 2**
+Lines added: 8, lines removed: undefined
+
+```diff
+@@ -72,4 +81,12 @@
+      conf_logo: string | null;
+    } | null;
++   division?: {
++     id: string;
++     name: string;
++     abbr: string | null;
++     division_logo: string | null;
++     conference_id: string | null;
++     display_order: number | null;
++   } | null;
+  };
+  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to add divisions to the props and update the display logic to show division standings instead of conference standings.</details></think>
+
+---
+
+Now update the props:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -197,4 +197,5 @@
+    playoffTournament?: TournamentData | null;
+    conferences?: Conference[];
++   divisions?: Division[];
+  };
+  
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -212,4 +213,5 @@
+    playoffTournament = null,
+    conferences = [],
++   divisions = [],
+  }: LeagueTabsProps) {
+    const [activeTab, setActiveTab] = useState(0);
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the standings display logic to show division standings. Since divisions can be in conferences, I should:
+1. Display overall standings by division
+2. Then show separate division standings sections grouped by conference
+
+Let me update the standings tab section to use divisions instead of conferences.</details></think>
+
+---
+
+Now update the standings display to use divisions:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: 5
+
+```diff
+@@ -385,10 +385,10 @@
+                  <div>
+                    <h3 className="text-lg font-bold mb-4 text-neutral-200">Overall Standings</h3>
+-                   {conferences && conferences.length > 0 ? (
+-                     // Group standings by division/conference
++                   {divisions && divisions.length > 0 ? (
++                     // Group standings by division
+                      <div className="space-y-6">
+-                       {conferences.map((conf) => {
+-                         const confTeams = standings
+-                           .filter(team => team.conference?.id === conf.id)
++                       {divisions.map((division) => {
++                         const divisionTeams = standings
++                           .filter(team => team.division?.id === division.id)
+                            .sort((a, b) => {
+                              if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+```
+
+**Chunk 2**
+Lines added: 9, lines removed: 11
+
+```diff
+@@ -398,22 +398,20 @@
+                            });
+  
+-                         if (confTeams.length === 0) return null;
+- 
+-                         const isDivision = conf.name?.toLowerCase().includes('division');
++                         if (divisionTeams.length === 0) return null;
+  
+                          return (
+-                           <div key={conf.id}>
++                           <div key={division.id}>
+                              <div className="flex items-center gap-2 mb-2">
+-                               {conf.conf_logo && (
++                               {division.division_logo && (
+                                  <img
+-                                   src={conf.conf_logo}
+-                                   alt={conf.name || ""}
++                                   src={division.division_logo}
++                                   alt={division.name}
+                                    className="h-6 w-6 rounded object-contain"
+                                  />
+                                )}
+-                               <h4 className={`text-md font-semibold ${isDivision ? 'text-blue-300' : 'text-neutral-300'}`}>
+-                                 {conf.name || "Conference"}
+-                                 {conf.abbr && (
+-                                   <span className="ml-2 text-xs text-neutral-500">({conf.abbr})</span>
++                               <h4 className="text-md font-semibold text-blue-300">
++                                 {division.name}
++                                 {division.abbr && (
++                                   <span className="ml-2 text-xs text-neutral-500">({division.abbr})</span>
+                                  )}
+                                </h4>
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the rest of the standings loop and the closing parts to properly reference divisionTeams instead of confTeams. Let me continue...</details></think>
+
+---
+
+Now I need to update the remainder of the loop:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -481,5 +481,5 @@
+                        {/* Teams without division assignment */}
+                        {(() => {
+-                         const unassignedTeams = standings.filter(team => !team.conference);
++                         const unassignedTeams = standings.filter(team => !team.division);
+                          if (unassignedTeams.length === 0) return null;
+                          
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the Conference/Division standings section below the overall standings. Since divisions can belong to conferences, I should group divisions by conference and display them accordingly. Let me update that section.</details></think>
+
+---
+
+Now update the Conference/Division Standings section to group divisions by conference:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 9, lines removed: 11
+
+```diff
+@@ -612,18 +612,16 @@
+                  </div>
+  
+-                 {/* Conference/Division Standings */}
+-                 {conferences && conferences.length > 0 && (() => {
+-                   // Separate conferences and divisions
+-                   const divisionGroups = conferences.filter(conf => 
+-                     conf.name?.toLowerCase().includes('division')
+-                   );
+-                   const conferenceGroups = conferences.filter(conf => 
+-                     !conf.name?.toLowerCase().includes('division')
+-                   );
++                 {/* Division Standings Grouped by Conference */}
++                 {conferences && conferences.length > 0 && divisions && divisions.length > 0 && (() => {
++                   // Group divisions by conference
++                   const conferencesWithDivisions = conferences.map(conf => ({
++                     conference: conf,
++                     divisions: divisions.filter(div => div.conference_id === conf.id)
++                   })).filter(item => item.divisions.length > 0);
+  
+                    return (
+                      <>
+-                       {/* Show Conference Standings First */}
+-                       {conferenceGroups.map((conference) => {
++                       {/* Show Conference-grouped Division Standings */}
++                       {conferencesWithDivisions.map(({ conference, divisions: confDivisions }) => {
+                          const conferenceTeams = standings
+                            .filter(team => team.conference?.id === conference.id)
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to replace the conference standings logic with division standings logic, showing each division within a conference. Let me update the structure to:
+1. Show conference header
+2. Show each division's standings under that conference</details></think>
+
+---
+
+Let me replace the conference standings section with division-based logic:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 14
+
+```diff
+@@ -623,18 +623,6 @@
+                      <>
+                        {/* Show Conference-grouped Division Standings */}
+-                       {conferencesWithDivisions.map(({ conference, divisions: confDivisions }) => {
+-                         const conferenceTeams = standings
+-                           .filter(team => team.conference?.id === conference.id)
+-                           .sort((a, b) => {
+-                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+-                               return (b.wins ?? 0) - (a.wins ?? 0);
+-                             }
+-                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+-                           });
+- 
+-                         if (conferenceTeams.length === 0) return null;
+- 
+-                         return (
+-                           <div key={conference.id}>
++                       {conferencesWithDivisions.map(({ conference, divisions: confDivisions }) => (
++                           <div key={conference.id} className="space-y-6">
+                              <div className="flex items-center gap-3 mb-3">
+                                {conference.conf_logo && (
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to continue updating the structure to show the conference header, then loop through divisions within that conference. Let me find where the conference table ends and replace it with division loops.</details></think>
+
+---
+
+Let me find and replace the conference standings table with division standings:
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx
+
+---
+
+<think><details><summary>Thought Process</summary>I can see there's a lot of duplicated code here. I need to replace the entire conference standings section (lines 627-702) and the division standings section (lines 704-793) with a cleaner implementation that shows:
+1. Conference header
+2. Divisions within that conference
+
+Let me do a large replacement.</details></think>
+
+---
+
+Let me replace the entire conference/division standings section with the proper implementation:
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 109, lines removed: 167
+
+```diff
+@@ -624,173 +624,115 @@
+                        {/* Show Conference-grouped Division Standings */}
+                        {conferencesWithDivisions.map(({ conference, divisions: confDivisions }) => (
+-                           <div key={conference.id} className="space-y-6">
+-                             <div className="flex items-center gap-3 mb-3">
+-                               {conference.conf_logo && (
+-                                 <img
+-                                   src={conference.conf_logo}
+-                                   alt={conference.name || "Conference"}
+-                                   className="h-8 w-8 rounded object-contain"
+-                                 />
+-                               )}
+-                               <h3 className="text-lg font-bold text-neutral-200">
+-                                 {conference.name || "Conference"}
+-                                 {conference.abbr && (
+-                                   <span className="ml-2 text-sm text-neutral-400">({conference.abbr})</span>
+-                                 )}
+-                               </h3>
+-                             </div>
+-                             <div className="overflow-x-auto">
+-                               <table className="w-full text-sm">
+-                                 <thead className="bg-neutral-950 text-neutral-300">
+-                                   <tr>
+-                                     <th className="text-left py-2 px-4">Rank</th>
+-                                     <th className="text-left py-2 px-4">Team</th>
+-                                     <th className="text-right py-2 px-4">W</th>
+-                                     <th className="text-right py-2 px-4">L</th>
+-                                     <th className="text-right py-2 px-4">Win %</th>
+-                                     <th className="text-right py-2 px-4">PF</th>
+-                                     <th className="text-right py-2 px-4">PA</th>
+-                                     <th className="text-right py-2 px-4">ELO</th>
+-                                   </tr>
+-                                 </thead>
+-                                 <tbody className="divide-y divide-neutral-800">
+-                                   {conferenceTeams.map((team, idx) => (
+-                                     <tr key={team.team_id} className="hover:bg-neutral-900">
+-                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+-                                       <td className="py-2 px-4">
+-                                         <a
+-                                           href={`/teams/${team.team_id}`}
+-                                           className="hover:text-blue-400 flex items-center gap-2"
+-                                         >
+-                                           {team.logo_url ? (
+-                                             <img
+-                                               src={team.logo_url}
+-                                               alt=""
+-                                               className="h-6 w-6 rounded object-cover"
+-                                             />
+-                                           ) : (
+-                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+-                                             </div>
+-                                           )}
+-                                           {team.team_name}
+-                                         </a>
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right font-semibold">
+-                                         {team.wins ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.win_percentage?.toFixed(1) ?? "-"}%
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_for ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_against ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right text-neutral-400">
+-                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+-                                       </td>
+-                                     </tr>
+-                                   ))}
+-                                 </tbody>
+-                               </table>
+-                             </div>
+-                           </div>
+-                         );
+-                       })}
+- 
+-                       {/* Show Division Standings */}
+-                       {divisionGroups.map((division) => {
+-                         const divisionTeams = standings
+-                           .filter(team => team.conference?.id === division.id)
+-                           .sort((a, b) => {
+-                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+-                               return (b.wins ?? 0) - (a.wins ?? 0);
+-                             }
+-                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+-                           });
++                         <div key={conference.id} className="space-y-4">
++                           {/* Conference Header */}
++                           <div className="flex items-center gap-3 mb-4 pb-2 border-b-2 border-neutral-700">
++                             {conference.conf_logo && (
++                               <img
++                                 src={conference.conf_logo}
++                                 alt={conference.name || "Conference"}
++                                 className="h-8 w-8 rounded object-contain"
++                               />
++                             )}
++                             <h3 className="text-xl font-bold text-neutral-200">
++                               {conference.name || "Conference"}
++                               {conference.abbr && (
++                                 <span className="ml-2 text-sm text-neutral-400">({conference.abbr})</span>
++                               )}
++                             </h3>
++                           </div>
++ 
++                           {/* Divisions within this Conference */}
++                           {confDivisions.map((division) => {
++                             const divisionTeams = standings
++                               .filter(team => team.division?.id === division.id)
++                               .sort((a, b) => {
++                                 if ((b.wins ?? 0) !== (a.wins ?? 0)) {
++                                   return (b.wins ?? 0) - (a.wins ?? 0);
++                                 }
++                                 return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
++                               });
+  
+-                         if (divisionTeams.length === 0) return null;
++                             if (divisionTeams.length === 0) return null;
+  
+-                         return (
+-                           <div key={division.id}>
+-                             <div className="flex items-center gap-3 mb-3">
+-                               {division.conf_logo && (
+-                                 <img
+-                                   src={division.conf_logo}
+-                                   alt={division.name || "Division"}
+-                                   className="h-8 w-8 rounded object-contain"
+-                                 />
+-                               )}
+-                               <h3 className="text-lg font-bold text-blue-300">
+-                                 {division.name || "Division"}
+-                                 {division.abbr && (
+-                                   <span className="ml-2 text-sm text-neutral-400">({division.abbr})</span>
+-                                 )}
+-                               </h3>
+-                             </div>
+-                             <div className="overflow-x-auto">
+-                               <table className="w-full text-sm">
+-                                 <thead className="bg-neutral-950 text-neutral-300">
+-                                   <tr>
+-                                     <th className="text-left py-2 px-4">Rank</th>
+-                                     <th className="text-left py-2 px-4">Team</th>
+-                                     <th className="text-right py-2 px-4">W</th>
+-                                     <th className="text-right py-2 px-4">L</th>
+-                                     <th className="text-right py-2 px-4">Win %</th>
+-                                     <th className="text-right py-2 px-4">PF</th>
+-                                     <th className="text-right py-2 px-4">PA</th>
+-                                     <th className="text-right py-2 px-4">ELO</th>
+-                                   </tr>
+-                                 </thead>
+-                                 <tbody className="divide-y divide-neutral-800">
+-                                   {divisionTeams.map((team, idx) => (
+-                                     <tr key={team.team_id} className="hover:bg-neutral-900">
+-                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+-                                       <td className="py-2 px-4">
+-                                         <a
+-                                           href={`/teams/${team.team_id}`}
+-                                           className="hover:text-blue-400 flex items-center gap-2"
+-                                         >
+-                                           {team.logo_url ? (
+-                                             <img
+-                                               src={team.logo_url}
+-                                               alt=""
+-                                               className="h-6 w-6 rounded object-cover"
+-                                             />
+-                                           ) : (
+-                                             <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+-                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+-                                             </div>
+-                                           )}
+-                                           {team.team_name}
+-                                         </a>
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right font-semibold">
+-                                         {team.wins ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.win_percentage?.toFixed(1) ?? "-"}%
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_for ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right">
+-                                         {team.points_against ?? 0}
+-                                       </td>
+-                                       <td className="py-2 px-4 text-right text-neutral-400">
+-                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+-                                       </td>
+-                                     </tr>
+-                                   ))}
+-                                 </tbody>
+-                               </table>
+-                             </div>
+-                           </div>
+-                         );
+-                       })}
++                             return (
++                               <div key={division.id} className="ml-4">
++                                 <div className="flex items-center gap-2 mb-2">
++                                   {division.division_logo && (
++                                     <img
++                                       src={division.division_logo}
++                                       alt={division.name}
++                                       className="h-6 w-6 rounded object-contain"
++                                     />
++                                   )}
++                                   <h4 className="text-md font-semibold text-blue-300">
++                                     {division.name}
++                                     {division.abbr && (
++                                       <span className="ml-2 text-xs text-neutral-500">({division.abbr})</span>
++                                     )}
++                                   </h4>
++                                 </div>
++                                 <div className="overflow-x-auto">
++                                   <table className="w-full text-sm">
++                                     <thead className="bg-neutral-950 text-neutral-300">
++                                       <tr>
++                                         <th className="text-left py-2 px-4">Rank</th>
++                                         <th className="text-left py-2 px-4">Team</th>
++                                         <th className="text-right py-2 px-4">W</th>
++                                         <th className="text-right py-2 px-4">L</th>
++                                         <th className="text-right py-2 px-4">Win %</th>
++                                         <th className="text-right py-2 px-4">PF</th>
++                                         <th className="text-right py-2 px-4">PA</th>
++                                         <th className="text-right py-2 px-4">ELO</th>
++                                       </tr>
++                                     </thead>
++                                     <tbody className="divide-y divide-neutral-800">
++                                       {divisionTeams.map((team, idx) => (
++                                         <tr key={team.team_id} className="hover:bg-neutral-900">
++                                           <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
++                                           <td className="py-2 px-4">
++                                             <a
++                                               href={`/teams/${team.team_id}`}
++                                               className="hover:text-blue-400 flex items-center gap-2"
++                                             >
++                                               {team.logo_url ? (
++                                                 <img
++                                                   src={team.logo_url}
++                                                   alt=""
++                                                   className="h-6 w-6 rounded object-cover"
++                                                 />
++                                               ) : (
++                                                 <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                                                   {team.team_name?.substring(0, 2).toUpperCase() || '??'}
++                                                 </div>
++                                               )}
++                                               {team.team_name}
++                                             </a>
++                                           </td>
++                                           <td className="py-2 px-4 text-right font-semibold">
++                                             {team.wins ?? 0}
++                                           </td>
++                                           <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
++                                           <td className="py-2 px-4 text-right">
++                                             {team.win_percentage?.toFixed(1) ?? "-"}%
++                                           </td>
++                                           <td className="py-2 px-4 text-right">
++                                             {team.points_for ?? 0}
++                                           </td>
++                                           <td className="py-2 px-4 text-right">
++                                             {team.points_against ?? 0}
++                                           </td>
++                                           <td className="py-2 px-4 text-right text-neutral-400">
++                                             {team.elo_rating ? Math.round(team.elo_rating) : "-"}
++                                           </td>
++                                         </tr>
++                                       ))}
++                                     </tbody>
++                                   </table>
++                                 </div>
++                               </div>
++                             );
++                           })}
++                         </div>
++                       ))}
+                      </>
+                    );
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now I need to check for any linting errors in both files.</details></think>
+
+---
+
+Now let's check for linting errors:
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+Lint errors for `src/pages/leagues/[id].astro`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| Property 'league_logo' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. | 434:25-434:36 | DIAGNOSTIC_SEVERITY_ERROR |
+| Property 'league_logo' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. | 432:17-432:28 | DIAGNOSTIC_SEVERITY_ERROR |
+| Property 'league_tier' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. Did you mean 'league_id'? | 413:16-413:27 | DIAGNOSTIC_SEVERITY_ERROR |
+| Property 'league_tier' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. Did you mean 'league_id'? | 61:32-61:43 | DIAGNOSTIC_SEVERITY_ERROR |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>These are pre-existing errors that were there before my changes - they're about properties that don't exist on the league_season_performance_mart type. My changes didn't introduce these errors, so the implementation is complete!
+
+Let me provide a summary of what was implemented.</details></think>
+
+---
+
+Perfect! The linting errors are pre-existing and not related to my changes. The implementation is complete! Here's what I've done:
+
+## Implementation Summary
+
+### 1. **Backend Changes** (`src/pages/leagues/[id].astro`)
+- Added query to fetch divisions from `lg_divisions` table
+- Added query to fetch team roster data to get division assignments via `team_rosters.division_id`
+- Enhanced standings data to include both conference and division information for each team
+
+### 2. **Frontend Types** (`src/components/LeagueTabsIsland.tsx`)
+- Added `Division` type with all necessary fields (id, name, abbr, division_logo, conference_id, display_order)
+- Updated `Team` type to include optional `division` property
+- Added `divisions` to component props
+
+### 3. **Display Logic**
+The standings now show:
+
+**Overall Standings** - Teams grouped by their division assignment:
+- Each division shown as a separate section
+- Teams ranked within their division (1, 2, 3...)
+- Division headers in blue color
+- Optional division logos
+
+**Division Standings Grouped by Conference**:
+- Conference header (larger, with border)
+- Divisions within that conference shown below (indented)
+- Each division shows its teams ranked within that division
+- Hierarchical display: Conference → Division → Teams
+
+### Key Features:
+- ✅ Teams linked to divisions via `team_rosters.division_id`
+- ✅ Divisions can belong to conferences via `lg_divisions.conference_id`
+- ✅ Divisions sorted by `display_order`
+- ✅ Teams without division assignments shown in "Unassigned" section
+- ✅ Divisions displayed with logos when available
+- ✅ Clean hierarchical structure showing conference → division relationship
+
+The implementation properly uses the new `lg_divisions` table structure and shows division standings as requested!
 
 ---
 

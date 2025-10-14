@@ -49,6 +49,15 @@ type Conference = {
   conf_logo: string | null;
 };
 
+type Division = {
+  id: string;
+  name: string;
+  abbr: string | null;
+  division_logo: string | null;
+  conference_id: string | null;
+  display_order: number | null;
+};
+
 type Team = {
   team_id: string;
   team_name: string;
@@ -70,6 +79,14 @@ type Team = {
     name: string | null;
     abbr: string | null;
     conf_logo: string | null;
+  } | null;
+  division?: {
+    id: string;
+    name: string;
+    abbr: string | null;
+    division_logo: string | null;
+    conference_id: string | null;
+    display_order: number | null;
   } | null;
 };
 
@@ -179,6 +196,7 @@ type LeagueTabsProps = {
   openTournament?: TournamentData | null;
   playoffTournament?: TournamentData | null;
   conferences?: Conference[];
+  divisions?: Division[];
 };
 
 export default function LeagueTabsIsland({
@@ -194,6 +212,7 @@ export default function LeagueTabsIsland({
   openTournament = null,
   playoffTournament = null,
   conferences = [],
+  divisions = [],
 }: LeagueTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [matchesPage, setMatchesPage] = useState(1);
@@ -365,12 +384,12 @@ export default function LeagueTabsIsland({
                 {/* Overall Standings - Separated by Division */}
                 <div>
                   <h3 className="text-lg font-bold mb-4 text-neutral-200">Overall Standings</h3>
-                  {conferences && conferences.length > 0 ? (
-                    // Group standings by division/conference
+                  {divisions && divisions.length > 0 ? (
+                    // Group standings by division
                     <div className="space-y-6">
-                      {conferences.map((conf) => {
-                        const confTeams = standings
-                          .filter(team => team.conference?.id === conf.id)
+                      {divisions.map((division) => {
+                        const divisionTeams = standings
+                          .filter(team => team.division?.id === division.id)
                           .sort((a, b) => {
                             if ((b.wins ?? 0) !== (a.wins ?? 0)) {
                               return (b.wins ?? 0) - (a.wins ?? 0);
@@ -378,24 +397,22 @@ export default function LeagueTabsIsland({
                             return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
                           });
 
-                        if (confTeams.length === 0) return null;
-
-                        const isDivision = conf.name?.toLowerCase().includes('division');
+                        if (divisionTeams.length === 0) return null;
 
                         return (
-                          <div key={conf.id}>
+                          <div key={division.id}>
                             <div className="flex items-center gap-2 mb-2">
-                              {conf.conf_logo && (
+                              {division.division_logo && (
                                 <img
-                                  src={conf.conf_logo}
-                                  alt={conf.name || ""}
+                                  src={division.division_logo}
+                                  alt={division.name}
                                   className="h-6 w-6 rounded object-contain"
                                 />
                               )}
-                              <h4 className={`text-md font-semibold ${isDivision ? 'text-blue-300' : 'text-neutral-300'}`}>
-                                {conf.name || "Conference"}
-                                {conf.abbr && (
-                                  <span className="ml-2 text-xs text-neutral-500">({conf.abbr})</span>
+                              <h4 className="text-md font-semibold text-blue-300">
+                                {division.name}
+                                {division.abbr && (
+                                  <span className="ml-2 text-xs text-neutral-500">({division.abbr})</span>
                                 )}
                               </h4>
                             </div>
@@ -463,7 +480,7 @@ export default function LeagueTabsIsland({
                       
                       {/* Teams without division assignment */}
                       {(() => {
-                        const unassignedTeams = standings.filter(team => !team.conference);
+                        const unassignedTeams = standings.filter(team => !team.division);
                         if (unassignedTeams.length === 0) return null;
                         
                         return (
@@ -594,201 +611,129 @@ export default function LeagueTabsIsland({
                   )}
                 </div>
 
-                {/* Conference/Division Standings */}
-                {conferences && conferences.length > 0 && (() => {
-                  // Separate conferences and divisions
-                  const divisionGroups = conferences.filter(conf => 
-                    conf.name?.toLowerCase().includes('division')
-                  );
-                  const conferenceGroups = conferences.filter(conf => 
-                    !conf.name?.toLowerCase().includes('division')
-                  );
+                {/* Division Standings Grouped by Conference */}
+                {conferences && conferences.length > 0 && divisions && divisions.length > 0 && (() => {
+                  // Group divisions by conference
+                  const conferencesWithDivisions = conferences.map(conf => ({
+                    conference: conf,
+                    divisions: divisions.filter(div => div.conference_id === conf.id)
+                  })).filter(item => item.divisions.length > 0);
 
                   return (
                     <>
-                      {/* Show Conference Standings First */}
-                      {conferenceGroups.map((conference) => {
-                        const conferenceTeams = standings
-                          .filter(team => team.conference?.id === conference.id)
-                          .sort((a, b) => {
-                            if ((b.wins ?? 0) !== (a.wins ?? 0)) {
-                              return (b.wins ?? 0) - (a.wins ?? 0);
-                            }
-                            return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
-                          });
-
-                        if (conferenceTeams.length === 0) return null;
-
-                        return (
-                          <div key={conference.id}>
-                            <div className="flex items-center gap-3 mb-3">
-                              {conference.conf_logo && (
-                                <img
-                                  src={conference.conf_logo}
-                                  alt={conference.name || "Conference"}
-                                  className="h-8 w-8 rounded object-contain"
-                                />
+                      {/* Show Conference-grouped Division Standings */}
+                      {conferencesWithDivisions.map(({ conference, divisions: confDivisions }) => (
+                        <div key={conference.id} className="space-y-4">
+                          {/* Conference Header */}
+                          <div className="flex items-center gap-3 mb-4 pb-2 border-b-2 border-neutral-700">
+                            {conference.conf_logo && (
+                              <img
+                                src={conference.conf_logo}
+                                alt={conference.name || "Conference"}
+                                className="h-8 w-8 rounded object-contain"
+                              />
+                            )}
+                            <h3 className="text-xl font-bold text-neutral-200">
+                              {conference.name || "Conference"}
+                              {conference.abbr && (
+                                <span className="ml-2 text-sm text-neutral-400">({conference.abbr})</span>
                               )}
-                              <h3 className="text-lg font-bold text-neutral-200">
-                                {conference.name || "Conference"}
-                                {conference.abbr && (
-                                  <span className="ml-2 text-sm text-neutral-400">({conference.abbr})</span>
-                                )}
-                              </h3>
-                            </div>
-                            <div className="overflow-x-auto">
-                              <table className="w-full text-sm">
-                                <thead className="bg-neutral-950 text-neutral-300">
-                                  <tr>
-                                    <th className="text-left py-2 px-4">Rank</th>
-                                    <th className="text-left py-2 px-4">Team</th>
-                                    <th className="text-right py-2 px-4">W</th>
-                                    <th className="text-right py-2 px-4">L</th>
-                                    <th className="text-right py-2 px-4">Win %</th>
-                                    <th className="text-right py-2 px-4">PF</th>
-                                    <th className="text-right py-2 px-4">PA</th>
-                                    <th className="text-right py-2 px-4">ELO</th>
-                                  </tr>
-                                </thead>
-                                <tbody className="divide-y divide-neutral-800">
-                                  {conferenceTeams.map((team, idx) => (
-                                    <tr key={team.team_id} className="hover:bg-neutral-900">
-                                      <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
-                                      <td className="py-2 px-4">
-                                        <a
-                                          href={`/teams/${team.team_id}`}
-                                          className="hover:text-blue-400 flex items-center gap-2"
-                                        >
-                                          {team.logo_url ? (
-                                            <img
-                                              src={team.logo_url}
-                                              alt=""
-                                              className="h-6 w-6 rounded object-cover"
-                                            />
-                                          ) : (
-                                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
-                                              {team.team_name?.substring(0, 2).toUpperCase() || '??'}
-                                            </div>
-                                          )}
-                                          {team.team_name}
-                                        </a>
-                                      </td>
-                                      <td className="py-2 px-4 text-right font-semibold">
-                                        {team.wins ?? 0}
-                                      </td>
-                                      <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                                      <td className="py-2 px-4 text-right">
-                                        {team.win_percentage?.toFixed(1) ?? "-"}%
-                                      </td>
-                                      <td className="py-2 px-4 text-right">
-                                        {team.points_for ?? 0}
-                                      </td>
-                                      <td className="py-2 px-4 text-right">
-                                        {team.points_against ?? 0}
-                                      </td>
-                                      <td className="py-2 px-4 text-right text-neutral-400">
-                                        {team.elo_rating ? Math.round(team.elo_rating) : "-"}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
+                            </h3>
                           </div>
-                        );
-                      })}
 
-                      {/* Show Division Standings */}
-                      {divisionGroups.map((division) => {
-                        const divisionTeams = standings
-                          .filter(team => team.conference?.id === division.id)
-                          .sort((a, b) => {
-                            if ((b.wins ?? 0) !== (a.wins ?? 0)) {
-                              return (b.wins ?? 0) - (a.wins ?? 0);
-                            }
-                            return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
-                          });
+                          {/* Divisions within this Conference */}
+                          {confDivisions.map((division) => {
+                            const divisionTeams = standings
+                              .filter(team => team.division?.id === division.id)
+                              .sort((a, b) => {
+                                if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+                                  return (b.wins ?? 0) - (a.wins ?? 0);
+                                }
+                                return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+                              });
 
-                        if (divisionTeams.length === 0) return null;
+                            if (divisionTeams.length === 0) return null;
 
-                        return (
-                          <div key={division.id}>
-                            <div className="flex items-center gap-3 mb-3">
-                              {division.conf_logo && (
-                                <img
-                                  src={division.conf_logo}
-                                  alt={division.name || "Division"}
-                                  className="h-8 w-8 rounded object-contain"
-                                />
-                              )}
-                              <h3 className="text-lg font-bold text-blue-300">
-                                {division.name || "Division"}
-                                {division.abbr && (
-                                  <span className="ml-2 text-sm text-neutral-400">({division.abbr})</span>
-                                )}
-                              </h3>
-                            </div>
-                            <div className="overflow-x-auto">
-                              <table className="w-full text-sm">
-                                <thead className="bg-neutral-950 text-neutral-300">
-                                  <tr>
-                                    <th className="text-left py-2 px-4">Rank</th>
-                                    <th className="text-left py-2 px-4">Team</th>
-                                    <th className="text-right py-2 px-4">W</th>
-                                    <th className="text-right py-2 px-4">L</th>
-                                    <th className="text-right py-2 px-4">Win %</th>
-                                    <th className="text-right py-2 px-4">PF</th>
-                                    <th className="text-right py-2 px-4">PA</th>
-                                    <th className="text-right py-2 px-4">ELO</th>
-                                  </tr>
-                                </thead>
-                                <tbody className="divide-y divide-neutral-800">
-                                  {divisionTeams.map((team, idx) => (
-                                    <tr key={team.team_id} className="hover:bg-neutral-900">
-                                      <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
-                                      <td className="py-2 px-4">
-                                        <a
-                                          href={`/teams/${team.team_id}`}
-                                          className="hover:text-blue-400 flex items-center gap-2"
-                                        >
-                                          {team.logo_url ? (
-                                            <img
-                                              src={team.logo_url}
-                                              alt=""
-                                              className="h-6 w-6 rounded object-cover"
-                                            />
-                                          ) : (
-                                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
-                                              {team.team_name?.substring(0, 2).toUpperCase() || '??'}
-                                            </div>
-                                          )}
-                                          {team.team_name}
-                                        </a>
-                                      </td>
-                                      <td className="py-2 px-4 text-right font-semibold">
-                                        {team.wins ?? 0}
-                                      </td>
-                                      <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                                      <td className="py-2 px-4 text-right">
-                                        {team.win_percentage?.toFixed(1) ?? "-"}%
-                                      </td>
-                                      <td className="py-2 px-4 text-right">
-                                        {team.points_for ?? 0}
-                                      </td>
-                                      <td className="py-2 px-4 text-right">
-                                        {team.points_against ?? 0}
-                                      </td>
-                                      <td className="py-2 px-4 text-right text-neutral-400">
-                                        {team.elo_rating ? Math.round(team.elo_rating) : "-"}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        );
-                      })}
+                            return (
+                              <div key={division.id} className="ml-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                  {division.division_logo && (
+                                    <img
+                                      src={division.division_logo}
+                                      alt={division.name}
+                                      className="h-6 w-6 rounded object-contain"
+                                    />
+                                  )}
+                                  <h4 className="text-md font-semibold text-blue-300">
+                                    {division.name}
+                                    {division.abbr && (
+                                      <span className="ml-2 text-xs text-neutral-500">({division.abbr})</span>
+                                    )}
+                                  </h4>
+                                </div>
+                                <div className="overflow-x-auto">
+                                  <table className="w-full text-sm">
+                                    <thead className="bg-neutral-950 text-neutral-300">
+                                      <tr>
+                                        <th className="text-left py-2 px-4">Rank</th>
+                                        <th className="text-left py-2 px-4">Team</th>
+                                        <th className="text-right py-2 px-4">W</th>
+                                        <th className="text-right py-2 px-4">L</th>
+                                        <th className="text-right py-2 px-4">Win %</th>
+                                        <th className="text-right py-2 px-4">PF</th>
+                                        <th className="text-right py-2 px-4">PA</th>
+                                        <th className="text-right py-2 px-4">ELO</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-neutral-800">
+                                      {divisionTeams.map((team, idx) => (
+                                        <tr key={team.team_id} className="hover:bg-neutral-900">
+                                          <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                                          <td className="py-2 px-4">
+                                            <a
+                                              href={`/teams/${team.team_id}`}
+                                              className="hover:text-blue-400 flex items-center gap-2"
+                                            >
+                                              {team.logo_url ? (
+                                                <img
+                                                  src={team.logo_url}
+                                                  alt=""
+                                                  className="h-6 w-6 rounded object-cover"
+                                                />
+                                              ) : (
+                                                <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                                                  {team.team_name?.substring(0, 2).toUpperCase() || '??'}
+                                                </div>
+                                              )}
+                                              {team.team_name}
+                                            </a>
+                                          </td>
+                                          <td className="py-2 px-4 text-right font-semibold">
+                                            {team.wins ?? 0}
+                                          </td>
+                                          <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
+                                          <td className="py-2 px-4 text-right">
+                                            {team.win_percentage?.toFixed(1) ?? "-"}%
+                                          </td>
+                                          <td className="py-2 px-4 text-right">
+                                            {team.points_for ?? 0}
+                                          </td>
+                                          <td className="py-2 px-4 text-right">
+                                            {team.points_against ?? 0}
+                                          </td>
+                                          <td className="py-2 px-4 text-right text-neutral-400">
+                                            {team.elo_rating ? Math.round(team.elo_rating) : "-"}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
                     </>
                   );
                 })()}
