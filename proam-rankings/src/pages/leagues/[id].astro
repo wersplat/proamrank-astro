@@ -173,7 +173,7 @@ const matches = (matchesData ?? []).map((m: any) => ({
 // Get player statistics from player_league_season_stats_mart
 const { data: playerStats } = await supa((Astro.locals as any).runtime)
   .from("player_league_season_stats_mart")
-  .select("player_id, gamertag, ppg, apg, rpg, spg, bpg, tpg, games_played, fg_pct, three_pt_pct, ft_pct, avg_performance_score, total_points, total_assists, total_rebounds, total_steals, total_blocks, total_turnovers, fgm, fga, ftm, fta, three_points_made, three_points_attempted, fouls")
+  .select("player_id, gamertag, ppg, apg, rpg, spg, bpg, tpg, games_played, fg_pct, three_pt_pct, ft_pct, avg_performance_score, total_points, total_assists, total_rebounds, total_steals, total_blocks, total_turnovers")
   .eq("season_id", seasonId)
   .gte("games_played", 3);
 
@@ -241,25 +241,25 @@ const fullPlayerStats = (fullPlayerStatsRaw ?? []).map((p: any) => ({
   steals: p.total_steals,
   blocks: p.total_blocks,
   turnovers: p.total_turnovers || 0,
-  fouls: p.total_fouls || 0,
-  fgm: p.total_fgm || 0,
-  fga: p.total_fga || 0,
-  ftm: p.total_ftm || 0,
-  fta: p.total_fta || 0,
-  three_points_made: p.total_threes || 0,
-  three_points_attempted: p.total_three_attempts || 0,
+  fouls: 0, // Not available in mart
+  fgm: 0, // Not available in mart
+  fga: 0, // Not available in mart
+  ftm: 0, // Not available in mart
+  fta: 0, // Not available in mart
+  three_points_made: 0, // Not available in mart
+  three_points_attempted: 0, // Not available in mart
   plus_minus: 0,
-  performance_score: p.avg_performance_score || 0,
-  avg_points: p.ppg,
-  avg_rebounds: p.rpg,
-  avg_assists: p.apg,
-  avg_steals: p.spg,
-  avg_blocks: p.bpg,
-  avg_turnovers: p.tpg || 0,
-  avg_fouls: p.fpg || 0,
-  fg_pct: p.fg_pct,
-  three_pt_pct: p.three_pt_pct,
-  ft_pct: p.ft_pct,
+  performance_score: parseFloat(p.avg_performance_score) || 0,
+  avg_points: parseFloat(p.ppg),
+  avg_rebounds: parseFloat(p.rpg),
+  avg_assists: parseFloat(p.apg),
+  avg_steals: parseFloat(p.spg),
+  avg_blocks: parseFloat(p.bpg),
+  avg_turnovers: parseFloat(p.tpg) || 0,
+  avg_fouls: 0, // Not available in mart
+  fg_pct: p.fg_pct ? parseFloat(p.fg_pct) : null,
+  three_pt_pct: p.three_pt_pct ? parseFloat(p.three_pt_pct) : null,
+  ft_pct: p.ft_pct ? parseFloat(p.ft_pct) : null,
 }));
 
 // Fetch Open Tournament data

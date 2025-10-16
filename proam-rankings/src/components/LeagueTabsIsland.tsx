@@ -185,9 +185,9 @@ type PlayerStatFull = {
   avg_blocks: number;
   avg_turnovers: number;
   avg_fouls: number;
-  fg_pct: string | null;
-  three_pt_pct: string | null;
-  ft_pct: string | null;
+  fg_pct: number | null;
+  three_pt_pct: number | null;
+  ft_pct: number | null;
 };
 
 type LeagueTabsProps = {
@@ -960,10 +960,10 @@ export default function LeagueTabsIsland({
                     </thead>
                     <tbody className="divide-y divide-neutral-800">
                       {sortedPlayerStats.map((player) => {
-                        // Use pre-calculated percentages from the mart
-                        const fgPercentage = player.fg_pct ?? '-';
-                        const threePtPercentage = player.three_pt_pct ?? '-';
-                        const ftPercentage = player.ft_pct ?? '-';
+                        // Use pre-calculated percentages from the mart (now numbers)
+                        const fgPercentage = player.fg_pct !== null ? player.fg_pct.toFixed(1) : '-';
+                        const threePtPercentage = player.three_pt_pct !== null ? player.three_pt_pct.toFixed(1) : '-';
+                        const ftPercentage = player.ft_pct !== null ? player.ft_pct.toFixed(1) : '-';
                         
                         return (
                           <tr key={player.player_id} className="hover:bg-neutral-900">
@@ -995,13 +995,13 @@ export default function LeagueTabsIsland({
                               {player.avg_turnovers?.toFixed(1) ?? '-'}
                             </td>
                             <td className="py-2 px-4 text-right">
-                              {fgPercentage}%
+                              {fgPercentage}{fgPercentage !== '-' ? '%' : ''}
                             </td>
                             <td className="py-2 px-4 text-right">
-                              {threePtPercentage}%
+                              {threePtPercentage}{threePtPercentage !== '-' ? '%' : ''}
                             </td>
                             <td className="py-2 px-4 text-right">
-                              {ftPercentage}%
+                              {ftPercentage}{ftPercentage !== '-' ? '%' : ''}
                             </td>
                             <td className="py-2 px-4 text-right">
                               <span className={player.plus_minus > 0 ? 'text-green-400' : player.plus_minus < 0 ? 'text-red-400' : ''}>
