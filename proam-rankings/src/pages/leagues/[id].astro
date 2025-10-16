@@ -178,47 +178,47 @@ const { data: playerStats } = await supa((Astro.locals as any).runtime)
   .gte("games_played", 3);
 
 const topScorers = (playerStats ?? [])
-  .sort((a: any, b: any) => b.ppg - a.ppg)
+  .sort((a: any, b: any) => parseFloat(b.ppg) - parseFloat(a.ppg))
   .slice(0, 5)
   .map((p: any) => ({
     player_name: p.gamertag,
-    points_per_game: p.ppg,
+    points_per_game: parseFloat(p.ppg),
     games_played: p.games_played
   }));
 
 const topAssists = (playerStats ?? [])
-  .sort((a: any, b: any) => b.apg - a.apg)
+  .sort((a: any, b: any) => parseFloat(b.apg) - parseFloat(a.apg))
   .slice(0, 5)
   .map((p: any) => ({
     player_name: p.gamertag,
-    assists_per_game: p.apg,
+    assists_per_game: parseFloat(p.apg),
     games_played: p.games_played
   }));
 
 const topRebounders = (playerStats ?? [])
-  .sort((a: any, b: any) => b.rpg - a.rpg)
+  .sort((a: any, b: any) => parseFloat(b.rpg) - parseFloat(a.rpg))
   .slice(0, 5)
   .map((p: any) => ({
     player_name: p.gamertag,
-    rebounds_per_game: p.rpg,
+    rebounds_per_game: parseFloat(p.rpg),
     games_played: p.games_played
   }));
 
 const topSteals = (playerStats ?? [])
-  .sort((a: any, b: any) => b.spg - a.spg)
+  .sort((a: any, b: any) => parseFloat(b.spg) - parseFloat(a.spg))
   .slice(0, 5)
   .map((p: any) => ({
     player_name: p.gamertag,
-    steals_per_game: p.spg,
+    steals_per_game: parseFloat(p.spg),
     games_played: p.games_played
   }));
 
 const topBlocks = (playerStats ?? [])
-  .sort((a: any, b: any) => b.bpg - a.bpg)
+  .sort((a: any, b: any) => parseFloat(b.bpg) - parseFloat(a.bpg))
   .slice(0, 5)
   .map((p: any) => ({
     player_name: p.gamertag,
-    blocks_per_game: p.bpg,
+    blocks_per_game: parseFloat(p.bpg),
     games_played: p.games_played
   }));
 
