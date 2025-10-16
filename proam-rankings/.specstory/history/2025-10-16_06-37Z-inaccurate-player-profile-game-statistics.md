@@ -3908,3 +3908,87 @@ Now:
 
 ---
 
+_**User (2025-10-16 06:37Z)**_
+
+you are using this mart for top performers for leagues right player_league_season_stats_mart
+
+---
+
+_**Assistant (claude-4.5-sonnet-thinking)**_
+
+<think><details><summary>Thought Process</summary>The user is asking me to confirm that I'm using `player_league_season_stats_mart` for the top performers section in the leagues page. Let me check what I actually did in the code.
+
+Looking at the changes I made to `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`, I can see:
+
+```typescript
+// Get player statistics from player_league_season_stats_mart
+const { data: playerStats } = await supa((Astro.locals as any).runtime)
+  .from("player_league_season_stats_mart")
+  .select("player_id, gamertag, ppg, apg, rpg, spg, bpg, tpg, games_played, fg_pct, three_pt_pct, ft_pct, avg_performance_score, total_points, total_assists, total_rebounds, total_steals, total_blocks, total_turnovers")
+  .eq("season_id", seasonId)
+  .gte("games_played", 3);
+
+const topScorers = (playerStats ?? [])
+  .sort((a: any, b: any) => parseFloat(b.ppg) - parseFloat(a.ppg))
+  .slice(0, 5)
+  .map((p: any) => ({
+    player_name: p.gamertag,
+    points_per_game: parseFloat(p.ppg),
+    games_played: p.games_played
+  }));
+```
+
+Yes, I am using `player_league_season_stats_mart` for the top performers. The user is asking me to confirm this, likely because they want to make sure I'm aware of what mart I'm using.</details></think>
+
+---
+
+Yes, that's correct! I'm using `player_league_season_stats_mart` for the top performers section in the leagues page. Specifically:
+
+```typescript
+// Get player statistics from player_league_season_stats_mart
+const { data: playerStats } = await supa((Astro.locals as any).runtime)
+  .from("player_league_season_stats_mart")
+  .select("player_id, gamertag, ppg, apg, rpg, spg, bpg, tpg, games_played, fg_pct, three_pt_pct, ft_pct, avg_performance_score, total_points, total_assists, total_rebounds, total_steals, total_blocks, total_turnovers")
+  .eq("season_id", seasonId)
+  .gte("games_played", 3);
+```
+
+Then that data is used to create:
+- `topScorers` (sorted by PPG)
+- `topAssists` (sorted by APG)
+- `topRebounders` (sorted by RPG)
+- `topSteals` (sorted by SPG)
+- `topBlocks` (sorted by BPG)
+
+I also use the same mart (with a separate query using `.select("*")`) for the full player statistics table in the "Player Statistics" tab.
+
+Is there an issue with using this mart for top performers, or should I be using a different data source?
+
+---
+
+_**User (2025-10-16 06:37Z)**_
+
+no just verifying
+
+---
+
+_**Assistant (claude-4.5-sonnet-thinking)**_
+
+<think><details><summary>Thought Process</summary>The user is just verifying that I'm using the correct mart for the top performers. They're confirming my approach is correct. I should acknowledge this briefly and confirm everything is set up correctly now.</details></think>
+
+---
+
+Got it! Yes, confirmed - I'm using `player_league_season_stats_mart` for:
+
+1. **Top Performers section** (top 5 in each category with 3+ games)
+2. **Player Statistics tab** (full table with 1+ games)
+
+Both queries are now fixed to:
+- ✅ Only select fields that actually exist in the mart
+- ✅ Properly parse numeric values with `parseFloat()` for sorting
+- ✅ Display percentages and performance scores correctly
+
+Everything should be working now!
+
+---
+

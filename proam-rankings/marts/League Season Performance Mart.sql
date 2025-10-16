@@ -93,6 +93,7 @@ SELECT
     li.lg_logo_url,
     ls.prize_pool,
     ls.is_active,
+    esm.tier_label AS league_tier,
     COALESCE(sms.total_matches, 0) AS total_matches,
     COALESCE(sms.total_team_appearances, 0) / 2 AS total_unique_teams,
     COALESCE(sms.total_players, 0) AS total_players,
@@ -146,4 +147,5 @@ FROM league_seasons ls
 LEFT JOIN leagues_info li ON ls.league_id = li.id
 LEFT JOIN season_match_stats sms ON ls.id = sms.season_id
 LEFT JOIN season_playoff_info spi ON ls.id = spi.season_id
-LEFT JOIN season_open_info soi ON ls.id = soi.season_id;
+LEFT JOIN season_open_info soi ON ls.id = soi.season_id
+LEFT JOIN event_strength_metrics_mv esm ON esm.season_id = ls.id AND esm.event_type = 'league';

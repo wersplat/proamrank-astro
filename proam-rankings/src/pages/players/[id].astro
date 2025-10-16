@@ -40,15 +40,29 @@ const { data: streakData } = await supa(Astro.locals)
   .eq("player_id", id!)
   .maybeSingle();
 
-// Combine data for global rating (use performance mart data)
-const globalRatingData = perfData ? {
-  player_id: perfData.player_id,
-  gamertag: perfData.gamertag,
-  position: perfData.position,
-  global_rating: perfData.global_rating,
-  rating_tier: perfData.rating_tier,
-  total_games: perfData.games_played,
-  game_impact: perfData.avg_points, // Use avg_points as impact metric
+// Get detailed global rating breakdown from v_player_global_rating view
+const { data: ratingData } = await supa(Astro.locals)
+  .from("v_player_global_rating")
+  .select("*")
+  .eq("player_id", id!)
+  .maybeSingle();
+
+// Combine data for global rating (use detailed rating data from view)
+const globalRatingData = ratingData ? {
+  player_id: ratingData.player_id,
+  gamertag: ratingData.gamertag,
+  position: ratingData.position,
+  global_rating: parseFloat(String(ratingData.global_rating || '0')),
+  base_rating: parseFloat(String(ratingData.base_rating || '0')),
+  game_impact: parseFloat(String(ratingData.game_impact || '0')),
+  event_bonus: parseFloat(String(ratingData.event_bonus || '0')),
+  decay_penalty: parseFloat(String(ratingData.decay_penalty || '0')),
+  consistency_bonus: parseFloat(String(ratingData.consistency_bonus || '0')),
+  rating_tier: ratingData.rating_tier,
+  total_games: ratingData.total_games,
+  recent_games: ratingData.recent_games,
+  days_since_last_game: ratingData.days_since_last_game,
+  peak_performance: parseFloat(String(ratingData.peak_performance || '0')),
 } : null;
 
 // Get current team info if player has one - use team_analytics_mart
