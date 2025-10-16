@@ -1,7 +1,8 @@
 CREATE MATERIALIZED VIEW player_stats_tracking_mart AS
 WITH player_history AS (
-    SELECT
+    SELECT DISTINCT ON (ps.player_id, ps.match_id)  -- Ensure we only get one record per player per match
         ps.player_id,
+        ps.match_id,  -- Add match_id to the select for DISTINCT ON
         m.played_at,
         m.primary_league_id AS league_id,
         m.primary_tournament_id AS tournament_id,
@@ -18,14 +19,38 @@ WITH player_history AS (
         ps.three_points_attempted,
         ps.ftm,
         ps.fta,
-        ps.plus_minus,
-        ROW_NUMBER() OVER (PARTITION BY ps.player_id ORDER BY m.played_at) AS game_number,
-        SUM(ps.points) OVER (PARTITION BY ps.player_id ORDER BY m.played_at) AS running_point_total,
-        AVG(ps.points) OVER (PARTITION BY ps.player_id ORDER BY m.played_at ROWS BETWEEN 5 PRECEDING AND CURRENT ROW) AS pts_rolling_avg_6,
-        AVG(ps.points) OVER (PARTITION BY ps.player_id ORDER BY m.played_at ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS pts_rolling_avg_10
+        ps.plus_minus
     FROM player_stats ps
     JOIN v_matches_with_primary_context m ON ps.match_id = m.id
     WHERE ps.verified = TRUE
+    ORDER BY ps.player_id, ps.match_id, ps.created_at DESC  -- Take most recent record if duplicates exist
+),
+player_history_with_row_num AS (
+    SELECT
+        player_id,
+        match_id,
+        played_at,
+        league_id,
+        tournament_id,
+        season_id,
+        points,
+        assists,
+        rebounds,
+        steals,
+        blocks,
+        turnovers,
+        fgm,
+        fga,
+        three_points_made,
+        three_points_attempted,
+        ftm,
+        fta,
+        plus_minus,
+        ROW_NUMBER() OVER (PARTITION BY player_id ORDER BY played_at) AS game_number,
+        SUM(points) OVER (PARTITION BY player_id ORDER BY played_at) AS running_point_total,
+        AVG(points) OVER (PARTITION BY player_id ORDER BY played_at ROWS BETWEEN 5 PRECEDING AND CURRENT ROW) AS pts_rolling_avg_6,
+        AVG(points) OVER (PARTITION BY player_id ORDER BY played_at ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS pts_rolling_avg_10
+    FROM player_history
 ),
 recent_games AS (
     SELECT 
@@ -34,9 +59,18 @@ recent_games AS (
         ps.assists, 
         ps.rebounds,
         ROW_NUMBER() OVER (PARTITION BY ps.player_id ORDER BY m.played_at DESC) AS rn
-    FROM player_stats ps
+    FROM (
+        SELECT DISTINCT ON (player_id, match_id)
+            player_id,
+            match_id,
+            points,
+            assists,
+            rebounds
+        FROM player_stats
+        WHERE verified = TRUE
+        ORDER BY player_id, match_id, created_at DESC
+    ) ps
     JOIN v_matches_with_primary_context m ON ps.match_id = m.id
-    WHERE ps.verified = TRUE
 )
 SELECT
     p.id AS player_id,
@@ -47,8 +81,8 @@ SELECT
     COALESCE(pgr.global_rating, 0) AS global_rating,
     COALESCE(pgr.rating_tier, 'Unranked') AS rating_tier,
     
-    -- Career Totals
-    COUNT(ph.player_id) AS career_games,
+    -- Career Totals - Using COUNT(DISTINCT match_id) to avoid counting duplicates
+    COUNT(DISTINCT ph.match_id) AS career_games,
     COALESCE(SUM(ph.points), 0) AS career_points,
     COALESCE(SUM(ph.assists), 0) AS career_assists,
     COALESCE(SUM(ph.rebounds), 0) AS career_rebounds,
@@ -82,22 +116,23 @@ SELECT
     AVG(CASE WHEN recent.rn <= 10 THEN recent.rebounds ELSE NULL END) AS last_10_avg_rebounds,
     
     -- Achievement Stats (mutually exclusive ranges)
-    COUNT(CASE WHEN ph.points >= 30 AND ph.points < 40 THEN 1 END) AS count_30pt_games,
-    COUNT(CASE WHEN ph.points >= 40 AND ph.points < 50 THEN 1 END) AS count_40pt_games,
-    COUNT(CASE WHEN ph.points >= 50 THEN 1 END) AS count_50pt_games,
-    COUNT(CASE WHEN ph.assists >= 10 THEN 1 END) AS count_10ast_games,
-    COUNT(CASE WHEN ph.rebounds >= 10 THEN 1 END) AS count_10reb_games,
-    COUNT(CASE WHEN ph.blocks >= 5 THEN 1 END) AS count_5blk_games,
-    COUNT(CASE WHEN ph.steals >= 5 THEN 1 END) AS count_5stl_games,
-    COUNT(CASE WHEN ph.points >= 10 AND ph.assists >= 10 THEN 1 END) AS count_dbl_pt_ast,
-    COUNT(CASE WHEN ph.points >= 10 AND ph.rebounds >= 10 THEN 1 END) AS count_dbl_pt_reb,
-    COUNT(CASE WHEN ph.assists >= 10 AND ph.rebounds >= 10 THEN 1 END) AS count_dbl_ast_reb,
-    COUNT(CASE WHEN 
+    -- These counts now properly handle unique matches only
+    COUNT(DISTINCT CASE WHEN ph.points >= 30 AND ph.points < 40 THEN ph.match_id END) AS count_30pt_games,
+    COUNT(DISTINCT CASE WHEN ph.points >= 40 AND ph.points < 50 THEN ph.match_id END) AS count_40pt_games,
+    COUNT(DISTINCT CASE WHEN ph.points >= 50 THEN ph.match_id END) AS count_50pt_games,
+    COUNT(DISTINCT CASE WHEN ph.assists >= 10 THEN ph.match_id END) AS count_10ast_games,
+    COUNT(DISTINCT CASE WHEN ph.rebounds >= 10 THEN ph.match_id END) AS count_10reb_games,
+    COUNT(DISTINCT CASE WHEN ph.blocks >= 5 THEN ph.match_id END) AS count_5blk_games,
+    COUNT(DISTINCT CASE WHEN ph.steals >= 5 THEN ph.match_id END) AS count_5stl_games,
+    COUNT(DISTINCT CASE WHEN ph.points >= 10 AND ph.assists >= 10 THEN ph.match_id END) AS count_dbl_pt_ast,
+    COUNT(DISTINCT CASE WHEN ph.points >= 10 AND ph.rebounds >= 10 THEN ph.match_id END) AS count_dbl_pt_reb,
+    COUNT(DISTINCT CASE WHEN ph.assists >= 10 AND ph.rebounds >= 10 THEN ph.match_id END) AS count_dbl_ast_reb,
+    COUNT(DISTINCT CASE WHEN 
         (ph.points >= 10 AND ph.assists >= 10) OR 
         (ph.points >= 10 AND ph.rebounds >= 10) OR 
         (ph.assists >= 10 AND ph.rebounds >= 10)
-    THEN 1 END) AS count_double_doubles,
-    COUNT(CASE WHEN ph.points >= 10 AND ph.assists >= 10 AND ph.rebounds >= 10 THEN 1 END) AS count_triple_doubles,
+    THEN ph.match_id END) AS count_double_doubles,
+    COUNT(DISTINCT CASE WHEN ph.points >= 10 AND ph.assists >= 10 AND ph.rebounds >= 10 THEN ph.match_id END) AS count_triple_doubles,
     
     -- Timeline
     MIN(ph.played_at) AS first_game_date,
@@ -114,7 +149,7 @@ SELECT
     ARRAY_AGG(DISTINCT ph.tournament_id) FILTER (WHERE ph.tournament_id IS NOT NULL) AS tournament_ids,
     ARRAY_AGG(DISTINCT ph.season_id) FILTER (WHERE ph.season_id IS NOT NULL) AS season_ids
 FROM players p
-LEFT JOIN player_history ph ON p.id = ph.player_id
+LEFT JOIN player_history_with_row_num ph ON p.id = ph.player_id
 LEFT JOIN v_player_global_rating pgr ON p.id = pgr.player_id
 LEFT JOIN teams t ON p.current_team_id = t.id
 LEFT JOIN recent_games recent ON p.id = recent.player_id

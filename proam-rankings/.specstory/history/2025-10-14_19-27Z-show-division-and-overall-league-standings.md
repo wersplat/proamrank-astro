@@ -7230,7 +7230,358 @@ Lines added: 1, lines removed: undefined
 
 ---
 
-<think><details><summary>Thought Process</summary>Now I need to update the fronten</details></think>
+<think><details><summary>Thought Process</summary>Now I need to update the frontend component to accept this new prop and use it when filtering conferences by division.</details></think>
+
+---
+
+Now let me update the frontend component to use the new junction table:
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx
+
+---
+
+<think><details><summary>Thought Process</summary>Let me find the LeagueTabsProps type definition to add the divisionConferences prop.</details></think>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "type LeagueTabsProps" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/LeagueTabsIsland.tsx` | `type LeagueTabsProps = \{` | L186 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to:
+1. Add a type for DivisionConference
+2. Add it to LeagueTabsProps
+3. Add it to the function parameters
+4. Update the logic that filters conferences by division to use the junction table</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 6, lines removed: 1
+
+```diff
+@@ -55,7 +55,12 @@
+    abbr: string | null;
+    division_logo: string | null;
+-   conference_id: string | null;
+    display_order: number | null;
+  };
++ 
++ type DivisionConference = {
++   id: string;
++   division_id: string;
++   conference_id: string;
++ };
+  
+  type Team = {
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the Team type to remove the old conference_id field from division.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 1
+
+```diff
+@@ -91,5 +91,4 @@
+      abbr: string | null;
+      division_logo: string | null;
+-     conference_id: string | null;
+      display_order: number | null;
+    } | null;
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to add divisionConferences to the LeagueTabsProps and function parameters.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -202,4 +202,5 @@
+    conferences?: Conference[];
+    divisions?: Division[];
++   divisionConferences?: DivisionConference[];
+  };
+  
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -218,4 +219,5 @@
+    conferences = [],
+    divisions = [],
++   divisionConferences = [],
+  }: LeagueTabsProps) {
+    const [activeTab, setActiveTab] = useState(0);
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+Now I need to find where we filter conferences by division and update that logic to use the divisionConferences junction table.</details></think>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "divisionConferences = conferences\?\.filter" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/LeagueTabsIsland.tsx` | `const divisionConferences = conferences?.filter(` | L395 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! I found the line. Now I need to update it to use the divisionConferences junction table instead of looking at divisions.conference_id.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 7, lines removed: 3
+
+```diff
+@@ -392,7 +392,11 @@
+                    <div className="space-y-8">
+                      {divisions.map((division) => {
+-                       // Get all conferences in this division
+-                       const divisionConferences = conferences?.filter(
+-                         conf => divisions.find(d => d.id === division.id && d.conference_id === conf.id)
++                       // Get all conferences in this division via junction table
++                       const divisionConfIds = divisionConferences
++                         ?.filter(dc => dc.division_id === division.id)
++                         .map(dc => dc.conference_id) || [];
++                       
++                       const conferencesInDivision = conferences?.filter(
++                         conf => divisionConfIds.includes(conf.id)
+                        ) || [];
+                        
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Now I need to update the reference to `divisionConferences` to use the new variable name `conferencesInDivision`.</details></think>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "divisionConferences\.length > 0 &&" in "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/LeagueTabsIsland.tsx` | `\{divisionConferences.length > 0 && (` | L500 |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>I need to update the two references to `divisionConferences` in the JSX to use `conferencesInDivision` instead.</details></think>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -498,7 +498,7 @@
+  
+                            {/* Conference Standings within this Division */}
+-                           {divisionConferences.length > 0 && (
++                           {conferencesInDivision.length > 0 && (
+                              <div className="space-y-4 ml-4">
+-                               {divisionConferences.map((conference) => {
++                               {conferencesInDivision.map((conference) => {
+                                  const conferenceTeams = divisionTeams
+                                    .filter(team => team.conference?.id === conference.id)
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Perfect! Now let me check for any linting errors in both files.</details></think>
+
+---
+
+Perfect! Now let me check for linting errors:
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro`
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+Lint errors for `src/pages/leagues/[id].astro`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| Property 'league_logo' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. | 433:25-433:36 | DIAGNOSTIC_SEVERITY_ERROR |
+| Property 'league_logo' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. | 431:17-431:28 | DIAGNOSTIC_SEVERITY_ERROR |
+| Property 'league_tier' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. Did you mean 'league_id'? | 412:16-412:27 | DIAGNOSTIC_SEVERITY_ERROR |
+| Property 'league_tier' does not exist on type '\{ avg_total_points_per_game: number \| null; best_record_team: string \| null; division_stats: Json; end_date: string \| null; first_match_date: string \| null; game_year: "2K16" \| ... 10 more ... \| null; ... 32 more ...; total_unique_teams: number \| null; \}'. Did you mean 'league_id'? | 61:32-61:43 | DIAGNOSTIC_SEVERITY_ERROR |
+
+
+Lint errors for `src/components/LeagueTabsIsland.tsx`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| 'playerData' is of type 'unknown'. | 334:24-334:34 | DIAGNOSTIC_SEVERITY_ERROR |
+| 'errorData' is of type 'unknown'. | 337:18-337:27 | DIAGNOSTIC_SEVERITY_ERROR |
+| 'teamData' is of type 'unknown'. | 342:22-342:30 | DIAGNOSTIC_SEVERITY_ERROR |
+
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>Excellent! All the linting errors are pre-existing and unrelated to our changes. The implementation is complete and should work correctly now with the new `lg_division_conferences` junction table.
+
+Let me provide a summary of the changes made.</details></think>
+
+---
+
+Perfect! All linting errors are pre-existing and unrelated to our changes. The implementation is complete!
+
+## Summary of Changes
+
+I've updated the code to use the new `lg_division_conferences` junction table:
+
+### Backend Changes (`src/pages/leagues/[id].astro`)
+1. **Added query** to fetch the junction table data:
+   ```typescript
+   const { data: divisionConferences } = await supa((Astro.locals as any).runtime)
+     .from("lg_division_conferences")
+     .select("*");
+   ```
+
+2. **Updated team data mapping** to use the junction table:
+   ```typescript
+   // Find division via junction table lookup
+   const divisionLink = conference ? 
+     divisionConferences?.find((dc: any) => dc.conference_id === conference.id) : null;
+   const division = divisionLink ? 
+     divisions?.find((d: any) => d.id === divisionLink.division_id) : null;
+   ```
+
+3. **Passed the junction data** as a prop to the component
+
+### Frontend Changes (`src/components/LeagueTabsIsland.tsx`)
+1. **Added `DivisionConference` type**:
+   ```typescript
+   type DivisionConference = {
+     id: string;
+     division_id: string;
+     conference_id: string;
+   };
+   ```
+
+2. **Updated `Division` type** - removed old `conference_id` field
+
+3. **Added prop** `divisionConferences` to component
+
+4. **Updated conference filtering logic** to use the junction table:
+   ```typescript
+   const divisionConfIds = divisionConferences
+     ?.filter(dc => dc.division_id === division.id)
+     .map(dc => dc.conference_id) || [];
+   
+   const conferencesInDivision = conferences?.filter(
+     conf => divisionConfIds.includes(conf.id)
+   ) || [];
+   ```
+
+The data flow now correctly uses the many-to-many relationship:
+- **Teams** → **Conferences** (via `teams.lg_conf`)
+- **Conferences** ↔ **Divisions** (via `lg_division_conferences` junction table)
+
+This allows:
+- Multiple conferences per division
+- Potentially multiple divisions per conference (though less common)
+- Proper hierarchical standings display with Division → Overall → Conference breakdowns
 
 ---
 

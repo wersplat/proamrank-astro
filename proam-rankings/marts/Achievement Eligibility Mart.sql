@@ -2,7 +2,7 @@ CREATE MATERIALIZED VIEW achievement_eligibility_mart AS
 WITH player_career_stats AS (
     SELECT
         ps.player_id,
-        COUNT(ps.match_id) AS total_games,
+        COUNT(DISTINCT ps.match_id) AS total_games,  -- Use DISTINCT to avoid duplicate counts
         SUM(ps.points) AS total_points,
         SUM(ps.assists) AS total_assists,
         SUM(ps.rebounds) AS total_rebounds,
@@ -11,10 +11,11 @@ WITH player_career_stats AS (
         MAX(ps.points) AS career_high_points,
         MAX(ps.assists) AS career_high_assists,
         MAX(ps.rebounds) AS career_high_rebounds,
-        COUNT(CASE WHEN ps.points >= 10 AND ps.assists >= 10 AND ps.rebounds >= 10 THEN 1 END) AS triple_doubles,
-        COUNT(CASE WHEN ps.points >= 30 THEN 1 END) AS games_30plus,
-        COUNT(CASE WHEN ps.points >= 40 THEN 1 END) AS games_40plus,
-        COUNT(CASE WHEN ps.points >= 50 THEN 1 END) AS games_50plus
+        -- For milestone counts, use DISTINCT match_id to avoid duplicates
+        COUNT(DISTINCT CASE WHEN ps.points >= 10 AND ps.assists >= 10 AND ps.rebounds >= 10 THEN ps.match_id END) AS triple_doubles,
+        COUNT(DISTINCT CASE WHEN ps.points >= 30 THEN ps.match_id END) AS games_30plus,
+        COUNT(DISTINCT CASE WHEN ps.points >= 40 THEN ps.match_id END) AS games_40plus,
+        COUNT(DISTINCT CASE WHEN ps.points >= 50 THEN ps.match_id END) AS games_50plus
     FROM player_stats ps
     JOIN v_matches_with_primary_context m ON ps.match_id = m.id
     WHERE ps.verified = TRUE AND m.verified = TRUE
@@ -29,7 +30,7 @@ current_streaks AS (
     FROM (
         SELECT
             ps.player_id,
-            COUNT(*) AS consecutive_games,
+            COUNT(DISTINCT ps.match_id) AS consecutive_games,  -- Use DISTINCT here too
             CASE 
                 WHEN ps.points >= 20 THEN '20pt_streak'
                 WHEN ps.points >= 15 THEN '15pt_streak'
@@ -49,7 +50,7 @@ current_streaks AS (
                 WHEN ps.assists >= 7 THEN '7ast_streak'
                 WHEN ps.rebounds >= 8 THEN '8reb_streak'
             END
-        HAVING COUNT(*) >= 3
+        HAVING COUNT(DISTINCT ps.match_id) >= 3
     ) streaks
     WHERE streak_recency = 1
 ),
@@ -122,14 +123,14 @@ achievement_candidates AS (
 season_achievements AS (
     SELECT
         ps.player_id,
-        m.primary_season_id,
-        ls.league_name::text AS league_name,
-        ls.season_number,
-        COUNT(ps.match_id) AS season_games,
-        AVG(ps.points) AS season_avg_points,
-        SUM(ps.points) AS season_total_points,
+        STRING_AGG(DISTINCT ls.league_name::text, ', ' ORDER BY ls.league_name::text) AS active_season_leagues,
+        STRING_AGG(DISTINCT (ls.league_name::text || ' S' || ls.season_number), ', ' ORDER BY (ls.league_name::text || ' S' || ls.season_number)) AS active_seasons_list,
+        COUNT(DISTINCT m.primary_season_id) AS active_season_count,
+        SUM(CASE WHEN m.primary_season_id IS NOT NULL THEN 1 ELSE 0 END) AS total_season_games,
+        ROUND(AVG(ps.points), 1) AS avg_season_points,
+        SUM(ps.points) AS total_season_points,
         CASE 
-            WHEN COUNT(ps.match_id) >= 10 AND AVG(ps.points) >= 25 THEN 'Eligible: Season Scoring Leader'
+            WHEN COUNT(DISTINCT ps.match_id) >= 10 AND AVG(ps.points) >= 25 THEN 'Eligible: Season Scoring Leader'
             ELSE NULL
         END AS season_award_eligible
     FROM player_stats ps
@@ -139,7 +140,7 @@ season_achievements AS (
     AND m.verified = TRUE
     AND m.primary_season_id IS NOT NULL
     AND ls.is_active = TRUE
-    GROUP BY ps.player_id, m.primary_season_id, ls.league_name::text, ls.season_number
+    GROUP BY ps.player_id
 )
 SELECT
     p.id AS player_id,
@@ -176,12 +177,12 @@ SELECT
     COALESCE(cs.consecutive_games, 0) AS active_streak_length,
     cs.last_game_date AS streak_last_game,
     
-    -- Season Awards (Current Active Seasons)
+    -- Season Awards (aggregated across all active seasons)
     sa.season_award_eligible,
-    sa.league_name AS active_season_league,
-    sa.season_number AS active_season_number,
-    COALESCE(sa.season_games, 0) AS active_season_games,
-    ROUND(COALESCE(sa.season_avg_points, 0)::numeric, 1) AS active_season_avg_points,
+    sa.active_season_leagues AS active_season_league,
+    sa.active_seasons_list AS active_season_number,
+    COALESCE(sa.total_season_games, 0) AS active_season_games,
+    sa.avg_season_points AS active_season_avg_points,
     
     -- Achievement Summary
     COALESCE(
@@ -205,4 +206,7 @@ LEFT JOIN achievement_candidates ac ON p.id = ac.player_id
 LEFT JOIN current_streaks cs ON p.id = cs.player_id
 LEFT JOIN season_achievements sa ON p.id = sa.player_id
 LEFT JOIN teams t ON p.current_team_id = t.id;
+
+-- Create index for achievement_eligibility_mart
+CREATE UNIQUE INDEX idx_aem_player_id_unique ON achievement_eligibility_mart(player_id);
 

@@ -185,6 +185,9 @@ type PlayerStatFull = {
   avg_blocks: number;
   avg_turnovers: number;
   avg_fouls: number;
+  fg_pct: string | null;
+  three_pt_pct: string | null;
+  ft_pct: string | null;
 };
 
 type LeagueTabsProps = {
@@ -957,13 +960,10 @@ export default function LeagueTabsIsland({
                     </thead>
                     <tbody className="divide-y divide-neutral-800">
                       {sortedPlayerStats.map((player) => {
-                        const fgPercentage = player.fga > 0 ? ((player.fgm / player.fga) * 100).toFixed(1) : '-';
-                        const threePtPercentage = player.three_points_attempted > 0 
-                          ? ((player.three_points_made / player.three_points_attempted) * 100).toFixed(1) 
-                          : '-';
-                        const ftPercentage = player.fta > 0 
-                          ? ((player.ftm / player.fta) * 100).toFixed(1) 
-                          : '0.0';
+                        // Use pre-calculated percentages from the mart
+                        const fgPercentage = player.fg_pct ?? '-';
+                        const threePtPercentage = player.three_pt_pct ?? '-';
+                        const ftPercentage = player.ft_pct ?? '-';
                         
                         return (
                           <tr key={player.player_id} className="hover:bg-neutral-900">
