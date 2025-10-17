@@ -1,0 +1,204 @@
+---
+import { supa } from "../lib/supabase";
+
+// Get league ID from URL params
+const leagueId = Astro.url.searchParams.get('id');
+
+if (!leagueId) {
+  return new Response('Missing league ID parameter', { status: 400 });
+}
+
+// Get league info
+const { data: leagueData } = await supa((Astro.locals as any).runtime)
+  .from("league_calendar")
+  .select("*")
+  .eq("league_id", leagueId)
+  .order("season_number", { ascending: false })
+  .limit(1)
+  .maybeSingle();
+
+if (!leagueData) {
+  return new Response('League not found', { status: 404 });
+}
+
+const seasonId = leagueData.season_id;
+
+// Get team data for this season
+const { data: standings } = await supa((Astro.locals as any).runtime)
+  .from("lg_division_standings")
+  .select("*")
+  .eq("season_id", seasonId)
+  .order("final_placement", { ascending: true });
+
+const teamIds = Array.from(new Set((standings ?? []).map((s: any) => s.team_id).filter(Boolean)));
+const { data: teamsData } = teamIds.length > 0 ? await supa((Astro.locals as any).runtime)
+  .from("teams")
+  .select("id, name, logo_url")
+  .in("id", teamIds) : { data: [] };
+
+const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
+
+// Fetch Open Tournament data (same logic as league page)
+let openTournament = null;
+const { data: openTournamentData } = await supa((Astro.locals as any).runtime)
+  .from("league_open")
+  .select("open_champion, open_prize, status, start_date, finals_date")
+  .eq("season_id", seasonId)
+  .maybeSingle();
+
+let openMatchesData = null;
+let openMatchDetails = null;
+let openMatches = [];
+
+if (openTournamentData) {
+  // Fetch open tournament matches
+  const { data: openMatchesDataResult } = await supa((Astro.locals as any).runtime)
+    .from("league_open_matches")
+    .select("match_id, stage, series_number")
+    .eq("season_id", seasonId);
+  
+  openMatchesData = openMatchesDataResult;
+
+  // Get match details for open tournament
+  const openMatchIds = (openMatchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
+  
+  if (openMatchIds.length > 0) {
+    const { data: openMatchDetailsResult } = await supa((Astro.locals as any).runtime)
+      .from("v_matches_with_primary_context")
+      .select("id, played_at, team_a_id, team_b_id, score_a, score_b, winner_id")
+      .in("id", openMatchIds);
+    
+    openMatchDetails = openMatchDetailsResult;
+
+    // Get team data for tournament teams (they might not be in season matches)
+    const tournamentTeamIds = Array.from(new Set([
+      ...(openMatchDetails ?? []).map((m: any) => m.team_a_id),
+      ...(openMatchDetails ?? []).map((m: any) => m.team_b_id)
+    ].filter(Boolean)));
+
+    const { data: tournamentTeamsData } = tournamentTeamIds.length > 0 ? await supa((Astro.locals as any).runtime)
+      .from("teams")
+      .select("id, name, logo_url")
+      .in("id", tournamentTeamIds) : { data: [] };
+
+    // Add tournament teams to teamMap
+    (tournamentTeamsData ?? []).forEach((t: any) => {
+      if (!teamMap.has(t.id)) {
+        teamMap.set(t.id, t);
+      }
+    });
+
+    // Combine match details with stage/series info and team data
+    openMatches = (openMatchDetails ?? []).map((match: any) => {
+      const matchInfo = openMatchesData?.find((m: any) => m.match_id === match.id);
+      return {
+        ...match,
+        stage: matchInfo?.stage ?? null,
+        series_number: matchInfo?.series_number ?? null,
+        team_a: teamMap.get(match.team_a_id),
+        team_b: teamMap.get(match.team_b_id),
+      };
+    });
+  }
+
+  openTournament = {
+    champion: openTournamentData.open_champion,
+    prize: openTournamentData.open_prize,
+    status: openTournamentData.status,
+    start_date: openTournamentData.start_date,
+    finals_date: openTournamentData.finals_date,
+    matches: openMatches,
+  };
+}
+---
+
+<html>
+<head>
+  <title>League Debug - {leagueData?.league_name || 'Unknown'}</title>
+  <style>
+    body { font-family: monospace; background: #1a1a1a; color: #fff; padding: 20px; }
+    .section { margin: 20px 0; padding: 15px; border: 1px solid #333; border-radius: 5px; }
+    .error { color: #ff6b6b; }
+    .success { color: #51cf66; }
+    .warning { color: #ffd43b; }
+    .info { color: #74c0fc; }
+    pre { background: #2d2d2d; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+    th { background: #333; }
+  </style>
+</head>
+<body>
+  <h1>League Debug Tool</h1>
+  
+  <div class="section">
+    <h2>League Info</h2>
+    <pre>{JSON.stringify(leagueData, null, 2)}</pre>
+  </div>
+
+  <div class="section">
+    <h2>Open Tournament Analysis</h2>
+    
+    {openTournamentData ? (
+      <div>
+        <p class="success">✅ Open tournament data found</p>
+        <pre>{JSON.stringify(openTournamentData, null, 2)}</pre>
+      </div>
+    ) : (
+      <p class="error">❌ No open tournament data found</p>
+    )}
+
+    {openMatchesData && openMatchesData.length > 0 ? (
+      <div>
+        <p class="success">✅ Found {openMatchesData.length} open tournament match associations</p>
+        <pre>{JSON.stringify(openMatchesData, null, 2)}</pre>
+      </div>
+    ) : (
+      <p class="warning">⚠️ No open tournament match associations found</p>
+    )}
+
+    {openMatchDetails && openMatchDetails.length > 0 ? (
+      <div>
+        <p class="success">✅ Found {openMatchDetails.length} match details</p>
+        <pre>{JSON.stringify(openMatchDetails, null, 2)}</pre>
+      </div>
+    ) : (
+      <p class="warning">⚠️ No match details found</p>
+    )}
+
+    {openMatches.length > 0 ? (
+      <div>
+        <p class="success">✅ Final processed matches: {openMatches.length}</p>
+        <p><strong>Stages found:</strong> {[...new Set(openMatches.map(m => m.stage))].join(', ')}</p>
+        <pre>{JSON.stringify(openMatches, null, 2)}</pre>
+      </div>
+    ) : (
+      <p class="error">❌ No final processed matches</p>
+    )}
+  </div>
+
+  <div class="section">
+    <h2>Final Open Tournament Object</h2>
+    {openTournament ? (
+      <pre>{JSON.stringify(openTournament, null, 2)}</pre>
+    ) : (
+      <p class="error">❌ openTournament is null</p>
+    )}
+  </div>
+
+  <div class="section">
+    <h2>Diagnosis</h2>
+    {!openTournamentData ? (
+      <p class="error">🔍 Issue: No open tournament data in league_open table</p>
+    ) : !openMatchesData || openMatchesData.length === 0 ? (
+      <p class="error">🔍 Issue: No match associations in league_open_matches table</p>
+    ) : !openMatchDetails || openMatchDetails.length === 0 ? (
+      <p class="error">🔍 Issue: Match IDs exist but matches not found in v_matches_with_primary_context</p>
+    ) : openMatches.length === 0 ? (
+      <p class="error">🔍 Issue: Match processing failed</p>
+    ) : (
+      <p class="success">✅ Everything looks good - bracket should display</p>
+    )}
+  </div>
+</body>
+</html>

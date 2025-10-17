@@ -1,0 +1,99 @@
+---
+import BracketDisplay from "./src/components/BracketDisplay";
+import { supa } from "./src/lib/supabase";
+import "./src/styles/global.css";
+
+// Test data for Summer Championship tournament
+const tournamentId = '41242c3a-662e-494f-b793-b6aba2d0a387';
+
+// Get tournament matches
+const { data: matchesData } = await supa((Astro.locals as any).runtime)
+  .from("v_matches_with_primary_context")
+  .select("id, played_at, team_a_id, team_b_id, score_a, score_b, stage, boxscore_url, status, verified, league_id, season_id, tournament_id, primary_tournament_id")
+  .eq("primary_tournament_id", tournamentId)
+  .order("played_at", { ascending: false })
+  .limit(1000);
+
+// Get team info for matches
+const matchTeamIds = Array.from(new Set([
+  ...(matchesData ?? []).map((m: any) => m.team_a_id),
+  ...(matchesData ?? []).map((m: any) => m.team_b_id)
+].filter(Boolean)));
+
+const { data: matchTeamsData } = matchTeamIds.length > 0 ? await supa((Astro.locals as any).runtime)
+  .from("teams")
+  .select("id, name, logo_url")
+  .in("id", matchTeamIds) : { data: [] };
+
+const matchTeamMap = new Map((matchTeamsData ?? []).map((t: any) => [t.id, t]));
+
+const matches = (matchesData ?? []).map((m: any) => ({
+  ...m,
+  team_a: matchTeamMap.get(m.team_a_id),
+  team_b: matchTeamMap.get(m.team_b_id),
+}));
+
+// Prepare bracket matches (same logic as TournamentTabsIsland)
+const bracketMatches = matches
+  .filter(m => m.stage && m.stage !== "Regular Season")
+  .map((m, idx) => {
+    // Determine winner based on scores
+    let winner_id: string | null = null;
+    if (m.score_a !== null && m.score_b !== null) {
+      if (m.score_a > m.score_b) {
+        winner_id = m.team_a_id;
+      } else if (m.score_b > m.score_a) {
+        winner_id = m.team_b_id;
+      }
+    }
+    
+    return {
+      id: m.id,
+      played_at: m.played_at,
+      team_a_id: m.team_a_id,
+      team_b_id: m.team_b_id,
+      score_a: m.score_a,
+      score_b: m.score_b,
+      stage: m.stage,
+      series_number: idx + 1,
+      winner_id,
+      team_a: m.team_a,
+      team_b: m.team_b,
+    };
+  });
+
+console.log('Total matches:', matches.length);
+console.log('Bracket matches:', bracketMatches.length);
+console.log('Stages found:', [...new Set(matches.map(m => m.stage))]);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bracket Test - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <div class="mx-auto max-w-6xl p-6">
+      <h1 class="text-2xl font-bold mb-6">Bracket Display Test</h1>
+      
+      <div class="mb-4 p-4 bg-neutral-800 rounded">
+        <h2 class="text-lg font-semibold mb-2">Debug Info</h2>
+        <p>Total matches: {matches.length}</p>
+        <p>Bracket matches: {bracketMatches.length}</p>
+        <p>Stages: {[...new Set(matches.map(m => m.stage))].join(', ')}</p>
+      </div>
+
+      <BracketDisplay 
+        client:load
+        matches={bracketMatches}
+        tournamentName="Summer Championship (Test)"
+        champion="Watch Greatness"
+        prizePool={10000}
+        status="completed"
+        startDate="2025-07-25"
+        finalsDate="2025-07-28"
+      />
+    </div>
+  </body>
+</html>
