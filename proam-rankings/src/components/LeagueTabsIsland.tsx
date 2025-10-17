@@ -157,6 +157,7 @@ type TournamentData = {
   start_date?: string | null;
   finals_date?: string | null;
   tournament_type?: string | null;
+  series_format?: string | null;
   matches: BracketMatch[];
 };
 
@@ -1197,6 +1198,7 @@ export default function LeagueTabsIsland({
                 startDate={openTournament.start_date}
                 finalsDate={openTournament.finals_date}
                 tournamentType={openTournament.tournament_type}
+                seriesFormat={openTournament.series_format}
               />
             ) : selectedTournamentType === 'playoff' && playoffTournament ? (
               <BracketDisplay
@@ -1208,6 +1210,7 @@ export default function LeagueTabsIsland({
                 startDate={playoffTournament.start_date}
                 finalsDate={playoffTournament.finals_date}
                 tournamentType={playoffTournament.tournament_type}
+                seriesFormat={playoffTournament.series_format}
               />
             ) : (
               <div className="text-center py-12 text-neutral-400">

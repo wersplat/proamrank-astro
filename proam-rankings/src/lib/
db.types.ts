@@ -1532,6 +1532,7 @@ export type Database = {
           open_prize: number | null
           rp_value: number | null
           season_id: string
+          series_format: string | null
           start_date: string | null
           status: Database["public"]["Enums"]["status"] | null
           team_count: number | null
@@ -1549,6 +1550,7 @@ export type Database = {
           open_prize?: number | null
           rp_value?: number | null
           season_id: string
+          series_format?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null
@@ -1566,6 +1568,7 @@ export type Database = {
           open_prize?: number | null
           rp_value?: number | null
           season_id?: string
+          series_format?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null
@@ -1958,6 +1961,7 @@ export type Database = {
           playoff_prize: number | null
           rp_value: number | null
           season_id: string
+          series_format: string | null
           start_date: string | null
           status: Database["public"]["Enums"]["status"] | null
           team_count: number | null
@@ -1975,6 +1979,7 @@ export type Database = {
           playoff_prize?: number | null
           rp_value?: number | null
           season_id: string
+          series_format?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null
@@ -1992,6 +1997,7 @@ export type Database = {
           playoff_prize?: number | null
           rp_value?: number | null
           season_id?: string
+          series_format?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null

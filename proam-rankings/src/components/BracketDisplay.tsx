@@ -25,6 +25,7 @@ type BracketDisplayProps = {
   startDate?: string | null;
   finalsDate?: string | null;
   tournamentType?: string | null;
+  seriesFormat?: string | null;
 };
 
 // Stage ordering for single elimination
@@ -42,6 +43,7 @@ export default function BracketDisplay({
   startDate,
   finalsDate,
   tournamentType,
+  seriesFormat,
 }: BracketDisplayProps) {
   const [selectedMatch, setSelectedMatch] = useState<BracketMatch | null>(null);
 
@@ -59,6 +61,21 @@ export default function BracketDisplay({
 
   // Use provided tournament type or fall back to auto-detection
   const format = (tournamentType as BracketFormat) || detectFormat();
+
+  // Format series display
+  const getSeriesDisplay = (seriesNumber: number | null, seriesFormat: string | null) => {
+    if (!seriesNumber || !seriesFormat) return '';
+    
+    const formatMap = {
+      'bo1': 'BO1',
+      'bo3': 'BO3', 
+      'bo5': 'BO5',
+      'bo7': 'BO7'
+    };
+    
+    const formatText = formatMap[seriesFormat as keyof typeof formatMap] || seriesFormat.toUpperCase();
+    return `Game ${seriesNumber} (${formatText})`;
+  };
 
   const getFormatBadge = (format: BracketFormat) => {
     const badges = {
@@ -143,6 +160,13 @@ export default function BracketDisplay({
                         <span className="font-bold">{match.score_b ?? "-"}</span>
                       </div>
                     </div>
+                    {match.series_number && seriesFormat && (
+                      <div className="mt-2 pt-2 border-t border-neutral-700">
+                        <span className="text-xs text-neutral-400">
+                          {getSeriesDisplay(match.series_number, seriesFormat)}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -210,6 +234,13 @@ export default function BracketDisplay({
                             <span className="font-bold">{match.score_b ?? "-"}</span>
                           </div>
                         </div>
+                        {match.series_number && seriesFormat && (
+                          <div className="mt-2 pt-2 border-t border-neutral-700">
+                            <span className="text-xs text-neutral-400">
+                              {getSeriesDisplay(match.series_number, seriesFormat)}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -267,6 +298,13 @@ export default function BracketDisplay({
                               <span className="font-bold">{match.score_b ?? "-"}</span>
                             </div>
                           </div>
+                          {match.series_number && seriesFormat && (
+                            <div className="mt-2 pt-2 border-t border-neutral-700">
+                              <span className="text-xs text-neutral-400">
+                                {getSeriesDisplay(match.series_number, seriesFormat)}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -330,6 +368,13 @@ export default function BracketDisplay({
                   <div className="text-xs text-neutral-500 mt-1">
                     {new Date(match.played_at).toLocaleDateString()}
                   </div>
+                  {match.series_number && seriesFormat && (
+                    <div className="mt-2 pt-2 border-t border-neutral-700">
+                      <span className="text-xs text-neutral-400">
+                        {getSeriesDisplay(match.series_number, seriesFormat)}
+                      </span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -383,6 +428,13 @@ export default function BracketDisplay({
               {match.stage && <span>{match.stage}</span>}
               <span>{new Date(match.played_at).toLocaleDateString()}</span>
             </div>
+            {match.series_number && seriesFormat && (
+              <div className="mt-2 pt-2 border-t border-neutral-700">
+                <span className="text-xs text-neutral-400">
+                  {getSeriesDisplay(match.series_number, seriesFormat)}
+                </span>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -525,7 +577,9 @@ export default function BracketDisplay({
                 {selectedMatch.series_number && (
                   <div className="flex justify-between">
                     <span className="text-neutral-400">Series:</span>
-                    <span className="text-neutral-200">#{selectedMatch.series_number}</span>
+                    <span className="text-neutral-200">
+                      {getSeriesDisplay(selectedMatch.series_number, seriesFormat)}
+                    </span>
                   </div>
                 )}
                 <div className="flex justify-between">
