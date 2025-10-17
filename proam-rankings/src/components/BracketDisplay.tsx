@@ -24,6 +24,7 @@ type BracketDisplayProps = {
   status?: string | null;
   startDate?: string | null;
   finalsDate?: string | null;
+  tournamentType?: string | null;
 };
 
 // Stage ordering for single elimination
@@ -40,6 +41,7 @@ export default function BracketDisplay({
   status,
   startDate,
   finalsDate,
+  tournamentType,
 }: BracketDisplayProps) {
   const [selectedMatch, setSelectedMatch] = useState<BracketMatch | null>(null);
 
@@ -55,7 +57,8 @@ export default function BracketDisplay({
     return "unknown";
   };
 
-  const format = detectFormat();
+  // Use provided tournament type or fall back to auto-detection
+  const format = (tournamentType as BracketFormat) || detectFormat();
 
   const getFormatBadge = (format: BracketFormat) => {
     const badges = {

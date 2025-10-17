@@ -266,7 +266,7 @@ const fullPlayerStats = (fullPlayerStatsRaw ?? []).map((p: any) => ({
 let openTournament = null;
 const { data: openTournamentData } = await supa((Astro.locals as any).runtime)
   .from("league_open")
-  .select("open_champion, open_prize, status, start_date, finals_date")
+  .select("open_champion, open_prize, status, start_date, finals_date, tournament_type")
   .eq("season_id", seasonId)
   .maybeSingle();
 
@@ -324,6 +324,7 @@ if (openTournamentData) {
     status: openTournamentData.status,
     start_date: openTournamentData.start_date,
     finals_date: openTournamentData.finals_date,
+    tournament_type: openTournamentData.tournament_type,
     matches: openMatches,
   };
 }
@@ -332,7 +333,7 @@ if (openTournamentData) {
 let playoffTournament = null;
 const { data: playoffTournamentData } = await supa((Astro.locals as any).runtime)
   .from("league_playoff")
-  .select("playoff_champion, playoff_prize, status, start_date, finals_date")
+  .select("playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type")
   .eq("season_id", seasonId)
   .maybeSingle();
 
@@ -390,6 +391,7 @@ if (playoffTournamentData) {
     status: playoffTournamentData.status,
     start_date: playoffTournamentData.start_date,
     finals_date: playoffTournamentData.finals_date,
+    tournament_type: playoffTournamentData.tournament_type,
     matches: playoffMatches,
   };
 }

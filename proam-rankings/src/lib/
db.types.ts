@@ -1536,6 +1536,9 @@ export type Database = {
           status: Database["public"]["Enums"]["status"] | null
           team_count: number | null
           tier_label: string | null
+          tournament_type:
+            | Database["public"]["Enums"]["tournament_format"]
+            | null
         }
         Insert: {
           created_at?: string
@@ -1550,6 +1553,9 @@ export type Database = {
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null
           tier_label?: string | null
+          tournament_type?:
+            | Database["public"]["Enums"]["tournament_format"]
+            | null
         }
         Update: {
           created_at?: string
@@ -1564,6 +1570,9 @@ export type Database = {
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null
           tier_label?: string | null
+          tournament_type?:
+            | Database["public"]["Enums"]["tournament_format"]
+            | null
         }
         Relationships: [
           {
@@ -1953,6 +1962,9 @@ export type Database = {
           status: Database["public"]["Enums"]["status"] | null
           team_count: number | null
           tier: Database["public"]["Enums"]["event_tier"] | null
+          tournament_type:
+            | Database["public"]["Enums"]["tournament_format"]
+            | null
         }
         Insert: {
           created_at?: string
@@ -1967,6 +1979,9 @@ export type Database = {
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null
           tier?: Database["public"]["Enums"]["event_tier"] | null
+          tournament_type?:
+            | Database["public"]["Enums"]["tournament_format"]
+            | null
         }
         Update: {
           created_at?: string
@@ -1981,6 +1996,9 @@ export type Database = {
           status?: Database["public"]["Enums"]["status"] | null
           team_count?: number | null
           tier?: Database["public"]["Enums"]["event_tier"] | null
+          tournament_type?:
+            | Database["public"]["Enums"]["tournament_format"]
+            | null
         }
         Relationships: [
           {
@@ -11873,6 +11891,7 @@ export type Database = {
           league: string | null
           league_id: string | null
           league_name: string | null
+          league_tier: string | null
           lg_logo_url: string | null
           open_champion: string | null
           open_end: string | null
@@ -18271,6 +18290,11 @@ export type Database = {
         | "under review"
         | "reviewed"
         | "approved"
+      tournament_format:
+        | "single-elimination"
+        | "double-elimination"
+        | "swiss"
+        | "round-robin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -18516,6 +18540,12 @@ export const Constants = {
         "under review",
         "reviewed",
         "approved",
+      ],
+      tournament_format: [
+        "single-elimination",
+        "double-elimination",
+        "swiss",
+        "round-robin",
       ],
     },
   },
