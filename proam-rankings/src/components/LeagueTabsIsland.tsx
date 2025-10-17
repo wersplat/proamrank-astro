@@ -145,6 +145,7 @@ type BracketMatch = {
   score_b: number | null;
   stage: string | null;
   series_number: number | null;
+  series_format?: string | null;
   winner_id: string | null;
   team_a?: { name: string | null; logo_url: string | null };
   team_b?: { name: string | null; logo_url: string | null };

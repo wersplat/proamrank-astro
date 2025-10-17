@@ -277,6 +277,12 @@ if (openTournamentData) {
     .select("match_id, stage, series_number")
     .eq("season_id", seasonId);
 
+  // Fetch series formats for open tournament
+  const { data: openSeriesFormats } = await supa((Astro.locals as any).runtime)
+    .from("series_formats")
+    .select("stage, series_format")
+    .eq("season_id", seasonId);
+
   // Get match details for open tournament
   const openMatchIds = (openMatchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
   let openMatches: any[] = [];
@@ -305,13 +311,20 @@ if (openTournamentData) {
       }
     });
 
+    // Create series format lookup map
+    const seriesFormatMap = new Map(
+      (openSeriesFormats ?? []).map((sf: any) => [sf.stage, sf.series_format])
+    );
+
     // Combine match details with stage/series info and team data
     openMatches = (openMatchDetails ?? []).map((match: any) => {
       const matchInfo = openMatchesData?.find((m: any) => m.match_id === match.id);
+      const stage = matchInfo?.stage ?? null;
       return {
         ...match,
-        stage: matchInfo?.stage ?? null,
+        stage: stage,
         series_number: matchInfo?.series_number ?? null,
+        series_format: seriesFormatMap.get(stage) || 'bo1', // Default to BO1 if no format specified
         team_a: teamMap.get(match.team_a_id),
         team_b: teamMap.get(match.team_b_id),
       };
@@ -345,6 +358,12 @@ if (playoffTournamentData) {
     .select("match_id, stage, series_number")
     .eq("season_id", seasonId);
 
+  // Fetch series formats for playoff tournament (same table, filtered by season_id)
+  const { data: playoffSeriesFormats } = await supa((Astro.locals as any).runtime)
+    .from("series_formats")
+    .select("stage, series_format")
+    .eq("season_id", seasonId);
+
   // Get match details for playoff tournament
   const playoffMatchIds = (playoffMatchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
   let playoffMatches: any[] = [];
@@ -373,13 +392,20 @@ if (playoffTournamentData) {
       }
     });
 
+    // Create series format lookup map for playoffs
+    const playoffSeriesFormatMap = new Map(
+      (playoffSeriesFormats ?? []).map((sf: any) => [sf.stage, sf.series_format])
+    );
+
     // Combine match details with stage/series info and team data
     playoffMatches = (playoffMatchDetails ?? []).map((match: any) => {
       const matchInfo = playoffMatchesData?.find((m: any) => m.match_id === match.id);
+      const stage = matchInfo?.stage ?? null;
       return {
         ...match,
-        stage: matchInfo?.stage ?? null,
+        stage: stage,
         series_number: matchInfo?.series_number ?? null,
+        series_format: playoffSeriesFormatMap.get(stage) || 'bo1', // Default to BO1 if no format specified
         team_a: teamMap.get(match.team_a_id),
         team_b: teamMap.get(match.team_b_id),
       };

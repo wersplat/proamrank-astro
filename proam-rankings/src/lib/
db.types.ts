@@ -8843,6 +8843,30 @@ export type Database = {
         }
         Relationships: []
       }
+      series_formats: {
+        Row: {
+          created_at: string | null
+          id: string
+          season_id: string
+          series_format: string
+          stage: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          season_id: string
+          series_format: string
+          stage: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          season_id?: string
+          series_format?: string
+          stage?: string
+        }
+        Relationships: []
+      }
       sponsor_info: {
         Row: {
           created_at: string

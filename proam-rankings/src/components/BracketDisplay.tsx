@@ -9,6 +9,7 @@ type BracketMatch = {
   score_b: number | null;
   stage: string | null;
   series_number: number | null;
+  series_format?: string | null;
   winner_id: string | null;
   team_a?: { name: string | null; logo_url: string | null };
   team_b?: { name: string | null; logo_url: string | null };
@@ -75,6 +76,11 @@ export default function BracketDisplay({
     
     const formatText = formatMap[seriesFormat as keyof typeof formatMap] || seriesFormat.toUpperCase();
     return `Game ${seriesNumber} (${formatText})`;
+  };
+
+  // Get series format for a match (prefer match-level, fallback to tournament-level)
+  const getMatchSeriesFormat = (match: BracketMatch) => {
+    return match.series_format || seriesFormat || 'bo1';
   };
 
   const getFormatBadge = (format: BracketFormat) => {
@@ -160,10 +166,10 @@ export default function BracketDisplay({
                         <span className="font-bold">{match.score_b ?? "-"}</span>
                       </div>
                     </div>
-                    {match.series_number && seriesFormat && (
+                    {match.series_number && (
                       <div className="mt-2 pt-2 border-t border-neutral-700">
                         <span className="text-xs text-neutral-400">
-                          {getSeriesDisplay(match.series_number, seriesFormat)}
+                          {getSeriesDisplay(match.series_number, getMatchSeriesFormat(match))}
                         </span>
                       </div>
                     )}
@@ -234,10 +240,10 @@ export default function BracketDisplay({
                             <span className="font-bold">{match.score_b ?? "-"}</span>
                           </div>
                         </div>
-                        {match.series_number && seriesFormat && (
+                        {match.series_number && (
                           <div className="mt-2 pt-2 border-t border-neutral-700">
                             <span className="text-xs text-neutral-400">
-                              {getSeriesDisplay(match.series_number, seriesFormat)}
+                              {getSeriesDisplay(match.series_number, getMatchSeriesFormat(match))}
                             </span>
                           </div>
                         )}
@@ -578,7 +584,7 @@ export default function BracketDisplay({
                   <div className="flex justify-between">
                     <span className="text-neutral-400">Series:</span>
                     <span className="text-neutral-200">
-                      {getSeriesDisplay(selectedMatch.series_number, seriesFormat)}
+                      {getSeriesDisplay(selectedMatch.series_number, getMatchSeriesFormat(selectedMatch))}
                     </span>
                   </div>
                 )}
