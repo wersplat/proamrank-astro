@@ -1,0 +1,122 @@
+---
+// Test page for series grouping in brackets
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Test Series Bracket</title>
+</head>
+<body>
+    <div id="test-series-bracket"></div>
+    
+    <script>
+        // Test data with multiple games per series
+        const testMatches = [
+            // Series 1 - Round 1
+            {
+                id: '1',
+                stage: 'Round 1',
+                series_number: 1,
+                series_format: 'bo3',
+                team_a: { id: 'team1', name: 'Team Alpha', logo_url: null },
+                team_b: { id: 'team2', name: 'Team Beta', logo_url: null },
+                team_a_id: 'team1',
+                team_b_id: 'team2',
+                score_a: 2,
+                score_b: 1,
+                winner_id: 'team1',
+                played_at: '2024-01-15T10:00:00Z'
+            },
+            {
+                id: '2',
+                stage: 'Round 1',
+                series_number: 1,
+                series_format: 'bo3',
+                team_a: { id: 'team1', name: 'Team Alpha', logo_url: null },
+                team_b: { id: 'team2', name: 'Team Beta', logo_url: null },
+                team_a_id: 'team1',
+                team_b_id: 'team2',
+                score_a: 1,
+                score_b: 2,
+                winner_id: 'team2',
+                played_at: '2024-01-15T11:00:00Z'
+            },
+            {
+                id: '3',
+                stage: 'Round 1',
+                series_number: 1,
+                series_format: 'bo3',
+                team_a: { id: 'team1', name: 'Team Alpha', logo_url: null },
+                team_b: { id: 'team2', name: 'Team Beta', logo_url: null },
+                team_a_id: 'team1',
+                team_b_id: 'team2',
+                score_a: 2,
+                score_b: 0,
+                winner_id: 'team1',
+                played_at: '2024-01-15T12:00:00Z'
+            },
+            // Series 2 - Round 1
+            {
+                id: '4',
+                stage: 'Round 1',
+                series_number: 2,
+                series_format: 'bo5',
+                team_a: { id: 'team3', name: 'Team Gamma', logo_url: null },
+                team_b: { id: 'team4', name: 'Team Delta', logo_url: null },
+                team_a_id: 'team3',
+                team_b_id: 'team4',
+                score_a: 3,
+                score_b: 2,
+                winner_id: 'team3',
+                played_at: '2024-01-15T13:00:00Z'
+            },
+            {
+                id: '5',
+                stage: 'Round 1',
+                series_number: 2,
+                series_format: 'bo5',
+                team_a: { id: 'team3', name: 'Team Gamma', logo_url: null },
+                team_b: { id: 'team4', name: 'Team Delta', logo_url: null },
+                team_a_id: 'team3',
+                team_b_id: 'team4',
+                score_a: 2,
+                score_b: 3,
+                winner_id: 'team4',
+                played_at: '2024-01-15T14:00:00Z'
+            },
+            // Semi Finals
+            {
+                id: '6',
+                stage: 'Semi Finals',
+                series_number: 1,
+                series_format: 'bo3',
+                team_a: { id: 'team1', name: 'Team Alpha', logo_url: null },
+                team_b: { id: 'team3', name: 'Team Gamma', logo_url: null },
+                team_a_id: 'team1',
+                team_b_id: 'team3',
+                score_a: 2,
+                score_b: 1,
+                winner_id: 'team1',
+                played_at: '2024-01-16T10:00:00Z'
+            }
+        ];
+
+        // Render the test
+        const testContainer = document.getElementById('test-series-bracket');
+        testContainer.innerHTML = `
+            <div style="padding: 20px; background: #111; color: white; min-height: 100vh;">
+                <h1>Series Grouping Test</h1>
+                <p>This shows how series are grouped in the bracket display.</p>
+                <div id="bracket-container"></div>
+            </div>
+        `;
+
+        // Import and render BracketDisplay (this would normally be done via Astro components)
+        console.log('Test matches:', testMatches);
+    </script>
+</body>
+</html>

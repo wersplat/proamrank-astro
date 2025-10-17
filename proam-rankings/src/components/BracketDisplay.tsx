@@ -47,6 +47,7 @@ export default function BracketDisplay({
   seriesFormat,
 }: BracketDisplayProps) {
   const [selectedMatch, setSelectedMatch] = useState<BracketMatch | null>(null);
+  const [selectedSeries, setSelectedSeries] = useState<any>(null);
 
   // Detect bracket format
   const detectFormat = (): BracketFormat => {
@@ -114,6 +115,73 @@ export default function BracketDisplay({
     return grouped;
   };
 
+  // Group matches by series within each stage
+  const groupMatchesBySeries = (matches: BracketMatch[]) => {
+    const seriesMap = new Map<string, BracketMatch[]>();
+    
+    matches.forEach((match) => {
+      const seriesKey = `${match.stage}-${match.series_number || 0}`;
+      if (!seriesMap.has(seriesKey)) {
+        seriesMap.set(seriesKey, []);
+      }
+      seriesMap.get(seriesKey)!.push(match);
+    });
+
+    // Convert to array of series objects
+    return Array.from(seriesMap.entries()).map(([seriesKey, seriesMatches]) => {
+      const firstMatch = seriesMatches[0];
+      const seriesFormat = getMatchSeriesFormat(firstMatch);
+      
+      return {
+        seriesKey,
+        stage: firstMatch.stage,
+        seriesNumber: firstMatch.series_number,
+        seriesFormat,
+        matches: seriesMatches.sort((a, b) => (a.series_number || 0) - (b.series_number || 0)),
+        teamA: firstMatch.team_a,
+        teamB: firstMatch.team_b,
+        // Determine series winner
+        seriesWinner: determineSeriesWinner(seriesMatches, seriesFormat),
+      };
+    });
+  };
+
+  // Determine series winner based on series format
+  const determineSeriesWinner = (matches: BracketMatch[], seriesFormat: string) => {
+    const teamAWins = matches.filter(m => m.winner_id === m.team_a_id).length;
+    const teamBWins = matches.filter(m => m.winner_id === m.team_b_id).length;
+    
+    const formatMap = {
+      'bo1': 1,
+      'bo3': 2,
+      'bo5': 3,
+      'bo7': 4
+    };
+    
+    const winsNeeded = formatMap[seriesFormat as keyof typeof formatMap] || 1;
+    
+    if (teamAWins >= winsNeeded) return matches[0].team_a_id;
+    if (teamBWins >= winsNeeded) return matches[0].team_b_id;
+    return null; // Series not complete
+  };
+
+  // Get series display with win count
+  const getSeriesDisplayWithWins = (series: any) => {
+    const teamAWins = series.matches.filter((m: BracketMatch) => m.winner_id === m.team_a_id).length;
+    const teamBWins = series.matches.filter((m: BracketMatch) => m.winner_id === m.team_b_id).length;
+    
+    const formatMap = {
+      'bo1': 'BO1',
+      'bo3': 'BO3', 
+      'bo5': 'BO5',
+      'bo7': 'BO7'
+    };
+    
+    const formatText = formatMap[series.seriesFormat as keyof typeof formatMap] || series.seriesFormat.toUpperCase();
+    
+    return `${formatText} (${teamAWins}-${teamBWins})`;
+  };
+
   // Render Single Elimination Bracket
   const renderSingleElimination = () => {
     const relevantStages = SINGLE_ELIM_STAGES.filter(stage => 
@@ -124,60 +192,73 @@ export default function BracketDisplay({
     return (
       <div className="overflow-x-auto">
         <div className="flex gap-8 min-w-max p-4">
-          {relevantStages.map((stage) => (
-            <div key={stage} className="flex flex-col gap-4 min-w-[200px]">
-              <h3 className="text-sm font-bold text-neutral-400 text-center sticky top-0 bg-neutral-900 py-2">
-                {stage}
-              </h3>
-              <div className="flex flex-col gap-4">
-                {groupedMatches[stage]?.map((match) => (
-                  <div
-                    key={match.id}
-                    className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:border-blue-500 transition cursor-pointer"
-                    onClick={() => setSelectedMatch(match)}
-                  >
-                    <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          {match.team_a?.logo_url ? (
-                            <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
-                          ) : (
-                            <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
-                              {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
-                            </div>
-                          )}
-                          <span className="truncate">{match.team_a?.name || "TBD"}</span>
+          {relevantStages.map((stage) => {
+            const stageMatches = groupedMatches[stage] || [];
+            const series = groupMatchesBySeries(stageMatches);
+            
+            return (
+              <div key={stage} className="flex flex-col gap-4 min-w-[200px]">
+                <h3 className="text-sm font-bold text-neutral-400 text-center sticky top-0 bg-neutral-900 py-2">
+                  {stage}
+                </h3>
+                <div className="flex flex-col gap-4">
+                  {series.map((seriesData) => (
+                    <div
+                      key={seriesData.seriesKey}
+                      className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:border-blue-500 transition cursor-pointer"
+                      onClick={() => setSelectedSeries(seriesData)}
+                    >
+                      <div className={`text-sm mb-1 ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamA?.id || '')}`}>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            {seriesData.teamA?.logo_url ? (
+                              <img src={seriesData.teamA.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                            ) : (
+                              <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                {seriesData.teamA?.name?.substring(0, 2).toUpperCase() || 'A'}
+                              </div>
+                            )}
+                            <span className="truncate">{seriesData.teamA?.name || "TBD"}</span>
+                          </div>
+                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === m.team_a_id).length}</span>
                         </div>
-                        <span className="font-bold">{match.score_a ?? "-"}</span>
                       </div>
-                    </div>
-                    <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          {match.team_b?.logo_url ? (
-                            <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
-                          ) : (
-                            <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
-                              {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
-                            </div>
-                          )}
-                          <span className="truncate">{match.team_b?.name || "TBD"}</span>
+                      <div className={`text-sm ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamB?.id || '')}`}>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            {seriesData.teamB?.logo_url ? (
+                              <img src={seriesData.teamB.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                            ) : (
+                              <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                {seriesData.teamB?.name?.substring(0, 2).toUpperCase() || 'B'}
+                              </div>
+                            )}
+                            <span className="truncate">{seriesData.teamB?.name || "TBD"}</span>
+                          </div>
+                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === m.team_b_id).length}</span>
                         </div>
-                        <span className="font-bold">{match.score_b ?? "-"}</span>
                       </div>
-                    </div>
-                    {match.series_number && (
                       <div className="mt-2 pt-2 border-t border-neutral-700">
-                        <span className="text-xs text-neutral-400">
-                          {getSeriesDisplay(match.series_number, getMatchSeriesFormat(match))}
-                        </span>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs text-neutral-400">
+                            Series #{seriesData.seriesNumber}
+                          </span>
+                          <span className="text-xs text-neutral-300 font-semibold">
+                            {getSeriesDisplayWithWins(seriesData)}
+                          </span>
+                        </div>
+                        {seriesData.matches.length > 1 && (
+                          <div className="text-xs text-neutral-500 mt-1">
+                            {seriesData.matches.length} games
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
@@ -593,6 +674,100 @@ export default function BracketDisplay({
                   <span className="text-neutral-200">
                     {new Date(selectedMatch.played_at).toLocaleString()}
                   </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Series Details Modal */}
+      {selectedSeries && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedSeries(null)}
+        >
+          <div
+            className="bg-neutral-900 rounded-lg max-w-2xl w-full border border-neutral-700"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-neutral-800">
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="text-lg font-bold">Series Details</h3>
+                <button
+                  onClick={() => setSelectedSeries(null)}
+                  className="text-neutral-400 hover:text-white"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="p-4">
+              <div className="space-y-4">
+                {/* Series Header */}
+                <div className="bg-neutral-800 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-semibold">{selectedSeries.stage} - Series #{selectedSeries.seriesNumber}</h4>
+                    <span className="text-sm text-neutral-300 font-semibold">
+                      {getSeriesDisplayWithWins(selectedSeries)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="flex items-center gap-2">
+                      {selectedSeries.teamA?.logo_url ? (
+                        <img src={selectedSeries.teamA.logo_url} alt="" className="w-6 h-6 rounded object-cover" />
+                      ) : (
+                        <div className="w-6 h-6 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                          {selectedSeries.teamA?.name?.substring(0, 2).toUpperCase() || 'A'}
+                        </div>
+                      )}
+                      <span className="font-semibold">{selectedSeries.teamA?.name || "TBD"}</span>
+                    </div>
+                    <span className="text-2xl font-bold">
+                      {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === m.team_a_id).length} - {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === m.team_b_id).length}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">{selectedSeries.teamB?.name || "TBD"}</span>
+                      {selectedSeries.teamB?.logo_url ? (
+                        <img src={selectedSeries.teamB.logo_url} alt="" className="w-6 h-6 rounded object-cover" />
+                      ) : (
+                        <div className="w-6 h-6 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                          {selectedSeries.teamB?.name?.substring(0, 2).toUpperCase() || 'B'}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Individual Games */}
+                <div className="space-y-2">
+                  <h5 className="font-semibold text-neutral-300">Games</h5>
+                  {selectedSeries.matches.map((match: BracketMatch, index: number) => (
+                    <div
+                      key={match.id}
+                      className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:bg-neutral-800 transition cursor-pointer"
+                      onClick={() => {
+                        setSelectedSeries(null);
+                        setSelectedMatch(match);
+                      }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <span className="text-sm font-semibold text-neutral-400">Game {index + 1}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm">{match.score_a ?? "-"}</span>
+                            <span className="text-neutral-500">-</span>
+                            <span className="text-sm">{match.score_b ?? "-"}</span>
+                          </div>
+                        </div>
+                        <div className="text-xs text-neutral-500">
+                          {new Date(match.played_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
