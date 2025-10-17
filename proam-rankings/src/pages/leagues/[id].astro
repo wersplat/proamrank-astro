@@ -281,7 +281,8 @@ if (openTournamentData) {
   const { data: openSeriesFormats } = await supa((Astro.locals as any).runtime)
     .from("series_formats")
     .select("stage, series_format")
-    .eq("season_id", seasonId);
+    .eq("season_id", seasonId)
+    .eq("tournament_type", "open");
 
   // Get match details for open tournament
   const openMatchIds = (openMatchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
@@ -358,11 +359,12 @@ if (playoffTournamentData) {
     .select("match_id, stage, series_number")
     .eq("season_id", seasonId);
 
-  // Fetch series formats for playoff tournament (same table, filtered by season_id)
+  // Fetch series formats for playoff tournament (same table, filtered by season_id and tournament_type)
   const { data: playoffSeriesFormats } = await supa((Astro.locals as any).runtime)
     .from("series_formats")
     .select("stage, series_format")
-    .eq("season_id", seasonId);
+    .eq("season_id", seasonId)
+    .eq("tournament_type", "playoff");
 
   // Get match details for playoff tournament
   const playoffMatchIds = (playoffMatchesData ?? []).map((m: any) => m.match_id).filter(Boolean);
