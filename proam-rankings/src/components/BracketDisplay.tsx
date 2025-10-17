@@ -132,24 +132,34 @@ export default function BracketDisplay({
       const firstMatch = seriesMatches[0];
       const seriesFormat = getMatchSeriesFormat(firstMatch);
       
+      // Get all unique team IDs in this series
+      const teamIds = Array.from(new Set([
+        ...seriesMatches.map(m => m.team_a_id),
+        ...seriesMatches.map(m => m.team_b_id)
+      ]));
+      
+      // Use first match's teams as reference (teamA and teamB)
+      const teamA = firstMatch.team_a;
+      const teamB = firstMatch.team_b;
+      
       return {
         seriesKey,
         stage: firstMatch.stage,
         seriesNumber: firstMatch.series_number,
         seriesFormat,
         matches: seriesMatches.sort((a, b) => (a.series_number || 0) - (b.series_number || 0)),
-        teamA: firstMatch.team_a,
-        teamB: firstMatch.team_b,
+        teamA,
+        teamB,
         // Determine series winner
-        seriesWinner: determineSeriesWinner(seriesMatches, seriesFormat),
+        seriesWinner: determineSeriesWinner(seriesMatches, seriesFormat, teamA.id, teamB.id),
       };
     });
   };
 
   // Determine series winner based on series format
-  const determineSeriesWinner = (matches: BracketMatch[], seriesFormat: string) => {
-    const teamAWins = matches.filter(m => m.winner_id === m.team_a_id).length;
-    const teamBWins = matches.filter(m => m.winner_id === m.team_b_id).length;
+  const determineSeriesWinner = (matches: BracketMatch[], seriesFormat: string, teamAId: string, teamBId: string) => {
+    const teamAWins = matches.filter(m => m.winner_id === teamAId).length;
+    const teamBWins = matches.filter(m => m.winner_id === teamBId).length;
     
     const formatMap = {
       'bo1': 1,
@@ -160,15 +170,15 @@ export default function BracketDisplay({
     
     const winsNeeded = formatMap[seriesFormat as keyof typeof formatMap] || 1;
     
-    if (teamAWins >= winsNeeded) return matches[0].team_a_id;
-    if (teamBWins >= winsNeeded) return matches[0].team_b_id;
+    if (teamAWins >= winsNeeded) return teamAId;
+    if (teamBWins >= winsNeeded) return teamBId;
     return null; // Series not complete
   };
 
   // Get series display with win count
   const getSeriesDisplayWithWins = (series: any) => {
-    const teamAWins = series.matches.filter((m: BracketMatch) => m.winner_id === m.team_a_id).length;
-    const teamBWins = series.matches.filter((m: BracketMatch) => m.winner_id === m.team_b_id).length;
+    const teamAWins = series.matches.filter((m: BracketMatch) => m.winner_id === series.teamA.id).length;
+    const teamBWins = series.matches.filter((m: BracketMatch) => m.winner_id === series.teamB.id).length;
     
     const formatMap = {
       'bo1': 'BO1',
@@ -220,7 +230,7 @@ export default function BracketDisplay({
                             )}
                             <span className="truncate">{seriesData.teamA?.name || "TBD"}</span>
                           </div>
-                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === m.team_a_id).length}</span>
+                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === seriesData.teamA.id).length}</span>
                         </div>
                       </div>
                       <div className={`text-sm ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamB?.id || '')}`}>
@@ -235,7 +245,7 @@ export default function BracketDisplay({
                             )}
                             <span className="truncate">{seriesData.teamB?.name || "TBD"}</span>
                           </div>
-                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === m.team_b_id).length}</span>
+                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === seriesData.teamB.id).length}</span>
                         </div>
                       </div>
                       <div className="mt-2 pt-2 border-t border-neutral-700">
@@ -726,7 +736,7 @@ export default function BracketDisplay({
                       <span className="font-semibold">{selectedSeries.teamA?.name || "TBD"}</span>
                     </div>
                     <span className="text-2xl font-bold">
-                      {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === m.team_a_id).length} - {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === m.team_b_id).length}
+                      {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === selectedSeries.teamA.id).length} - {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === selectedSeries.teamB.id).length}
                     </span>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">{selectedSeries.teamB?.name || "TBD"}</span>
