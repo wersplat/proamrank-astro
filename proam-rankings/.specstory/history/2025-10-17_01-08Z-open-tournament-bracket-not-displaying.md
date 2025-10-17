@@ -6588,3 +6588,76 @@ The series grouping should now correctly display the actual win counts instead o
 
 ---
 
+_**User (2025-10-17 04:51Z)**_
+
+im confused why this is difficult? each match has a winner id each series has a series number
+no compicated calculations needed
+
+---
+
+_**Assistant (default)**_
+
+You're absolutely right! I was overcomplicating this. Let me simplify it - we just need to count wins per series number. Let me fix this properly:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/BracketDisplay.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -149,6 +149,6 @@
+    // Determine series winner based on series format
+    const determineSeriesWinner = (matches: BracketMatch[], seriesFormat: string) => {
+-     const teamAWins = matches.filter(m => m.winner_id && m.winner_id === m.team_a_id).length;
+-     const teamBWins = matches.filter(m => m.winner_id && m.winner_id === m.team_b_id).length;
++     const teamAWins = matches.filter(m => m.winner_id === m.team_a_id).length;
++     const teamBWins = matches.filter(m => m.winner_id === m.team_b_id).length;
+      
+      const formatMap = {
+```
+
+**Chunk 2**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -168,6 +168,6 @@
+    // Get series display with win count
+    const getSeriesDisplayWithWins = (series: any) => {
+-     const teamAWins = series.matches.filter((m: BracketMatch) => m.winner_id && m.winner_id === m.team_a_id).length;
+-     const teamBWins = series.matches.filter((m: BracketMatch) => m.winner_id && m.winner_id === m.team_b_id).length;
++     const teamAWins = series.matches.filter((m: BracketMatch) => m.winner_id === m.team_a_id).length;
++     const teamBWins = series.matches.filter((m: BracketMatch) => m.winner_id === m.team_b_id).length;
+      
+      const formatMap = {
+```
+
+**Chunk 3**
+Lines added: undefined, lines removed: 5
+
+```diff
+@@ -179,9 +179,4 @@
+      
+      const formatText = formatMap[series.seriesFormat as keyof typeof formatMap] || series.seriesFormat.toUpperCase();
+-     
+-     // If no games have been played yet, show format only
+-     if (teamAWins === 0 && teamBWins === 0) {
+-       return formatText;
+-     }
+      
+      return `${formatText} (${teamAWins}-${teamBWins})`;
+```
+
+</details>
+
+---
+
+
+
+---
+
