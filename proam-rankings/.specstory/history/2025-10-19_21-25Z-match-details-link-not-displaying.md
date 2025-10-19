@@ -945,6 +945,362 @@ Read file: src/pages/matches/[id].astro
 
 ---
 
+Let me search for where the verification badge is used:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "getVerificationBadge" in "src/pages/matches/[id].astro" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/pages/matches/[id].astro` | `\{getVerificationBadge(matchData)\}` | L229 |
+
+
+</details>
+
+---
+
+Now I need to find that line and replace it with inline conditional rendering:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matches/[id].astro
+
+---
+
+Now I'll replace the function call with inline conditional rendering:
+
+
+---
+
+Cancelled
+
+---
+
+_**User (2025-10-19 17:43Z)**_
+
+its not different then whats being used in leagues and tournaments match pages
+
+---
+
+_**Assistant (default)**_
+
+You're right! Let me check how the verification badge is handled in the leagues and tournaments match pages to see the correct pattern.
+
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How is getVerificationBadge or verification badge handled in league and tournament match components?" • **7** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/components/player/tabs/Badges.tsx` | L7-488 |
+| `src/components/PlayerBadgesIsland.tsx` | L7-488 |
+| `src/components/LeagueMatchesIsland.tsx` | L43-440 |
+| `src/components/TeamMatchesIsland.tsx` | L44-475 |
+| `src/components/TeamTabsIsland.tsx` | L111-963 |
+| `src/components/MatchesListIsland.tsx` | L44-513 |
+| `src/components/LeagueTabsIsland.tsx` | L122-1668 |
+
+</details>
+
+---
+
+Let me look specifically at how the verification badge is implemented in the existing match components:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "getVerificationBadge" in "src/components" • 18 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/MatchesListIsland.tsx` | `const getVerificationBadge = (match: Match) => \{` | L73 |
+| `src/components/MatchesListIsland.tsx` | `\{getVerificationBadge(match)\}` | L215 |
+| `src/components/MatchesListIsland.tsx` | `\{getVerificationBadge(selectedMatch)\}` | L283 |
+| `src/components/LeagueMatchesIsland.tsx` | `const getVerificationBadge = (match: Match) => \{` | L72 |
+| `src/components/LeagueMatchesIsland.tsx` | `\{getVerificationBadge(match)\}` | L174 |
+| `src/components/LeagueMatchesIsland.tsx` | `\{getVerificationBadge(selectedMatch)\}` | L231 |
+| `src/components/LeagueTabsIsland.tsx` | `const getVerificationBadge = (match: Match) => \{` | L282 |
+| `src/components/LeagueTabsIsland.tsx` | `\{getVerificationBadge(match)\}` | L835 |
+| `src/components/LeagueTabsIsland.tsx` | `\{getVerificationBadge(selectedMatch)\}` | L1459 |
+| `src/components/TournamentTabsIsland.tsx` | `const getVerificationBadge = (match: Match) => \{` | L209 |
+| `src/components/TournamentTabsIsland.tsx` | `\{getVerificationBadge(match)\}` | L621 |
+| `src/components/TournamentTabsIsland.tsx` | `\{getVerificationBadge(selectedMatch)\}` | L1142 |
+| `src/components/TeamTabsIsland.tsx` | `const getVerificationBadge = (match: Match) => \{` | L171 |
+| `src/components/TeamTabsIsland.tsx` | `\{getVerificationBadge(match)\}` | L451 |
+| `src/components/TeamTabsIsland.tsx` | `\{getVerificationBadge(selectedMatch)\}` | L754 |
+| `src/components/TeamMatchesIsland.tsx` | `const getVerificationBadge = (match: Match) => \{` | L79 |
+| `src/components/TeamMatchesIsland.tsx` | `\{getVerificationBadge(match)\}` | L194 |
+| `src/components/TeamMatchesIsland.tsx` | `\{getVerificationBadge(selectedMatch)\}` | L245 |
+
+
+</details>
+
+---
+
+I can see that in the React components (like MatchesListIsland, LeagueMatchesIsland, etc.), the `getVerificationBadge` function is defined as a JavaScript function inside the React component and returns JSX. However, in the Astro page I created, I was trying to define it in the frontmatter section, which doesn't work the same way.
+
+Looking at the pattern, I should use inline conditional rendering in the Astro template instead. Let me fix this:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/pages/matches/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 16, lines removed: 1
+
+```diff
+@@ -227,5 +227,20 @@
+  
+              <div class="ml-auto">
+-               {getVerificationBadge(matchData)}
++               {matchData.verified === true && (
++                 <span class="px-3 py-1 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-sm font-medium flex items-center gap-2">
++                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
++                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
++                   </svg>
++                   Verified
++                 </span>
++               )}
++               {matchData.status === 'processed' && matchData.verified === false && (
++                 <span class="px-3 py-1 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-sm font-medium flex items-center gap-2">
++                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
++                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
++                   </svg>
++                   Under Review
++                 </span>
++               )}
+              </div>
+            </div>
+```
+
+</details>
+
+---
+
+Now let me check if there are any remaining linting errors:
+
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/pages/matches/[id].astro`
+
+Lint results
+
+Lint errors for `src/pages/matches/[id].astro`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| 'viewError' is declared but its value is never read. | 61:39-61:48 | DIAGNOSTIC_SEVERITY_HINT |
+| 'martError' is declared but its value is never read. | 19:37-19:46 | DIAGNOSTIC_SEVERITY_HINT |
+| 'matchError' is declared but its value is never read. | 17:16-17:26 | DIAGNOSTIC_SEVERITY_HINT |
+
+
+</details>
+
+---
+
+Perfect! You were absolutely right. The issue was that I was trying to define a JSX-returning function in the Astro frontmatter section, which doesn't work like it does in React components. 
+
+In React components (like the league and tournament match components), the `getVerificationBadge` function works because it's defined inside a React component where JSX is expected. However, in Astro pages, the frontmatter section is for server-side logic, and the template section is for rendering.
+
+I've now fixed it by using inline conditional rendering directly in the Astro template, which is the correct approach for Astro pages. The verification badge will now render properly just like it does in the other components, but using Astro's templating syntax instead of trying to call a function that returns JSX from the server-side code.
+
+The match details page should now work correctly without any build errors!
+
+---
+
+_**User (2025-10-19 17:43Z)**_
+
+it should act exactly same as the league and tournament matches lists
+not open a match detail page....
+this is low hanging fruit and you are over complicating it
+
+---
+
+_**Assistant (default)**_
+
+You're absolutely right! I overcomplicated this. Looking at the league and tournament match lists, they just open a modal when you click on a match that has a `boxscore_url`. I should make the matches page behave exactly the same way.
+
+Let me check how the other match lists handle clicking and then fix the MatchesListIsland component:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/LeagueMatchesIsland.tsx
+
+---
+
+I can see that the LeagueMatchesIsland simply has `onClick={() => handleMatchClick(match)}` and only makes it clickable if `match.boxscore_url` exists. The MatchesListIsland should work the same way. Let me check the current MatchesListIsland and remove the "View Details" link I added:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/MatchesListIsland.tsx
+
+---
+
+I can see the issue. The current MatchesListIsland has `onClick={() => match.boxscore_url && handleMatchClick(match)}` but it should be simpler like the other components. Let me also remove the "View Details" link I added and make it work exactly like the league/tournament match lists.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/MatchesListIsland.tsx
+
+---
+
+Now let me fix the MatchesListIsland to behave exactly like the LeagueMatchesIsland:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -150,5 +150,5 @@
+            <div
+              key={match.id}
+-             onClick={() => match.boxscore_url && handleMatchClick(match)}
++             onClick={() => handleMatchClick(match)}
+              className={`rounded-lg border border-neutral-800 p-4 transition ${
+                match.boxscore_url ? 'hover:border-blue-500 cursor-pointer' : ''
+```
+
+</details>
+
+---
+
+Now I need to check how the handleMatchClick function works in LeagueMatchesIsland to make sure it's the same:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/LeagueMatchesIsland.tsx
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/MatchesListIsland.tsx
+
+---
+
+I need to add the same check that LeagueMatchesIsland has:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: undefined
+
+```diff
+@@ -95,4 +95,6 @@
+  
+    const handleMatchClick = async (match: Match) => {
++     if (!match.boxscore_url) return;
++     
+      setSelectedMatch(match);
+      setActiveTab('screenshot');
+```
+
+</details>
+
+---
+
+Now I need to remove the "View Details" link I added since it should work exactly like the other match lists (just open the modal):
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 7
+
+```diff
+@@ -217,11 +217,4 @@
+                {getVerificationBadge(match)}
+                <div className="ml-auto flex gap-2">
+-                 <a 
+-                   href={`/matches/${match.id}`}
+-                   className="text-xs bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-2 py-1 rounded transition"
+-                   onClick={(e) => e.stopPropagation()}
+-                 >
+-                   View Details
+-                 </a>
+                  {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
+                    <a 
+```
+
+</details>
+
+---
+
+Now I should also delete the match detail page I created since it's not needed:
+
+
+---
+
+Tool use: **delete_file**
+
+undefined
+
+---
+
 
 
 ---

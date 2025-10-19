@@ -94,6 +94,8 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
   };
 
   const handleMatchClick = async (match: Match) => {
+    if (!match.boxscore_url) return;
+    
     setSelectedMatch(match);
     setActiveTab('screenshot');
     setLoading(true);
@@ -149,7 +151,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
         {matches.map((match) => (
           <div
             key={match.id}
-            onClick={() => match.boxscore_url && handleMatchClick(match)}
+            onClick={() => handleMatchClick(match)}
             className={`rounded-lg border border-neutral-800 p-4 transition ${
               match.boxscore_url ? 'hover:border-blue-500 cursor-pointer' : ''
             }`}
@@ -214,13 +216,6 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
               {match.game_year && <span>• {match.game_year}</span>}
               {getVerificationBadge(match)}
               <div className="ml-auto flex gap-2">
-                <a 
-                  href={`/matches/${match.id}`}
-                  className="text-xs bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-2 py-1 rounded transition"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  View Details
-                </a>
                 {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
                   <a 
                     href={`/matchups/${match.id}`}
