@@ -1288,6 +1288,88 @@ export type Database = {
         }
         Relationships: []
       }
+      fine_tuning_examples: {
+        Row: {
+          created_at: string | null
+          error_count: number | null
+          extracted_text: string
+          has_validation_errors: boolean | null
+          id: string
+          match_id: string | null
+          mode: string
+          model_version: string | null
+          ocr_provider: string | null
+          processing_time_ms: number | null
+          successful_response: Json
+          team_a_name: string
+          team_b_name: string
+          trained_at: string | null
+          training_batch_id: string | null
+          used_for_training: boolean | null
+          validation_score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_count?: number | null
+          extracted_text: string
+          has_validation_errors?: boolean | null
+          id?: string
+          match_id?: string | null
+          mode: string
+          model_version?: string | null
+          ocr_provider?: string | null
+          processing_time_ms?: number | null
+          successful_response: Json
+          team_a_name: string
+          team_b_name: string
+          trained_at?: string | null
+          training_batch_id?: string | null
+          used_for_training?: boolean | null
+          validation_score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          error_count?: number | null
+          extracted_text?: string
+          has_validation_errors?: boolean | null
+          id?: string
+          match_id?: string | null
+          mode?: string
+          model_version?: string | null
+          ocr_provider?: string | null
+          processing_time_ms?: number | null
+          successful_response?: Json
+          team_a_name?: string
+          team_b_name?: string
+          trained_at?: string | null
+          training_batch_id?: string | null
+          used_for_training?: boolean | null
+          validation_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fine_tuning_examples_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "match_analytics_mart"
+            referencedColumns: ["match_id"]
+          },
+          {
+            foreignKeyName: "fine_tuning_examples_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fine_tuning_examples_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "v_matches_with_primary_context"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       group_matches: {
         Row: {
           created_at: string | null
@@ -8850,6 +8932,7 @@ export type Database = {
           season_id: string
           series_format: string
           stage: string
+          tournament_type: string | null
         }
         Insert: {
           created_at?: string | null
@@ -8857,6 +8940,7 @@ export type Database = {
           season_id: string
           series_format: string
           stage: string
+          tournament_type?: string | null
         }
         Update: {
           created_at?: string | null
@@ -8864,6 +8948,7 @@ export type Database = {
           season_id?: string
           series_format?: string
           stage?: string
+          tournament_type?: string | null
         }
         Relationships: []
       }

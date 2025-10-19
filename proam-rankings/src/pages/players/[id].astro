@@ -47,7 +47,7 @@ const { data: ratingData } = await supa(Astro.locals)
   .eq("player_id", id!)
   .maybeSingle();
 
-// Combine data for global rating (use detailed rating data from view)
+// Combine data for global rating (use detailed rating data from view, fallback to performance mart)
 const globalRatingData = ratingData ? {
   player_id: ratingData.player_id,
   gamertag: ratingData.gamertag,
@@ -63,7 +63,23 @@ const globalRatingData = ratingData ? {
   recent_games: ratingData.recent_games,
   days_since_last_game: ratingData.days_since_last_game,
   peak_performance: parseFloat(String(ratingData.peak_performance || '0')),
-} : null;
+} : (perfData ? {
+  // Fallback to player_performance_mart if v_player_global_rating view has no data
+  player_id: perfData.player_id,
+  gamertag: perfData.gamertag,
+  position: perfData.position,
+  global_rating: parseFloat(String(perfData.global_rating || '0')),
+  base_rating: 0, // Not available in performance mart
+  game_impact: 0, // Not available in performance mart
+  event_bonus: 0, // Not available in performance mart
+  decay_penalty: 0, // Not available in performance mart
+  consistency_bonus: 0, // Not available in performance mart
+  rating_tier: perfData.rating_tier,
+  total_games: perfData.games_played || 0,
+  recent_games: perfData.games_played || 0, // Approximate
+  days_since_last_game: null, // Not available in performance mart
+  peak_performance: 0, // Not available in performance mart
+} : null);
 
 // Get current team info if player has one - use team_analytics_mart
 let currentTeam = null;

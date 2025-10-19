@@ -55,13 +55,13 @@ export async function onRequest(context: { request: Request; env: Env }) {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Fetch by player_id (for career stats) - Use efficient view + single query for highs
+    // Fetch by player_id (for career stats) - Use player_performance_mart for consistency
     if (playerId) {
-      // Get career aggregates from view (much more efficient!)
+      // Get career aggregates from player_performance_mart (much more efficient!)
       const { data: careerData, error: careerError } = await supabase
-        .from('player_performance_view')
+        .from('player_performance_mart')
         .select('games_played, avg_points, avg_assists, avg_rebounds, avg_steals, avg_blocks')
-        .eq('id', playerId)
+        .eq('player_id', playerId)
         .single();
 
       if (careerError) {
