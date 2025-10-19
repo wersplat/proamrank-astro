@@ -13,9 +13,9 @@ if (!id) {
   return Astro.redirect("/");
 }
 
-// Get match details from v_matches_with_primary_context
+// Get match details from upcoming_matches
 const { data: matchData } = await supa((Astro.locals as any).runtime)
-  .from("v_matches_with_primary_context")
+  .from("upcoming_matches")
   .select("*")
   .eq("id", id)
   .maybeSingle();
@@ -26,7 +26,7 @@ if (!matchData) {
 
 // Check if this is a Final 4 or Finals match
 const validStages = ["Semi Finals", "Finals", "Grand Finals"];
-if (!matchData.stage || !validStages.includes(matchData.stage)) {
+if (!(matchData as any).stage || !validStages.includes((matchData as any).stage)) {
   return Astro.redirect("/");
 }
 
@@ -240,13 +240,13 @@ const teamBStats = matchData.tournament_id && matchData.team_b_id ?
 // Prepare the match object with all data
 const spotlightMatch = {
   id: matchData.id,
-  played_at: matchData.played_at,
-  stage: matchData.stage,
+  played_at: matchData.scheduled_at, // upcoming_matches uses scheduled_at
+  stage: (matchData as any).stage,
   team_a_id: matchData.team_a_id,
   team_b_id: matchData.team_b_id,
-  score_a: matchData.score_a,
-  score_b: matchData.score_b,
-  winner_id: matchData.winner_id,
+  score_a: null, // upcoming matches don't have scores yet
+  score_b: null, // upcoming matches don't have scores yet
+  winner_id: null, // upcoming matches don't have winners yet
   team_a: {
     id: teamA.id,
     name: teamA.name,
