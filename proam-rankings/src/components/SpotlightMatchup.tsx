@@ -76,13 +76,20 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Date TBD';
-    return new Date(dateString).toLocaleDateString('en-US', {
+    
+    // Apply the same timezone fix as in UpcomingSpotlightBanner
+    // Based on the 4-hour offset issue with timestamptz fields
+    const parsedDate = new Date(dateString);
+    const adjustedDate = new Date(parsedDate.getTime() - (4 * 60 * 60 * 1000)); // Subtract 4 hours
+    
+    return adjustedDate.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      hour12: true
     });
   };
 
