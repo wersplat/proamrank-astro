@@ -837,3 +837,120 @@ The most likely fix is moving the function from `functions/scheduled/` to `funct
 
 ---
 
+_**User (2025-10-19 07:02Z)**_
+
+
+
+---
+
+_**Assistant (default)**_
+
+I can see from the image you shared that you're looking at the "Invocation routes" configuration in your Cloudflare Pages dashboard. The image shows the routing configuration that determines when your Functions are executed.
+
+Based on the image and your recent file activity, I can see you've moved the function to `functions/api/update-player-ratings.ts`. Let me check the current state of that file and help you troubleshoot the 404 issue.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: functions/api/update-player-ratings.ts
+
+---
+
+Perfect! I can see you've moved the function to the correct location and updated the export pattern. Based on the invocation routes configuration you showed me, there's a key issue I can identify.
+
+Looking at your routing configuration from the image, I can see that:
+- It includes `"/*"` (all routes)
+- It excludes static assets like `/_astro/*`, `/GR.svg`, `/favicon.svg`
+
+However, there might be an issue with how the function is being recognized. Let me compare it with your working API functions to identify the problem:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: functions/api/player-stats.ts
+
+---
+
+I found the issue! The difference between your working function and the new one is in the export pattern:
+
+**Working function** (player-stats.ts):
+```typescript
+export async function onRequest(context: { request: Request; env: Env }) {
+```
+
+**Your new function** (update-player-ratings.ts):
+```typescript
+export const onRequest: PagesFunction<Env> = async (context) => {
+```
+
+The issue is likely that you need to import the `PagesFunction` type, or use the same export pattern as your working functions.
+
+Here's the fix for your `functions/api/update-player-ratings.ts` file:
+
+```typescript:functions/api/update-player-ratings.ts
+/**
+ * Cloudflare Pages Function for updating player global ratings
+ */
+
+import * as Sentry from '@sentry/cloudflare';
+
+// Initialize Sentry
+Sentry.init({
+  dsn: "https://15ecc8d420bd1ac21d6ca88698ca4566@o4509330775277568.ingest.us.sentry.io/4510164326023168",
+  environment: "production",
+  tracesSampleRate: 1.0,
+});
+
+interface Env {
+  SUPABASE_URL: string;
+  SUPABASE_ANON_KEY: string;
+}
+
+export async function onRequest(context: { request: Request; env: Env }) {
+  // Set CORS headers (same as your working API functions)
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json'
+  };
+
+  // Handle OPTIONS request for CORS (same as your working API functions)
+  if (context.request.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  // Only allow POST requests for the scheduled function
+  if (context.request.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ error: 'Method not allowed' }),
+      { 
+        status: 405, 
+        headers: corsHeaders 
+      }
+    );
+  }
+
+  // ... rest of your existing code stays the same
+```
+
+The key change is:
+- Change from: `export const onRequest: PagesFunction<Env> = async (context) => {`
+- Change to: `export async function onRequest(context: { request: Request; env: Env }) {`
+
+This matches the exact pattern used by your working `player-stats.ts` and `team-stats.ts` functions.
+
+Also, make sure you're testing with the correct URL now that the function is in the `/api/` folder:
+
+Try: `curl -X POST https://proamrank.gg/api/update-player-ratings -H "Content-Type: application/json"`
+
+Instead of: `curl -X POST https://proamrank.gg/scheduled/update-player-ratings`
+
+After making this change, rebuild and redeploy your application.
+
+---
+

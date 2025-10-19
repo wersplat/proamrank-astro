@@ -16,7 +16,7 @@ interface Env {
   SUPABASE_ANON_KEY: string;
 }
 
-export const onRequest: PagesFunction<Env> = async (context) => {
+export async function onRequest(context: { request: Request; env: Env }) {
   // Set CORS headers (same as your working API functions)
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
