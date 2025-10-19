@@ -3,8 +3,9 @@ import { supa } from "../lib/supabase";
 
 // Get upcoming spotlight matchups (Semi Finals, Finals, Grand Finals)
 // Show matches from today onwards (same day and future)
+// Use start of today in local timezone for filtering timestamptz fields
 const today = new Date();
-today.setHours(0, 0, 0, 0); // Start of today
+today.setHours(0, 0, 0, 0); // Start of today in local timezone
 
 const { data: upcomingSpotlightMatches, error } = await supa((Astro.locals as any).runtime)
   .from("upcoming_matches")
@@ -63,15 +64,22 @@ if (upcomingSpotlightMatches && upcomingSpotlightMatches.length > 0 && !error) {
 }
 
 const formatDate = (dateString: string) => {
+  // Parse the timestamptz - JavaScript Date constructor handles timezone conversion automatically
   const date = new Date(dateString);
   const now = new Date();
+  
+  // Get today's date in local timezone for comparison
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
+  // Get the match date in local timezone for comparison
   const matchDate = new Date(date);
   matchDate.setHours(0, 0, 0, 0);
   
+  // Check if the match is today
   const isToday = matchDate.getTime() === today.getTime();
+  
+  // Calculate hours difference for same day logic
   const diffInHours = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60));
   
   if (isToday) {
@@ -80,7 +88,7 @@ const formatDate = (dateString: string) => {
       minute: '2-digit',
       hour12: true
     })}`;
-  } else if (diffInHours < 24) {
+  } else if (diffInHours < 24 && diffInHours > 0) {
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
       hour: '2-digit',

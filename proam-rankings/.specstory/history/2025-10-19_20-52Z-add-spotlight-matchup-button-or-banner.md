@@ -1270,6 +1270,309 @@ Let me improve the date formatting to better indicate when a match is today:
 
 Tool use: **search_replace**
 
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 14, lines removed: 1
+
+```diff
+@@ -66,7 +66,20 @@
+    const date = new Date(dateString);
+    const now = new Date();
++   const today = new Date();
++   today.setHours(0, 0, 0, 0);
++   
++   const matchDate = new Date(date);
++   matchDate.setHours(0, 0, 0, 0);
++   
++   const isToday = matchDate.getTime() === today.getTime();
+    const diffInHours = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60));
+    
+-   if (diffInHours < 24) {
++   if (isToday) {
++     return `Today ${date.toLocaleTimeString('en-US', {
++       hour: '2-digit',
++       minute: '2-digit',
++       hour12: true
++     })}`;
++   } else if (diffInHours < 24) {
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/UpcomingSpotlightBanner.astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Perfect! Let me update the todos to reflect the completed changes:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Update banner to show matches scheduled for same day or in the future
+- [x] Show up to 5 upcoming spotlight matchups instead of just 1
+- [x] Update UI to display multiple matchups in a vertical layout
+- [x] Improve date formatting to highlight same-day matches
+
+---
+
+## Summary
+
+I've successfully updated the `UpcomingSpotlightBanner` component to meet your requirements:
+
+### Changes Made:
+
+1. **Same Day + Future Matches**: 
+   - Changed the date filter from `new Date().toISOString()` to `today.toISOString()` where `today` is set to the start of the current day (00:00:00)
+   - This now includes matches scheduled for today and all future dates
+
+2. **Show Up to 5 Matchups**:
+   - Updated the database query limit from `1` to `5` matches
+   - Restructured the data fetching to handle multiple matchups efficiently using batch queries for teams and tournaments
+
+3. **Updated UI Layout**:
+   - Changed from a single banner to a vertical list layout
+   - Added a header showing "Upcoming Spotlight Matchups" with a count `(X)`
+   - Each matchup is displayed in its own card with consistent styling
+
+4. **Improved Date Formatting**:
+   - Enhanced the `formatDate` function to clearly show "Today" for same-day matches
+   - Maintains different formats for same day, tomorrow, and future dates for better readability
+
+5. **Performance Optimizations**:
+   - Batch fetch all required team and tournament data in single queries instead of individual queries per matchup
+   - Use lookup maps for efficient data matching
+
+The banner will now display up to 5 upcoming spotlight matchups (Semi Finals, Finals, Grand Finals) starting from today onwards, with each matchup showing team names, logos, stage, tournament info, and a "View Details" button linking to the spotlight matchup page.
+
+---
+
+_**User (2025-10-19 17:43Z)**_
+
+the time of matchups is +4hours probably due to it being a timestamptz field
+
+---
+
+_**Assistant (default)**_
+
+You're right! The `timestamptz` field is likely storing UTC time but being displayed in the local timezone, which is causing a 4-hour offset. Let me fix the date formatting to handle timezone properly.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/UpcomingSpotlightBanner.astro
+
+---
+
+I need to also check how the date filtering is being done in the database query, as that might also be affected by the timezone issue:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/UpcomingSpotlightBanner.astro
+
+---
+
+The issue is likely in both the date filtering and the display formatting. Since the database stores `timestamptz` (UTC), I need to handle the timezone conversion properly. Let me fix both the filtering and the display:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: 1
+
+```diff
+@@ -4,6 +4,9 @@
+  // Get upcoming spotlight matchups (Semi Finals, Finals, Grand Finals)
+  // Show matches from today onwards (same day and future)
++ // Handle timezone properly for timestamptz fields
+  const today = new Date();
+- today.setHours(0, 0, 0, 0); // Start of today
++ today.setHours(0, 0, 0, 0); // Start of today in local timezone
++ // Convert to UTC for database comparison since scheduled_at is timestamptz
++ const todayUTC = new Date(today.getTime() - (today.getTimezoneOffset() * 60000));
+  
+  const { data: upcomingSpotlightMatches, error } = await supa((Astro.locals as any).runtime)
+```
+
+</details>
+
+---
+
+Actually, let me reconsider this approach. The issue might be simpler - when we get the `timestamptz` from the database, it should automatically be converted to the local timezone by JavaScript's Date constructor. The problem might be that we need to use the correct date for filtering. Let me fix this more simply:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 3
+
+```diff
+@@ -4,9 +4,7 @@
+  // Get upcoming spotlight matchups (Semi Finals, Finals, Grand Finals)
+  // Show matches from today onwards (same day and future)
+- // Handle timezone properly for timestamptz fields
++ // Use start of today in local timezone for filtering timestamptz fields
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Start of today in local timezone
+- // Convert to UTC for database comparison since scheduled_at is timestamptz
+- const todayUTC = new Date(today.getTime() - (today.getTimezoneOffset() * 60000));
+  
+  const { data: upcomingSpotlightMatches, error } = await supa((Astro.locals as any).runtime)
+```
+
+</details>
+
+---
+
+Now let me update the `formatDate` function to properly handle the timezone. The issue is likely that when we construct a Date from the `timestamptz` string, JavaScript is interpreting it correctly, but we need to ensure we're comparing and displaying the times in the user's local timezone:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 7, lines removed: 3
+
+```diff
+@@ -65,13 +65,17 @@
+  
+  const formatDate = (dateString: string) => {
++   // Parse the timestamptz and ensure it's treated as UTC, then convert to local time
+    const date = new Date(dateString);
++   
++   // Get current time and today's date in local timezone
+    const now = new Date();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+-   const matchDate = new Date(date);
+-   matchDate.setHours(0, 0, 0, 0);
++   // Create a date object for the match date in local timezone (start of day)
++   const matchDateLocal = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    
+-   const isToday = matchDate.getTime() === today.getTime();
++   // Check if the match is today by comparing local date parts
++   const isToday = matchDateLocal.getTime() === today.getTime();
+    const diffInHours = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60));
+    
+```
+
+**Chunk 2**
+Lines added: 2, lines removed: 1
+
+```diff
+@@ -80,5 +84,6 @@
+        hour: '2-digit',
+        minute: '2-digit',
+-       hour12: true
++       hour12: true,
++       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      })}`;
+    } else if (diffInHours < 24) {
+```
+
+**Chunk 3**
+Lines added: 2, lines removed: 1
+
+```diff
+@@ -87,5 +92,6 @@
+        hour: '2-digit',
+        minute: '2-digit',
+-       hour12: true
++       hour12: true,
++       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      });
+    } else {
+```
+
+**Chunk 4**
+Lines added: 2, lines removed: 1
+
+```diff
+@@ -97,5 +103,6 @@
+        hour: '2-digit',
+        minute: '2-digit',
+-       hour12: true
++       hour12: true,
++       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      });
+    }
+```
+
+</details>
+
+---
+
+Actually, let me simplify this approach. The explicit timezone setting might be redundant since JavaScript's Date constructor should handle the `timestamptz` properly. Let me look at how other parts of the codebase handle this to ensure consistency:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "scheduled_at" • 10 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `./src/components/UpcomingSpotlightBanner.astro` | `scheduled_at,` | L14 |
+| `./src/components/UpcomingSpotlightBanner.astro` | `.gte("scheduled_at", today.toISOString())` | L23 |
+| `./src/components/UpcomingSpotlightBanner.astro` | `.order("scheduled_at", \{ ascending: true \})` | L24 |
+| `./src/components/UpcomingSpotlightBanner.astro` | `\{formatDate(matchup.scheduled_at)\}` | L168 |
+| `./src/pages/matchups/[id].astro` | `const isUpcomingMatch = !!(matchData as any).scheduled_at; // upcoming_matches has scheduled_at, matches doesn't` | L382 |
+| `./src/pages/matchups/[id].astro` | `played_at: isUpcomingMatch ? matchData.scheduled_at : matchData.played_at,` | L387 |
+| `./src/lib/db.types.ts` | `scheduled_at: string` | L11984 |
+| `./src/lib/db.types.ts` | `scheduled_at: string` | L12002 |
+| `./src/lib/db.types.ts` | `scheduled_at?: string` | L12020 |
+| `./views/league_calendar_fixed.sql` | `min(um.scheduled_at) as next_match_time` | L54 |
+
+
+</details>
+
 ---
 
 
