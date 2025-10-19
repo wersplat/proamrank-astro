@@ -607,3 +607,233 @@ The first solution (updating the build script) is the simplest and most reliable
 
 ---
 
+_**User (2025-10-19 07:02Z)**_
+
+still getting 404 error
+
+---
+
+_**Assistant (default)**_
+
+Let me check if the functions are being properly deployed and investigate the specific issue with the 404 error.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: wrangler.toml
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How are Cloudflare Pages functions deployed with Astro and wrangler configuration?" • **4** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `astro.config.mjs` | L24 |
+| `src/middleware.ts` | L15 |
+| `README.md` | L52 |
+| `package.json` | L30 |
+
+</details>
+
+---
+
+I can see from the `package.json` that you've already updated the build script to include `cp -r functions dist/`. Let me check a few more things to diagnose why you're still getting a 404.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: functions/scheduled/update-player-ratings.ts
+
+---
+
+Tool use: **list_dir**
+
+<details>
+            <summary>Listed directory undefined • **0** results</summary>
+        
+No results found
+</details>
+
+---
+
+The issue is likely that the function isn't being properly exported for Cloudflare Pages. There are a few potential problems:
+
+1. **Missing proper export**: Cloudflare Pages functions need specific export patterns
+2. **Deployment process**: The function might not be getting deployed correctly
+3. **Path/routing issue**: The function path might not match the expected URL structure
+
+Let me check how your working API functions are structured and compare:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: functions/api/player-stats.ts
+
+---
+
+The export pattern looks correct. The issue might be with how Cloudflare Pages handles scheduled functions versus regular functions. Let me check a few more things:
+
+
+---
+
+Tool web_search not found.
+
+---
+
+Based on the issue, I think the problem is that Cloudflare Pages is not properly recognizing the scheduled function. Here are the most likely causes and solutions:
+
+## Issue 1: Function Location and Naming
+
+The issue might be that Cloudflare Pages doesn't automatically recognize functions in the `scheduled/` subdirectory with the current setup. Try moving the function to match your working API functions structure.
+
+**Solution**: Move the function to `functions/api/update-player-ratings.ts` instead of `functions/scheduled/update-player-ratings.ts`.
+
+## Issue 2: Missing TypeScript Definitions
+
+The function might need proper TypeScript definitions for Cloudflare Pages.
+
+**Solution**: Update your function to include proper types:
+
+```typescript:functions/api/update-player-ratings.ts
+/**
+ * Cloudflare Pages Function for updating player global ratings
+ */
+
+import * as Sentry from '@sentry/cloudflare';
+
+// Initialize Sentry
+Sentry.init({
+  dsn: "https://15ecc8d420bd1ac21d6ca88698ca4566@o4509330775277568.ingest.us.sentry.io/4510164326023168",
+  environment: "production",
+  tracesSampleRate: 1.0,
+});
+
+interface Env {
+  SUPABASE_URL: string;
+  SUPABASE_ANON_KEY: string;
+}
+
+export const onRequest: PagesFunction<Env> = async (context) => {
+  // Set CORS headers (same as your working API functions)
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json'
+  };
+
+  // Handle OPTIONS request for CORS (same as your working API functions)
+  if (context.request.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  // Only allow POST requests for the scheduled function
+  if (context.request.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ error: 'Method not allowed' }),
+      { 
+        status: 405, 
+        headers: corsHeaders 
+      }
+    );
+  }
+
+  try {
+    const { SUPABASE_URL, SUPABASE_ANON_KEY } = context.env;
+
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      return new Response(
+        JSON.stringify({ error: 'Missing Supabase credentials' }),
+        { 
+          status: 500, 
+          headers: corsHeaders 
+        }
+      );
+    }
+
+    // Call the Supabase function to update all player ratings
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/update_player_global_ratings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to update ratings:', errorText);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Failed to update ratings', 
+          details: errorText 
+        }),
+        { 
+          status: response.status, 
+          headers: corsHeaders 
+        }
+      );
+    }
+
+    const data = await response.json();
+    
+    console.log(`✅ Player ratings updated successfully. ${data?.length || 0} players updated.`);
+    
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: 'Player ratings updated successfully',
+        playersUpdated: data?.length || 0,
+        timestamp: new Date().toISOString()
+      }),
+      { 
+        status: 200, 
+        headers: corsHeaders 
+      }
+    );
+
+  } catch (error) {
+    console.error('Error updating player ratings:', error);
+    Sentry.captureException(error);
+    return new Response(
+      JSON.stringify({ 
+        error: 'Internal server error', 
+        message: error instanceof Error ? error.message : 'Unknown error' 
+      }),
+      { 
+        status: 500, 
+        headers: corsHeaders 
+      }
+    );
+  }
+};
+```
+
+## Issue 3: URL Path Mismatch
+
+The function is currently at `/scheduled/update-player-ratings` but if you move it to `/api/update-player-ratings`, you'll need to update your curl command and cron configuration accordingly.
+
+**New URL would be**: `https://proamrank.gg/api/update-player-ratings`
+
+## Issue 4: Deployment Verification
+
+To verify the function is deployed correctly:
+
+1. **Check Cloudflare Pages Dashboard**: Go to your project → Functions tab to see if the function appears
+2. **Check the dist folder**: After building, verify `dist/functions/api/update-player-ratings.ts` exists
+3. **Test with GET first**: Try a simple GET request to see if the function is accessible
+
+The most likely fix is moving the function from `functions/scheduled/` to `functions/api/` and updating the export to use `PagesFunction<Env>` type annotation, which matches how Cloudflare Pages expects functions to be exported.
+
+---
+
