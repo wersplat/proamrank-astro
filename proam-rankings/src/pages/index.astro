@@ -1,12 +1,13 @@
 ---
 import Navigation from "../components/Navigation.astro";
 import RankTableIsland from "../components/RankTableIsland";
+import UpcomingSpotlightBanner from "../components/UpcomingSpotlightBanner.astro";
 import { supa } from "../lib/supabase";
 import "../styles/global.css";
 
 // Try team_analytics_mart first, fall back to teams table if mart is empty
 let data, error;
-const { data: martData, error: martError } = await supa(Astro.locals.runtime)
+const { data: martData, error: martError } = await supa((Astro.locals as any).runtime)
   .from("team_analytics_mart")
   .select(`
     team_id,
@@ -27,7 +28,7 @@ const { data: martData, error: martError } = await supa(Astro.locals.runtime)
 
 // If mart is empty or has error, fall back to teams table
 if (!martData || martData.length === 0 || martError) {
-  const { data: teamsData, error: teamsError } = await supa(Astro.locals.runtime)
+  const { data: teamsData, error: teamsError } = await supa((Astro.locals as any).runtime)
     .from("teams")
     .select(`
       id,
@@ -74,6 +75,7 @@ const rows = (data ?? []).map((team: any) => ({
   <body class="bg-neutral-950 text-white">
     <Navigation />
     <main class="mx-auto max-w-6xl p-6">
+      <UpcomingSpotlightBanner />
       <h1 class="text-2xl font-bold mb-4">Global Rankings</h1>
 
       <!-- Mobile cards (smaller screens) -->

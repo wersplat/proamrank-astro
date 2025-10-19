@@ -1,0 +1,153 @@
+---
+import { supa } from "../lib/supabase";
+
+// Get upcoming spotlight matchups (Semi Finals, Finals, Grand Finals)
+const { data: upcomingSpotlightMatches, error } = await supa((Astro.locals as any).runtime)
+  .from("upcoming_matches")
+  .select(`
+    id,
+    scheduled_at,
+    stage,
+    team_a_id,
+    team_b_id,
+    tournament_id,
+    league_id,
+    season_id
+  `)
+  .in("stage", ["Semi Finals", "Finals", "Grand Finals"])
+  .gte("scheduled_at", new Date().toISOString())
+  .order("scheduled_at", { ascending: true })
+  .limit(1); // Only show the next upcoming spotlight match
+
+let nextSpotlightMatchup: any = null;
+let teamAInfo: any = null;
+let teamBInfo: any = null;
+let tournamentInfo: any = null;
+
+if (upcomingSpotlightMatches && upcomingSpotlightMatches.length > 0 && !error) {
+  nextSpotlightMatchup = upcomingSpotlightMatches[0];
+  
+  // Get team information
+  if (nextSpotlightMatchup.team_a_id && nextSpotlightMatchup.team_b_id) {
+    const { data: teamsData } = await supa((Astro.locals as any).runtime)
+      .from("teams")
+      .select("id, name, logo_url")
+      .in("id", [nextSpotlightMatchup.team_a_id, nextSpotlightMatchup.team_b_id]);
+    
+    if (teamsData) {
+      teamAInfo = teamsData.find(t => t.id === nextSpotlightMatchup.team_a_id);
+      teamBInfo = teamsData.find(t => t.id === nextSpotlightMatchup.team_b_id);
+    }
+  }
+  
+  // Get tournament information if available
+  if (nextSpotlightMatchup.tournament_id) {
+    const { data: tournamentData } = await supa((Astro.locals as any).runtime)
+      .from("tournaments")
+      .select("id, name")
+      .eq("id", nextSpotlightMatchup.tournament_id)
+      .maybeSingle();
+    
+    tournamentInfo = tournamentData;
+  }
+}
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInHours = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60));
+  
+  if (diffInHours < 24) {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  } else {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+};
+---
+
+{nextSpotlightMatchup && teamAInfo && teamBInfo && (
+  <div class="mb-6 p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg">
+    <div class="flex flex-col sm:flex-row items-center gap-4">
+      <div class="flex items-center gap-3 flex-1">
+        <div class="flex items-center gap-2">
+          <svg class="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span class="text-lg font-bold text-purple-300">Spotlight Matchup</span>
+        </div>
+        
+        <div class="hidden sm:flex items-center gap-2 text-sm text-neutral-300">
+          <span>{nextSpotlightMatchup.stage}</span>
+          {tournamentInfo && (
+            <>
+              <span class="text-neutral-500">•</span>
+              <span>{tournamentInfo.name}</span>
+            </>
+          )}
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        {/* Team A */}
+        <div class="flex items-center gap-2">
+          {teamAInfo.logo_url ? (
+            <img src={teamAInfo.logo_url} alt={`${teamAInfo.name} logo`} class="h-8 w-8 rounded object-cover" />
+          ) : (
+            <div class="h-8 w-8 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+              {teamAInfo.name.substring(0, 2).toUpperCase()}
+            </div>
+          )}
+          <span class="font-semibold text-white">{teamAInfo.name}</span>
+        </div>
+        
+        <span class="text-neutral-400 font-bold">VS</span>
+        
+        {/* Team B */}
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-white">{teamBInfo.name}</span>
+          {teamBInfo.logo_url ? (
+            <img src={teamBInfo.logo_url} alt={`${teamBInfo.name} logo`} class="h-8 w-8 rounded object-cover" />
+          ) : (
+            <div class="h-8 w-8 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+              {teamBInfo.name.substring(0, 2).toUpperCase()}
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <div class="flex flex-col sm:flex-row items-center gap-2">
+        <div class="text-sm text-neutral-400">
+          {formatDate(nextSpotlightMatchup.scheduled_at)}
+        </div>
+        <a 
+          href={`/matchups/${nextSpotlightMatchup.id}`}
+          class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors text-sm"
+        >
+          View Details
+        </a>
+      </div>
+    </div>
+    
+    {/* Mobile tournament info */}
+    {tournamentInfo && (
+      <div class="sm:hidden mt-3 pt-3 border-t border-neutral-700">
+        <div class="text-sm text-neutral-300 text-center">
+          {nextSpotlightMatchup.stage} • {tournamentInfo.name}
+        </div>
+      </div>
+    )}
+  </div>
+)}
