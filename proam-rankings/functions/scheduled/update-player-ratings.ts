@@ -21,14 +21,41 @@ interface Env {
   SUPABASE_ANON_KEY: string;
 }
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+export async function onRequest(context: { request: Request; env: Env }) {
+  // Set CORS headers (same as your working API functions)
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json'
+  };
+
+  // Handle OPTIONS request for CORS (same as your working API functions)
+  if (context.request.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  // Only allow POST requests for the scheduled function
+  if (context.request.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ error: 'Method not allowed' }),
+      { 
+        status: 405, 
+        headers: corsHeaders 
+      }
+    );
+  }
+
   try {
     const { SUPABASE_URL, SUPABASE_ANON_KEY } = context.env;
 
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
       return new Response(
         JSON.stringify({ error: 'Missing Supabase credentials' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 500, 
+          headers: corsHeaders 
+        }
       );
     }
 
@@ -50,7 +77,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           error: 'Failed to update ratings', 
           details: errorText 
         }),
-        { status: response.status, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: response.status, 
+          headers: corsHeaders 
+        }
       );
     }
 
@@ -65,7 +95,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         playersUpdated: data?.length || 0,
         timestamp: new Date().toISOString()
       }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { 
+        status: 200, 
+        headers: corsHeaders 
+      }
     );
 
   } catch (error) {
@@ -76,8 +109,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         error: 'Internal server error', 
         message: error instanceof Error ? error.message : 'Unknown error' 
       }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { 
+        status: 500, 
+        headers: corsHeaders 
+      }
     );
   }
-};
+}
 
