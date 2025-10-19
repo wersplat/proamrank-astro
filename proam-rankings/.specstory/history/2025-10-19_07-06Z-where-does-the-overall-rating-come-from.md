@@ -767,6 +767,432 @@ Read file: functions/api/player-stats.ts
 
 ---
 
+Now I need to fix the Edge Function file to use `player_performance_mart` instead of `player_performance_view`, but I need to check the field name first - it looks like the view uses `id` while the mart uses `player_id`:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/api/player-stats.ts
+
+---
+
+Perfect! The local API correctly uses `player_performance_mart` with `player_id`. Now I need to fix the Edge Function to be consistent:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: functions/api/player-stats.ts</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: 4
+
+```diff
+@@ -56,11 +56,11 @@
+      const supabase = createClient(supabaseUrl, supabaseKey);
+  
+-     // Fetch by player_id (for career stats) - Use efficient view + single query for highs
++     // Fetch by player_id (for career stats) - Use player_performance_mart for consistency
+      if (playerId) {
+-       // Get career aggregates from view (much more efficient!)
++       // Get career aggregates from player_performance_mart (much more efficient!)
+        const { data: careerData, error: careerError } = await supabase
+-         .from('player_performance_view')
++         .from('player_performance_mart')
+          .select('games_played, avg_points, avg_assists, avg_rebounds, avg_steals, avg_blocks')
+-         .eq('id', playerId)
++         .eq('player_id', playerId)
+          .single();
+  
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `functions/api/player-stats.ts`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Perfect! Now let me summarize what I've fixed:
+
+## Summary of Changes Made
+
+I identified and fixed the data source inconsistency you mentioned. The issue was that the player profile pages were not properly handling the fallback between data sources.
+
+### **Problem Identified:**
+1. **Primary source**: `v_player_global_rating` view (for detailed rating breakdown)
+2. **Expected fallback**: `player_performance_mart` (which has `global_rating` field)
+3. **Issue**: When `v_player_global_rating` returned null, there was **no fallback** to `player_performance_mart`
+4. **Inconsistency**: Edge function was using `player_performance_view` instead of `player_performance_mart`
+
+### **Changes Made:**
+
+1. **Fixed fallback logic in `src/pages/players/[id].astro`** (lines 50-82):
+   - Added proper fallback from `v_player_global_rating` to `player_performance_mart`
+   - When the view has no data, it now falls back to the mart's `global_rating` field
+   - Maintains all the detailed breakdown fields when using the view
+   - Uses simpler data structure when falling back to the mart
+
+2. **Fixed inconsistency in `functions/api/player-stats.ts`** (lines 58-65):
+   - Changed from `player_performance_view` to `player_performance_mart` 
+   - Updated field reference from `id` to `player_id` to match the mart structure
+   - Now consistent with the local API file
+
+### **Current Data Flow:**
+1. **Primary**: Query `v_player_global_rating` for detailed rating breakdown
+2. **Fallback**: If view returns null, use `player_performance_mart.global_rating`
+3. **Display**: Rating card shows the highest available data source
+
+This should resolve the mismatch between what's shown on the webpage and what's in your database, as the system will now properly prioritize the correct data sources in the right order.
+
+---
+
+_**User (2025-10-19 07:02Z)**_
+
+its not working, and every player that has played a game is in the performance mart so should never need to fallback
+
+---
+
+_**Assistant (default)**_
+
+You're absolutely right! If every player that has played a game is in the `player_performance_mart`, then we shouldn't need a fallback at all. Let me investigate what's actually happening.
+
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "player_performance_mart global_rating field source or calculation" • **9** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/pages/ranking-system.astro` | L185-202 |
+| `src/pages/players/[id].astro` | L55 |
+| `src/pages/players/index.astro` | L72 |
+| `src/pages/api/player-stats.ts` | L121 |
+| `functions/api/player-stats.ts` | L7-134 |
+| `src/pages/teams/[id].astro` | L148-191 |
+| `src/pages/index.astro` | L42 |
+| `src/lib/db.types.ts` | L6-18006 |
+| `src/components/player/tabs/Overview.tsx` | L3-292 |
+
+</details>
+
+---
+
+You're absolutely right. The issue is that if every player is in `player_performance_mart`, we should just use that directly for the rating instead of trying to use the view and falling back. Let me check what the actual issue is.
+
+The problem might be that the two sources (`v_player_global_rating` view vs `player_performance_mart`) have different `global_rating` values, and we should be using the mart consistently.
+
+Let me fix this by using `player_performance_mart` as the primary source for the rating, since that's what's being used everywhere else:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/players/[id].astro
+
+---
+
+I see the issue now. Since every player is in `player_performance_mart`, we should use that as the primary source for the `global_rating` instead of the view. The view should only be used for the detailed breakdown components when available.
+
+Let me fix this by changing the logic to use `player_performance_mart` as the primary source for the rating:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/pages/players/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 14, lines removed: 27
+
+```diff
+@@ -48,37 +48,24 @@
+    .maybeSingle();
+  
+- // Combine data for global rating (use detailed rating data from view, fallback to performance mart)
+- const globalRatingData = ratingData ? {
+-   player_id: ratingData.player_id,
+-   gamertag: ratingData.gamertag,
+-   position: ratingData.position,
+-   global_rating: parseFloat(String(ratingData.global_rating || '0')),
+-   base_rating: parseFloat(String(ratingData.base_rating || '0')),
+-   game_impact: parseFloat(String(ratingData.game_impact || '0')),
+-   event_bonus: parseFloat(String(ratingData.event_bonus || '0')),
+-   decay_penalty: parseFloat(String(ratingData.decay_penalty || '0')),
+-   consistency_bonus: parseFloat(String(ratingData.consistency_bonus || '0')),
+-   rating_tier: ratingData.rating_tier,
+-   total_games: ratingData.total_games,
+-   recent_games: ratingData.recent_games,
+-   days_since_last_game: ratingData.days_since_last_game,
+-   peak_performance: parseFloat(String(ratingData.peak_performance || '0')),
+- } : (perfData ? {
+-   // Fallback to player_performance_mart if v_player_global_rating view has no data
++ // Use player_performance_mart as primary source for global_rating (every player with games is in this mart)
++ // Use v_player_global_rating view only for detailed breakdown components if available
++ const globalRatingData = perfData ? {
+    player_id: perfData.player_id,
+    gamertag: perfData.gamertag,
+    position: perfData.position,
++   // Primary source: global_rating from performance mart
+    global_rating: parseFloat(String(perfData.global_rating || '0')),
+-   base_rating: 0, // Not available in performance mart
+-   game_impact: 0, // Not available in performance mart
+-   event_bonus: 0, // Not available in performance mart
+-   decay_penalty: 0, // Not available in performance mart
+-   consistency_bonus: 0, // Not available in performance mart
+    rating_tier: perfData.rating_tier,
+    total_games: perfData.games_played || 0,
+-   recent_games: perfData.games_played || 0, // Approximate
+-   days_since_last_game: null, // Not available in performance mart
+-   peak_performance: 0, // Not available in performance mart
+- } : null);
++   recent_games: perfData.games_played || 0, // Approximate for now
++   // Detailed breakdown: use view data if available, otherwise 0
++   base_rating: ratingData ? parseFloat(String(ratingData.base_rating || '0')) : 0,
++   game_impact: ratingData ? parseFloat(String(ratingData.game_impact || '0')) : 0,
++   event_bonus: ratingData ? parseFloat(String(ratingData.event_bonus || '0')) : 0,
++   decay_penalty: ratingData ? parseFloat(String(ratingData.decay_penalty || '0')) : 0,
++   consistency_bonus: ratingData ? parseFloat(String(ratingData.consistency_bonus || '0')) : 0,
++   days_since_last_game: ratingData ? ratingData.days_since_last_game : null,
++   peak_performance: ratingData ? parseFloat(String(ratingData.peak_performance || '0')) : 0,
++ } : null;
+  
+  // Get current team info if player has one - use team_analytics_mart
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/pages/players/[id].astro`
+
+Lint results
+
+Lint errors for `src/pages/players/[id].astro`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| 'formStreak' is declared but its value is never read. | 158:7-158:17 | DIAGNOSTIC_SEVERITY_HINT |
+| 'careerTracking' is declared but its value is never read. | 157:7-157:21 | DIAGNOSTIC_SEVERITY_HINT |
+
+
+</details>
+
+---
+
+Perfect! Now I've fixed the issue. The key change I made:
+
+## **Fixed the Data Source Priority**
+
+I changed the logic so that:
+
+1. **Primary source for `global_rating`**: Now uses `player_performance_mart.global_rating` (since every player with games is guaranteed to be in this mart)
+
+2. **Detailed breakdown components**: Uses `v_player_global_rating` view data when available, but falls back to 0 if the view doesn't have data
+
+3. **No more fallback needed**: Since every player is in `player_performance_mart`, we don't need the complex fallback logic anymore
+
+## **What This Fixes**
+
+- **Consistency**: The rating displayed on individual player pages will now match the rating from `player_performance_mart` (same as what's used on the players index page)
+- **Reliability**: No more cases where `globalRatingData` is null if a player has games but isn't in the view
+- **Performance**: Still gets the detailed breakdown from the view when available, but doesn't rely on it for the core rating value
+
+The rating displayed on the webpage should now match exactly with what's in your `player_performance_mart` database, which is what you were expecting.
+
+---
+
+_**User (2025-10-19 07:02Z)**_
+
+v_player_global_rating shows same rating as the mart so thats fine as a fallback but NOT player_performance_view that is what is showing the incorrect values
+
+---
+
+_**Assistant (default)**_
+
+Ah, I understand now! The issue is that `player_performance_view` is showing incorrect values, but `v_player_global_rating` shows the same correct values as `player_performance_mart`. 
+
+Let me find where `player_performance_view` is being used incorrectly:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "player_performance_view" in "src" • 66 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L336 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L620 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L793 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L1758 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L2187 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L3319 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L3857 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L4207 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L5051 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L5686 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L6081 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L6459 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L6621 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L6926 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L7205 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L7693 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L9364 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L11633 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L12135 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L12387 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L12755 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L13145 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L13570 |
+| `src/lib/` | `player_performance_view: \{` | L13868 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L14097 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L14412 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L14888 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L15136 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L16110 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L17129 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L17233 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L17501 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L17732 |
+| `src/lib/` | `referencedRelation: "player_performance_view"` | L17963 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L336 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L620 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L793 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L1664 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L2081 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L3213 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L3751 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L4101 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L5418 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L5813 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L6191 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L6353 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L6658 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L6937 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L7425 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L9069 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L11338 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L11839 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L12091 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L12459 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L13168 |
+| `src/lib/db.types.ts` | `player_performance_view: \{` | L13466 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L13695 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L14010 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L14486 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L14734 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L15708 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L16727 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L16831 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L17099 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L17330 |
+| `src/lib/db.types.ts` | `referencedRelation: "player_performance_view"` | L17561 |
+
+
+</details>
+
+---
+
+The grep results show mostly type definitions. Let me search for actual usage of `player_performance_view` in the code:
+
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "from player_performance_view select query actual usage" • **15** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/pages/api/player-stats.ts` | L121 |
+| `src/pages/players/[id].astro` | L55 |
+| `src/pages/players/index.astro` | L72 |
+| `src/pages/teams/[id].astro` | L58 |
+| `src/lib/db.types.ts` | L6-18006 |
+| `src/pages/tournaments/[id].astro` | L111-172 |
+| `src/pages/index.astro` | L42 |
+| `src/pages/players/[id].astro` | L53-112 |
+| `src/pages/api/player-stats.ts` | L1-121 |
+| `src/pages/players/index.astro` | L70-113 |
+| `src/pages/leagues/[id].astro` | L108-173 |
+| `src/pages/tournaments/[id].astro` | L63-113 |
+| `src/pages/api/team-stats.ts` | L51 |
+| `src/pages/tournaments/[id].astro` | L66 |
+| `src/pages/leagues/[id].astro` | L63 |
+
+</details>
+
+---
+
+I see that the `src/pages/api/player-stats.ts` file is correctly using `player_performance_mart`, but let me check if the Edge Function still has the issue. Let me verify the current state of the Edge Function:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: functions/api/player-stats.ts
+
+---
+
+Good, I already fixed that one. Let me search more broadly for any remaining usage of `player_performance_view` in the actual source code:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "\.from\(['\"]player_performance_view['\"]" in "src" • 0 matches</summary>
+
+Output mode: content
+
+
+_No matches found_
+
+</details>
+
+---
+
 
 
 ---

@@ -40,46 +40,33 @@ const { data: streakData } = await supa(Astro.locals)
   .eq("player_id", id!)
   .maybeSingle();
 
-// Get detailed global rating breakdown from v_player_global_rating view
+// Get detailed global rating breakdown from v_player_global_rating view (fallback for breakdown only)
 const { data: ratingData } = await supa(Astro.locals)
   .from("v_player_global_rating")
   .select("*")
   .eq("player_id", id!)
   .maybeSingle();
 
-// Combine data for global rating (use detailed rating data from view, fallback to performance mart)
-const globalRatingData = ratingData ? {
-  player_id: ratingData.player_id,
-  gamertag: ratingData.gamertag,
-  position: ratingData.position,
-  global_rating: parseFloat(String(ratingData.global_rating || '0')),
-  base_rating: parseFloat(String(ratingData.base_rating || '0')),
-  game_impact: parseFloat(String(ratingData.game_impact || '0')),
-  event_bonus: parseFloat(String(ratingData.event_bonus || '0')),
-  decay_penalty: parseFloat(String(ratingData.decay_penalty || '0')),
-  consistency_bonus: parseFloat(String(ratingData.consistency_bonus || '0')),
-  rating_tier: ratingData.rating_tier,
-  total_games: ratingData.total_games,
-  recent_games: ratingData.recent_games,
-  days_since_last_game: ratingData.days_since_last_game,
-  peak_performance: parseFloat(String(ratingData.peak_performance || '0')),
-} : (perfData ? {
-  // Fallback to player_performance_mart if v_player_global_rating view has no data
+// ALWAYS use player_performance_mart.global_rating as the primary source (never player_performance_view)
+// Use v_player_global_rating view only for detailed breakdown components if available
+const globalRatingData = perfData ? {
   player_id: perfData.player_id,
   gamertag: perfData.gamertag,
   position: perfData.position,
+  // PRIMARY SOURCE: Always use performance mart for global_rating (matches players index page)
   global_rating: parseFloat(String(perfData.global_rating || '0')),
-  base_rating: 0, // Not available in performance mart
-  game_impact: 0, // Not available in performance mart
-  event_bonus: 0, // Not available in performance mart
-  decay_penalty: 0, // Not available in performance mart
-  consistency_bonus: 0, // Not available in performance mart
   rating_tier: perfData.rating_tier,
   total_games: perfData.games_played || 0,
-  recent_games: perfData.games_played || 0, // Approximate
-  days_since_last_game: null, // Not available in performance mart
-  peak_performance: 0, // Not available in performance mart
-} : null);
+  recent_games: perfData.games_played || 0, // Approximate for now
+  // Detailed breakdown: use v_player_global_rating view data if available (NOT player_performance_view)
+  base_rating: ratingData ? parseFloat(String(ratingData.base_rating || '0')) : 0,
+  game_impact: ratingData ? parseFloat(String(ratingData.game_impact || '0')) : 0,
+  event_bonus: ratingData ? parseFloat(String(ratingData.event_bonus || '0')) : 0,
+  decay_penalty: ratingData ? parseFloat(String(ratingData.decay_penalty || '0')) : 0,
+  consistency_bonus: ratingData ? parseFloat(String(ratingData.consistency_bonus || '0')) : 0,
+  days_since_last_game: ratingData ? ratingData.days_since_last_game : null,
+  peak_performance: ratingData ? parseFloat(String(ratingData.peak_performance || '0')) : 0,
+} : null;
 
 // Get current team info if player has one - use team_analytics_mart
 let currentTeam = null;
