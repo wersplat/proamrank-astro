@@ -857,3 +857,95 @@ The implementation follows the existing patterns in the codebase, handling both 
 
 ---
 
+_**User (2025-10-19 17:43Z)**_
+
+
+
+---
+
+_**Assistant (default)**_
+
+I can see there's an error in the match details page I created. The error is occurring at line 120 in the `[id].astro` file. Let me investigate and fix this issue.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matches/[id].astro
+
+---
+
+The issue is that I'm trying to return JSX from a function that's defined in the Astro frontmatter section, but Astro doesn't support JSX return statements in the frontmatter like this. Let me fix this by moving the verification badge logic to the template section.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matches/[id].astro
+
+---
+
+I need to remove the JSX function and handle the verification badge directly in the template. Let me fix this:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/pages/matches/[id].astro</summary>
+
+**Chunk 1**
+Lines added: undefined, lines removed: 22
+
+```diff
+@@ -115,26 +115,4 @@
+  }
+  
+- const getVerificationBadge = (match: any) => {
+-   if (match.verified === true) {
+-     return (
+-       <span class="px-3 py-1 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-sm font-medium flex items-center gap-2">
+-         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+-           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+-         </svg>
+-         Verified
+-       </span>
+-     );
+-   } else if (match.status === 'processed' && match.verified === false) {
+-     return (
+-       <span class="px-3 py-1 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-sm font-medium flex items-center gap-2">
+-         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+-           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+-         </svg>
+-         Under Review
+-       </span>
+-     );
+-   }
+-   return null;
+- };
+  ---
+  
+```
+
+</details>
+
+---
+
+Now I need to find where the verification badge was being used and replace it with inline conditional rendering. Let me find that:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matches/[id].astro
+
+---
+
+
+
+---
+
