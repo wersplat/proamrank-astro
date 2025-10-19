@@ -127,6 +127,27 @@ export type Database = {
             foreignKeyName: "achievement_rules_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "achievement_rules_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "achievement_rules_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "achievement_rules_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -298,6 +319,27 @@ export type Database = {
             foreignKeyName: "awards_race_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "awards_race_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "awards_race_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "awards_race_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -370,6 +412,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "awards_race_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "awards_race_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "awards_race_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "awards_race_team_id_fkey"
@@ -582,6 +645,27 @@ export type Database = {
             foreignKeyName: "city_crews_crewLead_fkey"
             columns: ["crewLead"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "city_crews_crewLead_fkey"
+            columns: ["crewLead"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "city_crews_crewLead_fkey"
+            columns: ["crewLead"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "city_crews_crewLead_fkey"
+            columns: ["crewLead"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -755,6 +839,27 @@ export type Database = {
             foreignKeyName: "draft_pool_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: true
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "draft_pool_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: true
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "draft_pool_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: true
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "draft_pool_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: true
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -833,6 +938,27 @@ export type Database = {
             columns: ["season"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "draft_pool_season_fkey"
+            columns: ["season"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "draft_pool_season_fkey"
+            columns: ["season"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "draft_pool_season_fkey"
+            columns: ["season"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -1075,6 +1201,27 @@ export type Database = {
             foreignKeyName: "event_results_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "event_results_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "event_results_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "event_results_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -1098,6 +1245,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "event_results_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "event_results_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "event_results_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "event_results_team_id_fkey"
@@ -1478,6 +1646,27 @@ export type Database = {
             foreignKeyName: "group_standings_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "group_standings_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "group_standings_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "group_standings_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -1692,6 +1881,27 @@ export type Database = {
             foreignKeyName: "league_open_open_champion_fkey"
             columns: ["open_champion"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_open_open_champion_fkey"
+            columns: ["open_champion"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_open_open_champion_fkey"
+            columns: ["open_champion"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_open_open_champion_fkey"
+            columns: ["open_champion"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_name"]
           },
@@ -1923,6 +2133,27 @@ export type Database = {
             foreignKeyName: "league_open_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: true
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_open_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_open_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_open_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -2001,6 +2232,27 @@ export type Database = {
             columns: ["season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_open_matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_open_matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_open_matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -2121,6 +2373,27 @@ export type Database = {
             foreignKeyName: "league_playoff_playoff_champion_fkey"
             columns: ["playoff_champion"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_playoff_playoff_champion_fkey"
+            columns: ["playoff_champion"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_playoff_playoff_champion_fkey"
+            columns: ["playoff_champion"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_playoff_playoff_champion_fkey"
+            columns: ["playoff_champion"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_name"]
           },
@@ -2352,6 +2625,27 @@ export type Database = {
             foreignKeyName: "league_playoff_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: true
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_playoff_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_playoff_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_playoff_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -2430,6 +2724,27 @@ export type Database = {
             columns: ["season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_playoff_matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_playoff_matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "league_playoff_matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -2857,6 +3172,27 @@ export type Database = {
             foreignKeyName: "lg_conf_season_fkey"
             columns: ["season"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_conf_season_fkey"
+            columns: ["season"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_conf_season_fkey"
+            columns: ["season"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_conf_season_fkey"
+            columns: ["season"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -3014,6 +3350,27 @@ export type Database = {
             foreignKeyName: "lg_divisions_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_divisions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_divisions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_divisions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -3140,6 +3497,27 @@ export type Database = {
             columns: ["season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -3281,6 +3659,27 @@ export type Database = {
             foreignKeyName: "match_mvp_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "match_mvp_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "match_mvp_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "match_mvp_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -3415,6 +3814,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_matches_with_primary_context"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_points_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "match_points_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "match_points_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "match_points_team_id_fkey"
@@ -3637,6 +4057,27 @@ export type Database = {
             foreignKeyName: "match_submissions_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -3660,6 +4101,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "match_submissions_team_a_id_fkey"
@@ -3785,6 +4247,27 @@ export type Database = {
             columns: ["team_a_name"]
             isOneToOne: false
             referencedRelation: "league_division_standings"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_a_name_fkey"
+            columns: ["team_a_name"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_a_name_fkey"
+            columns: ["team_a_name"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_a_name_fkey"
+            columns: ["team_a_name"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_name"]
           },
           {
@@ -4015,6 +4498,27 @@ export type Database = {
             foreignKeyName: "match_submissions_team_b_id_fkey"
             columns: ["team_b_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -4135,6 +4639,27 @@ export type Database = {
             columns: ["team_b_name"]
             isOneToOne: false
             referencedRelation: "league_division_standings"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_b_name_fkey"
+            columns: ["team_b_name"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_b_name_fkey"
+            columns: ["team_b_name"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "match_submissions_team_b_name_fkey"
+            columns: ["team_b_name"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_name"]
           },
           {
@@ -4552,6 +5077,27 @@ export type Database = {
             foreignKeyName: "matches_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -4575,6 +5121,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "matches_team_a_id_fkey"
@@ -4672,6 +5239,27 @@ export type Database = {
             columns: ["team_a_id"]
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_id"]
           },
           {
@@ -4827,6 +5415,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournaments"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "matches_winner_id_fkey"
@@ -5007,6 +5616,27 @@ export type Database = {
             columns: ["corrected_player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "ocr_corrections_corrected_player_id_fkey"
+            columns: ["corrected_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "ocr_corrections_corrected_player_id_fkey"
+            columns: ["corrected_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "ocr_corrections_corrected_player_id_fkey"
+            columns: ["corrected_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -5466,6 +6096,27 @@ export type Database = {
             foreignKeyName: "past_champions_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: true
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "past_champions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "past_champions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "past_champions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: true
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -5489,6 +6140,27 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "past_champions_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "past_champions_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "past_champions_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "past_champions_team_id_fkey"
@@ -5614,6 +6286,27 @@ export type Database = {
             columns: ["team_name"]
             isOneToOne: false
             referencedRelation: "league_division_standings"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "past_champions_team_name_fkey"
+            columns: ["team_name"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "past_champions_team_name_fkey"
+            columns: ["team_name"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "past_champions_team_name_fkey"
+            columns: ["team_name"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_name"]
           },
           {
@@ -6043,6 +6736,27 @@ export type Database = {
             foreignKeyName: "player_awards_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_awards_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -6128,6 +6842,27 @@ export type Database = {
             columns: ["season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_awards_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_awards_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_awards_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -6248,6 +6983,27 @@ export type Database = {
             columns: ["season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_badges_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_badges_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_badges_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -6421,6 +7177,27 @@ export type Database = {
             foreignKeyName: "player_counters_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_counters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -6499,6 +7276,27 @@ export type Database = {
             columns: ["season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_counters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_counters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_counters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -6583,6 +7381,27 @@ export type Database = {
             foreignKeyName: "player_handles_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_handles_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_handles_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_handles_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -6661,6 +7480,27 @@ export type Database = {
             columns: ["season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_handles_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_handles_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "player_handles_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -6882,6 +7722,27 @@ export type Database = {
             columns: ["player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_rp_transactions_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_rp_transactions_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_rp_transactions_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -7167,6 +8028,27 @@ export type Database = {
             foreignKeyName: "player_stats_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -7239,6 +8121,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "player_stats_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "player_stats_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "player_stats_team_id_fkey"
@@ -7501,6 +8404,27 @@ export type Database = {
             foreignKeyName: "players_current_team_id_fkey"
             columns: ["current_team_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -7621,6 +8545,27 @@ export type Database = {
             columns: ["currentTeamName"]
             isOneToOne: false
             referencedRelation: "league_division_standings"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "players_currentTeamName_fkey"
+            columns: ["currentTeamName"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "players_currentTeamName_fkey"
+            columns: ["currentTeamName"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "players_currentTeamName_fkey"
+            columns: ["currentTeamName"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_name"]
           },
           {
@@ -7946,6 +8891,27 @@ export type Database = {
             foreignKeyName: "playlist_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "playlist_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "playlist_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "playlist_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -7969,6 +8935,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "playlist_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "playlist_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "playlist_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "playlist_team_a_id_fkey"
@@ -8066,6 +9053,27 @@ export type Database = {
             columns: ["team_a_id"]
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "playlist_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "playlist_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "playlist_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_id"]
           },
           {
@@ -8221,6 +9229,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournaments"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "playlist_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "playlist_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "playlist_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "playlist_winner_id_fkey"
@@ -8422,6 +9451,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_results"
             referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "ranking_points_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "ranking_points_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "ranking_points_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "ranking_points_team_id_fkey"
@@ -8715,6 +9765,27 @@ export type Database = {
             foreignKeyName: "rp_transactions_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "rp_transactions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "rp_transactions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "rp_transactions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -8738,6 +9809,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "rp_transactions_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "rp_transactions_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "rp_transactions_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "rp_transactions_team_id_fkey"
@@ -9066,6 +10158,27 @@ export type Database = {
             foreignKeyName: "team_match_stats_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_match_stats_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_match_stats_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_match_stats_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -9326,6 +10439,27 @@ export type Database = {
             foreignKeyName: "team_rosters_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -9410,6 +10544,27 @@ export type Database = {
             foreignKeyName: "team_rosters_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -9433,6 +10588,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "team_rosters_team_id_fkey"
@@ -9734,6 +10910,27 @@ export type Database = {
             foreignKeyName: "teams_pot_tracker_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "teams_pot_tracker_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "teams_pot_tracker_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "teams_pot_tracker_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -9757,6 +10954,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "teams_pot_tracker_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "teams_pot_tracker_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "teams_pot_tracker_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "teams_pot_tracker_team_id_fkey"
@@ -9948,6 +11166,27 @@ export type Database = {
             foreignKeyName: "event_group_members_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "event_group_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "event_group_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "event_group_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -10090,6 +11329,27 @@ export type Database = {
             columns: ["league_season_id"]
             isOneToOne: false
             referencedRelation: "league_calendar"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "event_groups_league_season_id_fkey"
+            columns: ["league_season_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "event_groups_league_season_id_fkey"
+            columns: ["league_season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "event_groups_league_season_id_fkey"
+            columns: ["league_season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["season_id"]
           },
           {
@@ -10255,6 +11515,27 @@ export type Database = {
           tier?: Database["public"]["Enums"]["event_tier"] | null
         }
         Relationships: [
+          {
+            foreignKeyName: "tournaments_champion_fkey"
+            columns: ["champion"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_champion_fkey"
+            columns: ["champion"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_champion_fkey"
+            columns: ["champion"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
           {
             foreignKeyName: "tournaments_champion_fkey"
             columns: ["champion"]
@@ -10441,6 +11722,27 @@ export type Database = {
             foreignKeyName: "tournaments_place_fkey"
             columns: ["place"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_place_fkey"
+            columns: ["place"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_place_fkey"
+            columns: ["place"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_place_fkey"
+            columns: ["place"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -10533,6 +11835,27 @@ export type Database = {
             columns: ["place"]
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_runner_up_fkey"
+            columns: ["runner_up"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_runner_up_fkey"
+            columns: ["runner_up"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_runner_up_fkey"
+            columns: ["runner_up"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_id"]
           },
           {
@@ -10752,6 +12075,27 @@ export type Database = {
             foreignKeyName: "upcoming_matches_team_a_id_fkey"
             columns: ["team_a_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "upcoming_matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "upcoming_matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "upcoming_matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -10844,6 +12188,27 @@ export type Database = {
             columns: ["team_a_id"]
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "upcoming_matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "upcoming_matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "upcoming_matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_id"]
           },
           {
@@ -11126,6 +12491,27 @@ export type Database = {
           veteran_eligible: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
           {
             foreignKeyName: "players_current_team_id_fkey"
             columns: ["current_team_id"]
@@ -11441,6 +12827,27 @@ export type Database = {
             foreignKeyName: "past_champions_team_id_fkey"
             columns: ["champion_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "past_champions_team_id_fkey"
+            columns: ["champion_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "past_champions_team_id_fkey"
+            columns: ["champion_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "past_champions_team_id_fkey"
+            columns: ["champion_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -11561,6 +12968,27 @@ export type Database = {
             columns: ["champion_name"]
             isOneToOne: false
             referencedRelation: "league_division_standings"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "past_champions_team_name_fkey"
+            columns: ["champion_name"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "past_champions_team_name_fkey"
+            columns: ["champion_name"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "past_champions_team_name_fkey"
+            columns: ["champion_name"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_name"]
           },
           {
@@ -11836,6 +13264,27 @@ export type Database = {
             foreignKeyName: "team_rosters_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -11859,6 +13308,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "team_rosters_team_id_fkey"
@@ -11957,6 +13427,516 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
             referencedColumns: ["team_id"]
+          },
+        ]
+      }
+      league_open_player_stats: {
+        Row: {
+          avg_assists: number | null
+          avg_blocks: number | null
+          avg_fouls: number | null
+          avg_performance_score: number | null
+          avg_plus_minus: number | null
+          avg_points: number | null
+          avg_rebounds: number | null
+          avg_steals: number | null
+          avg_turnovers: number | null
+          fg_pct: number | null
+          ft_pct: number | null
+          game_year: Database["public"]["Enums"]["game_year"] | null
+          gamertag: string | null
+          games_played: number | null
+          league_id: string | null
+          league_name: Database["public"]["Enums"]["leagues"] | null
+          player_id: string | null
+          position: Database["public"]["Enums"]["player_position"] | null
+          season_id: string | null
+          season_number: number | null
+          team_id: string | null
+          team_name: string | null
+          three_pt_pct: number | null
+          total_3pa: number | null
+          total_3pm: number | null
+          total_assists: number | null
+          total_blocks: number | null
+          total_fga: number | null
+          total_fgm: number | null
+          total_fouls: number | null
+          total_fta: number | null
+          total_ftm: number | null
+          total_performance_score: number | null
+          total_plus_minus: number | null
+          total_points: number | null
+          total_rebounds: number | null
+          total_steals: number | null
+          total_turnovers: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["league"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "match_analytics_mart"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "player_roster_history"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "team_roster_history"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_calendar"
+            referencedColumns: ["organizer_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_champions_by_year"
+            referencedColumns: ["organizer_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_performance_mart"
+            referencedColumns: ["organizer"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_name"]
+          },
+        ]
+      }
+      league_playoff_player_stats: {
+        Row: {
+          avg_assists: number | null
+          avg_blocks: number | null
+          avg_fouls: number | null
+          avg_performance_score: number | null
+          avg_plus_minus: number | null
+          avg_points: number | null
+          avg_rebounds: number | null
+          avg_steals: number | null
+          avg_turnovers: number | null
+          fg_pct: number | null
+          ft_pct: number | null
+          game_year: Database["public"]["Enums"]["game_year"] | null
+          gamertag: string | null
+          games_played: number | null
+          league_id: string | null
+          league_name: Database["public"]["Enums"]["leagues"] | null
+          player_id: string | null
+          position: Database["public"]["Enums"]["player_position"] | null
+          season_id: string | null
+          season_number: number | null
+          team_id: string | null
+          team_name: string | null
+          three_pt_pct: number | null
+          total_3pa: number | null
+          total_3pm: number | null
+          total_assists: number | null
+          total_blocks: number | null
+          total_fga: number | null
+          total_fgm: number | null
+          total_fouls: number | null
+          total_fta: number | null
+          total_ftm: number | null
+          total_performance_score: number | null
+          total_plus_minus: number | null
+          total_points: number | null
+          total_rebounds: number | null
+          total_steals: number | null
+          total_turnovers: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["league"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "match_analytics_mart"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "player_roster_history"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "team_roster_history"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_calendar"
+            referencedColumns: ["organizer_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_champions_by_year"
+            referencedColumns: ["organizer_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_performance_mart"
+            referencedColumns: ["organizer"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_name"]
+          },
+        ]
+      }
+      league_regular_season_player_stats: {
+        Row: {
+          avg_assists: number | null
+          avg_blocks: number | null
+          avg_fouls: number | null
+          avg_performance_score: number | null
+          avg_plus_minus: number | null
+          avg_points: number | null
+          avg_rebounds: number | null
+          avg_steals: number | null
+          avg_turnovers: number | null
+          fg_pct: number | null
+          ft_pct: number | null
+          game_year: Database["public"]["Enums"]["game_year"] | null
+          gamertag: string | null
+          games_played: number | null
+          league_id: string | null
+          league_name: Database["public"]["Enums"]["leagues"] | null
+          player_id: string | null
+          position: Database["public"]["Enums"]["player_position"] | null
+          season_id: string | null
+          season_number: number | null
+          team_id: string | null
+          team_name: string | null
+          three_pt_pct: number | null
+          total_3pa: number | null
+          total_3pm: number | null
+          total_assists: number | null
+          total_blocks: number | null
+          total_fga: number | null
+          total_fgm: number | null
+          total_fouls: number | null
+          total_fta: number | null
+          total_ftm: number | null
+          total_performance_score: number | null
+          total_plus_minus: number | null
+          total_points: number | null
+          total_rebounds: number | null
+          total_steals: number | null
+          total_turnovers: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_id"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_calendar"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_results"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_season_team_rosters"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "league_team_rosters"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "leagues_info"
+            referencedColumns: ["league"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "match_analytics_mart"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "player_roster_history"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "team_roster_history"
+            referencedColumns: ["league_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_calendar"
+            referencedColumns: ["organizer_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_champions_by_year"
+            referencedColumns: ["organizer_name"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_performance_mart"
+            referencedColumns: ["organizer"]
+          },
+          {
+            foreignKeyName: "league_seasons_league_name_fkey"
+            columns: ["league_name"]
+            isOneToOne: false
+            referencedRelation: "tournament_results"
+            referencedColumns: ["organizer_name"]
           },
         ]
       }
@@ -12063,6 +14043,27 @@ export type Database = {
             columns: ["open_champion"]
             isOneToOne: false
             referencedRelation: "league_division_standings"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_open_open_champion_fkey"
+            columns: ["open_champion"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_open_open_champion_fkey"
+            columns: ["open_champion"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_open_open_champion_fkey"
+            columns: ["open_champion"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_name"]
           },
           {
@@ -12315,6 +14316,27 @@ export type Database = {
             columns: ["playoff_champion"]
             isOneToOne: false
             referencedRelation: "league_division_standings"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_playoff_playoff_champion_fkey"
+            columns: ["playoff_champion"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_playoff_playoff_champion_fkey"
+            columns: ["playoff_champion"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_name"]
+          },
+          {
+            foreignKeyName: "league_playoff_playoff_champion_fkey"
+            columns: ["playoff_champion"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_name"]
           },
           {
@@ -12614,6 +14636,27 @@ export type Database = {
             foreignKeyName: "team_rosters_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -12717,6 +14760,27 @@ export type Database = {
             foreignKeyName: "match_mvp_player_id_fkey"
             columns: ["mvp_player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "match_mvp_player_id_fkey"
+            columns: ["mvp_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "match_mvp_player_id_fkey"
+            columns: ["mvp_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "match_mvp_player_id_fkey"
+            columns: ["mvp_player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -12794,6 +14858,27 @@ export type Database = {
             foreignKeyName: "matches_team_a_id_fkey"
             columns: ["team_a_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -12892,6 +14977,27 @@ export type Database = {
             foreignKeyName: "matches_team_b_id_fkey"
             columns: ["team_b_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -12984,6 +15090,27 @@ export type Database = {
             columns: ["team_b_id"]
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_id"]
           },
           {
@@ -13101,6 +15228,27 @@ export type Database = {
             columns: ["corrected_player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "ocr_corrections_corrected_player_id_fkey"
+            columns: ["corrected_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "ocr_corrections_corrected_player_id_fkey"
+            columns: ["corrected_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "ocr_corrections_corrected_player_id_fkey"
+            columns: ["corrected_player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -13292,6 +15440,27 @@ export type Database = {
           total_career_games: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
           {
             foreignKeyName: "players_current_team_id_fkey"
             columns: ["current_team_id"]
@@ -13497,6 +15666,27 @@ export type Database = {
             foreignKeyName: "match_contexts_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -13526,6 +15716,27 @@ export type Database = {
             columns: ["player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -13604,6 +15815,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["season_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["season_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["season_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "team_rosters_team_id_fkey"
@@ -13769,6 +16001,27 @@ export type Database = {
             foreignKeyName: "players_current_team_id_fkey"
             columns: ["current_team_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -13885,6 +16138,27 @@ export type Database = {
           team_name: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
           {
             foreignKeyName: "players_current_team_id_fkey"
             columns: ["current_team_id"]
@@ -14059,6 +16333,27 @@ export type Database = {
             foreignKeyName: "team_rosters_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -14131,6 +16426,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "team_rosters_team_id_fkey"
@@ -14374,6 +16690,27 @@ export type Database = {
             foreignKeyName: "player_stats_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -14505,6 +16842,27 @@ export type Database = {
           tournaments_played: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
           {
             foreignKeyName: "players_current_team_id_fkey"
             columns: ["current_team_id"]
@@ -14707,6 +17065,27 @@ export type Database = {
             foreignKeyName: "lg_divisions_season_id_fkey"
             columns: ["division_season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_divisions_season_id_fkey"
+            columns: ["division_season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_divisions_season_id_fkey"
+            columns: ["division_season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "lg_divisions_season_id_fkey"
+            columns: ["division_season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -14850,6 +17229,27 @@ export type Database = {
             foreignKeyName: "team_rosters_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -14922,6 +17322,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "team_rosters_team_id_fkey"
@@ -15098,6 +17519,27 @@ export type Database = {
             foreignKeyName: "team_rosters_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -15170,6 +17612,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "team_rosters_team_id_fkey"
@@ -15354,6 +17817,27 @@ export type Database = {
             foreignKeyName: "players_current_team_id_fkey"
             columns: ["current_team_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "players_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -15480,6 +17964,27 @@ export type Database = {
           upcoming_matches_count: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "tournaments_champion_fkey"
+            columns: ["champion"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_champion_fkey"
+            columns: ["champion"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_champion_fkey"
+            columns: ["champion"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
           {
             foreignKeyName: "tournaments_champion_fkey"
             columns: ["champion"]
@@ -15624,6 +18129,27 @@ export type Database = {
             foreignKeyName: "tournaments_place_fkey"
             columns: ["third_place_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_place_fkey"
+            columns: ["third_place_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_place_fkey"
+            columns: ["third_place_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_place_fkey"
+            columns: ["third_place_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["team_id"]
           },
@@ -15716,6 +18242,27 @@ export type Database = {
             columns: ["third_place_id"]
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_runner_up_fkey"
+            columns: ["runner_up"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_runner_up_fkey"
+            columns: ["runner_up"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "tournaments_runner_up_fkey"
+            columns: ["runner_up"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_id"]
           },
           {
@@ -16072,6 +18619,27 @@ export type Database = {
             foreignKeyName: "team_rosters_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -16144,6 +18712,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournament_player_stats"
             referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "team_rosters_team_id_fkey"
@@ -16402,6 +18991,27 @@ export type Database = {
             foreignKeyName: "match_contexts_season_id_fkey"
             columns: ["primary_season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["primary_season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["primary_season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "match_contexts_season_id_fkey"
+            columns: ["primary_season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -16535,6 +19145,27 @@ export type Database = {
             foreignKeyName: "matches_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -16558,6 +19189,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "player_stats_by_league_season"
             referencedColumns: ["league_season_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_a_id_fkey"
+            columns: ["team_a_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "matches_team_a_id_fkey"
@@ -16655,6 +19307,27 @@ export type Database = {
             columns: ["team_a_id"]
             isOneToOne: false
             referencedRelation: "tournament_team_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_team_b_id_fkey"
+            columns: ["team_b_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["team_id"]
           },
           {
@@ -16810,6 +19483,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tournaments"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["team_id"]
+          },
+          {
+            foreignKeyName: "matches_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["team_id"]
           },
           {
             foreignKeyName: "matches_winner_id_fkey"
@@ -16979,6 +19673,27 @@ export type Database = {
             foreignKeyName: "matches_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -17091,6 +19806,27 @@ export type Database = {
             foreignKeyName: "player_stats_player_id_fkey"
             columns: ["player_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
             referencedRelation: "league_season_team_rosters"
             referencedColumns: ["player_id"]
           },
@@ -17189,6 +19925,27 @@ export type Database = {
             columns: ["player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -17351,6 +20108,27 @@ export type Database = {
             foreignKeyName: "matches_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -17457,6 +20235,27 @@ export type Database = {
             columns: ["player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -17603,6 +20402,27 @@ export type Database = {
             foreignKeyName: "matches_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -17688,6 +20508,27 @@ export type Database = {
             columns: ["player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -17834,6 +20675,27 @@ export type Database = {
             foreignKeyName: "matches_season_id_fkey"
             columns: ["season_id"]
             isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
+            referencedColumns: ["season_id"]
+          },
+          {
+            foreignKeyName: "matches_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
             referencedRelation: "league_results"
             referencedColumns: ["season_id"]
           },
@@ -17919,6 +20781,27 @@ export type Database = {
             columns: ["player_id"]
             isOneToOne: false
             referencedRelation: "achievement_eligibility_mart"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_open_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_playoff_player_stats"
+            referencedColumns: ["player_id"]
+          },
+          {
+            foreignKeyName: "player_stats_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "league_regular_season_player_stats"
             referencedColumns: ["player_id"]
           },
           {
@@ -18182,6 +21065,10 @@ export type Database = {
       refresh_all_materialized_views: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      refresh_league_player_stats_views: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       remove_role: {
         Args: { role_to_remove: string; target_user_id: string }

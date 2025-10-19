@@ -203,6 +203,9 @@ type LeagueTabsProps = {
   topBlocks: TopPlayerStat[];
   leagueInfo?: LeagueInfo;
   playerStats?: PlayerStatFull[];
+  regularSeasonPlayerStats?: PlayerStatFull[];
+  openPlayerStats?: PlayerStatFull[];
+  playoffPlayerStats?: PlayerStatFull[];
   openTournament?: TournamentData | null;
   playoffTournament?: TournamentData | null;
   conferences?: Conference[];
@@ -220,6 +223,9 @@ export default function LeagueTabsIsland({
   topBlocks,
   leagueInfo,
   playerStats: leaguePlayerStats = [],
+  regularSeasonPlayerStats = [],
+  openPlayerStats = [],
+  playoffPlayerStats = [],
   openTournament = null,
   playoffTournament = null,
   conferences = [],
@@ -237,6 +243,7 @@ export default function LeagueTabsIsland({
   const [sortBy, setSortBy] = useState<keyof PlayerStatFull>('avg_points');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff'>('open');
+  const [statsFilter, setStatsFilter] = useState<'regular' | 'open' | 'playoff'>('regular');
 
   const tabs = [
     { id: 0, label: "Standings" },
@@ -305,7 +312,21 @@ export default function LeagueTabsIsland({
     }
   };
 
-  const sortedPlayerStats = [...leaguePlayerStats].sort((a, b) => {
+  // Get the stats array based on the current filter
+  const getFilteredStats = () => {
+    switch (statsFilter) {
+      case 'regular':
+        return regularSeasonPlayerStats.length > 0 ? regularSeasonPlayerStats : leaguePlayerStats;
+      case 'open':
+        return openPlayerStats;
+      case 'playoff':
+        return playoffPlayerStats;
+      default:
+        return leaguePlayerStats;
+    }
+  };
+
+  const sortedPlayerStats = [...getFilteredStats()].sort((a, b) => {
     const aVal = a[sortBy] ?? 0;
     const bVal = b[sortBy] ?? 0;
     const comparison = aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
@@ -879,6 +900,46 @@ export default function LeagueTabsIsland({
               </div>
             ) : (
               <>
+                {/* Stats Filter Toggle */}
+                <div className="mb-4 flex flex-wrap gap-2">
+                  {(regularSeasonPlayerStats.length > 0 || leaguePlayerStats.length > 0) && (
+                    <button
+                      onClick={() => setStatsFilter('regular')}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                        statsFilter === 'regular'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                      }`}
+                    >
+                      Regular Season
+                    </button>
+                  )}
+                  {openPlayerStats.length > 0 && (
+                    <button
+                      onClick={() => setStatsFilter('open')}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                        statsFilter === 'open'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                      }`}
+                    >
+                      Open Tournament
+                    </button>
+                  )}
+                  {playoffPlayerStats.length > 0 && (
+                    <button
+                      onClick={() => setStatsFilter('playoff')}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                        statsFilter === 'playoff'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                      }`}
+                    >
+                      Playoff Tournament
+                    </button>
+                  )}
+                </div>
+                
                 <div className="mb-4 text-sm text-neutral-400">
                   {sortedPlayerStats.length} player{sortedPlayerStats.length !== 1 ? 's' : ''} • Click column headers to sort
                 </div>
