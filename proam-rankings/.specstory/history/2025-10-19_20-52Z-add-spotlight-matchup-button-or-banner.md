@@ -703,6 +703,573 @@ Lines added: 1, lines removed: 1
 
 Tool use: **search_replace**
 
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -43,5 +43,5 @@
+    // Get tournament information if available
+    if (nextSpotlightMatchup.tournament_id) {
+-     const { data: tournamentData } = await supa(Astro.locals.runtime)
++     const { data: tournamentData } = await supa((Astro.locals as any).runtime)
+        .from("tournaments")
+        .select("id, name")
+```
+
+</details>
+
+---
+
+Now I need to fix the index.astro file as well:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -8,5 +8,5 @@
+  // Try team_analytics_mart first, fall back to teams table if mart is empty
+  let data, error;
+- const { data: martData, error: martError } = await supa(Astro.locals.runtime)
++ const { data: martData, error: martError } = await supa((Astro.locals as any).runtime)
+    .from("team_analytics_mart")
+    .select(`
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -29,5 +29,5 @@
+  // If mart is empty or has error, fall back to teams table
+  if (!martData || martData.length === 0 || martError) {
+-   const { data: teamsData, error: teamsError } = await supa(Astro.locals.runtime)
++   const { data: teamsData, error: teamsError } = await supa((Astro.locals as any).runtime)
+      .from("teams")
+      .select(`
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `src/components/UpcomingSpotlightBanner.astro`
+- `src/pages/index.astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Great! Now let me update the todos to mark the first task as complete and continue with the implementation:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Create component to fetch upcoming spotlight matchups from database
+- [x] Add banner/button component for upcoming spotlight matchups
+- [x] Integrate banner into main page layout
+
+---
+
+Perfect! I've successfully implemented the upcoming spotlight matchup banner. Let me provide a summary of what I've created:
+
+## Summary
+
+I've added a banner component that displays upcoming spotlight matchups on the main page. Here's what was implemented:
+
+### 1. **UpcomingSpotlightBanner.astro Component**
+- **Location**: `src/components/UpcomingSpotlightBanner.astro`
+- **Functionality**: 
+  - Queries the `upcoming_matches` table for matches with stages: "Semi Finals", "Finals", or "Grand Finals"
+  - Only shows matches scheduled for the future (`scheduled_at >= now`)
+  - Displays the next upcoming spotlight match (limited to 1 result)
+  - Fetches team information (names, logos) and tournament details
+  - Includes a "View Details" button that links to `/matchups/{id}`
+
+### 2. **Main Page Integration**
+- **Location**: `src/pages/index.astro`
+- **Changes**:
+  - Added import for the new `UpcomingSpotlightBanner` component
+  - Placed the banner at the top of the main content area, above the "Global Rankings" title
+
+### 3. **Banner Features**
+- **Visual Design**: 
+  - Purple gradient background with border to make it stand out
+  - Star icon to indicate it's a "Spotlight Matchup"
+  - Team logos and names displayed with VS separator
+  - Tournament and stage information
+- **Responsive**: 
+  - Desktop layout shows all information in a single row
+  - Mobile layout stacks information vertically
+- **Smart Date Display**: 
+  - Shows time-based format for matches within 24 hours
+  - Shows full date format for matches further in the future
+
+### 4. **Error Handling**
+- Gracefully handles cases where no upcoming spotlight matchups exist
+- Only displays the banner when all required data is available (match, team info)
+- Uses proper TypeScript typing to avoid linter errors
+
+The banner will only appear when there's an upcoming spotlight matchup (Semi Finals, Finals, or Grand Finals) scheduled in the future. When clicked, users are taken to the detailed spotlight matchup page that already exists in your application.
+
+---
+
+_**User (2025-10-19 17:43Z)**_
+
+have it show matches scheduled for same day or in the future and show up to 5 upcoming spotlight matchups
+
+---
+
+_**Assistant (default)**_
+
+I'll update the banner to show matches scheduled for the same day or in the future and display up to 5 upcoming spotlight matchups instead of just 1.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/UpcomingSpotlightBanner.astro
+
+---
+
+Now I need to update the component to show up to 5 matches, include same-day matches, and handle multiple matchups. I'll need to restructure the data fetching and display logic:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: undefined
+
+```diff
+@@ -3,4 +3,8 @@
+  
+  // Get upcoming spotlight matchups (Semi Finals, Finals, Grand Finals)
++ // Show matches from today onwards (same day and future)
++ const today = new Date();
++ today.setHours(0, 0, 0, 0); // Start of today
++ 
+  const { data: upcomingSpotlightMatches, error } = await supa((Astro.locals as any).runtime)
+    .from("upcoming_matches")
+```
+
+**Chunk 2**
+Lines added: 37, lines removed: 31
+
+```diff
+@@ -16,39 +20,45 @@
+    `)
+    .in("stage", ["Semi Finals", "Finals", "Grand Finals"])
+-   .gte("scheduled_at", new Date().toISOString())
++   .gte("scheduled_at", today.toISOString())
+    .order("scheduled_at", { ascending: true })
+-   .limit(1); // Only show the next upcoming spotlight match
++   .limit(5); // Show up to 5 upcoming spotlight matches
+  
+- let nextSpotlightMatchup: any = null;
+- let teamAInfo: any = null;
+- let teamBInfo: any = null;
+- let tournamentInfo: any = null;
++ let matchupsWithData: any[] = [];
+  
+  if (upcomingSpotlightMatches && upcomingSpotlightMatches.length > 0 && !error) {
+-   nextSpotlightMatchup = upcomingSpotlightMatches[0];
+-   
+-   // Get team information
+-   if (nextSpotlightMatchup.team_a_id && nextSpotlightMatchup.team_b_id) {
+-     const { data: teamsData } = await supa((Astro.locals as any).runtime)
+-       .from("teams")
+-       .select("id, name, logo_url")
+-       .in("id", [nextSpotlightMatchup.team_a_id, nextSpotlightMatchup.team_b_id]);
+-     
+-     if (teamsData) {
+-       teamAInfo = teamsData.find(t => t.id === nextSpotlightMatchup.team_a_id);
+-       teamBInfo = teamsData.find(t => t.id === nextSpotlightMatchup.team_b_id);
+-     }
+-   }
+-   
+-   // Get tournament information if available
+-   if (nextSpotlightMatchup.tournament_id) {
+-     const { data: tournamentData } = await supa((Astro.locals as any).runtime)
+-       .from("tournaments")
+-       .select("id, name")
+-       .eq("id", nextSpotlightMatchup.tournament_id)
+-       .maybeSingle();
+-     
+-     tournamentInfo = tournamentData;
+-   }
++   // Get all unique team IDs from all matches
++   const allTeamIds = Array.from(new Set([
++     ...upcomingSpotlightMatches.map((m: any) => m.team_a_id).filter(Boolean),
++     ...upcomingSpotlightMatches.map((m: any) => m.team_b_id).filter(Boolean)
++   ]));
++ 
++   // Get all unique tournament IDs
++   const allTournamentIds = Array.from(new Set(
++     upcomingSpotlightMatches.map((m: any) => m.tournament_id).filter(Boolean)
++   ));
++ 
++   // Fetch all team data in one query
++   const { data: teamsData } = allTeamIds.length > 0 ? await supa((Astro.locals as any).runtime)
++     .from("teams")
++     .select("id, name, logo_url")
++     .in("id", allTeamIds) : { data: [] };
++ 
++   // Fetch all tournament data in one query
++   const { data: tournamentsData } = allTournamentIds.length > 0 ? await supa((Astro.locals as any).runtime)
++     .from("tournaments")
++     .select("id, name")
++     .in("id", allTournamentIds) : { data: [] };
++ 
++   // Create lookup maps
++   const teamMap = new Map((teamsData || []).map((t: any) => [t.id, t]));
++   const tournamentMap = new Map((tournamentsData || []).map((t: any) => [t.id, t]));
++ 
++   // Build matchups with team and tournament info
++   matchupsWithData = upcomingSpotlightMatches.map((match: any) => ({
++     ...match,
++     teamAInfo: teamMap.get(match.team_a_id),
++     teamBInfo: teamMap.get(match.team_b_id),
++     tournamentInfo: match.tournament_id ? tournamentMap.get(match.tournament_id) : null
++   })).filter((match: any) => match.teamAInfo && match.teamBInfo); // Only include matches with valid team data
+  }
+  
+```
+
+</details>
+
+---
+
+Now I need to update the HTML template to display multiple matchups instead of just one:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 78, lines removed: 71
+
+```diff
+@@ -89,75 +89,82 @@
+  ---
+  
+- {nextSpotlightMatchup && teamAInfo && teamBInfo && (
+-   <div class="mb-6 p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg">
+-     <div class="flex flex-col sm:flex-row items-center gap-4">
+-       <div class="flex items-center gap-3 flex-1">
+-         <div class="flex items-center gap-2">
+-           <svg class="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+-             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+-           </svg>
+-           <span class="text-lg font-bold text-purple-300">Spotlight Matchup</span>
+-         </div>
+-         
+-         <div class="hidden sm:flex items-center gap-2 text-sm text-neutral-300">
+-           <span>{nextSpotlightMatchup.stage}</span>
+-           {tournamentInfo && (
+-             <>
+-               <span class="text-neutral-500">•</span>
+-               <span>{tournamentInfo.name}</span>
+-             </>
+-           )}
+-         </div>
+-       </div>
+-       
+-       <div class="flex items-center gap-3">
+-         {/* Team A */}
+-         <div class="flex items-center gap-2">
+-           {teamAInfo.logo_url ? (
+-             <img src={teamAInfo.logo_url} alt={`${teamAInfo.name} logo`} class="h-8 w-8 rounded object-cover" />
+-           ) : (
+-             <div class="h-8 w-8 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+-               {teamAInfo.name.substring(0, 2).toUpperCase()}
+-             </div>
+-           )}
+-           <span class="font-semibold text-white">{teamAInfo.name}</span>
+-         </div>
+-         
+-         <span class="text-neutral-400 font-bold">VS</span>
+-         
+-         {/* Team B */}
+-         <div class="flex items-center gap-2">
+-           <span class="font-semibold text-white">{teamBInfo.name}</span>
+-           {teamBInfo.logo_url ? (
+-             <img src={teamBInfo.logo_url} alt={`${teamBInfo.name} logo`} class="h-8 w-8 rounded object-cover" />
+-           ) : (
+-             <div class="h-8 w-8 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+-               {teamBInfo.name.substring(0, 2).toUpperCase()}
+-             </div>
+-           )}
+-         </div>
+-       </div>
+-       
+-       <div class="flex flex-col sm:flex-row items-center gap-2">
+-         <div class="text-sm text-neutral-400">
+-           {formatDate(nextSpotlightMatchup.scheduled_at)}
+-         </div>
+-         <a 
+-           href={`/matchups/${nextSpotlightMatchup.id}`}
+-           class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors text-sm"
+-         >
+-           View Details
+-         </a>
+-       </div>
+-     </div>
+-     
+-     {/* Mobile tournament info */}
+-     {tournamentInfo && (
+-       <div class="sm:hidden mt-3 pt-3 border-t border-neutral-700">
+-         <div class="text-sm text-neutral-300 text-center">
+-           {nextSpotlightMatchup.stage} • {tournamentInfo.name}
+-         </div>
+-       </div>
+-     )}
++ {matchupsWithData.length > 0 && (
++   <div class="mb-6">
++     <div class="flex items-center gap-2 mb-4">
++       <svg class="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
++         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
++       </svg>
++       <h2 class="text-lg font-bold text-purple-300">Upcoming Spotlight Matchups</h2>
++       <span class="text-sm text-neutral-400">({matchupsWithData.length})</span>
++     </div>
++     
++     <div class="space-y-3">
++       {matchupsWithData.map((matchup: any) => (
++         <div class="p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg">
++           <div class="flex flex-col sm:flex-row items-center gap-4">
++             <div class="flex items-center gap-3 flex-1">
++               <div class="flex items-center gap-2">
++                 <span class="text-sm font-semibold text-purple-300">{matchup.stage}</span>
++                 {matchup.tournamentInfo && (
++                   <>
++                     <span class="text-neutral-500">•</span>
++                     <span class="text-sm text-neutral-300">{matchup.tournamentInfo.name}</span>
++                   </>
++                 )}
++               </div>
++             </div>
++             
++             <div class="flex items-center gap-3">
++               {/* Team A */}
++               <div class="flex items-center gap-2">
++                 {matchup.teamAInfo.logo_url ? (
++                   <img src={matchup.teamAInfo.logo_url} alt={`${matchup.teamAInfo.name} logo`} class="h-8 w-8 rounded object-cover" />
++                 ) : (
++                   <div class="h-8 w-8 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
++                     {matchup.teamAInfo.name.substring(0, 2).toUpperCase()}
++                   </div>
++                 )}
++                 <span class="font-semibold text-white">{matchup.teamAInfo.name}</span>
++               </div>
++               
++               <span class="text-neutral-400 font-bold">VS</span>
++               
++               {/* Team B */}
++               <div class="flex items-center gap-2">
++                 <span class="font-semibold text-white">{matchup.teamBInfo.name}</span>
++                 {matchup.teamBInfo.logo_url ? (
++                   <img src={matchup.teamBInfo.logo_url} alt={`${matchup.teamBInfo.name} logo`} class="h-8 w-8 rounded object-cover" />
++                 ) : (
++                   <div class="h-8 w-8 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
++                     {matchup.teamBInfo.name.substring(0, 2).toUpperCase()}
++                   </div>
++                 )}
++               </div>
++             </div>
++             
++             <div class="flex flex-col sm:flex-row items-center gap-2">
++               <div class="text-sm text-neutral-400">
++                 {formatDate(matchup.scheduled_at)}
++               </div>
++               <a 
++                 href={`/matchups/${matchup.id}`}
++                 class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors text-sm"
++               >
++                 View Details
++               </a>
++             </div>
++           </div>
++           
++           {/* Mobile tournament info */}
++           {matchup.tournamentInfo && (
++             <div class="sm:hidden mt-3 pt-3 border-t border-neutral-700">
++               <div class="text-sm text-neutral-300 text-center">
++                 {matchup.stage} • {matchup.tournamentInfo.name}
++               </div>
++             </div>
++           )}
++         </div>
++       ))}
++     </div>
+    </div>
+  )}
+```
+
+</details>
+
+---
+
+I need to add a key attribute to the mapped elements for React/Astro to track them properly:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -101,5 +101,5 @@
+      <div class="space-y-3">
+        {matchupsWithData.map((matchup: any) => (
+-         <div class="p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg">
++         <div key={matchup.id} class="p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg">
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <div class="flex items-center gap-3 flex-1">
+```
+
+</details>
+
+---
+
+Let me check for any linting errors:
+
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/UpcomingSpotlightBanner.astro`
+
+Lint results
+
+Lint errors for `src/components/UpcomingSpotlightBanner.astro`
+
+
+| Message | Range | Severity |
+|-------|-------|----------|
+| Type '\{ children: any[]; key: any; class: string; \}' is not assignable to type 'HTMLAttributes'.<br/>  Property 'key' does not exist on type 'HTMLAttributes'. | 103:14-103:17 | DIAGNOSTIC_SEVERITY_ERROR |
+
+
+</details>
+
+---
+
+The `key` attribute isn't needed in Astro templates like it is in React. Let me remove it:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -101,5 +101,5 @@
+      <div class="space-y-3">
+        {matchupsWithData.map((matchup: any) => (
+-         <div key={matchup.id} class="p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg">
++         <div class="p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg">
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <div class="flex items-center gap-3 flex-1">
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/UpcomingSpotlightBanner.astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Perfect! Let me also update the formatDate function to better handle same-day matches for better UX:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/UpcomingSpotlightBanner.astro
+
+---
+
+Let me improve the date formatting to better indicate when a match is today:
+
+
+---
+
+Tool use: **search_replace**
+
 ---
 
 
