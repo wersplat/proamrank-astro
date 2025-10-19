@@ -180,10 +180,11 @@ const teamARoster = matchData.team_a_id ?
 const teamBRoster = matchData.team_b_id ? 
   await getTeamRoster(matchData.team_b_id, matchData) : [];
 
-// Get player stats - try league_open_player_stats first, then fallback to tournament stats
+// Get player stats - try league_open_player_stats and league_playoff_player_stats first, then fallback to tournament stats
 const getPlayerStats = async (teamId: string, matchContext: any) => {
   // Try league_open_player_stats first if we have league and season context
   if (matchContext.league_id && matchContext.season_id) {
+    // Check open stats first
     const { data: leagueOpenStats } = await supa((Astro.locals as any).runtime)
       .from("league_open_player_stats")
       .select("*")
@@ -194,6 +195,31 @@ const getPlayerStats = async (teamId: string, matchContext: any) => {
     if (leagueOpenStats && leagueOpenStats.length > 0) {
       const statsMap = new Map();
       leagueOpenStats.forEach((stat: any) => {
+        if (stat.player_id) {
+          statsMap.set(stat.player_id, {
+            avg_points: stat.avg_points || 0,
+            avg_assists: stat.avg_assists || 0,
+            avg_rebounds: stat.avg_rebounds || 0,
+            avg_steals: stat.avg_steals || 0,
+            avg_blocks: stat.avg_blocks || 0,
+            games_played: stat.games_played || 0
+          });
+        }
+      });
+      return statsMap;
+    }
+
+    // Try playoff stats if no open stats found
+    const { data: leaguePlayoffStats } = await supa((Astro.locals as any).runtime)
+      .from("league_playoff_player_stats")
+      .select("*")
+      .eq("team_id", teamId)
+      .eq("league_id", matchContext.league_id)
+      .eq("season_id", matchContext.season_id);
+
+    if (leaguePlayoffStats && leaguePlayoffStats.length > 0) {
+      const statsMap = new Map();
+      leaguePlayoffStats.forEach((stat: any) => {
         if (stat.player_id) {
           statsMap.set(stat.player_id, {
             avg_points: stat.avg_points || 0,
@@ -280,6 +306,14 @@ const teamAPlayerStats = matchData.team_a_id ?
 const teamBPlayerStats = matchData.team_b_id ? 
   await getPlayerStats(matchData.team_b_id, matchData) : new Map();
 
+// Filter rosters to only include players who have stats in open/playoffs/tournament
+const filteredTeamARoster = teamARoster.filter((player: any) => 
+  teamAPlayerStats.has(player.player_id)
+);
+const filteredTeamBRoster = teamBRoster.filter((player: any) => 
+  teamBPlayerStats.has(player.player_id)
+);
+
 // Get tournament team stats
 const getTournamentTeamStats = async (teamId: string, tournamentId: string) => {
   if (!tournamentId) return null;
@@ -361,7 +395,7 @@ const spotlightMatch = {
     id: teamA.id,
     name: teamA.name,
     logo_url: teamA.logo_url,
-    roster: teamARoster,
+    roster: filteredTeamARoster,
     player_stats: teamAPlayerStats,
     tournament_stats: teamAStats
   },
@@ -369,7 +403,7 @@ const spotlightMatch = {
     id: teamB.id,
     name: teamB.name,
     logo_url: teamB.logo_url,
-    roster: teamBRoster,
+    roster: filteredTeamBRoster,
     player_stats: teamBPlayerStats,
     tournament_stats: teamBStats
   },

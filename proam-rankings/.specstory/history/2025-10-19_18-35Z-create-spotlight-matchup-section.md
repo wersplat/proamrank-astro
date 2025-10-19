@@ -5265,3 +5265,171 @@ _**Assistant (default)**_
 
 ---
 
+I need to update the roster ordering to display players in the specified order: Point Guard, Shooting Guard, Lock, Power Forward, C. Let me check how the roster data is currently being processed and displayed.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matchups/[id].astro
+
+---
+
+Now let me check how the roster is displayed in the component to see where I need to add the ordering:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/SpotlightMatchup.tsx
+
+---
+
+I need to add a sorting function to order the roster by position. I'll add this in the component where the roster is being mapped. Let me add the position ordering logic:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 19, lines removed: 3
+
+```diff
+@@ -238,7 +238,23 @@
+            <h3 className="text-lg font-semibold text-white">Roster</h3>
+            {team.roster.length > 0 ? (
+-             team.roster.map((player) => (
+-               <PlayerCard key={player.player_id} player={player} team={team} />
+-             ))
++             team.roster
++               .sort((a, b) => {
++                 // Define position order: Point Guard, Shooting Guard, Lock, Power Forward, C
++                 const positionOrder = {
++                   'Point Guard': 1,
++                   'Shooting Guard': 2,
++                   'Lock': 3,
++                   'Power Forward': 4,
++                   'C': 5
++                 };
++                 
++                 const aOrder = positionOrder[a.position as keyof typeof positionOrder] || 999;
++                 const bOrder = positionOrder[b.position as keyof typeof positionOrder] || 999;
++                 
++                 return aOrder - bOrder;
++               })
++               .map((player) => (
++                 <PlayerCard key={player.player_id} player={player} team={team} />
++               ))
+            ) : (
+              <div className="text-center py-8 text-neutral-400">
+```
+
+</details>
+
+---
+
+I also need to check if there are any other places in the component where rosters are displayed, like in the stats table. Let me search for other roster usages:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "team\.roster" in "src/components/SpotlightMatchup.tsx" • 2 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/SpotlightMatchup.tsx` | `\{team.roster.length > 0 ? (` | L239 |
+| `src/components/SpotlightMatchup.tsx` | `team.roster` | L240 |
+
+
+</details>
+
+---
+
+Let me also check if there are any stats tables that might need the same ordering:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "\.map.*player.*=>" in "src/components/SpotlightMatchup.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/SpotlightMatchup.tsx` | `.map((player) => (` | L256 |
+
+
+</details>
+
+---
+
+Let me search for any table or stats display that might also need ordering:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "roster\.map" in "src/components/SpotlightMatchup.tsx" • 0 matches</summary>
+
+Output mode: content
+
+
+_No matches found_
+
+</details>
+
+---
+
+It looks like there's only one place where the roster is displayed, and I've updated that. Let me check for any linting errors to make sure the implementation is correct:
+
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/SpotlightMatchup.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Perfect! I have successfully updated the roster ordering to display players in the specified order: Point Guard, Shooting Guard, Lock, Power Forward, C. 
+
+The implementation:
+
+1. **Added position-based sorting** in the roster display section of the `SpotlightMatchup.tsx` component
+2. **Uses a position order mapping** that assigns numerical values (1-5) to each position in the specified order
+3. **Handles missing positions** by assigning them order 999, so they appear at the end if a player doesn't have a position specified
+4. **Applies the sorting** before mapping over the roster to render `PlayerCard` components
+
+Now when the spotlight matchup page displays team rosters, players will appear in the correct position order: Point Guard first, then Shooting Guard, Lock, Power Forward, and finally Center (C).
+
+---
+
