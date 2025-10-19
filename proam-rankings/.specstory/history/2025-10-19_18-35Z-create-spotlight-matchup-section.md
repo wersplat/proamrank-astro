@@ -5246,3 +5246,22 @@ The head-to-head section will only appear if there's actual head-to-head data av
 
 ---
 
+_**User (2025-10-19 17:43Z)**_
+
+ok last thing is order the roster the following way:
+Point Guard
+Shooting Guard
+Lock
+Power Forward
+C
+
+if a position is provided
+
+---
+
+_**Assistant (default)**_
+
+
+
+---
+

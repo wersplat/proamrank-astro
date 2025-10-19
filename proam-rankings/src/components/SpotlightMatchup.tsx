@@ -237,9 +237,25 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
         <div className="space-y-3">
           <h3 className="text-lg font-semibold text-white">Roster</h3>
           {team.roster.length > 0 ? (
-            team.roster.map((player) => (
-              <PlayerCard key={player.player_id} player={player} team={team} />
-            ))
+            team.roster
+              .sort((a, b) => {
+                // Define position order: Point Guard, Shooting Guard, Lock, Power Forward, C
+                const positionOrder = {
+                  'Point Guard': 1,
+                  'Shooting Guard': 2,
+                  'Lock': 3,
+                  'Power Forward': 4,
+                  'C': 5
+                };
+                
+                const aOrder = positionOrder[a.position as keyof typeof positionOrder] || 999;
+                const bOrder = positionOrder[b.position as keyof typeof positionOrder] || 999;
+                
+                return aOrder - bOrder;
+              })
+              .map((player) => (
+                <PlayerCard key={player.player_id} player={player} team={team} />
+              ))
           ) : (
             <div className="text-center py-8 text-neutral-400">
               No roster data available
