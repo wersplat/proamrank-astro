@@ -1,0 +1,273 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import MatchesListIsland from "../../components/MatchesListIsland";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+// Enable SSR for dynamic match pages
+export const prerender = false;
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/matches");
+}
+
+// First try to get match from match_analytics_mart (verified matches)
+let matchData, matchError;
+
+const { data: martMatchData, error: martError } = await supa((Astro.locals as any).runtime)
+  .from("match_analytics_mart")
+  .select("*")
+  .eq("match_id", id)
+  .maybeSingle();
+
+if (martMatchData) {
+  // Use mart data for verified matches
+  matchData = {
+    id: martMatchData.match_id,
+    played_at: martMatchData.played_at,
+    team_a_id: martMatchData.team_a_id,
+    team_b_id: martMatchData.team_b_id,
+    score_a: martMatchData.score_a,
+    score_b: martMatchData.score_b,
+    stage: martMatchData.stage,
+    game_year: martMatchData.game_year,
+    boxscore_url: null, // Not in mart
+    status: 'verified',
+    verified: true,
+    team_a: {
+      id: martMatchData.team_a_id,
+      name: martMatchData.team_a_name,
+      logo_url: martMatchData.team_a_logo,
+    },
+    team_b: {
+      id: martMatchData.team_b_id,
+      name: martMatchData.team_b_name,
+      logo_url: martMatchData.team_b_logo,
+    },
+    league: martMatchData.league_name ? {
+      season_id: martMatchData.season_ids?.[0],
+      league_name: martMatchData.league_name,
+      season_number: null,
+    } : null,
+    tournament: martMatchData.tournament_name ? {
+      id: martMatchData.tournament_ids?.[0],
+      name: martMatchData.tournament_name,
+    } : null,
+  };
+} else {
+  // Fall back to v_matches_with_primary_context for non-verified matches
+  const { data: viewMatchData, error: viewError } = await supa((Astro.locals as any).runtime)
+    .from("v_matches_with_primary_context")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (!viewMatchData) {
+    return Astro.redirect("/matches");
+  }
+
+  // Get team info
+  const teamIds = [viewMatchData.team_a_id, viewMatchData.team_b_id].filter(Boolean) as string[];
+  const { data: teamsData } = await supa((Astro.locals as any).runtime)
+    .from("teams")
+    .select("id, name, logo_url")
+    .in("id", teamIds);
+
+  const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
+
+  // Get league info
+  const { data: leagueData } = viewMatchData.season_id ? await supa((Astro.locals as any).runtime)
+    .from("league_calendar")
+    .select("season_id, league_id, league_name, season_number")
+    .eq("season_id", viewMatchData.season_id)
+    .maybeSingle() : { data: null };
+
+  // Get tournament info
+  const { data: tournamentData } = viewMatchData.tournament_id ? await supa((Astro.locals as any).runtime)
+    .from("tournaments")
+    .select("id, name")
+    .eq("id", viewMatchData.tournament_id)
+    .maybeSingle() : { data: null };
+
+  matchData = {
+    id: viewMatchData.id,
+    played_at: viewMatchData.played_at,
+    team_a_id: viewMatchData.team_a_id,
+    team_b_id: viewMatchData.team_b_id,
+    score_a: viewMatchData.score_a,
+    score_b: viewMatchData.score_b,
+    stage: viewMatchData.stage,
+    game_year: viewMatchData.game_year,
+    boxscore_url: viewMatchData.boxscore_url,
+    status: viewMatchData.status,
+    verified: viewMatchData.verified,
+    team_a: teamMap.get(viewMatchData.team_a_id),
+    team_b: teamMap.get(viewMatchData.team_b_id),
+    league: leagueData,
+    tournament: tournamentData,
+  };
+}
+
+if (!matchData) {
+  return Astro.redirect("/matches");
+}
+
+const getVerificationBadge = (match: any) => {
+  if (match.verified === true) {
+    return (
+      <span class="px-3 py-1 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-sm font-medium flex items-center gap-2">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        Verified
+      </span>
+    );
+  } else if (match.status === 'processed' && match.verified === false) {
+    return (
+      <span class="px-3 py-1 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-sm font-medium flex items-center gap-2">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+        </svg>
+        Under Review
+      </span>
+    );
+  }
+  return null;
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{matchData.team_a?.name || 'Team A'} vs {matchData.team_b?.name || 'Team B'} - Match Details - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <!-- Breadcrumb -->
+      <nav class="mb-6">
+        <a href="/matches" class="text-blue-400 hover:text-blue-300">← Back to Matches</a>
+      </nav>
+
+      <!-- Match Header -->
+      <div class="mb-8">
+        <div class="bg-neutral-900 rounded-lg border border-neutral-800 p-6">
+          <div class="flex items-center justify-between mb-4">
+            {/* Team A */}
+            <div class="flex items-center gap-4 flex-1">
+              {matchData.team_a?.logo_url && (
+                <img
+                  src={matchData.team_a.logo_url}
+                  alt={matchData.team_a.name || 'Team A'}
+                  class="h-12 w-12 rounded"
+                />
+              )}
+              <div>
+                <a
+                  href={`/teams/${matchData.team_a_id}`}
+                  class="text-xl font-bold hover:text-blue-400"
+                >
+                  {matchData.team_a?.name || 'Team A'}
+                </a>
+              </div>
+            </div>
+
+            {/* VS */}
+            <div class="px-8 text-center">
+              <div class="text-4xl font-bold text-neutral-500 mb-2">VS</div>
+              <div class="text-2xl font-bold">
+                <span class="text-blue-400">{matchData.score_a ?? 0}</span>
+                <span class="mx-2 text-neutral-500">-</span>
+                <span class="text-red-400">{matchData.score_b ?? 0}</span>
+              </div>
+            </div>
+
+            {/* Team B */}
+            <div class="flex items-center gap-4 flex-1 justify-end">
+              <div class="text-right">
+                <a
+                  href={`/teams/${matchData.team_b_id}`}
+                  class="text-xl font-bold hover:text-blue-400"
+                >
+                  {matchData.team_b?.name || 'Team B'}
+                </a>
+              </div>
+              {matchData.team_b?.logo_url && (
+                <img
+                  src={matchData.team_b.logo_url}
+                  alt={matchData.team_b.name || 'Team B'}
+                  class="h-12 w-12 rounded"
+                />
+              )}
+            </div>
+          </div>
+
+          <!-- Match Info -->
+          <div class="flex items-center flex-wrap gap-4 text-sm text-neutral-400 border-t border-neutral-800 pt-4">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+              </svg>
+              <span>{matchData.played_at ? new Date(matchData.played_at).toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              }) : 'Date unknown'}</span>
+            </div>
+            
+            {matchData.league && (
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-1 rounded bg-neutral-800 text-neutral-300">
+                  {matchData.league.league_name} {matchData.league.season_number && `S${matchData.league.season_number}`}
+                </span>
+              </div>
+            )}
+            
+            {matchData.tournament && (
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-1 rounded bg-purple-900/30 text-purple-300">
+                  {matchData.tournament.name}
+                </span>
+              </div>
+            )}
+            
+            {matchData.stage && (
+              <div class="flex items-center gap-2">
+                <span class="text-neutral-300">• {matchData.stage}</span>
+              </div>
+            )}
+            
+            {matchData.game_year && (
+              <div class="flex items-center gap-2">
+                <span class="text-neutral-300">• {matchData.game_year}</span>
+              </div>
+            )}
+
+            <div class="ml-auto">
+              {getVerificationBadge(matchData)}
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex gap-3 mt-4">
+            {(matchData.stage === "Semi Finals" || matchData.stage === "Finals" || matchData.stage === "Grand Finals") && (
+              <a 
+                href={`/matchups/${matchData.id}`}
+                class="px-4 py-2 bg-blue-900 hover:bg-blue-800 text-blue-300 rounded transition"
+              >
+                View Spotlight Matchup
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Match Details (using the same component as the matches list but with single match) -->
+      <MatchesListIsland client:load matches={[matchData as any]} />
+    </main>
+  </body>
+</html>

@@ -2245,9 +2245,70 @@ Now I need to apply the same 4-hour adjustment to the SpotlightMatchup component
 
 Tool use: **search_replace**
 
+
+<details><summary>Edit file: src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 9, lines removed: 2
+
+```diff
+@@ -77,11 +77,18 @@
+    const formatDate = (dateString: string | null) => {
+      if (!dateString) return 'Date TBD';
+-     return new Date(dateString).toLocaleDateString('en-US', {
++     
++     // Apply the same timezone fix as in UpcomingSpotlightBanner
++     // Based on the 4-hour offset issue with timestamptz fields
++     const parsedDate = new Date(dateString);
++     const adjustedDate = new Date(parsedDate.getTime() - (4 * 60 * 60 * 1000)); // Subtract 4 hours
++     
++     return adjustedDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+-       minute: '2-digit'
++       minute: '2-digit',
++       hour12: true
+      });
+    };
+```
+
+</details>
+
 ---
 
+Let me check if there are any linting errors:
 
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/SpotlightMatchup.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Perfect! I've applied the same 4-hour timezone fix to the `SpotlightMatchup` component's `formatDate` function. Now both the banner and the matchup detail page should display the correct times (5:00 PM and 7:00 PM instead of 9:00 PM and 11:00 PM).
+
+The change I made:
+1. **Applied the same timezone adjustment** to the `formatDate` function in `SpotlightMatchup.tsx`
+2. **Added the 4-hour subtraction** to match what we did in the banner component
+3. **Added `hour12: true`** to ensure consistent time format display
+
+Now when you click "View Details" from the banner, the matchup page should also show the correct times.
 
 ---
 

@@ -214,6 +214,13 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
               {match.game_year && <span>• {match.game_year}</span>}
               {getVerificationBadge(match)}
               <div className="ml-auto flex gap-2">
+                <a 
+                  href={`/matches/${match.id}`}
+                  className="text-xs bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-2 py-1 rounded transition"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  View Details
+                </a>
                 {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
                   <a 
                     href={`/matchups/${match.id}`}
