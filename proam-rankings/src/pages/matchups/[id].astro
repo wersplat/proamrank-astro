@@ -13,12 +13,58 @@ if (!id) {
   return Astro.redirect("/");
 }
 
-// Get match details from upcoming_matches
-const { data: matchData } = await supa((Astro.locals as any).runtime)
+// Get match details - try upcoming_matches first, then fall back to matches
+let matchData: any = null;
+
+// First try upcoming_matches
+const { data: upcomingMatchData } = await supa((Astro.locals as any).runtime)
   .from("upcoming_matches")
   .select("*")
   .eq("id", id)
   .maybeSingle();
+
+if (upcomingMatchData) {
+  matchData = upcomingMatchData;
+} else {
+  // Fall back to regular matches table
+  const { data: regularMatchData } = await supa((Astro.locals as any).runtime)
+    .from("v_matches_with_primary_context")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  
+  if (regularMatchData) {
+    // For Final 4/Finals matches, try to find corresponding upcoming match
+    const validStages = ["Semi Finals", "Finals", "Grand Finals"];
+    if (regularMatchData.stage && validStages.includes(regularMatchData.stage) && 
+        regularMatchData.team_a_id && regularMatchData.team_b_id) {
+      // Look for upcoming match with same teams, stage, and tournament/league context
+      const { data: correspondingUpcomingMatch } = await supa((Astro.locals as any).runtime)
+        .from("upcoming_matches")
+        .select("*")
+        .eq("team_a_id", regularMatchData.team_a_id)
+        .eq("team_b_id", regularMatchData.team_b_id)
+        .eq("stage", regularMatchData.stage);
+      
+      // Check tournament or league context match
+      let upcomingMatch = null;
+      if (regularMatchData.tournament_id) {
+        upcomingMatch = correspondingUpcomingMatch?.find((um: any) => um.tournament_id === regularMatchData.tournament_id);
+      } else if (regularMatchData.league_id && regularMatchData.season_id) {
+        upcomingMatch = correspondingUpcomingMatch?.find((um: any) => 
+          um.league_id === regularMatchData.league_id && um.season_id === regularMatchData.season_id);
+      }
+      
+      if (upcomingMatch) {
+        matchData = upcomingMatch;
+      } else {
+        matchData = regularMatchData;
+      }
+    } else {
+      matchData = regularMatchData;
+    }
+  }
+}
 
 if (!matchData) {
   return Astro.redirect("/");
@@ -237,16 +283,19 @@ const teamAStats = matchData.tournament_id && matchData.team_a_id ?
 const teamBStats = matchData.tournament_id && matchData.team_b_id ? 
   await getTournamentTeamStats(matchData.team_b_id, matchData.tournament_id) : null;
 
+// Determine if this is from upcoming_matches or regular matches
+const isUpcomingMatch = !!(matchData as any).scheduled_at; // upcoming_matches has scheduled_at, matches doesn't
+
 // Prepare the match object with all data
 const spotlightMatch = {
   id: matchData.id,
-  played_at: matchData.scheduled_at, // upcoming_matches uses scheduled_at
+  played_at: isUpcomingMatch ? matchData.scheduled_at : matchData.played_at,
   stage: (matchData as any).stage,
   team_a_id: matchData.team_a_id,
   team_b_id: matchData.team_b_id,
-  score_a: null, // upcoming matches don't have scores yet
-  score_b: null, // upcoming matches don't have scores yet
-  winner_id: null, // upcoming matches don't have winners yet
+  score_a: isUpcomingMatch ? null : matchData.score_a, // upcoming matches don't have scores yet
+  score_b: isUpcomingMatch ? null : matchData.score_b, // upcoming matches don't have scores yet
+  winner_id: isUpcomingMatch ? null : matchData.winner_id, // upcoming matches don't have winners yet
   team_a: {
     id: teamA.id,
     name: teamA.name,
