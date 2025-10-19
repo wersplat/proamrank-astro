@@ -76,15 +76,33 @@ if (matchData.tournament_id) {
   }
 }
 
-// Get tournament-specific rosters for both teams
-const getTournamentRoster = async (teamId: string, tournamentId: string) => {
-  if (!tournamentId) return [];
+// Get team rosters - use league_season_team_rosters for open/playoff tournaments, tournament_team_rosters for standalone tournaments
+const getTeamRoster = async (teamId: string, matchContext: any) => {
+  let rosterData: any[] = [];
 
-  const { data: rosterData } = await supa((Astro.locals as any).runtime)
-    .from("tournament_team_rosters")
-    .select("player_id, player_name")
-    .eq("team_id", teamId)
-    .eq("tournament_id", tournamentId);
+  // Check if this is a league-based tournament (open/playoff) with league_id and season_id
+  if (matchContext.league_id && matchContext.season_id) {
+    // Use league_season_team_rosters for open and playoff tournaments
+    const { data: leagueRosterData } = await supa((Astro.locals as any).runtime)
+      .from("league_season_team_rosters")
+      .select("player_id, player_name")
+      .eq("team_id", teamId)
+      .eq("league_id", matchContext.league_id)
+      .eq("season_id", matchContext.season_id);
+
+    rosterData = leagueRosterData || [];
+  } 
+  
+  // If no league roster found, try tournament-specific roster for standalone tournaments
+  if ((!rosterData || rosterData.length === 0) && matchContext.tournament_id) {
+    const { data: tournamentRosterData } = await supa((Astro.locals as any).runtime)
+      .from("tournament_team_rosters")
+      .select("player_id, player_name")
+      .eq("team_id", teamId)
+      .eq("tournament_id", matchContext.tournament_id);
+
+    rosterData = tournamentRosterData || [];
+  }
 
   if (!rosterData || rosterData.length === 0) return [];
 
@@ -111,11 +129,11 @@ const getTournamentRoster = async (teamId: string, tournamentId: string) => {
   }).filter((p: any) => p.player_id); // Filter out entries without valid player IDs
 };
 
-// Get tournament rosters - ensure we have valid team IDs and tournament ID
-const teamARoster = matchData.tournament_id && matchData.team_a_id ? 
-  await getTournamentRoster(matchData.team_a_id, matchData.tournament_id) : [];
-const teamBRoster = matchData.tournament_id && matchData.team_b_id ? 
-  await getTournamentRoster(matchData.team_b_id, matchData.tournament_id) : [];
+// Get team rosters - ensure we have valid team IDs
+const teamARoster = matchData.team_a_id ? 
+  await getTeamRoster(matchData.team_a_id, matchData) : [];
+const teamBRoster = matchData.team_b_id ? 
+  await getTeamRoster(matchData.team_b_id, matchData) : [];
 
 // Get tournament-specific player stats
 const getPlayerTournamentStats = async (teamId: string, tournamentId: string) => {

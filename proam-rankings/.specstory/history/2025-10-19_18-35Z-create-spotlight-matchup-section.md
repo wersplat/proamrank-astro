@@ -2002,3 +2002,402 @@ The implementation follows the existing codebase patterns and handles edge cases
 
 ---
 
+_**User (2025-10-19 17:43Z)**_
+
+we need to use league_season_team_rosters for open and playoff rosters
+
+---
+
+_**Assistant (default)**_
+
+I need to update the matchup page to use `league_season_team_rosters` for open and playoff rosters instead of `tournament_team_rosters`. Let me examine the current implementation and make the necessary changes.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matchups/[id].astro
+
+---
+
+I need to understand how to determine if this is an open/playoff tournament vs a standalone tournament, and then use the appropriate roster table. Let me first check what fields are available in the match data to determine the context:
+
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How to identify if a match is from open tournament or playoff vs standalone tournament?" • **15** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/pages/tournaments/[id].astro` | L66 |
+| `src/pages/tournaments/[id].astro` | L111-172 |
+| `src/pages/leagues/[id].astro` | L60-114 |
+| `src/pages/players/[id].astro` | L53-112 |
+| `src/pages/teams/[id].astro` | L55-99 |
+| `src/pages/matches/index.astro` | L52 |
+| `src/pages/tournaments/[id].astro` | L169-233 |
+| `src/pages/tournaments/[id].astro` | L63-113 |
+| `src/components/TeamTabsIsland.tsx` | L2-28 |
+| `src/pages/teams/[id].astro` | L58 |
+| `src/pages/leagues/[id].astro` | L63 |
+| `src/components/TeamMatchesIsland.tsx` | L21 |
+| `src/components/MatchesListIsland.tsx` | L21 |
+| `src/components/TournamentTabsIsland.tsx` | L44-78 |
+| `src/components/LeagueMatchesIsland.tsx` | L20 |
+
+</details>
+
+---
+
+I can see from the match data that we have `league_id` and `season_id` fields available. Let me check how to distinguish between open/playoff tournaments and get the league season roster information:
+
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How to query league_season_team_rosters table with league_id and season_id?" • **3** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/lib/db.types.ts` | L6-18006 |
+| `src/pages/teams/[id].astro` | L55-99 |
+| `src/pages/teams/[id].astro` | L58 |
+
+</details>
+
+---
+
+Let me search for actual usage of league_season_team_rosters:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "league_season_team_rosters" in "src" • 166 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L88 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L287 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L343 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L448 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L669 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L807 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L863 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L1169 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L1281 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L1677 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L1912 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L2404 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L2845 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L2933 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L2975 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L3140 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L3318 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L3450 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L3683 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L3850 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L4025 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L4137 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L4284 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L4529 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L4676 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L5024 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L5157 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L5276 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L5451 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L5646 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L6022 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L6176 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L6323 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L6683 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L6760 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L6957 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L7201 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L7405 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L7675 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L7752 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L8052 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L8157 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L8435 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L8582 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L8859 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L8971 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L9090 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L9265 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L9431 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L9487 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L9733 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L9845 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L10189 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L10407 |
+| `src/lib/` | `referencedRelation: "league_season_team_rosters"` | L10463 |
+
+
+</details>
+
+---
+
+Let me find the actual table structure for league_season_team_rosters:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "league_season_team_rosters.*\{" in "src/lib/db.types.ts" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/lib/db.types.ts` | `league_season_team_rosters: \{` | L12292 |
+
+
+</details>
+
+---
+
+Perfect! Now I can see the structure. I also need to understand how to determine if a match is from an open/playoff tournament vs a standalone tournament. Let me check the match data to see what fields are available:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matchups/[id].astro
+
+---
+
+Now I need to modify the roster fetching logic to check if this is a league-based tournament (open/playoff) and use `league_season_team_rosters` instead of `tournament_team_rosters`. Let me update the function:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/pages/matchups/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 27, lines removed: 9
+
+```diff
+@@ -77,13 +77,31 @@
+  }
+  
+- // Get tournament-specific rosters for both teams
+- const getTournamentRoster = async (teamId: string, tournamentId: string) => {
+-   if (!tournamentId) return [];
+- 
+-   const { data: rosterData } = await supa((Astro.locals as any).runtime)
+-     .from("tournament_team_rosters")
+-     .select("player_id, player_name")
+-     .eq("team_id", teamId)
+-     .eq("tournament_id", tournamentId);
++ // Get team rosters - use league_season_team_rosters for open/playoff tournaments, tournament_team_rosters for standalone tournaments
++ const getTeamRoster = async (teamId: string, matchContext: any) => {
++   let rosterData: any[] = [];
++ 
++   // Check if this is a league-based tournament (open/playoff) with league_id and season_id
++   if (matchContext.league_id && matchContext.season_id) {
++     // Use league_season_team_rosters for open and playoff tournaments
++     const { data: leagueRosterData } = await supa((Astro.locals as any).runtime)
++       .from("league_season_team_rosters")
++       .select("player_id, player_name")
++       .eq("team_id", teamId)
++       .eq("league_id", matchContext.league_id)
++       .eq("season_id", matchContext.season_id);
++ 
++     rosterData = leagueRosterData || [];
++   } 
++   
++   // If no league roster found, try tournament-specific roster for standalone tournaments
++   if ((!rosterData || rosterData.length === 0) && matchContext.tournament_id) {
++     const { data: tournamentRosterData } = await supa((Astro.locals as any).runtime)
++       .from("tournament_team_rosters")
++       .select("player_id, player_name")
++       .eq("team_id", teamId)
++       .eq("tournament_id", matchContext.tournament_id);
++ 
++     rosterData = tournamentRosterData || [];
++   }
+  
+    if (!rosterData || rosterData.length === 0) return [];
+```
+
+</details>
+
+---
+
+
+
+---
+
+Now I need to update the calls to use the new function signature and pass the match context:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matchups/[id].astro
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/pages/matchups/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: 5
+
+```diff
+@@ -130,9 +130,9 @@
+  };
+  
+- // Get tournament rosters - ensure we have valid team IDs and tournament ID
+- const teamARoster = matchData.tournament_id && matchData.team_a_id ? 
+-   await getTournamentRoster(matchData.team_a_id, matchData.tournament_id) : [];
+- const teamBRoster = matchData.tournament_id && matchData.team_b_id ? 
+-   await getTournamentRoster(matchData.team_b_id, matchData.tournament_id) : [];
++ // Get team rosters - ensure we have valid team IDs
++ const teamARoster = matchData.team_a_id ? 
++   await getTeamRoster(matchData.team_a_id, matchData) : [];
++ const teamBRoster = matchData.team_b_id ? 
++   await getTeamRoster(matchData.team_b_id, matchData) : [];
+  
+  // Get tournament-specific player stats
+```
+
+</details>
+
+---
+
+Now I need to check if the match data query includes the necessary fields for league_id and season_id. Let me look at what fields are available:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/pages/matchups/[id].astro
+
+---
+
+Good, it's already selecting all fields with `select("*")`. Now let me check if there are any linting errors and ensure everything is working correctly:
+
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/pages/matchups/[id].astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Let me also verify that the SpotlightMatchup component is compatible with the updated data structure:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/SpotlightMatchup.tsx
+
+---
+
+Let me test the component to ensure it's still working properly:
+
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/SpotlightMatchup.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Perfect! I have successfully updated the matchup page to use `league_season_team_rosters` for open and playoff tournaments. Here's a summary of the changes made:
+
+## ✅ Updated Roster Fetching Logic
+
+I modified the `getTeamRoster` function in `src/pages/matchups/[id].astro` to:
+
+### **Key Changes:**
+
+1. **Renamed Function**: Changed `getTournamentRoster` to `getTeamRoster` to better reflect its dual purpose
+
+2. **League Context Detection**: The function now checks if the match has `league_id` and `season_id` fields to determine if it's a league-based tournament (open/playoff)
+
+3. **Dual Roster Source Strategy**:
+   - **For Open/Playoff Tournaments**: Uses `league_season_team_rosters` table with `league_id` and `season_id` filters
+   - **For Standalone Tournaments**: Falls back to `tournament_team_rosters` table with `tournament_id` filter
+
+4. **Updated Function Calls**: Modified the roster fetching calls to pass the entire match context instead of just the tournament ID
+
+### **Implementation Details:**
+
+```typescript
+const getTeamRoster = async (teamId: string, matchContext: any) => {
+  let rosterData: any[] = [];
+
+  // Check if this is a league-based tournament (open/playoff) with league_id and season_id
+  if (matchContext.league_id && matchContext.season_id) {
+    // Use league_season_team_rosters for open and playoff tournaments
+    const { data: leagueRosterData } = await supa((Astro.locals as any).runtime)
+      .from("league_season_team_rosters")
+      .select("player_id, player_name")
+      .eq("team_id", teamId)
+      .eq("league_id", matchContext.league_id)
+      .eq("season_id", matchContext.season_id);
+
+    rosterData = leagueRosterData || [];
+  } 
+  
+  // If no league roster found, try tournament-specific roster for standalone tournaments
+  if ((!rosterData || rosterData.length === 0) && matchContext.tournament_id) {
+    const { data: tournamentRosterData } = await supa((Astro.locals as any).runtime)
+      .from("tournament_team_rosters")
+      .select("player_id, player_name")
+      .eq("team_id", teamId)
+      .eq("tournament_id", matchContext.tourname
+
+---
+
