@@ -165,11 +165,10 @@ const getTeamRoster = async (teamId: string, matchContext: any) => {
     const player = playerMap.get(rosterEntry.player_id);
     return {
       player_id: rosterEntry.player_id,
-      player_name: player?.gamertag || rosterEntry.player_name,
+      gamertag: player?.gamertag || rosterEntry.player_name,
       position: player?.position || null,
       salary_tier: player?.salary_tier || null,
       twitch: player?.twitch || null,
-      twitter_id: player?.twitter_id || null,
       discord_id: player?.discord_id || null
     };
   }).filter((p: any) => p.player_id); // Filter out entries without valid player IDs
@@ -181,77 +180,105 @@ const teamARoster = matchData.team_a_id ?
 const teamBRoster = matchData.team_b_id ? 
   await getTeamRoster(matchData.team_b_id, matchData) : [];
 
-// Get tournament-specific player stats
-const getPlayerTournamentStats = async (teamId: string, tournamentId: string) => {
-  if (!tournamentId) return new Map();
+// Get player stats - try league_open_player_stats first, then fallback to tournament stats
+const getPlayerStats = async (teamId: string, matchContext: any) => {
+  // Try league_open_player_stats first if we have league and season context
+  if (matchContext.league_id && matchContext.season_id) {
+    const { data: leagueOpenStats } = await supa((Astro.locals as any).runtime)
+      .from("league_open_player_stats")
+      .select("*")
+      .eq("team_id", teamId)
+      .eq("league_id", matchContext.league_id)
+      .eq("season_id", matchContext.season_id);
 
-  // Get all matches for this tournament where the team played
-  const { data: tournamentMatches } = await supa((Astro.locals as any).runtime)
-    .from("v_matches_with_primary_context")
-    .select("id")
-    .eq("primary_tournament_id", tournamentId)
-    .or(`team_a_id.eq.${teamId},team_b_id.eq.${teamId}`);
-
-  if (!tournamentMatches || tournamentMatches.length === 0) return new Map();
-
-  const matchIds = tournamentMatches.map((m: any) => m.id);
-
-  // Get player stats for all tournament matches
-  const { data: playerStats } = await supa((Astro.locals as any).runtime)
-    .from("player_stats")
-    .select("player_id, points, assists, rebounds, steals, blocks, match_id")
-    .in("match_id", matchIds)
-    .eq("team_id", teamId);
-
-  if (!playerStats || playerStats.length === 0) return new Map();
-
-  // Calculate averages per player
-  const playerStatsMap = new Map();
-  
-  playerStats.forEach((stat: any) => {
-    if (!playerStatsMap.has(stat.player_id)) {
-      playerStatsMap.set(stat.player_id, {
-        player_id: stat.player_id,
-        games_played: 0,
-        total_points: 0,
-        total_assists: 0,
-        total_rebounds: 0,
-        total_steals: 0,
-        total_blocks: 0
+    if (leagueOpenStats && leagueOpenStats.length > 0) {
+      const statsMap = new Map();
+      leagueOpenStats.forEach((stat: any) => {
+        if (stat.player_id) {
+          statsMap.set(stat.player_id, {
+            avg_points: stat.avg_points || 0,
+            avg_assists: stat.avg_assists || 0,
+            avg_rebounds: stat.avg_rebounds || 0,
+            avg_steals: stat.avg_steals || 0,
+            avg_blocks: stat.avg_blocks || 0,
+            games_played: stat.games_played || 0
+          });
+        }
       });
+      return statsMap;
     }
+  }
+
+  // Fallback to tournament-specific stats if league stats not available
+  if (matchContext.tournament_id) {
+    const { data: tournamentMatches } = await supa((Astro.locals as any).runtime)
+      .from("v_matches_with_primary_context")
+      .select("id")
+      .eq("primary_tournament_id", matchContext.tournament_id)
+      .or(`team_a_id.eq.${teamId},team_b_id.eq.${teamId}`);
+
+    if (!tournamentMatches || tournamentMatches.length === 0) return new Map();
+
+    const matchIds = tournamentMatches.map((m: any) => m.id);
+
+    // Get player stats for all tournament matches
+    const { data: playerStats } = await supa((Astro.locals as any).runtime)
+      .from("player_stats")
+      .select("player_id, points, assists, rebounds, steals, blocks, match_id")
+      .in("match_id", matchIds)
+      .eq("team_id", teamId);
+
+    if (!playerStats || playerStats.length === 0) return new Map();
+
+    // Calculate averages per player
+    const playerStatsMap = new Map();
     
-    const playerStat = playerStatsMap.get(stat.player_id);
-    playerStat.games_played += 1;
-    playerStat.total_points += stat.points || 0;
-    playerStat.total_assists += stat.assists || 0;
-    playerStat.total_rebounds += stat.rebounds || 0;
-    playerStat.total_steals += stat.steals || 0;
-    playerStat.total_blocks += stat.blocks || 0;
-  });
-
-  // Calculate averages
-  const avgStats = new Map();
-  playerStatsMap.forEach((stats, playerId) => {
-    avgStats.set(playerId, {
-      player_id: playerId,
-      games_played: stats.games_played,
-      avg_points: stats.games_played > 0 ? (stats.total_points / stats.games_played).toFixed(1) : "0.0",
-      avg_assists: stats.games_played > 0 ? (stats.total_assists / stats.games_played).toFixed(1) : "0.0",
-      avg_rebounds: stats.games_played > 0 ? (stats.total_rebounds / stats.games_played).toFixed(1) : "0.0",
-      avg_steals: stats.games_played > 0 ? (stats.total_steals / stats.games_played).toFixed(1) : "0.0",
-      avg_blocks: stats.games_played > 0 ? (stats.total_blocks / stats.games_played).toFixed(1) : "0.0"
+    playerStats.forEach((stat: any) => {
+      if (!playerStatsMap.has(stat.player_id)) {
+        playerStatsMap.set(stat.player_id, {
+          player_id: stat.player_id,
+          games_played: 0,
+          total_points: 0,
+          total_assists: 0,
+          total_rebounds: 0,
+          total_steals: 0,
+          total_blocks: 0
+        });
+      }
+      
+      const playerStat = playerStatsMap.get(stat.player_id);
+      playerStat.games_played += 1;
+      playerStat.total_points += stat.points || 0;
+      playerStat.total_assists += stat.assists || 0;
+      playerStat.total_rebounds += stat.rebounds || 0;
+      playerStat.total_steals += stat.steals || 0;
+      playerStat.total_blocks += stat.blocks || 0;
     });
-  });
 
-  return avgStats;
+    // Calculate averages
+    const avgStats = new Map();
+    playerStatsMap.forEach((stats, playerId) => {
+      avgStats.set(playerId, {
+        avg_points: stats.games_played > 0 ? stats.total_points / stats.games_played : 0,
+        avg_assists: stats.games_played > 0 ? stats.total_assists / stats.games_played : 0,
+        avg_rebounds: stats.games_played > 0 ? stats.total_rebounds / stats.games_played : 0,
+        avg_steals: stats.games_played > 0 ? stats.total_steals / stats.games_played : 0,
+        avg_blocks: stats.games_played > 0 ? stats.total_blocks / stats.games_played : 0,
+        games_played: stats.games_played
+      });
+    });
+
+    return avgStats;
+  }
+
+  return new Map();
 };
 
-// Get player tournament stats - ensure we have valid team IDs and tournament ID
-const teamAPlayerStats = matchData.tournament_id && matchData.team_a_id ? 
-  await getPlayerTournamentStats(matchData.team_a_id, matchData.tournament_id) : new Map();
-const teamBPlayerStats = matchData.tournament_id && matchData.team_b_id ? 
-  await getPlayerTournamentStats(matchData.team_b_id, matchData.tournament_id) : new Map();
+// Get player stats using the new function that tries league_open_player_stats first
+const teamAPlayerStats = matchData.team_a_id ? 
+  await getPlayerStats(matchData.team_a_id, matchData) : new Map();
+const teamBPlayerStats = matchData.team_b_id ? 
+  await getPlayerStats(matchData.team_b_id, matchData) : new Map();
 
 // Get tournament team stats
 const getTournamentTeamStats = async (teamId: string, tournamentId: string) => {
@@ -283,6 +310,40 @@ const teamAStats = matchData.tournament_id && matchData.team_a_id ?
 const teamBStats = matchData.tournament_id && matchData.team_b_id ? 
   await getTournamentTeamStats(matchData.team_b_id, matchData.tournament_id) : null;
 
+// Get head-to-head matchup data if previous meetings exist
+let headToHeadData = null;
+if (matchData.team_a_id && matchData.team_b_id) {
+  // Get the teams in canonical order for head-to-head lookup
+  const team1Id = matchData.team_a_id < matchData.team_b_id ? matchData.team_a_id : matchData.team_b_id;
+  const team2Id = matchData.team_a_id < matchData.team_b_id ? matchData.team_b_id : matchData.team_a_id;
+  
+  const { data: h2hData } = await supa((Astro.locals as any).runtime)
+    .from("head_to_head_matchup_mart")
+    .select("*")
+    .eq("team_1_id", team1Id)
+    .eq("team_2_id", team2Id)
+    .maybeSingle();
+  
+  if (h2hData) {
+    headToHeadData = {
+      total_meetings: h2hData.total_meetings || 0,
+      team_1_wins: h2hData.team_1_wins || 0,
+      team_2_wins: h2hData.team_2_wins || 0,
+      team_1_avg_score: h2hData.team_1_avg_score || 0,
+      team_2_avg_score: h2hData.team_2_avg_score || 0,
+      avg_score_differential: h2hData.avg_score_differential || 0,
+      last_meeting: h2hData.last_meeting || null,
+      days_since_last_meeting: h2hData.days_since_last_meeting || null,
+      current_winner: h2hData.current_winner || null,
+      team_1_last_5_wins: h2hData.team_1_last_5_wins || 0,
+      team_2_last_5_wins: h2hData.team_2_last_5_wins || 0,
+      // Determine which team is which based on the canonical ordering
+      team_a_wins: team1Id === matchData.team_a_id ? h2hData.team_1_wins || 0 : h2hData.team_2_wins || 0,
+      team_b_wins: team1Id === matchData.team_a_id ? h2hData.team_2_wins || 0 : h2hData.team_1_wins || 0,
+    };
+  }
+}
+
 // Determine if this is from upcoming_matches or regular matches
 const isUpcomingMatch = !!(matchData as any).scheduled_at; // upcoming_matches has scheduled_at, matches doesn't
 
@@ -313,7 +374,8 @@ const spotlightMatch = {
     tournament_stats: teamBStats
   },
   tournament: tournamentInfo,
-  organizer_twitch: organizerTwitch
+  organizer_twitch: organizerTwitch,
+  head_to_head: headToHeadData
 };
 
 ---

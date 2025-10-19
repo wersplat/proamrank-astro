@@ -2,22 +2,20 @@ import { useState } from "react";
 
 type Player = {
   player_id: string;
-  player_name: string;
+  gamertag: string | null;
   position: string | null;
   salary_tier: string | null;
   twitch: string | null;
-  twitter_id: string | null;
   discord_id: string | null;
 };
 
 type PlayerStats = {
-  player_id: string;
+  avg_points: number;
+  avg_assists: number;
+  avg_rebounds: number;
+  avg_steals: number;
+  avg_blocks: number;
   games_played: number;
-  avg_points: string;
-  avg_assists: string;
-  avg_rebounds: string;
-  avg_steals: string;
-  avg_blocks: string;
 };
 
 type TeamTournamentStats = {
@@ -26,6 +24,22 @@ type TeamTournamentStats = {
   points_for: number;
   points_against: number;
   final_placement: number | null;
+} | null;
+
+type HeadToHeadData = {
+  total_meetings: number;
+  team_1_wins: number;
+  team_2_wins: number;
+  team_1_avg_score: number;
+  team_2_avg_score: number;
+  avg_score_differential: number;
+  last_meeting: string | null;
+  days_since_last_meeting: number | null;
+  current_winner: string | null;
+  team_1_last_5_wins: number;
+  team_2_last_5_wins: number;
+  team_a_wins: number;
+  team_b_wins: number;
 } | null;
 
 type Team = {
@@ -50,6 +64,7 @@ type SpotlightMatch = {
   team_b: Team;
   tournament: { id: string; name: string } | null;
   organizer_twitch: string | null;
+  head_to_head: HeadToHeadData;
 };
 
 type SpotlightMatchupProps = {
@@ -57,7 +72,7 @@ type SpotlightMatchupProps = {
 };
 
 export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
-  const [activeTab, setActiveTab] = useState<'rosters' | 'stats'>('rosters');
+  const [activeTab, setActiveTab] = useState<'rosters' | 'stats' | 'head-to-head'>('rosters');
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Date TBD';
@@ -100,7 +115,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
-              <div className="font-semibold text-white">{player.player_name}</div>
+              <div className="font-semibold text-white">{player.gamertag}</div>
               <div className="text-sm text-neutral-400">
                 {player.position && (
                   <span className="mr-2">{player.position}</span>
@@ -117,7 +132,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
               target="_blank" 
               rel="noopener noreferrer"
               className="text-purple-400 hover:text-purple-300 transition"
-              title={`Watch ${player.player_name} on Twitch`}
+              title={`Watch ${player.gamertag} on Twitch`}
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M2.149 0L.537 4.119v15.838h5.731V24h3.224l3.045-3.043h3.135L24 15.365V0H2.149zm19.164 13.612l-2.591 2.579h-2.591l-2.579 2.579V16.19H4.322V2.149h16.991v11.463zm-3.406-3.406H18.063v6.056h-1.156v-6.056zm-4.365 0H13.697v6.056h-1.155v-6.056z"/>
@@ -130,23 +145,23 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
           <div className="grid grid-cols-5 gap-2 text-sm">
             <div className="text-center">
               <div className="text-neutral-400">PPG</div>
-              <div className="font-semibold text-white">{stats.avg_points}</div>
+              <div className="font-semibold text-white">{stats.avg_points?.toFixed(1) || '0.0'}</div>
             </div>
             <div className="text-center">
               <div className="text-neutral-400">APG</div>
-              <div className="font-semibold text-white">{stats.avg_assists}</div>
+              <div className="font-semibold text-white">{stats.avg_assists?.toFixed(1) || '0.0'}</div>
             </div>
             <div className="text-center">
               <div className="text-neutral-400">RPG</div>
-              <div className="font-semibold text-white">{stats.avg_rebounds}</div>
+              <div className="font-semibold text-white">{stats.avg_rebounds?.toFixed(1) || '0.0'}</div>
             </div>
             <div className="text-center">
               <div className="text-neutral-400">SPG</div>
-              <div className="font-semibold text-white">{stats.avg_steals}</div>
+              <div className="font-semibold text-white">{stats.avg_steals?.toFixed(1) || '0.0'}</div>
             </div>
             <div className="text-center">
               <div className="text-neutral-400">BPG</div>
-              <div className="font-semibold text-white">{stats.avg_blocks}</div>
+              <div className="font-semibold text-white">{stats.avg_blocks?.toFixed(1) || '0.0'}</div>
             </div>
           </div>
         )}
@@ -302,8 +317,104 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
           >
             Tournament Stats
           </button>
+          {match.head_to_head && (
+            <button
+              onClick={() => setActiveTab('head-to-head')}
+              className={`flex-1 py-2 text-sm font-medium ${
+                activeTab === 'head-to-head'
+                  ? 'text-blue-400 border-b-2 border-blue-400'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              Head-to-Head
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Head-to-Head Section */}
+      {match.head_to_head && (
+        <div className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">
+          <h3 className="text-xl font-bold text-white mb-6">Head-to-Head History</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Overall Record */}
+            <div className="bg-neutral-800 rounded-lg p-4">
+              <h4 className="text-lg font-semibold text-white mb-4">All-Time Series</h4>
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white">{match.head_to_head.team_a_wins}</div>
+                  <div className="text-sm text-neutral-400">{match.team_a.name}</div>
+                </div>
+                <div className="text-neutral-500 text-sm">vs</div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white">{match.head_to_head.team_b_wins}</div>
+                  <div className="text-sm text-neutral-400">{match.team_b.name}</div>
+                </div>
+              </div>
+              <div className="text-center text-sm text-neutral-400">
+                Total meetings: {match.head_to_head.total_meetings}
+              </div>
+            </div>
+
+            {/* Average Scores */}
+            <div className="bg-neutral-800 rounded-lg p-4">
+              <h4 className="text-lg font-semibold text-white mb-4">Average Scores</h4>
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-center">
+                  <div className="text-xl font-bold text-white">{match.head_to_head.team_1_avg_score?.toFixed(1) || '0.0'}</div>
+                  <div className="text-sm text-neutral-400">Team A</div>
+                </div>
+                <div className="text-neutral-500 text-sm">avg</div>
+                <div className="text-center">
+                  <div className="text-xl font-bold text-white">{match.head_to_head.team_2_avg_score?.toFixed(1) || '0.0'}</div>
+                  <div className="text-sm text-neutral-400">Team B</div>
+                </div>
+              </div>
+              <div className="text-center text-sm text-neutral-400">
+                Avg margin: {match.head_to_head.avg_score_differential?.toFixed(1) || '0.0'} points
+              </div>
+            </div>
+          </div>
+
+          {/* Last Meeting & Recent Form */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            {match.head_to_head.last_meeting && (
+              <div className="bg-neutral-800 rounded-lg p-4">
+                <h4 className="text-lg font-semibold text-white mb-2">Last Meeting</h4>
+                <div className="text-sm text-neutral-400">
+                  {new Date(match.head_to_head.last_meeting).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </div>
+                {match.head_to_head.days_since_last_meeting && (
+                  <div className="text-xs text-neutral-500 mt-1">
+                    {match.head_to_head.days_since_last_meeting} days ago
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="bg-neutral-800 rounded-lg p-4">
+              <h4 className="text-lg font-semibold text-white mb-4">Last 5 Meetings</h4>
+              <div className="flex justify-between items-center">
+                <div className="text-center">
+                  <div className="text-lg font-bold text-white">{match.head_to_head.team_1_last_5_wins}</div>
+                  <div className="text-sm text-neutral-400">{match.team_a.name}</div>
+                </div>
+                <div className="text-neutral-500 text-sm">vs</div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-white">{match.head_to_head.team_2_last_5_wins}</div>
+                  <div className="text-sm text-neutral-400">{match.team_b.name}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
