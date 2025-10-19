@@ -172,9 +172,20 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
               )}
               {match.stage && <span>• {match.stage}</span>}
               {getVerificationBadge(match)}
-              {match.boxscore_url && (
-                <span className="ml-auto text-blue-400">📊 View boxscore</span>
-              )}
+              <div className="ml-auto flex gap-2">
+                {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
+                  <a 
+                    href={`/matchups/${match.id}`}
+                    className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Spotlight
+                  </a>
+                )}
+                {match.boxscore_url && (
+                  <span className="text-blue-400">📊 Boxscore</span>
+                )}
+              </div>
             </div>
           </div>
         ))}

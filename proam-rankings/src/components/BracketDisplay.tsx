@@ -262,6 +262,18 @@ export default function BracketDisplay({
                             {seriesData.matches.length} games
                           </div>
                         )}
+                        {/* Spotlight link for Semi Finals/Finals */}
+                        {(stage === "Semi Finals" || stage === "Finals" || stage === "Grand Finals") && (
+                          <div className="mt-2">
+                            <a 
+                              href={`/matchups/${seriesData.matches[0]?.id}`}
+                              className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              Spotlight Matchup
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -338,6 +350,18 @@ export default function BracketDisplay({
                             </span>
                           </div>
                         )}
+                        {/* Spotlight link for Semi Finals/Finals */}
+                        {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
+                          <div className="mt-2">
+                            <a 
+                              href={`/matchups/${match.id}`}
+                              className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              Spotlight Matchup
+                            </a>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -400,6 +424,18 @@ export default function BracketDisplay({
                               <span className="text-xs text-neutral-400">
                                 {getSeriesDisplay(match.series_number, seriesFormat)}
                               </span>
+                            </div>
+                          )}
+                          {/* Spotlight link for Semi Finals/Finals */}
+                          {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
+                            <div className="mt-2">
+                              <a 
+                                href={`/matchups/${match.id}`}
+                                className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Spotlight Matchup
+                              </a>
                             </div>
                           )}
                         </div>
@@ -472,6 +508,18 @@ export default function BracketDisplay({
                       </span>
                     </div>
                   )}
+                  {/* Spotlight link for Semi Finals/Finals */}
+                  {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
+                    <div className="mt-2">
+                      <a 
+                        href={`/matchups/${match.id}`}
+                        className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Spotlight Matchup
+                      </a>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -530,6 +578,18 @@ export default function BracketDisplay({
                 <span className="text-xs text-neutral-400">
                   {getSeriesDisplay(match.series_number, seriesFormat)}
                 </span>
+              </div>
+            )}
+            {/* Spotlight link for Semi Finals/Finals */}
+            {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
+              <div className="mt-2">
+                <a 
+                  href={`/matchups/${match.id}`}
+                  className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Spotlight Matchup
+                </a>
               </div>
             )}
           </div>

@@ -1,0 +1,266 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import SpotlightMatchup from "../../components/SpotlightMatchup";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+// Enable SSR for dynamic matchup pages
+export const prerender = false;
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/");
+}
+
+// Get match details from v_matches_with_primary_context
+const { data: matchData } = await supa((Astro.locals as any).runtime)
+  .from("v_matches_with_primary_context")
+  .select("*")
+  .eq("id", id)
+  .maybeSingle();
+
+if (!matchData) {
+  return Astro.redirect("/");
+}
+
+// Check if this is a Final 4 or Finals match
+const validStages = ["Semi Finals", "Finals", "Grand Finals"];
+if (!matchData.stage || !validStages.includes(matchData.stage)) {
+  return Astro.redirect("/");
+}
+
+// Get team details - ensure we have valid team IDs
+if (!matchData.team_a_id || !matchData.team_b_id) {
+  return Astro.redirect("/");
+}
+
+const { data: teamsData } = await supa((Astro.locals as any).runtime)
+  .from("teams")
+  .select("id, name, logo_url")
+  .in("id", [matchData.team_a_id, matchData.team_b_id]);
+
+const teamMap = new Map((teamsData ?? []).map((t: any) => [t.id, t]));
+const teamA = teamMap.get(matchData.team_a_id);
+const teamB = teamMap.get(matchData.team_b_id);
+
+if (!teamA || !teamB) {
+  return Astro.redirect("/");
+}
+
+// Get tournament context info
+let tournamentInfo = null;
+let organizerTwitch = null;
+
+if (matchData.tournament_id) {
+  const { data: tournament } = await supa((Astro.locals as any).runtime)
+    .from("tournaments")
+    .select(`
+      id,
+      name,
+      organizer:leagues_info!tournaments_organizer_id_fkey (
+        twitch_url,
+        lg_url,
+        lg_discord
+      )
+    `)
+    .eq("id", matchData.tournament_id)
+    .maybeSingle();
+
+  if (tournament) {
+    tournamentInfo = {
+      id: tournament.id || '',
+      name: tournament.name || ''
+    };
+    organizerTwitch = tournament.organizer?.twitch_url || null;
+  }
+}
+
+// Get tournament-specific rosters for both teams
+const getTournamentRoster = async (teamId: string, tournamentId: string) => {
+  if (!tournamentId) return [];
+
+  const { data: rosterData } = await supa((Astro.locals as any).runtime)
+    .from("tournament_team_rosters")
+    .select("player_id, player_name")
+    .eq("team_id", teamId)
+    .eq("tournament_id", tournamentId);
+
+  if (!rosterData || rosterData.length === 0) return [];
+
+  // Get player details including Twitch info
+  const playerIds = rosterData.map((p: any) => p.player_id).filter(Boolean);
+  const { data: playersData } = await supa((Astro.locals as any).runtime)
+    .from("players")
+    .select("id, gamertag, position, salary_tier, twitch, twitter_id, discord_id")
+    .in("id", playerIds);
+
+  const playerMap = new Map((playersData ?? []).map((p: any) => [p.id, p]));
+
+  return rosterData.map((rosterEntry: any) => {
+    const player = playerMap.get(rosterEntry.player_id);
+    return {
+      player_id: rosterEntry.player_id,
+      player_name: player?.gamertag || rosterEntry.player_name,
+      position: player?.position || null,
+      salary_tier: player?.salary_tier || null,
+      twitch: player?.twitch || null,
+      twitter_id: player?.twitter_id || null,
+      discord_id: player?.discord_id || null
+    };
+  }).filter((p: any) => p.player_id); // Filter out entries without valid player IDs
+};
+
+// Get tournament rosters - ensure we have valid team IDs and tournament ID
+const teamARoster = matchData.tournament_id && matchData.team_a_id ? 
+  await getTournamentRoster(matchData.team_a_id, matchData.tournament_id) : [];
+const teamBRoster = matchData.tournament_id && matchData.team_b_id ? 
+  await getTournamentRoster(matchData.team_b_id, matchData.tournament_id) : [];
+
+// Get tournament-specific player stats
+const getPlayerTournamentStats = async (teamId: string, tournamentId: string) => {
+  if (!tournamentId) return new Map();
+
+  // Get all matches for this tournament where the team played
+  const { data: tournamentMatches } = await supa((Astro.locals as any).runtime)
+    .from("v_matches_with_primary_context")
+    .select("id")
+    .eq("primary_tournament_id", tournamentId)
+    .or(`team_a_id.eq.${teamId},team_b_id.eq.${teamId}`);
+
+  if (!tournamentMatches || tournamentMatches.length === 0) return new Map();
+
+  const matchIds = tournamentMatches.map((m: any) => m.id);
+
+  // Get player stats for all tournament matches
+  const { data: playerStats } = await supa((Astro.locals as any).runtime)
+    .from("player_stats")
+    .select("player_id, points, assists, rebounds, steals, blocks, match_id")
+    .in("match_id", matchIds)
+    .eq("team_id", teamId);
+
+  if (!playerStats || playerStats.length === 0) return new Map();
+
+  // Calculate averages per player
+  const playerStatsMap = new Map();
+  
+  playerStats.forEach((stat: any) => {
+    if (!playerStatsMap.has(stat.player_id)) {
+      playerStatsMap.set(stat.player_id, {
+        player_id: stat.player_id,
+        games_played: 0,
+        total_points: 0,
+        total_assists: 0,
+        total_rebounds: 0,
+        total_steals: 0,
+        total_blocks: 0
+      });
+    }
+    
+    const playerStat = playerStatsMap.get(stat.player_id);
+    playerStat.games_played += 1;
+    playerStat.total_points += stat.points || 0;
+    playerStat.total_assists += stat.assists || 0;
+    playerStat.total_rebounds += stat.rebounds || 0;
+    playerStat.total_steals += stat.steals || 0;
+    playerStat.total_blocks += stat.blocks || 0;
+  });
+
+  // Calculate averages
+  const avgStats = new Map();
+  playerStatsMap.forEach((stats, playerId) => {
+    avgStats.set(playerId, {
+      player_id: playerId,
+      games_played: stats.games_played,
+      avg_points: stats.games_played > 0 ? (stats.total_points / stats.games_played).toFixed(1) : "0.0",
+      avg_assists: stats.games_played > 0 ? (stats.total_assists / stats.games_played).toFixed(1) : "0.0",
+      avg_rebounds: stats.games_played > 0 ? (stats.total_rebounds / stats.games_played).toFixed(1) : "0.0",
+      avg_steals: stats.games_played > 0 ? (stats.total_steals / stats.games_played).toFixed(1) : "0.0",
+      avg_blocks: stats.games_played > 0 ? (stats.total_blocks / stats.games_played).toFixed(1) : "0.0"
+    });
+  });
+
+  return avgStats;
+};
+
+// Get player tournament stats - ensure we have valid team IDs and tournament ID
+const teamAPlayerStats = matchData.tournament_id && matchData.team_a_id ? 
+  await getPlayerTournamentStats(matchData.team_a_id, matchData.tournament_id) : new Map();
+const teamBPlayerStats = matchData.tournament_id && matchData.team_b_id ? 
+  await getPlayerTournamentStats(matchData.team_b_id, matchData.tournament_id) : new Map();
+
+// Get tournament team stats
+const getTournamentTeamStats = async (teamId: string, tournamentId: string) => {
+  if (!tournamentId) return null;
+
+  // Try to get from tournament_results first
+  const { data: resultData } = await supa((Astro.locals as any).runtime)
+    .from("tournament_results")
+    .select("wins, losses, points_for, points_against, final_placement")
+    .eq("team_id", teamId)
+    .eq("tournament_id", tournamentId)
+    .maybeSingle();
+
+  if (resultData) {
+    return {
+      wins: resultData.wins || 0,
+      losses: resultData.losses || 0,
+      points_for: resultData.points_for || 0,
+      points_against: resultData.points_against || 0,
+      final_placement: resultData.final_placement
+    };
+  }
+
+  return null;
+};
+
+const teamAStats = matchData.tournament_id && matchData.team_a_id ? 
+  await getTournamentTeamStats(matchData.team_a_id, matchData.tournament_id) : null;
+const teamBStats = matchData.tournament_id && matchData.team_b_id ? 
+  await getTournamentTeamStats(matchData.team_b_id, matchData.tournament_id) : null;
+
+// Prepare the match object with all data
+const spotlightMatch = {
+  id: matchData.id,
+  played_at: matchData.played_at,
+  stage: matchData.stage,
+  team_a_id: matchData.team_a_id,
+  team_b_id: matchData.team_b_id,
+  score_a: matchData.score_a,
+  score_b: matchData.score_b,
+  winner_id: matchData.winner_id,
+  team_a: {
+    id: teamA.id,
+    name: teamA.name,
+    logo_url: teamA.logo_url,
+    roster: teamARoster,
+    player_stats: teamAPlayerStats,
+    tournament_stats: teamAStats
+  },
+  team_b: {
+    id: teamB.id,
+    name: teamB.name,
+    logo_url: teamB.logo_url,
+    roster: teamBRoster,
+    player_stats: teamBPlayerStats,
+    tournament_stats: teamBStats
+  },
+  tournament: tournamentInfo,
+  organizer_twitch: organizerTwitch
+};
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{spotlightMatch.stage} - {spotlightMatch.team_a.name} vs {spotlightMatch.team_b.name} - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <SpotlightMatchup match={spotlightMatch} />
+    </main>
+  </body>
+</html>
