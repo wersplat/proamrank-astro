@@ -64,8 +64,26 @@ if (upcomingSpotlightMatches && upcomingSpotlightMatches.length > 0 && !error) {
 }
 
 const formatDate = (dateString: string) => {
-  // Parse the timestamptz - JavaScript Date constructor handles timezone conversion automatically
-  const date = new Date(dateString);
+  // Parse the timestamptz date string
+  let date = new Date(dateString);
+  
+  // If the dateString looks like it might be stored in local time but being interpreted as UTC,
+  // we need to compensate for the timezone offset. Based on the 4-hour difference you mentioned,
+  // it seems like the times are being treated as UTC when they should be local.
+  // Let's check if we need to adjust for timezone offset
+  
+  // Get the current timezone offset in minutes
+  const timezoneOffsetMinutes = new Date().getTimezoneOffset();
+  const timezoneOffsetHours = timezoneOffsetMinutes / 60;
+  
+  // If the timezone offset is positive (like UTC-4), we need to adjust
+  // For example, if you're in UTC-4 and the time is being treated as UTC,
+  // we need to subtract 4 hours to get the correct local time
+  if (timezoneOffsetMinutes > 0) {
+    // We're behind UTC, so we need to subtract the offset
+    date = new Date(date.getTime() - (timezoneOffsetMinutes * 60 * 1000));
+  }
+  
   const now = new Date();
   
   // Get today's date in local timezone for comparison

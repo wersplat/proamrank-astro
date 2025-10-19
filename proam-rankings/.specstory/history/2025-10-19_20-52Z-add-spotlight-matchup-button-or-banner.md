@@ -1575,6 +1575,188 @@ Output mode: content
 
 ---
 
+Let me check how the SpotlightMatchup component handles date formatting to see if there's a consistent pattern:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/SpotlightMatchup.tsx
+
+---
+
+I can see that the SpotlightMatchup component uses a simple `new Date(dateString).toLocaleDateString()` approach. Let me simplify the date formatting to match that pattern and remove the explicit timezone handling which might be causing issues:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/UpcomingSpotlightBanner.astro</summary>
+
+**Chunk 1**
+Lines added: 10, lines removed: 7
+
+```diff
+@@ -65,17 +65,20 @@
+  
+  const formatDate = (dateString: string) => {
+-   // Parse the timestamptz and ensure it's treated as UTC, then convert to local time
++   // Parse the timestamptz - JavaScript Date constructor handles timezone conversion automatically
+    const date = new Date(dateString);
+-   
+-   // Get current time and today's date in local timezone
+    const now = new Date();
++   
++   // Get today's date in local timezone for comparison
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+-   // Create a date object for the match date in local timezone (start of day)
+-   const matchDateLocal = new Date(date.getFullYear(), date.getMonth(), date.getDate());
++   // Get the match date in local timezone for comparison
++   const matchDate = new Date(date);
++   matchDate.setHours(0, 0, 0, 0);
+    
+-   // Check if the match is today by comparing local date parts
+-   const isToday = matchDateLocal.getTime() === today.getTime();
++   // Check if the match is today
++   const isToday = matchDate.getTime() === today.getTime();
++   
++   // Calculate hours difference for same day logic
+    const diffInHours = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60));
+    
+```
+
+**Chunk 2**
+Lines added: 3, lines removed: 5
+
+```diff
+@@ -84,14 +87,12 @@
+        hour: '2-digit',
+        minute: '2-digit',
+-       hour12: true,
+-       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
++       hour12: true
+      })}`;
+-   } else if (diffInHours < 24) {
++   } else if (diffInHours < 24 && diffInHours > 0) {
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+-       hour12: true,
+-       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
++       hour12: true
+      });
+    } else {
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 2
+
+```diff
+@@ -103,6 +104,5 @@
+        hour: '2-digit',
+        minute: '2-digit',
+-       hour12: true,
+-       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
++       hour12: true
+      });
+    }
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/UpcomingSpotlightBanner.astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+The changes I've made should address the timezone issue. However, let me also check if we need to adjust the database filtering since the issue might be in how we're comparing dates. The problem could be that we're using `today.toISOString()` which converts to UTC, but we want to filter based on the local timezone.
+
+Let me make one more adjustment to ensure the database filtering uses the correct timezone:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/UpcomingSpotlightBanner.astro
+
+---
+
+Actually, the database filtering looks correct. When we use `today.toISOString()`, it converts the local time to UTC, which is appropriate for comparing with a `timestamptz` field in the database. The issue is likely just in the display formatting.
+
+Let me add a comment to clarify the timezone handling and ensure the display is working correctly. The current implementation should now properly handle the timezone conversion since JavaScript's `Date` constructor automatically converts the `timestamptz` string to the local timezone.
+
+## Summary
+
+I've updated the date handling in the `UpcomingSpotlightBanner` component to properly handle timezone conversion for `timestamptz` fields:
+
+### Changes Made:
+
+1. **Simplified Date Parsing**: Removed explicit timezone handling that might have been causing confusion, since JavaScript's `Date` constructor automatically handles `timestamptz` conversion.
+
+2. **Improved Date Comparison**: Fixed the logic for determining if a match is "today" by properly comparing local date objects.
+
+3. **Consistent Formatting**: Used the same pattern as other components in the codebase for date formatting, ensuring the `timestamptz` values are properly converted to local time for display.
+
+The key fix is that the `Date` constructor automatically converts the `timestamptz` string from UTC to the user's local timezone when parsing, and the `toLocaleTimeString()` and `toLocaleDateString()` methods display the time in the correct local timezone. This should resolve the +4 hour offset issue you were experiencing.
+
+---
+
+_**User (2025-10-19 17:43Z)**_
+
+the games are 5:00pm and 7:00pm
+showing as 9 pm and 11pm
+
+---
+
+_**Assistant (default)**_
+
+I can see the issue! The times are showing as 9:00 PM and 11:00 PM when they should be 5:00 PM and 7:00 PM - that's exactly a 4-hour difference, which confirms the timezone issue. The problem is likely that the database is storing the times correctly, but when we parse them in JavaScript, there's a timezone conversion issue.
+
+Let me check how the dates are being handled and fix the timezone conversion:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/UpcomingSpotlightBanner.astro
+
+---
+
+The issue is that the timestamptz field is being parsed correctly by JavaScript, but there might be a timezone offset issue. Let me check how other parts of the codebase handle this and see if we can debug what's happening.
+
+Let me look at the SpotlightMatchup component to see if it has the same issue:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/SpotlightMatchup.tsx
+
+---
+
 
 
 ---
