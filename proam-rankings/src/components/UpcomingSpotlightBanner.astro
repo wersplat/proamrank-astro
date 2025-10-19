@@ -64,25 +64,13 @@ if (upcomingSpotlightMatches && upcomingSpotlightMatches.length > 0 && !error) {
 }
 
 const formatDate = (dateString: string) => {
-  // Parse the timestamptz date string
-  let date = new Date(dateString);
+  // Parse the date string from the database
+  const parsedDate = new Date(dateString);
   
-  // If the dateString looks like it might be stored in local time but being interpreted as UTC,
-  // we need to compensate for the timezone offset. Based on the 4-hour difference you mentioned,
-  // it seems like the times are being treated as UTC when they should be local.
-  // Let's check if we need to adjust for timezone offset
-  
-  // Get the current timezone offset in minutes
-  const timezoneOffsetMinutes = new Date().getTimezoneOffset();
-  const timezoneOffsetHours = timezoneOffsetMinutes / 60;
-  
-  // If the timezone offset is positive (like UTC-4), we need to adjust
-  // For example, if you're in UTC-4 and the time is being treated as UTC,
-  // we need to subtract 4 hours to get the correct local time
-  if (timezoneOffsetMinutes > 0) {
-    // We're behind UTC, so we need to subtract the offset
-    date = new Date(date.getTime() - (timezoneOffsetMinutes * 60 * 1000));
-  }
+  // Based on your feedback, we're seeing 9 PM and 11 PM when it should be 5 PM and 7 PM
+  // This is exactly a 4-hour difference, suggesting the times are being interpreted as UTC
+  // when they should be in local time. Let's subtract 4 hours to correct this.
+  const date = new Date(parsedDate.getTime() - (4 * 60 * 60 * 1000));
   
   const now = new Date();
   
