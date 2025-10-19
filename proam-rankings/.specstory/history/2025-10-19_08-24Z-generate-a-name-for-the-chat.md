@@ -393,3 +393,217 @@ After making this change, you'll need to redeploy your application for the chang
 
 ---
 
+_**User (2025-10-19 07:02Z)**_
+
+i dont see the function deployed in my pages
+
+---
+
+_**Assistant (default)**_
+
+Let me check your deployment configuration and see what might be preventing the scheduled function from being deployed.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: wrangler.toml
+
+---
+
+Tool use: **read_file**
+
+Read file: astro.config.mjs
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How are Cloudflare Pages functions configured and deployed in this project?" • **5** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `README.md` | L52 |
+| `astro.config.mjs` | L24 |
+| `src/middleware.ts` | L15 |
+| `README.md` | L48-83 |
+| `package.json` | L30 |
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: package.json
+
+---
+
+Tool use: **list_dir**
+
+<details>
+            <summary>Listed directory undefined • **0** results</summary>
+        
+No results found
+</details>
+
+---
+
+Tool use: **codebase_search**
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "functions" in "dist" • 16 matches</summary>
+
+Output mode: files_with_matches
+
+
+| File |
+|------|
+| `dist/_astro/page.O9SmeJyo.js.map` |
+| `dist/_astro/Tabs.BXKWLlc2.js.map` |
+| `dist/_astro/debug-build.BGTS7-g8.js.map` |
+| `dist/_worker.js/chunks/sentry.server.config_rYer4JpF.mjs.map` |
+| `dist/_worker.js/chunks/supabase_D-0dYlzV.mjs.map` |
+| `dist/_worker.js/chunks/traceData_C2WA9NOb.mjs.map` |
+| `dist/_worker.js/pages/tournaments.astro.mjs.map` |
+| `dist/_worker.js/chunks/astro/server_KQut0aED.mjs.map` |
+| `dist/_worker.js/_astro-internal_middleware.mjs.map` |
+| `dist/_worker.js/chunks/_@astrojs-ssr-adapter_k4Rp17Cp.mjs.map` |
+| `dist/_worker.js/chunks/ratingUtils_C5KNC360.mjs.map` |
+| `dist/_worker.js/chunks/_@astrojs-ssr-adapter_k4Rp17Cp.mjs` |
+| `dist/_worker.js/chunks/traceData_C2WA9NOb.mjs` |
+| `dist/_worker.js/chunks/sentry.server.config_rYer4JpF.mjs` |
+| `dist/_worker.js/chunks/supabase_D-0dYlzV.mjs` |
+| `dist/_worker.js/_astro-internal_middleware.mjs` |
+
+
+</details>
+
+---
+
+I can see the issue! Looking at your `dist` folder, I don't see a `functions` directory, which means your Cloudflare Pages functions aren't being copied during the build process. This is likely because you're using Astro's Cloudflare adapter with `mode: "directory"`, which handles functions differently.
+
+Let me check how functions should be handled in this setup:
+
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How does Astro Cloudflare adapter handle functions directory and build process?" • **5** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `astro.config.mjs` | L24 |
+| `src/middleware.ts` | L15 |
+| `package.json` | L30 |
+| `README.md` | L52 |
+| `README.md` | L48-83 |
+
+</details>
+
+---
+
+I found the issue! When using Astro with the Cloudflare adapter in `mode: "directory"`, the `functions` folder needs to be manually copied to the `dist` folder during the build process. Currently, your build process is only generating the Astro SSR files but not copying the functions.
+
+Here are the solutions to fix this:
+
+## Solution 1: Update your build script (Recommended)
+
+Add a post-build step to copy the functions folder to the dist directory. Update your `package.json`:
+
+```json
+{
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && cp -r functions dist/",
+    "preview": "astro preview",
+    "lint": "echo \"add your linter\""
+  }
+}
+```
+
+## Solution 2: Use a build script file
+
+Create a `build.sh` script in your project root:
+
+```bash
+#!/bin/bash
+astro build
+cp -r functions dist/
+```
+
+Then update your `package.json`:
+```json
+{
+  "scripts": {
+    "build": "bash build.sh"
+  }
+}
+```
+
+## Solution 3: Configure Astro to copy functions (Alternative)
+
+You can also modify your `astro.config.mjs` to include a build hook that copies the functions:
+
+```javascript:astro.config.mjs
+import { defineConfig } from "astro/config";
+import tailwind from "@astrojs/tailwind";
+import react from "@astrojs/react";
+import cloudflare from "@astrojs/cloudflare";
+import sentry from "@sentry/astro";
+import { copyFileSync, mkdirSync } from 'fs';
+import { join } from 'path';
+
+export default defineConfig({
+  integrations: [
+    sentry({
+      sourceMapsUploadOptions: {
+        enabled: true,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: "bodegacatsgc",
+        project: "proamrank",
+      },
+    }),
+    tailwind(),
+    react(),
+  ],
+  output: "server",
+  adapter: cloudflare({
+    mode: "directory",
+  }),
+  // Add this to copy functions during build
+  vite: {
+    plugins: [
+      {
+        name: 'copy-functions',
+        closeBundle() {
+          const { execSync } = require('child_process');
+          execSync('cp -r functions dist/', { stdio: 'inherit' });
+        }
+      }
+    ]
+  }
+});
+```
+
+## Verification
+
+After implementing any of these solutions:
+
+1. Run `npm run build` 
+2. Check that `dist/functions/` directory exists with your scheduled function
+3. Deploy to Cloudflare Pages
+4. The endpoint should now be accessible at `https://proamrank.gg/scheduled/update-player-ratings`
+
+The first solution (updating the build script) is the simplest and most reliable approach for most cases.
+
+---
+

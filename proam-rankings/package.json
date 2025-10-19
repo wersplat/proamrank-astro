@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && cp -r functions dist/",
     "preview": "astro preview",
     "lint": "echo \"add your linter\""
   },
