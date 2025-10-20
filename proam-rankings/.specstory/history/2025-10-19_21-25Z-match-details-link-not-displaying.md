@@ -1642,7 +1642,14 @@ Lint results
 
 ---
 
+I've repositioned the boxscore link to match how it's done in LeagueTabsIsland - with `ml-auto` class to push it to the right side of the flex container, and placed it before the spotlight button. This should now display the "📊 View boxscore" link in the same position and style as it appears in the league matches.
 
+The key changes I made:
+1. Moved the boxscore link outside of the Spotlight button container
+2. Added `ml-auto` class to position it to the right side
+3. Kept the same text content "📊 View boxscore" to match the league matches
+
+This should now show the "View boxscore" link in the matches page just like it appears in the league matches.
 
 ---
 
