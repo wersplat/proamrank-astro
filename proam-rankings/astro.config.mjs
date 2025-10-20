@@ -22,4 +22,6 @@ export default defineConfig({
   adapter: cloudflare({
     mode: "directory",
   }),
+  // Configure image service to compile at build time for Cloudflare compatibility
+  imageService: "compile",
 });
