@@ -1446,3 +1446,203 @@ I've now updated the MatchesListIsland component to show "📊 View boxscore" ju
 
 ---
 
+_**User (2025-10-19 17:43Z)**_
+
+still not working
+
+---
+
+_**Assistant (default)**_
+
+Let me investigate what might still be wrong. Let me check if there are any differences in how the boxscore link is displayed or if there's a styling/positioning issue.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/MatchesListIsland.tsx
+
+---
+
+I notice the issue might be in the layout. Let me compare with how LeagueMatchesIsland is structured:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/LeagueMatchesIsland.tsx
+
+---
+
+Wait, I see the issue! In LeagueMatchesIsland on line 186, it still shows "📊 Boxscore", not "📊 View boxscore". Let me check the other components again to see which one actually shows "View boxscore":
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/LeagueTabsIsland.tsx
+
+---
+
+I see! The LeagueTabsIsland shows "📊 View boxscore" with `ml-auto` class which pushes it to the right. Let me check if the issue is that the MatchesListIsland needs the `ml-auto` class for the boxscore link, or if there's another structural difference.
+
+Looking at the images you shared, it seems like the "View boxscore" link should be more prominent and positioned correctly. Let me check if there's a difference in how the layout is structured:
+
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How is the boxscore link positioned and styled in league matches versus matches page?" • **8** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/components/MatchesListIsland.tsx` | L44-508 |
+| `src/components/LeagueMatchesIsland.tsx` | L43-440 |
+| `src/components/player/tabs/Games.tsx` | L2-242 |
+| `src/components/PlayerGamesIsland.tsx` | L32-265 |
+| `src/components/TeamMatchesIsland.tsx` | L44-475 |
+| `src/components/LeagueTabsIsland.tsx` | L122-1668 |
+| `src/components/TeamTabsIsland.tsx` | L111-963 |
+| `src/components/TournamentTabsIsland.tsx` | L119-1351 |
+
+</details>
+
+---
+
+Let me look more closely at the exact structure and positioning. The issue might be that the boxscore link in MatchesListIsland isn't positioned the same way. Let me check if it needs to be moved to a different position in the layout:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/LeagueTabsIsland.tsx
+
+---
+
+I see the key difference! In LeagueTabsIsland (line 837), the boxscore link has `className="ml-auto text-blue-400"` which positions it to the right side. But in MatchesListIsland, it's inside a `<div className="ml-auto flex gap-2">` container.
+
+Let me check if the issue is that the boxscore link should be positioned differently, or if it's not showing up at all. Looking at the image you provided, it seems like the "View boxscore" link should be more prominently displayed. Let me modify the positioning:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/MatchesListIsland.tsx
+
+---
+
+I think the issue might be that the boxscore link should be positioned outside of the `ml-auto` container, similar to how it's done in LeagueTabsIsland. Let me move it to match that structure:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 3
+
+```diff
+@@ -226,8 +226,8 @@
+                    </a>
+                  )}
+-                 {match.boxscore_url && (
+-                   <span className="text-blue-400">📊 View boxscore</span>
+-                 )}
+                </div>
++               {match.boxscore_url && (
++                 <span className="ml-auto text-blue-400">📊 View boxscore</span>
++               )}
+              </div>
+            </div>
+```
+
+</details>
+
+---
+
+Wait, that might create two `ml-auto` elements which could cause layout issues. Let me check the structure again and fix it properly. The issue might be that I need to put the boxscore link in the right position within the flex container.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/MatchesListIsland.tsx
+
+---
+
+I see the issue now. Having two `ml-auto` elements will cause problems. Let me fix this by putting the boxscore link back inside the ml-auto container but ensuring it's properly styled:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: 1
+
+```diff
+@@ -216,5 +216,8 @@
+                {match.game_year && <span>• {match.game_year}</span>}
+                {getVerificationBadge(match)}
+-               <div className="ml-auto flex gap-2">
++               {match.boxscore_url && (
++                 <span className="ml-auto text-blue-400">📊 View boxscore</span>
++               )}
++               <div className="flex gap-2">
+                  {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
+                    <a 
+```
+
+**Chunk 2**
+Lines added: undefined, lines removed: 3
+
+```diff
+@@ -227,7 +230,4 @@
+                  )}
+                </div>
+-               {match.boxscore_url && (
+-                 <span className="ml-auto text-blue-400">📊 View boxscore</span>
+-               )}
+              </div>
+            </div>
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/MatchesListIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+
+
+---
+

@@ -215,7 +215,10 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
               {match.stage && <span>• {match.stage}</span>}
               {match.game_year && <span>• {match.game_year}</span>}
               {getVerificationBadge(match)}
-              <div className="ml-auto flex gap-2">
+              {match.boxscore_url && (
+                <span className="ml-auto text-blue-400">📊 View boxscore</span>
+              )}
+              <div className="flex gap-2">
                 {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
                   <a 
                     href={`/matchups/${match.id}`}
@@ -224,9 +227,6 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                   >
                     Spotlight
                   </a>
-                )}
-                {match.boxscore_url && (
-                  <span className="text-blue-400">📊 View boxscore</span>
                 )}
               </div>
             </div>
