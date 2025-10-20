@@ -1301,7 +1301,148 @@ undefined
 
 ---
 
+Let me check for any linting errors:
 
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/MatchesListIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Perfect! You were absolutely right - I was overcomplicating this. Now the matches page behaves exactly the same as the league and tournament match lists:
+
+1. **Removed the "View Details" link** - it wasn't needed
+2. **Fixed the click handler** - now it's `onClick={() => handleMatchClick(match)}` just like the other components
+3. **Added the boxscore_url check** - the `handleMatchClick` function now has `if (!match.boxscore_url) return;` just like LeagueMatchesIsland
+4. **Deleted the unnecessary match detail page** - the modal approach is what was already working
+
+Now when users click on a match that has a `boxscore_url`, it opens the same modal with stats and screenshot tabs, exactly like it works in the league and tournament pages. Simple and consistent!
+
+---
+
+_**User (2025-10-19 17:43Z)**_
+
+what is the issue?  look at the images league matches shows the link the matches page does not.
+
+
+---
+
+_**Assistant (default)**_
+
+Looking at the images, I can see the issue now! In the league matches, there's a "View boxscore" link visible, but on the matches page, that link is missing.
+
+Let me check how the league matches display that "View boxscore" link and make sure the matches page shows the same thing.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/LeagueMatchesIsland.tsx
+
+---
+
+I can see that LeagueMatchesIsland shows `{match.boxscore_url && (<span className="text-blue-400">📊 Boxscore</span>)}` on line 185-187. Let me check if the MatchesListIsland has the same thing:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/MatchesListIsland.tsx
+
+---
+
+I can see that MatchesListIsland does have the same boxscore display logic on lines 228-230. But looking at the images you showed me, I think the issue might be that the LeagueMatchesIsland shows a clickable "View boxscore" link, while MatchesListIsland just shows the "📊 Boxscore" text.
+
+Let me check if LeagueMatchesIsland has a different implementation:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "View boxscore" in "src/components" • 3 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/LeagueTabsIsland.tsx` | `📊 View boxscore` | L838 |
+| `src/components/TournamentTabsIsland.tsx` | `📊 View boxscore` | L624 |
+| `src/components/TeamMatchesIsland.tsx` | `<span className="ml-auto text-blue-400">📊 View boxscore</span>` | L196 |
+
+
+</details>
+
+---
+
+Perfect! I can see the issue now. Looking at the search results, the other components show "📊 View boxscore" but MatchesListIsland only shows "📊 Boxscore". I need to update it to show "📊 View boxscore" like the others.
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -227,5 +227,5 @@
+                  )}
+                  {match.boxscore_url && (
+-                   <span className="text-blue-400">📊 Boxscore</span>
++                   <span className="text-blue-400">📊 View boxscore</span>
+                  )}
+                </div>
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components/MatchesListIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+That's the issue! Looking at the images and the other components, I can see that:
+
+1. **League/Tournament matches** show "📊 View boxscore" 
+2. **Matches page** was only showing "📊 Boxscore"
+
+I've now updated the MatchesListIsland component to show "📊 View boxscore" just like the league and tournament match components do. This should make the matches page display the same "View boxscore" link that you can see in the league matches.
 
 ---
 

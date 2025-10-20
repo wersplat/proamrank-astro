@@ -226,7 +226,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                   </a>
                 )}
                 {match.boxscore_url && (
-                  <span className="text-blue-400">📊 Boxscore</span>
+                  <span className="text-blue-400">📊 View boxscore</span>
                 )}
               </div>
             </div>
