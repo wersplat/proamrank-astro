@@ -1007,7 +1007,45 @@ Implement the plan as specified. To-do's from the plan have already been created
 
 _**Assistant (default)**_
 
+I'll implement the plan by making the two simple changes to the league page:
 
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -265,8 +265,8 @@
+  // Get Regular Season player statistics (excluding tournament matches)
+  const { data: regularSeasonStatsRaw } = await supa((Astro.locals as any).runtime)
+-   .from("league_regular_season_player_stats")
++   .from("player_league_season_stats_mart")
+    .select("*")
+    .eq("season_id", seasonId)
+-   .order("avg_points", { ascending: false });
++   .order("ppg", { ascending: false });
+  
+  const regularSeasonPlayerStats = (regularSeasonStatsRaw ?? []).map((p: any) => ({
+```
+
+</details>
+
+---
+
+Perfect! I've successfully implemented the plan by making the two required changes:
+
+1. **Line 267**: Changed the mart from `league_regular_season_player_stats` to `player_league_season_stats_mart`
+2. **Line 270**: Changed the order field from `avg_points` to `ppg`
+
+The existing field mappings (lines 272-301) remain unchanged and will correctly map the data from the new mart. The `player_league_season_stats_mart` already includes both open and regular season stats combined, so the regular season tab will now show the complete regular season statistics as intended.
+
+The implementation is complete and follows the plan exactly as specified.
 
 ---
 

@@ -279,22 +279,22 @@ const regularSeasonPlayerStats = (regularSeasonStatsRaw ?? []).map((p: any) => (
   steals: p.total_steals,
   blocks: p.total_blocks,
   turnovers: p.total_turnovers || 0,
-  fouls: p.total_fouls || 0,
-  fgm: p.total_fgm || 0,
-  fga: p.total_fga || 0,
-  ftm: p.total_ftm || 0,
-  fta: p.total_fta || 0,
-  three_points_made: p.total_3pm || 0,
-  three_points_attempted: p.total_3pa || 0,
-  plus_minus: p.total_plus_minus || 0,
+  fouls: 0, // Not available in player_league_season_stats_mart
+  fgm: 0, // Not available in player_league_season_stats_mart
+  fga: 0, // Not available in player_league_season_stats_mart
+  ftm: 0, // Not available in player_league_season_stats_mart
+  fta: 0, // Not available in player_league_season_stats_mart
+  three_points_made: 0, // Not available in player_league_season_stats_mart
+  three_points_attempted: 0, // Not available in player_league_season_stats_mart
+  plus_minus: 0, // Not available in player_league_season_stats_mart
   performance_score: parseFloat(p.avg_performance_score) || 0,
-  avg_points: parseFloat(p.avg_points) || 0,
-  avg_rebounds: parseFloat(p.avg_rebounds) || 0,
-  avg_assists: parseFloat(p.avg_assists) || 0,
-  avg_steals: parseFloat(p.avg_steals) || 0,
-  avg_blocks: parseFloat(p.avg_blocks) || 0,
-  avg_turnovers: parseFloat(p.avg_turnovers) || 0,
-  avg_fouls: parseFloat(p.avg_fouls) || 0,
+  avg_points: parseFloat(p.ppg) || 0,
+  avg_rebounds: parseFloat(p.rpg) || 0,
+  avg_assists: parseFloat(p.apg) || 0,
+  avg_steals: parseFloat(p.spg) || 0,
+  avg_blocks: parseFloat(p.bpg) || 0,
+  avg_turnovers: parseFloat(p.tpg) || 0,
+  avg_fouls: 0, // Not available in player_league_season_stats_mart
   fg_pct: p.fg_pct,
   three_pt_pct: p.three_pt_pct,
   ft_pct: p.ft_pct,
