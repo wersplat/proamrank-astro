@@ -1,0 +1,120 @@
+{
+  "wallTime": 47,
+  "cpuTime": 4,
+  "truncated": false,
+  "executionModel": "stateless",
+  "outcome": "ok",
+  "scriptVersion": {
+    "id": "1fb85851-2e72-436b-95aa-d7abb1bb5df2"
+  },
+  "scriptName": "pages-worker--8194053-production",
+  "diagnosticsChannelEvents": [],
+  "exceptions": [],
+  "logs": [
+    {
+      "message": [
+        "02:28:50 [ERROR] TypeError: renderTemplate(...).$$render is not a function\n    at pages/students/_id_.astro.mjs:36:528\n    at async callComponentAsTemplateResultOrResponse (chunks/astro/server_DDMfQNq3.mjs:6068:25)\n    at async renderToReadableStream (chunks/astro/server_DDMfQNq3.mjs:6016:26)\n    at async renderPage (chunks/astro/server_DDMfQNq3.mjs:6827:14)\n    at async lastNext (chunks/index_CVTTWEEu.mjs:2605:25)\n    at async _astro-internal_middleware.mjs:397:42\n    at async _astro-internal_middleware.mjs:389:23\n    at async callMiddleware (chunks/index_CVTTWEEu.mjs:1354:10)\n    at async RenderContext.render (chunks/index_CVTTWEEu.mjs:2639:22)\n    at async App.render (chunks/_@astrojs-ssr-adapter_C1-QafhO.mjs:898:18)\n    at async handle (chunks/_@astrojs-ssr-adapter_C1-QafhO.mjs:1105:20)\n    at async Object.fetch (chunks/_@astrojs-ssr-adapter_C1-QafhO.mjs:1126:12)"
+      ],
+      "level": "error",
+      "timestamp": 1761272930002
+    }
+  ],
+  "eventTimestamp": 1761272929958,
+  "event": {
+    "request": {
+      "url": "https://proamrank.gg/students/REDACTED",
+      "method": "GET",
+      "headers": {
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-encoding": "gzip, br",
+        "accept-language": "en-US,en;q=0.9",
+        "cache-control": "no-cache",
+        "cf-connecting-ip": "2600:4040:2a80:df00:1095:fec0:92eb:3e75",
+        "cf-connecting-o2o": "1",
+        "cf-ipcountry": "US",
+        "cf-ray": "99360b042d262265-IAD",
+        "cf-visitor": "{\"scheme\":\"https\"}",
+        "connection": "Keep-Alive",
+        "host": "proamrank.gg",
+        "pragma": "no-cache",
+        "priority": "u=0, i",
+        "referer": "https://proamrank.gg/students",
+        "sec-ch-ua": "\"Google Chrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+        "x-forwarded-for": "2600:4040:2a80:df00:1095:fec0:92eb:3e75",
+        "x-forwarded-proto": "https",
+        "x-real-ip": "2600:4040:2a80:df00:1095:fec0:92eb:3e75"
+      },
+      "cf": {
+        "httpProtocol": "HTTP/3",
+        "clientAcceptEncoding": "gzip, deflate, br",
+        "requestPriority": "",
+        "edgeRequestKeepAliveStatus": 1,
+        "requestHeaderNames": {},
+        "clientTcpRtt": 0,
+        "colo": "IAD",
+        "asn": 701,
+        "asOrganization": "Verizon Business",
+        "country": "US",
+        "isEUCountry": false,
+        "city": "Washington",
+        "continent": "NA",
+        "region": "District of Columbia",
+        "regionCode": "DC",
+        "timezone": "America/New_York",
+        "longitude": "-77.03637",
+        "latitude": "38.89511",
+        "postalCode": "20004",
+        "tlsVersion": "",
+        "tlsCipher": "",
+        "tlsClientRandom": "",
+        "tlsClientCiphersSha1": "",
+        "tlsClientExtensionsSha1": "",
+        "tlsClientExtensionsSha1Le": "",
+        "tlsClientHelloLength": "0",
+        "tlsClientAuth": {
+          "certPresented": "0",
+          "certVerified": "NONE",
+          "certRevoked": "0",
+          "certIssuerDN": "",
+          "certSubjectDN": "",
+          "certIssuerDNRFC2253": "",
+          "certSubjectDNRFC2253": "",
+          "certIssuerDNLegacy": "",
+          "certSubjectDNLegacy": "",
+          "certSerial": "",
+          "certIssuerSerial": "",
+          "certSKI": "",
+          "certIssuerSKI": "",
+          "certFingerprintSHA1": "",
+          "certFingerprintSHA256": "",
+          "certNotBefore": "",
+          "certNotAfter": ""
+        },
+        "verifiedBotCategory": "",
+        "pagesHostName": "proamrank-astro.pages.dev",
+        "botManagement": {
+          "corporateProxy": false,
+          "verifiedBot": false,
+          "jsDetection": {
+            "passed": false
+          },
+          "staticResource": false,
+          "detectionIds": {},
+          "score": 99
+        }
+      }
+    },
+    "response": {
+      "status": 500
+    }
+  },
+  "id": 0
+}
