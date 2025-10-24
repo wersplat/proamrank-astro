@@ -217,7 +217,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
                   <dd class="font-medium">{college.size}</dd>
                 </div>
               )}
-              {college.other_games_offered && Array.isArray(college.other_games_offered) && college.other_games_offered.length > 0 && (
+              {college.other_games_offered && college.other_games_offered.length > 0 && (
                 <div>
                   <dt class="text-neutral-400 text-xs">Games Offered</dt>
                   <dd class="font-medium">{college.other_games_offered.slice(0, 3).join(', ')}{college.other_games_offered.length > 3 ? '...' : ''}</dd>

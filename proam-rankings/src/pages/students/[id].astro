@@ -98,7 +98,7 @@ if (student.player_id) {
               </div>
             )}
 
-            {student.majors_desired && Array.isArray(student.majors_desired) && student.majors_desired.length > 0 && (
+            {student.majors_desired && student.majors_desired.length > 0 && (
               <div class="md:col-span-2">
                 <h3 class="text-sm font-semibold text-neutral-400 mb-2">Desired Majors</h3>
                 <div class="flex flex-wrap gap-2">
@@ -178,7 +178,7 @@ if (student.player_id) {
         </div>
 
         <!-- Film/Highlights -->
-        {student.film_links && Array.isArray(student.film_links) && student.film_links.length > 0 && (
+        {student.film_links && student.film_links.length > 0 && (
           <div class="rounded-lg border border-neutral-800 p-6">
             <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
               <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
