@@ -24,7 +24,7 @@ try {
   student = data;
 
   if (!student) {
-    return Response.redirect("/students", 302);
+    return Astro.redirect("/students", 302);
   }
 } catch (err) {
   console.error("Student page failed:", err);
@@ -33,7 +33,7 @@ try {
 
 if (!student) {
   // A sanity check in case control reaches here
-  return Response.redirect("/students", 302);
+  return Astro.redirect("/students", 302);
 }
 ---
 
