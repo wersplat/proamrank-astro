@@ -15,7 +15,7 @@ const locationFilter = Astro.url.searchParams.get('location') || '';
 const sortBy = Astro.url.searchParams.get('sort') || 'name';
 
 // Build count query with filters
-let countQuery = supa(Astro.locals)
+let countQuery = supa((Astro.locals as any).runtime)
   .from("colleges")
   .select("*", { count: 'exact', head: true });
 
@@ -32,7 +32,7 @@ const { count } = await countQuery;
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
 // Fetch colleges with pagination and filters
-let dataQuery = supa(Astro.locals)
+let dataQuery = supa((Astro.locals as any).runtime)
   .from("colleges")
   .select("*");
 

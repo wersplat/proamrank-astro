@@ -8,7 +8,7 @@ export const prerender = false;
 const { id } = Astro.params;
 
 // Fetch college details
-const { data: college } = await supa(Astro.locals)
+const { data: college } = await supa((Astro.locals as any).runtime)
   .from("colleges")
   .select("*")
   .eq("id", id!)
@@ -20,7 +20,7 @@ if (!college) {
 
 // Get interested students (those who have this college's majors in their desired list)
 // For now, we'll get all students and can filter later if needed
-const { data: interestedStudents } = await supa(Astro.locals)
+const { data: interestedStudents } = await supa((Astro.locals as any).runtime)
   .from("college_students")
   .select("id, first_name, last_initial, gamertag, graduation_year, gpa, majors_desired")
   .order("gpa", { ascending: false, nullsFirst: false })
