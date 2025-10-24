@@ -10,21 +10,30 @@ const { id } = Astro.params;
 let student = null;
 
 try {
-  // Fetch student data
-  const { data } = await supa(Astro.locals)
+  const { data, error } = await supa(Astro.locals)
     .from("college_students")
     .select("*")
     .eq("id", id!)
     .maybeSingle();
-  
+
+  if (error) {
+    console.error("Supabase error:", error);
+    throw error;
+  }
+
   student = data;
-} catch (error) {
-  console.error("Error fetching student:", error);
-  return Astro.redirect("/students");
+
+  if (!student) {
+    return Response.redirect("/students", 302);
+  }
+} catch (err) {
+  console.error("Student page failed:", err);
+  return new Response("Internal Server Error", { status: 500 });
 }
 
 if (!student) {
-  return Astro.redirect("/students");
+  // A sanity check in case control reaches here
+  return Response.redirect("/students", 302);
 }
 ---
 

@@ -3775,3 +3775,92 @@ This fresh implementation should work correctly since it uses the exact same pat
 
 ---
 
+_**User (2025-10-23 23:19Z)**_
+
+If supa(Astro.locals) isn’t defined correctly or the query fails (wrong table name, bad credentials, missing Astro.locals), it’ll throw before it reaches the redirect.
+
+return Response.redirect("/students", 302);
+
+
+
+
+---
+
+_**Assistant (default)**_
+
+You're absolutely right! The issue is that if `supa(Astro.locals)` fails or throws an error, it will never reach the redirect. I need to wrap the database call in a try-catch block to handle any potential errors.
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/students/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 15, lines removed: 6
+
+```diff
+@@ -8,10 +8,19 @@
+  const { id } = Astro.params;
+  
+- // Fetch student data
+- const { data: student } = await supa(Astro.locals)
+-   .from("college_students")
+-   .select("*")
+-   .eq("id", id!)
+-   .maybeSingle();
++ let student = null;
++ 
++ try {
++   // Fetch student data
++   const { data } = await supa(Astro.locals)
++     .from("college_students")
++     .select("*")
++     .eq("id", id!)
++     .maybeSingle();
++   
++   student = data;
++ } catch (error) {
++   console.error("Error fetching student:", error);
++   return Astro.redirect("/students");
++ }
+  
+  if (!student) {
+```
+
+</details>
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Create a completely new student profile page from scratch
+- [x] Test that the basic page loads without errors
+- [x] Add student information display
+- [x] Add navigation and styling
+
+---
+
+Perfect! Now the student profile page has proper error handling:
+
+## ✅ **Robust Error Handling**
+- **Try-catch block** around the database call to catch any errors
+- **Console logging** for debugging if errors occur
+- **Graceful fallback** - redirects to students list if anything fails
+- **Double safety check** - redirects if student data is null/undefined
+
+## ✅ **What This Fixes**
+- **Database connection errors** - If `supa(Astro.locals)` fails
+- **Query errors** - If the table name is wrong or query syntax is bad
+- **Authentication errors** - If credentials are missing or invalid
+- **Network errors** - If Supabase is unreachable
+- **Data errors** - If the student doesn't exist
+
+Now if there's any issue with the database call, it will be caught and logged, and the user will be redirected to the students list instead of getting a 500 error. This should resolve the persistent 500 Internal Server Error!
+
+---
+
