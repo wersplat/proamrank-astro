@@ -18,22 +18,22 @@ try {
 
   if (error) {
     console.error("Supabase error:", error);
-    throw error;
+    return Astro.redirect("/students");
   }
 
   student = data;
 
   if (!student) {
-    return Astro.redirect("/students", 302);
+    return Astro.redirect("/students");
   }
 } catch (err) {
   console.error("Student page failed:", err);
-  return new Response("Internal Server Error", { status: 500 });
+  return Astro.redirect("/students");
 }
 
 if (!student) {
   // A sanity check in case control reaches here
-  return Astro.redirect("/students", 302);
+  return Astro.redirect("/students");
 }
 ---
 
