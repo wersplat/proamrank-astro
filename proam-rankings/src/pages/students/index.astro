@@ -251,7 +251,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
                 </dd>
               </div>
 
-              {student.majors_desired && student.majors_desired.length > 0 && (
+              {student.majors_desired && Array.isArray(student.majors_desired) && student.majors_desired.length > 0 && (
                 <div>
                   <dt class="text-neutral-400 text-xs mb-1">Interested Majors</dt>
                   <dd class="flex flex-wrap gap-1">
