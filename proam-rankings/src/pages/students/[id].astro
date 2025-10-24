@@ -8,7 +8,7 @@ export const prerender = false;
 const { id } = Astro.params;
 
 // Fetch student details
-const { data: student } = await supa((Astro.locals as any).runtime)
+const { data: student } = await supa(Astro.locals)
   .from("college_students")
   .select("*")
   .eq("id", id!)
@@ -21,7 +21,7 @@ if (!student) {
 // If student has a linked player profile, fetch it
 let playerProfile = null;
 if (student.player_id) {
-  const { data: playerData } = await supa((Astro.locals as any).runtime)
+  const { data: playerData } = await supa(Astro.locals)
     .from("players")
     .select("id, gamertag, position, player_rp, performance_score")
     .eq("id", student.player_id)

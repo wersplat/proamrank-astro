@@ -16,7 +16,7 @@ const travelFilter = Astro.url.searchParams.get('travel') || 'all';
 const sortBy = Astro.url.searchParams.get('sort') || 'gpa';
 
 // Build count query with filters
-let countQuery = supa((Astro.locals as any).runtime)
+let countQuery = supa(Astro.locals)
   .from("college_students")
   .select("*", { count: 'exact', head: true });
 
@@ -39,7 +39,7 @@ const { count } = await countQuery;
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
 // Fetch students with pagination and filters
-let dataQuery = supa((Astro.locals as any).runtime)
+let dataQuery = supa(Astro.locals)
   .from("college_students")
   .select("*");
 
