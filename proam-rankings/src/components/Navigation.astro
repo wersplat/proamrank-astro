@@ -66,22 +66,6 @@ const currentPath = Astro.url.pathname;
         </li>
         <li>
           <a 
-            href="/colleges" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/colleges') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
-          >
-            Colleges
-          </a>
-        </li>
-        <li>
-          <a 
-            href="/students" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/students') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
-          >
-            Students
-          </a>
-        </li>
-        <li>
-          <a 
             href="/achievements" 
             class={`hover:text-blue-400 transition ${currentPath.startsWith('/achievements') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
           >
@@ -167,22 +151,6 @@ const currentPath = Astro.url.pathname;
             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/matches') ? 'bg-neutral-800 text-blue-400' : ''}`}
           >
             Matches
-          </a>
-        </li>
-        <li>
-          <a 
-            href="/colleges" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/colleges') ? 'bg-neutral-800 text-blue-400' : ''}`}
-          >
-            Colleges
-          </a>
-        </li>
-        <li>
-          <a 
-            href="/students" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/students') ? 'bg-neutral-800 text-blue-400' : ''}`}
-          >
-            Students
           </a>
         </li>
         <li>
