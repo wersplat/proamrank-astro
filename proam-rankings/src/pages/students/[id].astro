@@ -7,12 +7,21 @@ export const prerender = false;
 
 const { id } = Astro.params;
 
-// Fetch student data
-const { data: student } = await supa(Astro.locals)
-  .from("college_students")
-  .select("*")
-  .eq("id", id!)
-  .maybeSingle();
+let student = null;
+
+try {
+  // Fetch student data
+  const { data } = await supa(Astro.locals)
+    .from("college_students")
+    .select("*")
+    .eq("id", id!)
+    .maybeSingle();
+  
+  student = data;
+} catch (error) {
+  console.error("Error fetching student:", error);
+  return Astro.redirect("/students");
+}
 
 if (!student) {
   return Astro.redirect("/students");
