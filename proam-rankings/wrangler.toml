@@ -2,6 +2,7 @@
 name = "proamrank-astro"
 pages_build_output_dir = "dist"
 compatibility_date = "2025-10-01"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3cHhzdWZyZ2lncGpjeHRuZXJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4NzI1MjksImV4cCI6MjA2NzQ0ODUyOX0.ujcyEXDgpIJVaNb7IeFZV9Yrl2l41xHq-TdEut-Wxg0"

@@ -1,0 +1,342 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+export const prerender = false;
+
+const ITEMS_PER_PAGE = 30;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+// Get filter parameters
+const searchQuery = Astro.url.searchParams.get('search') || '';
+const gradYearFilter = Astro.url.searchParams.get('year') || '';
+const travelFilter = Astro.url.searchParams.get('travel') || 'all';
+const sortBy = Astro.url.searchParams.get('sort') || 'gpa';
+
+// Build count query with filters
+let countQuery = supa(Astro.locals)
+  .from("college_students")
+  .select("*", { count: 'exact', head: true });
+
+if (searchQuery) {
+  countQuery = countQuery.or(`gamertag.ilike.%${searchQuery}%,first_name.ilike.%${searchQuery}%`);
+}
+
+if (gradYearFilter) {
+  countQuery = countQuery.eq("graduation_year", parseInt(gradYearFilter));
+}
+
+if (travelFilter === 'yes') {
+  countQuery = countQuery.eq("willing_to_travel_out_of_state", true);
+} else if (travelFilter === 'no') {
+  countQuery = countQuery.eq("willing_to_travel_out_of_state", false);
+}
+
+// Get total count
+const { count } = await countQuery;
+const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
+
+// Fetch students with pagination and filters
+let dataQuery = supa(Astro.locals)
+  .from("college_students")
+  .select("*");
+
+if (searchQuery) {
+  dataQuery = dataQuery.or(`gamertag.ilike.%${searchQuery}%,first_name.ilike.%${searchQuery}%`);
+}
+
+if (gradYearFilter) {
+  dataQuery = dataQuery.eq("graduation_year", parseInt(gradYearFilter));
+}
+
+if (travelFilter === 'yes') {
+  dataQuery = dataQuery.eq("willing_to_travel_out_of_state", true);
+} else if (travelFilter === 'no') {
+  dataQuery = dataQuery.eq("willing_to_travel_out_of_state", false);
+}
+
+// Apply sorting
+if (sortBy === 'gpa') {
+  dataQuery = dataQuery.order("gpa", { ascending: false, nullsFirst: false });
+} else if (sortBy === 'year') {
+  dataQuery = dataQuery.order("graduation_year", { ascending: false });
+} else if (sortBy === 'name') {
+  dataQuery = dataQuery.order("first_name", { ascending: true });
+}
+
+const { data, error } = await dataQuery.range(offset, offset + ITEMS_PER_PAGE - 1);
+
+if (error) console.error(error);
+const students = data ?? [];
+
+// Get unique graduation years for filter
+const { data: yearsData } = await supa(Astro.locals)
+  .from("college_students")
+  .select("graduation_year")
+  .not("graduation_year", "is", null)
+  .order("graduation_year", { ascending: false });
+
+const uniqueYears = [...new Set((yearsData ?? []).map((y: any) => y.graduation_year))].filter(Boolean);
+
+// Generate page numbers
+function getPageNumbers(current: number, total: number): number[] {
+  const pages: number[] = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  return pages;
+}
+
+const pageNumbers = getPageNumbers(currentPage, totalPages);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prospective Students - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h1 class="text-2xl font-bold">Prospective Students</h1>
+            <p class="text-sm text-neutral-400 mt-1">Students seeking collegiate esports opportunities</p>
+          </div>
+          <div class="text-sm text-neutral-400">
+            Page {currentPage} of {totalPages} • {count || 0} total
+          </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="flex flex-wrap gap-3 mb-4">
+          <div class="flex-1 min-w-[200px]">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by name or gamertag..."
+              value={searchQuery}
+              class="w-full px-3 py-2 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onkeydown="if(event.key==='Enter') handleSearch()"
+            />
+          </div>
+
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Grad Year:</label>
+            <select 
+              id="yearFilter"
+              class="px-3 py-2 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('year', this.value)"
+            >
+              <option value="" selected={!gradYearFilter}>All Years</option>
+              {uniqueYears.map((year: number) => (
+                <option value={year} selected={gradYearFilter === String(year)}>{year}</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Travel:</label>
+            <select 
+              id="travelFilter"
+              class="px-3 py-2 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('travel', this.value)"
+            >
+              <option value="all" selected={travelFilter === 'all'}>Any</option>
+              <option value="yes" selected={travelFilter === 'yes'}>Out of State</option>
+              <option value="no" selected={travelFilter === 'no'}>In State Only</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Sort:</label>
+            <select 
+              id="sortFilter"
+              class="px-3 py-2 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('sort', this.value)"
+            >
+              <option value="gpa" selected={sortBy === 'gpa'}>GPA (High to Low)</option>
+              <option value="year" selected={sortBy === 'year'}>Graduation Year</option>
+              <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
+            </select>
+          </div>
+
+          <button
+            onclick="handleSearch()"
+            class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition text-sm font-medium"
+          >
+            Search
+          </button>
+
+          {(sortBy !== 'gpa' || searchQuery || gradYearFilter || travelFilter !== 'all') && (
+            <a 
+              href="/students" 
+              class="px-3 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+            >
+              Clear Filters
+            </a>
+          )}
+        </div>
+      </div>
+
+      <script is:inline>
+        function updateFilter(param, value) {
+          const url = new URL(window.location.href);
+          if (value === 'all' || value === '' || (param === 'sort' && value === 'gpa')) {
+            url.searchParams.delete(param);
+          } else {
+            url.searchParams.set(param, value);
+          }
+          url.searchParams.delete('page');
+          return url.toString();
+        }
+
+        function handleSearch() {
+          const searchInput = document.getElementById('searchInput');
+          const url = new URL(window.location.href);
+          
+          if (searchInput.value.trim()) {
+            url.searchParams.set('search', searchInput.value.trim());
+          } else {
+            url.searchParams.delete('search');
+          }
+          
+          url.searchParams.delete('page');
+          window.location.href = url.toString();
+        }
+      </script>
+
+      <!-- Students Grid -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {students.map((student) => (
+          <a 
+            href={`/students/${student.id}`}
+            class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
+          >
+            <div class="mb-3">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <div class="flex-1">
+                  <h2 class="font-bold text-lg">{student.first_name} {student.last_initial}.</h2>
+                  <p class="text-sm text-neutral-400">{student.gamertag}</p>
+                </div>
+                {student.gpa && (
+                  <span class="px-2 py-1 rounded bg-green-900/30 text-green-300 text-xs font-bold border border-green-800/50">
+                    {student.gpa}
+                  </span>
+                )}
+              </div>
+            </div>
+            
+            <dl class="space-y-2 text-sm">
+              <div class="flex items-center justify-between">
+                <dt class="text-neutral-400 text-xs">Graduation</dt>
+                <dd class="font-semibold">
+                  {student.is_transfer ? (
+                    <span class="text-orange-400">Transfer Student</span>
+                  ) : student.graduation_year ? (
+                    <span>Class of {student.graduation_year}</span>
+                  ) : (
+                    <span class="text-neutral-500">-</span>
+                  )}
+                </dd>
+              </div>
+
+              {student.majors_desired && Array.isArray(student.majors_desired) && student.majors_desired.length > 0 && (
+                <div>
+                  <dt class="text-neutral-400 text-xs mb-1">Interested Majors</dt>
+                  <dd class="flex flex-wrap gap-1">
+                    {student.majors_desired.slice(0, 2).map((major: string) => (
+                      <span class="px-2 py-0.5 rounded-full bg-neutral-800 text-xs border border-neutral-700">
+                        {major}
+                      </span>
+                    ))}
+                    {student.majors_desired.length > 2 && (
+                      <span class="px-2 py-0.5 rounded-full bg-neutral-800 text-xs border border-neutral-700">
+                        +{student.majors_desired.length - 2}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+              )}
+
+              <div class="flex items-center justify-between pt-2 border-t border-neutral-800">
+                <dt class="text-neutral-400 text-xs">Will Travel</dt>
+                <dd class="font-medium text-xs">
+                  {student.willing_to_travel_out_of_state ? (
+                    <span class="text-blue-400">✓ Out of State</span>
+                  ) : (
+                    <span class="text-neutral-500">In State Only</span>
+                  )}
+                </dd>
+              </div>
+            </dl>
+          </a>
+        ))}
+      </div>
+
+      {students.length === 0 && (
+        <div class="text-center py-12 text-neutral-400">
+          <p class="text-lg mb-2">No students found.</p>
+          <p class="text-sm">Try adjusting your search or filters.</p>
+        </div>
+      )}
+
+      <!-- Pagination -->
+      {totalPages > 1 && (
+        <div class="mt-8 flex items-center justify-center gap-2">
+          {currentPage > 1 ? (
+            <a 
+              href={`/students?page=${currentPage - 1}${sortBy !== 'gpa' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${gradYearFilter ? `&year=${gradYearFilter}` : ''}${travelFilter !== 'all' ? `&travel=${travelFilter}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
+              ← Previous
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              ← Previous
+            </span>
+          )}
+
+          <div class="flex gap-1">
+            {pageNumbers.map((pageNum: number) => (
+              <a
+                href={`/students?page=${pageNum}${sortBy !== 'gpa' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${gradYearFilter ? `&year=${gradYearFilter}` : ''}${travelFilter !== 'all' ? `&travel=${travelFilter}` : ''}`}
+                class={`px-3 py-2 rounded transition ${
+                  pageNum === currentPage
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-neutral-800 hover:bg-neutral-700'
+                }`}
+              >
+                {pageNum}
+              </a>
+            ))}
+          </div>
+
+          {currentPage < totalPages ? (
+            <a 
+              href={`/students?page=${currentPage + 1}${sortBy !== 'gpa' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${gradYearFilter ? `&year=${gradYearFilter}` : ''}${travelFilter !== 'all' ? `&travel=${travelFilter}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
+              Next →
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              Next →
+            </span>
+          )}
+        </div>
+      )}
+    </main>
+  </body>
+</html>
+

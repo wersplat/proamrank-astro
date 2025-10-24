@@ -1,0 +1,292 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+export const prerender = false;
+
+const ITEMS_PER_PAGE = 25;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+// Get filter parameters
+const searchQuery = Astro.url.searchParams.get('search') || '';
+const locationFilter = Astro.url.searchParams.get('location') || '';
+const sortBy = Astro.url.searchParams.get('sort') || 'name';
+
+// Build count query with filters
+let countQuery = supa(Astro.locals)
+  .from("colleges")
+  .select("*", { count: 'exact', head: true });
+
+if (searchQuery) {
+  countQuery = countQuery.ilike("name", `%${searchQuery}%`);
+}
+
+if (locationFilter) {
+  countQuery = countQuery.ilike("location", `%${locationFilter}%`);
+}
+
+// Get total count
+const { count } = await countQuery;
+const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
+
+// Fetch colleges with pagination and filters
+let dataQuery = supa(Astro.locals)
+  .from("colleges")
+  .select("*");
+
+if (searchQuery) {
+  dataQuery = dataQuery.ilike("name", `%${searchQuery}%`);
+}
+
+if (locationFilter) {
+  dataQuery = dataQuery.ilike("location", `%${locationFilter}%`);
+}
+
+// Apply sorting
+if (sortBy === 'name') {
+  dataQuery = dataQuery.order("name", { ascending: true });
+} else if (sortBy === 'location') {
+  dataQuery = dataQuery.order("location", { ascending: true });
+}
+
+const { data, error } = await dataQuery.range(offset, offset + ITEMS_PER_PAGE - 1);
+
+if (error) console.error(error);
+const colleges = data ?? [];
+
+// Generate page numbers
+function getPageNumbers(current: number, total: number): number[] {
+  const pages: number[] = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else if (current <= 4) {
+    for (let i = 1; i <= 7; i++) pages.push(i);
+  } else if (current >= total - 3) {
+    for (let i = total - 6; i <= total; i++) pages.push(i);
+  } else {
+    for (let i = current - 3; i <= current + 3; i++) pages.push(i);
+  }
+  return pages;
+}
+
+const pageNumbers = getPageNumbers(currentPage, totalPages);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Colleges - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-6xl p-6">
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h1 class="text-2xl font-bold">College Esports Programs</h1>
+            <p class="text-sm text-neutral-400 mt-1">Explore collegiate esports opportunities</p>
+          </div>
+          <div class="text-sm text-neutral-400">
+            Page {currentPage} of {totalPages} • {count || 0} total
+          </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="flex flex-wrap gap-3 mb-4">
+          <div class="flex-1 min-w-[200px]">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search colleges..."
+              value={searchQuery}
+              class="w-full px-3 py-2 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onkeydown="if(event.key==='Enter') handleSearch()"
+            />
+          </div>
+
+          <div class="flex-1 min-w-[200px]">
+            <input
+              type="text"
+              id="locationInput"
+              placeholder="Filter by location..."
+              value={locationFilter}
+              class="w-full px-3 py-2 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onkeydown="if(event.key==='Enter') handleSearch()"
+            />
+          </div>
+
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-neutral-400">Sort:</label>
+            <select 
+              id="sortFilter"
+              class="px-3 py-2 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              onchange="window.location.href = updateFilter('sort', this.value)"
+            >
+              <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
+              <option value="location" selected={sortBy === 'location'}>Location</option>
+            </select>
+          </div>
+
+          <button
+            onclick="handleSearch()"
+            class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition text-sm font-medium"
+          >
+            Search
+          </button>
+
+          {(sortBy !== 'name' || searchQuery || locationFilter) && (
+            <a 
+              href="/colleges" 
+              class="px-3 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+            >
+              Clear Filters
+            </a>
+          )}
+        </div>
+      </div>
+
+      <script is:inline>
+        function updateFilter(param, value) {
+          const url = new URL(window.location.href);
+          if ((param === 'sort' && value === 'name')) {
+            url.searchParams.delete(param);
+          } else {
+            url.searchParams.set(param, value);
+          }
+          url.searchParams.delete('page');
+          return url.toString();
+        }
+
+        function handleSearch() {
+          const searchInput = document.getElementById('searchInput');
+          const locationInput = document.getElementById('locationInput');
+          const url = new URL(window.location.href);
+          
+          if (searchInput.value.trim()) {
+            url.searchParams.set('search', searchInput.value.trim());
+          } else {
+            url.searchParams.delete('search');
+          }
+
+          if (locationInput.value.trim()) {
+            url.searchParams.set('location', locationInput.value.trim());
+          } else {
+            url.searchParams.delete('location');
+          }
+          
+          url.searchParams.delete('page');
+          window.location.href = url.toString();
+        }
+      </script>
+
+      <!-- Colleges Grid -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {colleges.map((college) => (
+          <a 
+            href={`/colleges/${college.id}`}
+            class="block rounded-lg border border-neutral-800 p-5 hover:border-blue-500 transition"
+          >
+            <div class="flex items-start gap-3 mb-3">
+              {college.logo_url ? (
+                <img 
+                  src={college.logo_url}
+                  alt={college.name || "College"}
+                  class="h-16 w-16 rounded object-cover flex-shrink-0"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="h-16 w-16 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-xs font-bold flex-shrink-0">
+                  {college.name?.substring(0, 2).toUpperCase() || '??'}
+                </div>
+              )}
+              <div class="flex-1 min-w-0">
+                <h2 class="font-bold text-lg leading-tight mb-1">{college.name}</h2>
+                {college.location && (
+                  <p class="text-xs text-neutral-400">{college.location}</p>
+                )}
+              </div>
+            </div>
+            
+            <dl class="space-y-2 text-sm">
+              {college.size && (
+                <div>
+                  <dt class="text-neutral-400 text-xs">Size</dt>
+                  <dd class="font-medium">{college.size}</dd>
+                </div>
+              )}
+              {college.other_games_offered && Array.isArray(college.other_games_offered) && college.other_games_offered.length > 0 && (
+                <div>
+                  <dt class="text-neutral-400 text-xs">Games Offered</dt>
+                  <dd class="font-medium">{college.other_games_offered.slice(0, 3).join(', ')}{college.other_games_offered.length > 3 ? '...' : ''}</dd>
+                </div>
+              )}
+              {college.avg_cost_to_attend && (
+                <div>
+                  <dt class="text-neutral-400 text-xs">Avg Cost</dt>
+                  <dd class="font-medium text-green-400">{college.avg_cost_to_attend}</dd>
+                </div>
+              )}
+            </dl>
+          </a>
+        ))}
+      </div>
+
+      {colleges.length === 0 && (
+        <div class="text-center py-12 text-neutral-400">
+          <p class="text-lg mb-2">No colleges found.</p>
+          <p class="text-sm">Try adjusting your search or filters.</p>
+        </div>
+      )}
+
+      <!-- Pagination -->
+      {totalPages > 1 && (
+        <div class="mt-8 flex items-center justify-center gap-2">
+          {currentPage > 1 ? (
+            <a 
+              href={`/colleges?page=${currentPage - 1}${sortBy !== 'name' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${locationFilter ? `&location=${encodeURIComponent(locationFilter)}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
+              ← Previous
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              ← Previous
+            </span>
+          )}
+
+          <div class="flex gap-1">
+            {pageNumbers.map((pageNum: number) => (
+              <a
+                href={`/colleges?page=${pageNum}${sortBy !== 'name' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${locationFilter ? `&location=${encodeURIComponent(locationFilter)}` : ''}`}
+                class={`px-3 py-2 rounded transition ${
+                  pageNum === currentPage
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-neutral-800 hover:bg-neutral-700'
+                }`}
+              >
+                {pageNum}
+              </a>
+            ))}
+          </div>
+
+          {currentPage < totalPages ? (
+            <a 
+              href={`/colleges?page=${currentPage + 1}${sortBy !== 'name' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${locationFilter ? `&location=${encodeURIComponent(locationFilter)}` : ''}`}
+              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+            >
+              Next →
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+              Next →
+            </span>
+          )}
+        </div>
+      )}
+    </main>
+  </body>
+</html>
+

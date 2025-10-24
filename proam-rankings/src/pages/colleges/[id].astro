@@ -1,0 +1,257 @@
+---
+import Navigation from "../../components/Navigation.astro";
+import { supa } from "../../lib/supabase";
+import "../../styles/global.css";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+// Fetch college details
+const { data: college } = await supa(Astro.locals)
+  .from("colleges")
+  .select("*")
+  .eq("id", id!)
+  .maybeSingle();
+
+if (!college) {
+  return Astro.redirect("/colleges");
+}
+
+// Get interested students (those who have this college's majors in their desired list)
+// For now, we'll get all students and can filter later if needed
+const { data: interestedStudents } = await supa(Astro.locals)
+  .from("college_students")
+  .select("id, first_name, last_initial, gamertag, graduation_year, gpa, majors_desired")
+  .order("gpa", { ascending: false, nullsFirst: false })
+  .limit(10);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{college.name} - Pro-Am Rankings</title>
+  </head>
+  <body class="bg-neutral-950 text-white">
+    <Navigation />
+    <main class="mx-auto max-w-5xl p-6">
+      <!-- College Header -->
+      <div class="mb-8">
+        <div class="flex items-start gap-6 mb-6">
+          {college.logo_url ? (
+            <img 
+              src={college.logo_url}
+              alt={college.name}
+              class="h-24 w-24 rounded-lg object-cover flex-shrink-0"
+            />
+          ) : (
+            <div class="h-24 w-24 rounded-lg bg-neutral-800 flex items-center justify-center text-neutral-500 text-2xl font-bold flex-shrink-0">
+              {college.name.substring(0, 2).toUpperCase()}
+            </div>
+          )}
+          <div class="flex-1">
+            <h1 class="text-3xl font-bold mb-2">{college.name}</h1>
+            <div class="flex flex-wrap gap-4 text-sm text-neutral-300">
+              {college.location && (
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                  <span>{college.location}</span>
+                </div>
+              )}
+              {college.size && (
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                  <span>{college.size}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid gap-6 lg:grid-cols-2">
+        <!-- Academic Programs -->
+        <div class="rounded-lg border border-neutral-800 p-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+            Academic Programs
+          </h2>
+          
+          {college.majors_offered && Array.isArray(college.majors_offered) && college.majors_offered.length > 0 ? (
+            <div class="mb-4">
+              <h3 class="text-sm font-semibold text-neutral-400 mb-2">Majors Offered</h3>
+              <div class="flex flex-wrap gap-2">
+                {college.majors_offered.map((major: string) => (
+                  <span class="px-3 py-1 rounded-full bg-neutral-800 text-sm border border-neutral-700">
+                    {major}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p class="text-neutral-400 text-sm mb-4">No specific majors listed</p>
+          )}
+
+          {college.majors_page_url && (
+            <a 
+              href={college.majors_page_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-medium"
+            >
+              View Full Majors List
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </a>
+          )}
+        </div>
+
+        <!-- Financial Information -->
+        <div class="rounded-lg border border-neutral-800 p-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Financial Information
+          </h2>
+          
+          {college.avg_cost_to_attend ? (
+            <div class="mb-4">
+              <h3 class="text-sm font-semibold text-neutral-400 mb-1">Average Cost to Attend</h3>
+              <p class="text-lg font-bold text-green-400">{college.avg_cost_to_attend}</p>
+            </div>
+          ) : (
+            <p class="text-neutral-400 text-sm mb-4">Cost information not available</p>
+          )}
+
+          {college.scholarships_offered ? (
+            <div>
+              <h3 class="text-sm font-semibold text-neutral-400 mb-2">Scholarships Offered</h3>
+              <p class="text-sm text-neutral-300 leading-relaxed whitespace-pre-line">{college.scholarships_offered}</p>
+            </div>
+          ) : (
+            <p class="text-neutral-400 text-sm">Scholarship information not available</p>
+          )}
+        </div>
+
+        <!-- Esports Program -->
+        <div class="rounded-lg border border-neutral-800 p-6 lg:col-span-2">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Esports Program
+          </h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div>
+              {college.other_games_offered && Array.isArray(college.other_games_offered) && college.other_games_offered.length > 0 && (
+                <div class="mb-4">
+                  <h3 class="text-sm font-semibold text-neutral-400 mb-2">Games Offered</h3>
+                  <div class="flex flex-wrap gap-2">
+                    {college.other_games_offered.map((game: string) => (
+                      <span class="px-3 py-1 rounded bg-purple-900/30 text-purple-300 text-sm border border-purple-800/50">
+                        {game}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {college.program_benefits && (
+                <div>
+                  <h3 class="text-sm font-semibold text-neutral-400 mb-2">Program Benefits</h3>
+                  <p class="text-sm text-neutral-300 leading-relaxed whitespace-pre-line">{college.program_benefits}</p>
+                </div>
+              )}
+            </div>
+
+            <div>
+              {college.student_work_jobs && (
+                <div>
+                  <h3 class="text-sm font-semibold text-neutral-400 mb-2">Student Work Opportunities</h3>
+                  <p class="text-sm text-neutral-300 leading-relaxed whitespace-pre-line">{college.student_work_jobs}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {!college.other_games_offered && !college.program_benefits && !college.student_work_jobs && (
+            <p class="text-neutral-400 text-sm">Esports program details not available</p>
+          )}
+        </div>
+
+        <!-- Interested Students -->
+        {interestedStudents && interestedStudents.length > 0 && (
+          <div class="rounded-lg border border-neutral-800 p-6 lg:col-span-2">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+              Prospective Students
+            </h2>
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {interestedStudents.map((student) => (
+                <a 
+                  href={`/students/${student.id}`}
+                  class="block p-4 rounded-lg border border-neutral-800 hover:border-blue-500 transition"
+                >
+                  <div class="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 class="font-semibold">{student.first_name} {student.last_initial}.</h3>
+                      <p class="text-sm text-neutral-400">{student.gamertag}</p>
+                    </div>
+                    {student.gpa && (
+                      <span class="px-2 py-0.5 rounded bg-green-900/30 text-green-300 text-xs font-bold border border-green-800/50">
+                        {student.gpa} GPA
+                      </span>
+                    )}
+                  </div>
+                  {student.graduation_year && (
+                    <p class="text-xs text-neutral-500">Class of {student.graduation_year}</p>
+                  )}
+                </a>
+              ))}
+            </div>
+            <div class="mt-4 text-center">
+              <a 
+                href="/students"
+                class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-medium"
+              >
+                View All Students
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Back Link -->
+      <div class="mt-8">
+        <a 
+          href="/colleges"
+          class="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Colleges
+        </a>
+      </div>
+    </main>
+  </body>
+</html>
+
