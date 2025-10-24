@@ -10,10 +10,5 @@ Sentry.init({
   
   // Enable additional debugging information
   debug: false,
-  
-  // Disable all default integrations for Cloudflare Workers
-  // Only use minimal error capturing
-  integrations: [],
-  defaultIntegrations: false,
 });
 
