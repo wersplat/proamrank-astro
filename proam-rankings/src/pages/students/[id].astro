@@ -12,16 +12,29 @@ if (!id) {
   return Astro.redirect("/students");
 }
 
-// Fetch student data
-const { data: student, error } = await supa(Astro.locals)
-  .from("college_students")
-  .select("*")
-  .eq("id", id)
-  .maybeSingle();
+let student = null;
 
-// Redirect if there's an error or no student found
-if (error || !student) {
-  console.error("Student not found or error:", error);
+try {
+  // Fetch student data
+  const { data, error } = await supa(Astro.locals)
+    .from("college_students")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Database error:", error);
+    return Astro.redirect("/students");
+  }
+
+  if (!data) {
+    console.error("Student not found");
+    return Astro.redirect("/students");
+  }
+
+  student = data;
+} catch (err) {
+  console.error("Failed to fetch student:", err);
   return Astro.redirect("/students");
 }
 ---
