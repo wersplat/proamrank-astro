@@ -7,27 +7,51 @@ export const prerender = false;
 
 const { id } = Astro.params;
 
-// Fetch student details
-const { data: student } = await supa(Astro.locals)
-  .from("college_students")
-  .select("*")
-  .eq("id", id!)
-  .maybeSingle();
+// Declare variables outside try block so they're accessible in template
+let student: any = null;
+let playerProfile: any = null;
 
-if (!student) {
+try {
+  // Fetch student details
+  const { data: studentData, error } = await supa(Astro.locals)
+    .from("college_students")
+    .select("*")
+    .eq("id", id!)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error fetching student:", error);
+    return Astro.redirect("/students");
+  }
+
+  if (!studentData) {
+    return Astro.redirect("/students");
+  }
+
+  student = studentData;
+
+  // If student has a linked player profile, fetch it
+  if (student.player_id) {
+    const { data: playerData, error: playerError } = await supa(Astro.locals)
+      .from("players")
+      .select("id, gamertag, position, player_rp, performance_score")
+      .eq("id", student.player_id as string)
+      .maybeSingle();
+    
+    if (playerError) {
+      console.error("Error fetching player profile:", playerError);
+    } else {
+      playerProfile = playerData;
+    }
+  }
+} catch (error) {
+  console.error("Unexpected error in student page:", error);
   return Astro.redirect("/students");
 }
 
-// If student has a linked player profile, fetch it
-let playerProfile = null;
-if (student.player_id) {
-  const { data: playerData } = await supa(Astro.locals)
-    .from("players")
-    .select("id, gamertag, position, player_rp, performance_score")
-    .eq("id", student.player_id)
-    .maybeSingle();
-  
-  playerProfile = playerData;
+// Final safety check
+if (!student) {
+  return Astro.redirect("/students");
 }
 ---
 
