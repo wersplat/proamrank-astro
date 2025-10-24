@@ -3,6 +3,7 @@
 ## Overview
 
 This migration creates the College Portal feature for Pro-Am Rankings, adding support for:
+
 - College/University esports program profiles
 - Student profiles seeking collegiate opportunities
 - Linking students to existing player competitive profiles
@@ -11,18 +12,22 @@ This migration creates the College Portal feature for Pro-Am Rankings, adding su
 ## Database Tables Created
 
 ### 1. `colleges`
+
 Stores information about college and university esports programs.
 
 **Key Fields:**
+
 - Basic info: name, location, size, logo
 - Academic: majors_offered (array), majors_page_url
 - Financial: avg_cost_to_attend, scholarships_offered
 - Esports: program_benefits, student_work_jobs, other_games_offered (array)
 
 ### 2. `college_students`
+
 Student profiles seeking collegiate esports opportunities.
 
 **Key Fields:**
+
 - Identity: first_name, last_initial, gamertag
 - Academic: gpa, graduation_year, is_transfer, majors_desired (array)
 - Preferences: willing_to_travel_out_of_state
@@ -30,6 +35,7 @@ Student profiles seeking collegiate esports opportunities.
 - Optional link: player_id (FK to players table)
 
 ### 3. `college_majors`
+
 Predefined list of academic majors for filtering (seeded with 20 common majors).
 
 ## Migration Steps
@@ -37,12 +43,14 @@ Predefined list of academic majors for filtering (seeded with 20 common majors).
 ### Step 1: Apply the Migration
 
 **Option A: Using Supabase CLI**
+
 ```bash
 # From project root
 supabase db push --include-seed
 ```
 
 **Option B: Using Supabase Dashboard**
+
 1. Go to your Supabase project dashboard
 2. Navigate to SQL Editor
 3. Copy the contents of `create_college_portal_tables.sql`
@@ -51,6 +59,7 @@ supabase db push --include-seed
 ### Step 2: Verify Tables Created
 
 Run this query in Supabase SQL Editor:
+
 ```sql
 SELECT table_name 
 FROM information_schema.tables 
@@ -63,6 +72,7 @@ You should see all three tables listed.
 ### Step 3: Regenerate TypeScript Types
 
 From your project root, run:
+
 ```bash
 npx supabase gen types typescript --project-id YOUR_PROJECT_ID > src/lib/db.types.ts
 ```
@@ -72,6 +82,7 @@ Replace `YOUR_PROJECT_ID` with your actual Supabase project ID (found in Project
 ### Step 4: Verify Type Generation
 
 Check that `src/lib/db.types.ts` includes the new tables:
+
 - `Database['public']['Tables']['colleges']`
 - `Database['public']['Tables']['college_students']`
 - `Database['public']['Tables']['college_majors']`
@@ -90,6 +101,7 @@ All pages are added to the navigation menu (desktop and mobile).
 ## Testing the Implementation
 
 ### 1. Create Sample College
+
 ```sql
 INSERT INTO colleges (name, location, size, majors_offered, avg_cost_to_attend, other_games_offered, scholarships_offered, program_benefits, student_work_jobs)
 VALUES (
@@ -106,6 +118,7 @@ VALUES (
 ```
 
 ### 2. Create Sample Student
+
 ```sql
 INSERT INTO college_students (first_name, last_initial, gamertag, gpa, graduation_year, majors_desired, willing_to_travel_out_of_state, competitive_accomplishments, goals_with_competing, film_links)
 VALUES (
@@ -130,6 +143,7 @@ Average 18 PPG in league play',
 ```
 
 ### 3. Link Student to Existing Player (Optional)
+
 ```sql
 -- First, find the player ID
 SELECT id, gamertag FROM players WHERE gamertag ILIKE '%searchterm%';
@@ -143,6 +157,7 @@ WHERE id = 'STUDENT_UUID_HERE';
 ### 4. Test the Pages
 
 Visit these URLs in your browser:
+
 - `http://localhost:4321/colleges` - Should show the sample college
 - `http://localhost:4321/colleges/{college_id}` - Should show college details
 - `http://localhost:4321/students` - Should show the sample student
@@ -151,6 +166,7 @@ Visit these URLs in your browser:
 ## Security (RLS Policies)
 
 The migration includes Row Level Security (RLS) policies:
+
 - **Read access**: All tables have public SELECT access (anyone can view)
 - **Write access**: Not configured (admin-only via direct database access)
 
@@ -204,6 +220,7 @@ DROP TABLE IF EXISTS college_majors CASCADE;
 ## Support
 
 For issues or questions:
+
 1. Check Supabase dashboard logs for database errors
 2. Check browser console for frontend errors
 3. Verify TypeScript types were regenerated correctly
@@ -212,9 +229,9 @@ For issues or questions:
 ## Next Steps
 
 After successful migration:
+
 1. Create sample data for testing
 2. Consider adding authentication for profile creation
 3. Add image upload capability for logos and profile pictures
 4. Implement email notifications for recruiting interests
 5. Add analytics to track profile views and engagement
-
