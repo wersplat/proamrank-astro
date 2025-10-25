@@ -11135,6 +11135,7 @@ export type Database = {
           is_active: boolean | null
           leaderboard_tier: string | null
           lg_conf: string | null
+          lg_division: string | null
           logo_url: string | null
           money_won: number | null
           name: string
@@ -11151,6 +11152,7 @@ export type Database = {
           is_active?: boolean | null
           leaderboard_tier?: string | null
           lg_conf?: string | null
+          lg_division?: string | null
           logo_url?: string | null
           money_won?: number | null
           name: string
@@ -11167,6 +11169,7 @@ export type Database = {
           is_active?: boolean | null
           leaderboard_tier?: string | null
           lg_conf?: string | null
+          lg_division?: string | null
           logo_url?: string | null
           money_won?: number | null
           name?: string
@@ -11179,6 +11182,13 @@ export type Database = {
             columns: ["lg_conf"]
             isOneToOne: false
             referencedRelation: "lg_conf"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teams_lg_division_fkey"
+            columns: ["lg_division"]
+            isOneToOne: false
+            referencedRelation: "lg_divisions"
             referencedColumns: ["id"]
           },
         ]
