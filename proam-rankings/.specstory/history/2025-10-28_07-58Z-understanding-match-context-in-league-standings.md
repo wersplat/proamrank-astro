@@ -2344,3 +2344,391 @@ I updated `league_results` to count regular-season matches across all contexts a
 
 ---
 
+_**User (2025-10-28 07:58Z)**_
+
+ok now my issues is i need a way for games that are playoffs in primary context but regular season in the secondary to be counted in the standings of the secondary context leaague
+
+---
+
+_**Assistant (gpt-5)**_
+
+I understand the issue. You have matches where:
+- **Primary context**: `stage = "Playoffs"` (tournament/playoff game)
+- **Secondary context**: `stage = "Regular Season"` (should count toward league standings)
+
+The current logic only looks at the match's `stage` field, but you need it to consider the **context-specific stage** for each league.
+
+## **Solution: Context-Aware Stage Filtering**
+
+You need to modify the `league_results` view to check the stage **per context**, not per match. Here's the approach:
+
+### **Option 1: Add Context-Specific Stage Field**
+
+If you can add a `stage` field to the `match_contexts` table:
+
+```sql
+-- Add stage field to match_contexts table
+ALTER TABLE match_contexts ADD COLUMN stage TEXT;
+
+-- Update existing contexts with their appropriate stages
+UPDATE match_contexts SET stage = 'Regular Season' WHERE is_primary = false AND league_id IS NOT NULL;
+UPDATE match_contexts SET stage = (SELECT m.stage FROM matches m WHERE m.id = match_contexts.match_id) WHERE is_primary = true;
+```
+
+Then modify the `team_standings` CTE:
+
+```sql
+WITH team_standings AS (
+    SELECT 
+        t.id AS team_id,
+        t.name AS team_name,
+        -- ... other fields ...
+        -- Count wins from contexts where stage = 'Regular Season'
+        COUNT(DISTINCT CASE 
+            WHEN m.winner_id = t.id 
+                AND mc.stage = 'Regular Season'
+            THEN m.id 
+        END) AS wins,
+        -- Count losses from contexts where stage = 'Regular Season'
+        COUNT(DISTINCT CASE 
+            WHEN (m.team_a_id = t.id OR m.team_b_id = t.id) 
+                AND m.winner_id <> t.id 
+                AND m.winner_id IS NOT NULL 
+                AND mc.stage = 'Regular Season'
+            THEN m.id 
+        END) AS losses,
+        -- ... rest of calculations with mc.stage = 'Regular Season' ...
+    FROM teams t
+    LEFT JOIN v_matches_with_primary_context m 
+        ON (m.team_a_id = t.id OR m.team_b_id = t.id) 
+        AND m.winner_id IS NOT NULL
+    LEFT JOIN match_contexts mc ON mc.match_id = m.id
+    LEFT JOIN leagues_info li ON mc.league_id = li.id
+    LEFT JOIN league_seasons ls ON mc.season_id = ls.id
+    LEFT JOIN lg_conf lc ON t.lg_conf = lc.id
+    GROUP BY t.id, t.name, t.logo_url, t.current_rp, t.elo_rating, 
+             li.id, li.league, ls.id, ls.season_number, ls.year, lc.name
+),
+```
+
+### **Option 2: Context-Specific Stage Logic (No Schema Changes)**
+
+If you can't modify the schema, use logic to determine context-specific stages:
+
+```sql
+WITH team_standings AS (
+    SELECT 
+        t.id AS team_id,
+        t.name AS team_name,
+        -- ... other fields ...
+        -- Count wins: Regular Season if non-primary league context, or if primary and stage = 'Regular Season'
+        COUNT(DISTINCT CASE 
+            WHEN m.winner_id = t.id 
+                AND (
+                    (mc.is_primary = false AND mc.league_id IS NOT NULL) -- Non-primary league contexts are regular season
+                    OR (mc.is_primary = true AND m.stage = 'Regular Season') -- Primary context only if regular season
+                )
+            THEN m.id 
+        END) AS wins,
+        -- Count losses with same logic
+        COUNT(DISTINCT CASE 
+            WHEN (m.team_a_id = t.id OR m.team_b_id = t.id) 
+                AND m.winner_id <> t.id 
+                AND m.winner_id IS NOT NULL 
+                AND (
+                    (mc.is_primary = false AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = true AND m.stage = 'Regular Season')
+                )
+            THEN m.id 
+        END) AS losses,
+        -- ... rest of calculations with same stage logic ...
+    FROM teams t
+    LEFT JOIN v_matches_with_primary_context m 
+        ON (m.team_a_id = t.id OR m.team_b_id = t.id) 
+        AND m.winner_id IS NOT NULL
+    LEFT JOIN match_contexts mc ON mc.match_id = m.id
+    LEFT JOIN leagues_info li ON mc.league_id = li.id
+    LEFT JOIN league_seasons ls ON mc.season_id = ls.id
+    LEFT JOIN lg_conf lc ON t.lg_conf = lc.id
+    GROUP BY t.id, t.name, t.logo_url, t.current_rp, t.elo_rating, 
+             li.id, li.league, ls.id, ls.season_number, ls.year, lc.name
+),
+```
+
+### **Option 3: Explicit Context Stage Mapping**
+
+If you have a more complex mapping, you could create a function or use a CASE statement:
+
+```sql
+-- Helper function to get context-specific stage
+CREATE OR REPLACE FUNCTION get_context_stage(match_id UUID, context_league_id UUID, is_primary BOOLEAN)
+RETURNS TEXT AS $$
+BEGIN
+    IF is_primary THEN
+        RETURN (SELECT stage FROM matches WHERE id = match_id);
+    ELSE
+        RETURN 'Regular Season'; -- Non-primary league contexts are always regular season
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+Then use it in the CTE:
+
+```sql
+COUNT(DISTINCT CASE 
+    WHEN m.winner_id = t.id 
+        AND get_context_stage(m.id, mc.league_id, mc.is_primary) = 'Regular Season'
+    THEN m.id 
+END) AS wins,
+```
+
+## **Recommended Approach**
+
+I'd recommend **Option 2** (no schema changes) as it's the simplest and handles your specific case:
+
+- **Primary context**: Uses the match's actual `stage` field
+- **Non-primary league contexts**: Always treated as `'Regular Season'` for standings purposes
+
+This way, a playoff game in the primary context will count as a regular season game in secondary league contexts for standings purposes.
+
+Would you like me to show you the complete updated `team_standings` CTE with this logic?
+
+---
+
+_**User (2025-10-28 07:58Z)**_
+
+ok make the udates for option 2
+
+---
+
+_**Assistant (gpt-5)**_
+
+<think><details><summary>Thought Process</summary>**Updating SQL logic**
+
+I need to update UPDATE_STATS_VIEWS.sql for Option 2, which involves using context-aware stage logic without making schema changes. Earlier, we filtered by m.stage = 'Regular Season' and joined match_contexts to get league and season data. Now we need to handle team_standings computations by changing the criteria for regular season matches based on whether mc.is_primary is true or false. I'll need to refine the WHERE conditions or CASE filters since we're already joining match_contexts.
+**Revising SQL updates**
+
+I need to address a mistake in the SQL updates regarding the join conditions with match_contexts. Currently, filtering by m.stage = 'Regular Season' can lead to missing out on important playoff context matches that should still count for secondary standings. So, I'll need to remove that filter and adjust the stage logic in the CASE expressions and possibly the grouping as well. I should also consider whether to modify team_stats and player_stats_aggregated, which currently limit to 'Regular Season'.
+**Adjusting standings logic**
+
+The user wants me to count standings for secondary contexts. Although team_stats and player_stats_aggregated were modified, those are intended for per-league stats in league_results. It seems like we need these to be context-aware too, particularly since the user is focusing specifically on standings. I'll align changes with those CTEs, making sure to keep player cumulative stats deduplicated. Inside league_results, if we consider non-primary contexts as regular season, we should also base per-league stat leaders on the same context mapping, though that last part isn't as critical.
+**Updating aggregation logic**
+
+I’m planning to update team_stats and player_stats_aggregated to count matches based on a specific context for mc (league_id, season_id). The new filter will include matches when mc.is_primary is false or is true along with m.stage being 'Regular Season'. I also need to ensure that winner_id isn't null for accurate win/loss counts. When updating team_standings, I’ll remove the "AND m.stage = 'Regular Season'" condition from the v_matches join but will keep m.winner_id IS NOT NULL for counting purposes. I'll adjust the CASE statements to include the appropriate context logic for wins, losses, and points.
+**Applying small updates**
+
+I’m considering the guidelines for handling edits; I should use the todo_write method for more complex multi-step changes. However, since this set of edits is relatively small, I’m thinking I can just add a new item to the existing todo list and mark it as completed. I also need to ensure I include status updates before making any tool calls. So, I’ll do some micro-updates and then proceed to apply the patch.</details></think>
+
+---
+
+I’m going to update `team_standings`, `team_stats`, and `player_stats_aggregated` in `UPDATE_STATS_VIEWS.sql` to use context-aware stage logic (Option 2): count a match as regular season for a context when `mc.is_primary = false` (any league context) or `mc.is_primary = true AND m.stage = 'Regular Season'`.
+
+---
+
+Tool use: **apply_patch**
+
+<details>
+        <summary>Apply patch for /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/UPDATE_STATS_VIEWS.sql</summary>
+      
+
+```diff
+*** Begin Patch
+*** Update File: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/UPDATE_STATS_VIEWS.sql
+@@
+-        -- Count wins
+-        COUNT(DISTINCT CASE 
+-            WHEN m.winner_id = t.id THEN m.id 
+-        END) AS wins,
+-        -- Count losses
+-        COUNT(DISTINCT CASE 
+-            WHEN (m.team_a_id = t.id OR m.team_b_id = t.id) 
+-                AND m.winner_id <> t.id 
+-                AND m.winner_id IS NOT NULL 
+-            THEN m.id 
+-        END) AS losses,
++        -- Count wins (context-regular-season)
++        COUNT(DISTINCT CASE 
++            WHEN m.winner_id = t.id 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.id 
++        END) AS wins,
++        -- Count losses (context-regular-season)
++        COUNT(DISTINCT CASE 
++            WHEN (m.team_a_id = t.id OR m.team_b_id = t.id) 
++                AND m.winner_id <> t.id 
++                AND m.winner_id IS NOT NULL 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.id 
++        END) AS losses,
+@@
+-            (COUNT(DISTINCT CASE WHEN m.winner_id = t.id THEN m.id END)::NUMERIC / 
++            (COUNT(DISTINCT CASE 
++                WHEN m.winner_id = t.id 
++                    AND (
++                        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                    )
++                THEN m.id 
++            END)::NUMERIC / 
+              NULLIF(COUNT(DISTINCT CASE 
+                 WHEN (m.team_a_id = t.id OR m.team_b_id = t.id) 
+                     AND m.winner_id IS NOT NULL 
+-                THEN m.id 
++                    AND (
++                        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                    )
++                THEN m.id 
+             END), 0)::NUMERIC) * 100, 1
+         ) AS win_percentage,
+         -- Points for
+         SUM(CASE 
+-            WHEN m.team_a_id = t.id THEN m.score_a
+-            ELSE m.score_b
++            WHEN m.team_a_id = t.id 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.score_a
++            WHEN m.team_b_id = t.id 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.score_b
+         END) AS points_for,
+         -- Points against
+         SUM(CASE 
+-            WHEN m.team_a_id = t.id THEN m.score_b
+-            ELSE m.score_a
++            WHEN m.team_a_id = t.id 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.score_b
++            WHEN m.team_b_id = t.id 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.score_a
+         END) AS points_against,
+         -- Point differential
+         SUM(CASE 
+-            WHEN m.team_a_id = t.id THEN m.score_a - m.score_b
+-            ELSE m.score_b - m.score_a
++            WHEN m.team_a_id = t.id 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.score_a - m.score_b
++            WHEN m.team_b_id = t.id 
++                AND (
++                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++                )
++            THEN m.score_b - m.score_a
+         END) AS point_differential
+     FROM teams t
+-    -- KEY CHANGE: Use v_matches_with_primary_context and include ALL regular season contexts via match_contexts
+-    LEFT JOIN v_matches_with_primary_context m 
+-        ON (m.team_a_id = t.id OR m.team_b_id = t.id) 
+-        AND m.winner_id IS NOT NULL
+-        AND m.stage = 'Regular Season'
++    -- KEY CHANGE: Include matches, then filter per-context in CASEs
++    LEFT JOIN v_matches_with_primary_context m 
++        ON (m.team_a_id = t.id OR m.team_b_id = t.id) 
++        AND m.winner_id IS NOT NULL
+     LEFT JOIN match_contexts mc ON mc.match_id = m.id
+     LEFT JOIN leagues_info li ON mc.league_id = li.id
+     LEFT JOIN league_seasons ls ON mc.season_id = ls.id
+     LEFT JOIN lg_conf lc ON t.lg_conf = lc.id
+     GROUP BY t.id, t.name, t.logo_url, t.current_rp, t.elo_rating, 
+              li.id, li.league, ls.id, ls.season_number, ls.year, lc.name
+ ),
+@@
+-    FROM team_match_stats tms
+-    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for multi-league regular season
+-    JOIN v_matches_with_primary_context m ON tms.match_id = m.id AND m.stage = 'Regular Season'
+-    JOIN match_contexts mc ON mc.match_id = m.id
+-    GROUP BY tms.team_id, mc.league_id, mc.season_id
++    FROM team_match_stats tms
++    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for context-regular-season
++    JOIN v_matches_with_primary_context m ON tms.match_id = m.id
++    JOIN match_contexts mc ON mc.match_id = m.id
++    WHERE (
++        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++    )
++    GROUP BY tms.team_id, mc.league_id, mc.season_id
+ ),
+@@
+-    FROM player_stats ps
+-    JOIN players p ON ps.player_id = p.id
+-    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for multi-league regular season
+-    JOIN v_matches_with_primary_context m ON ps.match_id = m.id AND m.stage = 'Regular Season'
+-    JOIN match_contexts mc ON mc.match_id = m.id
+-    GROUP BY ps.team_id, ps.player_id, p.gamertag, mc.league_id, mc.season_id
++    FROM player_stats ps
++    JOIN players p ON ps.player_id = p.id
++    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for context-regular-season
++    JOIN v_matches_with_primary_context m ON ps.match_id = m.id
++    JOIN match_contexts mc ON mc.match_id = m.id
++    WHERE (
++        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
++        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
++    )
++    GROUP BY ps.team_id, ps.player_id, p.gamertag, mc.league_id, mc.season_id
+ ),
+*** End Patch
+```
+
+---
+
+
+
+---
+
+I updated `team_standings`, `team_stats`, and `player_stats_aggregated` in `UPDATE_STATS_VIEWS.sql` to use context-aware stage logic (Option 2). I’ll now run a quick lint check on this file.
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/UPDATE_STATS_VIEWS.sql`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+- Implemented Option 2 in `UPDATE_STATS_VIEWS.sql`:
+  - `team_standings`: Wins/losses/points only count when the context is regular-season:
+    - Non-primary league contexts (`mc.is_primary = FALSE AND mc.league_id IS NOT NULL`) count as regular season.
+    - Primary context counts only if `m.stage = 'Regular Season'`.
+  - `team_stats` and `player_stats_aggregated`: Now filtered with the same context-regular-season logic and grouped by `mc.league_id`/`mc.season_id`.
+
+- No linter issues detected.
+
+- Run the updated CREATE OR REPLACE VIEW statements in your Supabase SQL editor to activate the changes. Views take effect immediately.
+
+---
+

@@ -135,47 +135,96 @@ WITH team_standings AS (
         ls.season_number,
         ls.year,
         COALESCE(lc.name, 'N/A') AS conference_name,
-        -- Count wins
+        -- Count wins (context-regular-season)
         COUNT(DISTINCT CASE 
-            WHEN m.winner_id = t.id THEN m.id 
+            WHEN m.winner_id = t.id 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
+            THEN m.id 
         END) AS wins,
-        -- Count losses
+        -- Count losses (context-regular-season)
         COUNT(DISTINCT CASE 
             WHEN (m.team_a_id = t.id OR m.team_b_id = t.id) 
                 AND m.winner_id <> t.id 
                 AND m.winner_id IS NOT NULL 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
             THEN m.id 
         END) AS losses,
         -- Win percentage
         ROUND(
-            (COUNT(DISTINCT CASE WHEN m.winner_id = t.id THEN m.id END)::NUMERIC / 
+            (COUNT(DISTINCT CASE 
+                WHEN m.winner_id = t.id 
+                    AND (
+                        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                    )
+                THEN m.id 
+            END)::NUMERIC / 
              NULLIF(COUNT(DISTINCT CASE 
                 WHEN (m.team_a_id = t.id OR m.team_b_id = t.id) 
                     AND m.winner_id IS NOT NULL 
+                    AND (
+                        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                    )
                 THEN m.id 
             END), 0)::NUMERIC) * 100, 1
         ) AS win_percentage,
         -- Points for
         SUM(CASE 
-            WHEN m.team_a_id = t.id THEN m.score_a
-            ELSE m.score_b
+            WHEN m.team_a_id = t.id 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
+            THEN m.score_a
+            WHEN m.team_b_id = t.id 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
+            THEN m.score_b
         END) AS points_for,
         -- Points against
         SUM(CASE 
-            WHEN m.team_a_id = t.id THEN m.score_b
-            ELSE m.score_a
+            WHEN m.team_a_id = t.id 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
+            THEN m.score_b
+            WHEN m.team_b_id = t.id 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
+            THEN m.score_a
         END) AS points_against,
         -- Point differential
         SUM(CASE 
-            WHEN m.team_a_id = t.id THEN m.score_a - m.score_b
-            ELSE m.score_b - m.score_a
+            WHEN m.team_a_id = t.id 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
+            THEN m.score_a - m.score_b
+            WHEN m.team_b_id = t.id 
+                AND (
+                    (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+                    OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+                )
+            THEN m.score_b - m.score_a
         END) AS point_differential
     FROM teams t
-    -- KEY CHANGE: Use v_matches_with_primary_context and include ALL regular season contexts via match_contexts
+    -- KEY CHANGE: Include matches, then filter per-context in CASEs
     LEFT JOIN v_matches_with_primary_context m 
         ON (m.team_a_id = t.id OR m.team_b_id = t.id) 
         AND m.winner_id IS NOT NULL
-        AND m.stage = 'Regular Season'
     LEFT JOIN match_contexts mc ON mc.match_id = m.id
     LEFT JOIN leagues_info li ON mc.league_id = li.id
     LEFT JOIN league_seasons ls ON mc.season_id = ls.id
@@ -228,9 +277,13 @@ team_stats AS (
             ELSE 0
         END AS three_pt_percentage
     FROM team_match_stats tms
-    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for multi-league regular season
-    JOIN v_matches_with_primary_context m ON tms.match_id = m.id AND m.stage = 'Regular Season'
+    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for context-regular-season
+    JOIN v_matches_with_primary_context m ON tms.match_id = m.id
     JOIN match_contexts mc ON mc.match_id = m.id
+    WHERE (
+        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+    )
     GROUP BY tms.team_id, mc.league_id, mc.season_id
 ),
 player_stats_aggregated AS (
@@ -260,9 +313,13 @@ player_stats_aggregated AS (
         AVG(ps.ps) AS performance_score
     FROM player_stats ps
     JOIN players p ON ps.player_id = p.id
-    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for multi-league regular season
-    JOIN v_matches_with_primary_context m ON ps.match_id = m.id AND m.stage = 'Regular Season'
+    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for context-regular-season
+    JOIN v_matches_with_primary_context m ON ps.match_id = m.id
     JOIN match_contexts mc ON mc.match_id = m.id
+    WHERE (
+        (mc.is_primary = FALSE AND mc.league_id IS NOT NULL)
+        OR (mc.is_primary = TRUE AND m.stage = 'Regular Season')
+    )
     GROUP BY ps.team_id, ps.player_id, p.gamertag, mc.league_id, mc.season_id
 ),
 league_stats_leaders AS (
