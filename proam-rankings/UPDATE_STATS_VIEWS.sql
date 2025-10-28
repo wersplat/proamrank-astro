@@ -171,12 +171,14 @@ WITH team_standings AS (
             ELSE m.score_b - m.score_a
         END) AS point_differential
     FROM teams t
-    -- KEY CHANGE: Use v_matches_with_primary_context
+    -- KEY CHANGE: Use v_matches_with_primary_context and include ALL regular season contexts via match_contexts
     LEFT JOIN v_matches_with_primary_context m 
         ON (m.team_a_id = t.id OR m.team_b_id = t.id) 
         AND m.winner_id IS NOT NULL
-    LEFT JOIN leagues_info li ON m.primary_league_id = li.id
-    LEFT JOIN league_seasons ls ON m.primary_season_id = ls.id
+        AND m.stage = 'Regular Season'
+    LEFT JOIN match_contexts mc ON mc.match_id = m.id
+    LEFT JOIN leagues_info li ON mc.league_id = li.id
+    LEFT JOIN league_seasons ls ON mc.season_id = ls.id
     LEFT JOIN lg_conf lc ON t.lg_conf = lc.id
     GROUP BY t.id, t.name, t.logo_url, t.current_rp, t.elo_rating, 
              li.id, li.league, ls.id, ls.season_number, ls.year, lc.name
@@ -205,8 +207,8 @@ team_rosters_aggregated AS (
 team_stats AS (
     SELECT 
         tms.team_id,
-        m.primary_league_id AS league_id,
-        m.primary_season_id AS season_id,
+        mc.league_id AS league_id,
+        mc.season_id AS season_id,
         AVG(tms.points) AS avg_points,
         AVG(tms.rebounds) AS avg_rebounds,
         AVG(tms.assists) AS avg_assists,
@@ -226,15 +228,16 @@ team_stats AS (
             ELSE 0
         END AS three_pt_percentage
     FROM team_match_stats tms
-    -- KEY CHANGE: Use v_matches_with_primary_context
-    JOIN v_matches_with_primary_context m ON tms.match_id = m.id
-    GROUP BY tms.team_id, m.primary_league_id, m.primary_season_id
+    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for multi-league regular season
+    JOIN v_matches_with_primary_context m ON tms.match_id = m.id AND m.stage = 'Regular Season'
+    JOIN match_contexts mc ON mc.match_id = m.id
+    GROUP BY tms.team_id, mc.league_id, mc.season_id
 ),
 player_stats_aggregated AS (
     SELECT 
         ps.team_id,
-        m.primary_league_id AS league_id,
-        m.primary_season_id AS season_id,
+        mc.league_id AS league_id,
+        mc.season_id AS season_id,
         ps.player_id,
         p.gamertag,
         COUNT(DISTINCT ps.match_id) AS games_played,
@@ -257,11 +260,10 @@ player_stats_aggregated AS (
         AVG(ps.ps) AS performance_score
     FROM player_stats ps
     JOIN players p ON ps.player_id = p.id
-    -- KEY CHANGE: Use v_matches_with_primary_context
-    JOIN v_matches_with_primary_context m ON ps.match_id = m.id
-    -- KEY CHANGE: Filter on primary_league_id
-    WHERE m.primary_league_id IS NOT NULL
-    GROUP BY ps.team_id, ps.player_id, p.gamertag, m.primary_league_id, m.primary_season_id
+    -- KEY CHANGE: Use v_matches_with_primary_context and match_contexts for multi-league regular season
+    JOIN v_matches_with_primary_context m ON ps.match_id = m.id AND m.stage = 'Regular Season'
+    JOIN match_contexts mc ON mc.match_id = m.id
+    GROUP BY ps.team_id, ps.player_id, p.gamertag, mc.league_id, mc.season_id
 ),
 league_stats_leaders AS (
     SELECT 
