@@ -78,8 +78,8 @@ export const GET: APIRoute = async ({ url, locals }) => {
         else if (predicate.includes('triple') || predicate.includes('double')) category = 'mixed';
       }
 
-      // Get R2 base URL from environment
-      const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL || import.meta.env.R2_PUBLIC_BASE_URL;
+      // Get R2 base URL from Cloudflare environment (PUBLIC_ASSETS_BASE is set in wrangler.toml)
+      const r2BaseUrl = import.meta.env.PUBLIC_ASSETS_BASE;
       
       // Get fallback emoji icon (used when badge image is not available)
       const getIcon = (title: string, cat: string): string => {
