@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* Card styles with white/red accents */
+  .card-border {
+    @apply border border-white/20 hover:border-patriot-red-500/50 transition;
+  }
+  
+  .card-bg {
+    @apply bg-patriot-blue-900/50 backdrop-blur-sm;
+  }
+}

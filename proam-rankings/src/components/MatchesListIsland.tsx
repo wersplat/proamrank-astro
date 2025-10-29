@@ -152,8 +152,8 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
           <div
             key={match.id}
             onClick={() => handleMatchClick(match)}
-            className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
-              match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : ''
+            className={`rounded-lg border border-white/20 p-3 sm:p-4 transition ${
+              match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : 'hover:border-white/40'
             }`}
           >
             <div className="flex items-center justify-between gap-2 sm:gap-4">

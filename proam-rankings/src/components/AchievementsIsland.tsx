@@ -82,7 +82,7 @@ export default function AchievementsIsland({
                 placeholder="Search achievements..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full px-4 py-2 pl-10 rounded-lg border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 pl-10 rounded-lg border border-white/20 bg-patriot-blue-900/50 text-white focus:outline-none focus:ring-2 focus:ring-patriot-red-500"
               />
               <svg className="absolute left-3 top-2.5 w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -93,7 +93,7 @@ export default function AchievementsIsland({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="px-4 py-2 rounded-lg border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 rounded-lg border border-white/20 bg-patriot-blue-900/50 text-white focus:outline-none focus:ring-2 focus:ring-patriot-red-500"
             >
               {categoryOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -106,7 +106,7 @@ export default function AchievementsIsland({
             <select
               value={rarity}
               onChange={(e) => setRarity(e.target.value)}
-              className="px-4 py-2 rounded-lg border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 rounded-lg border border-white/20 bg-patriot-blue-900/50 text-white focus:outline-none focus:ring-2 focus:ring-patriot-red-500"
             >
               {rarityOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -121,7 +121,7 @@ export default function AchievementsIsland({
             <button
               onClick={() => setView('grid')}
               className={`p-2 rounded-lg transition-colors ${
-                view === 'grid' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                view === 'grid' ? 'bg-patriot-red-600 text-white' : 'bg-patriot-blue-900/50 text-neutral-300 hover:text-white border border-white/20'
               }`}
               title="Grid View"
             >
@@ -132,7 +132,7 @@ export default function AchievementsIsland({
             <button
               onClick={() => setView('list')}
               className={`p-2 rounded-lg transition-colors ${
-                view === 'list' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                view === 'list' ? 'bg-patriot-red-600 text-white' : 'bg-patriot-blue-900/50 text-neutral-300 hover:text-white border border-white/20'
               }`}
               title="List View"
             >
@@ -148,19 +148,19 @@ export default function AchievementsIsland({
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm text-neutral-400">Active filters:</span>
             {search && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-neutral-700 bg-neutral-800 text-neutral-300">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
                 Search: "{search}"
                 <button onClick={() => setSearch('')} className="hover:text-white">×</button>
               </span>
             )}
             {category && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-neutral-700 bg-neutral-800 text-neutral-300">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
                 Category: {categoryOptions.find(opt => opt.value === category)?.label}
                 <button onClick={() => setCategory('')} className="hover:text-white">×</button>
               </span>
             )}
             {rarity && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-neutral-700 bg-neutral-800 text-neutral-300">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
                 Rarity: {rarityOptions.find(opt => opt.value === rarity)?.label}
                 <button onClick={() => setRarity('')} className="hover:text-white">×</button>
               </span>
@@ -191,14 +191,14 @@ export default function AchievementsIsland({
             <div
               key={achievement.id}
               onClick={() => setSelectedAchievement(achievement)}
-              className="rounded-lg border border-neutral-800 bg-neutral-900 p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-500"
+              className="rounded-lg border border-white/20 bg-patriot-blue-900/50 p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-patriot-red-500"
             >
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-neutral-800 flex items-center justify-center text-3xl mx-auto mb-3">
                   {achievement.icon}
                 </div>
                 
-                <span className="inline-block px-3 py-1 rounded-full text-xs border border-neutral-700 bg-neutral-800 text-neutral-300 mb-3">
+                <span className="inline-block px-3 py-1 rounded-full text-xs border border-white/20 bg-patriot-blue-900/50 text-neutral-200 mb-3">
                   {achievement.badge}
                 </span>
                 
@@ -230,13 +230,13 @@ export default function AchievementsIsland({
 
       {/* List View */}
       {view === 'list' && filteredAchievements.length > 0 && (
-        <div className="rounded-lg border border-neutral-800 bg-neutral-900 overflow-hidden">
+        <div className="rounded-lg border border-white/20 bg-patriot-blue-900/50 overflow-hidden">
           {filteredAchievements.map((achievement, index) => (
             <div
               key={achievement.id}
               onClick={() => setSelectedAchievement(achievement)}
-              className={`p-4 cursor-pointer hover:bg-neutral-800 transition-colors ${
-                index !== filteredAchievements.length - 1 ? 'border-b border-neutral-800' : ''
+              className={`p-4 cursor-pointer hover:bg-patriot-blue-900 transition-colors ${
+                index !== filteredAchievements.length - 1 ? 'border-b border-white/20' : ''
               }`}
             >
               <div className="flex items-center gap-4">
@@ -247,7 +247,7 @@ export default function AchievementsIsland({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="text-lg font-semibold text-white">{achievement.title}</h3>
-                    <span className="px-2 py-0.5 rounded text-xs border border-neutral-700 bg-neutral-800 text-neutral-300">
+                    <span className="px-2 py-0.5 rounded text-xs border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
                       {achievement.badge}
                     </span>
                   </div>
@@ -275,7 +275,7 @@ export default function AchievementsIsland({
           onClick={() => setSelectedAchievement(null)}
         >
           <div 
-            className="bg-neutral-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-neutral-800"
+            className="bg-patriot-blue-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/20"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6">
@@ -289,7 +289,7 @@ export default function AchievementsIsland({
                 
                 <p className="text-neutral-400 mb-6">{selectedAchievement.description}</p>
                 
-                <div className="bg-neutral-800 p-4 rounded-lg mb-6">
+                <div className="bg-patriot-blue-900/50 p-4 rounded-lg mb-6 border border-white/10">
                   <h3 className="text-sm font-semibold text-white mb-2">Requirements</h3>
                   <p className="text-sm text-neutral-300">{selectedAchievement.requirements}</p>
                 </div>
@@ -308,7 +308,7 @@ export default function AchievementsIsland({
 
                 <button
                   onClick={() => setSelectedAchievement(null)}
-                  className="px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+                  className="px-6 py-2 rounded-lg bg-patriot-red-600 hover:bg-patriot-red-700 text-white transition-colors"
                 >
                   Close
                 </button>
