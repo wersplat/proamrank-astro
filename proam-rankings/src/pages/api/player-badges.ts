@@ -78,8 +78,8 @@ export const GET: APIRoute = async ({ url, locals }) => {
         else if (predicate.includes('triple') || predicate.includes('double')) category = 'mixed';
       }
 
-      // Get R2 base URL from Cloudflare environment (PUBLIC_ASSETS_BASE is set in wrangler.toml)
-      const r2BaseUrl = import.meta.env.PUBLIC_ASSETS_BASE;
+      // Get badge CDN URL - use custom domain badges.proamrank.gg
+      const r2BaseUrl = import.meta.env.PUBLIC_BADGES_BASE_URL || 'https://badges.proamrank.gg';
       
       // Get fallback emoji icon (used when badge image is not available)
       const getIcon = (title: string, cat: string): string => {
