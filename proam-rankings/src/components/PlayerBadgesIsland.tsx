@@ -10,6 +10,7 @@ type Badge = {
   name: string;
   description: string;
   icon: string;
+  badgeImage?: string;
   category: string;
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
   unlocked: boolean;
@@ -316,8 +317,25 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
             } ${isClickable ? 'cursor-pointer hover:border-blue-500 hover:shadow-lg' : ''}`}
           >
             <div className="flex items-center gap-4 mb-4">
-              <div className={`text-3xl ${badge.unlocked ? '' : 'opacity-50'}`}>
-                {badge.icon}
+              <div className={`${badge.unlocked ? '' : 'opacity-50'} flex items-center justify-center`}>
+                {badge.badgeImage ? (
+                  <img 
+                    src={badge.badgeImage} 
+                    alt={badge.name}
+                    className="w-12 h-12 object-contain"
+                    onError={(e) => {
+                      // Fallback to emoji if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = document.createElement('div');
+                      fallback.className = 'text-3xl';
+                      fallback.textContent = badge.icon;
+                      target.parentElement?.appendChild(fallback);
+                    }}
+                  />
+                ) : (
+                  <div className="text-3xl">{badge.icon}</div>
+                )}
               </div>
               <div className="flex-1">
                 <h4 className="text-lg font-semibold text-white mb-1">
@@ -410,7 +428,26 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
               
               {/* Achievement Info */}
               <div className="mb-6 text-center p-4 bg-neutral-800 rounded-lg">
-                <div className="text-4xl mb-2">{selectedBadge.icon}</div>
+                <div className="mb-2 flex items-center justify-center">
+                  {selectedBadge.badgeImage ? (
+                    <img 
+                      src={selectedBadge.badgeImage} 
+                      alt={selectedBadge.name}
+                      className="w-16 h-16 object-contain"
+                      onError={(e) => {
+                        // Fallback to emoji if image fails to load
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const fallback = document.createElement('div');
+                        fallback.className = 'text-4xl';
+                        fallback.textContent = selectedBadge.icon;
+                        target.parentElement?.appendChild(fallback);
+                      }}
+                    />
+                  ) : (
+                    <div className="text-4xl">{selectedBadge.icon}</div>
+                  )}
+                </div>
                 <h4 className="text-lg font-bold text-white mb-1">{selectedBadge.name}</h4>
                 <p className="text-sm text-neutral-400 mb-2">{selectedBadge.description}</p>
                 <div className="flex items-center justify-center gap-2 text-green-400 text-sm">

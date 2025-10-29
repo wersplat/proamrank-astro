@@ -4078,40 +4078,229 @@ _**Assistant (composer-1)**_
 ---
 
 
+Checking for a global style file and updating card accents to white/red and the achievements, system, and about pages.
+
 
 ---
 
 Tool use: **read_file**
 
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/styles/global.css
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "border-patriot-blue|bg-patriot-blue-800|bg-patriot-blue-900" in "src/components" • 17 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/LeagueMatchesIsland.tsx` | `className=\{`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition $\{` | L146 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L166 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L205 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L214 |
+| `src/components/LeagueMatchesIsland.tsx` | `className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"` | L229 |
+| `src/components/LeagueMatchesIsland.tsx` | `className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L251 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="p-4 border-b border-patriot-blue-800">` | L254 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L271 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="flex border-b border-patriot-blue-800">` | L285 |
+| `src/components/LeagueMatchesIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-patriot-blue-900/50 $\{isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'\}`\}>` | L370 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">` | L373 |
+| `src/components/MatchesListIsland.tsx` | `className=\{`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition $\{` | L155 |
+| `src/components/MatchesListIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L176 |
+| `src/components/MatchesListIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L219 |
+| `src/components/MatchesListIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L230 |
+| `src/components/MatchesListIsland.tsx` | `className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"` | L249 |
+| `src/components/MatchesListIsland.tsx` | `className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L268 |
+
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/achievements/index.astro
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro
+
 ---
 
 
 
 ---
 
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
+Updating card accents to white/red and updating the achievements, system, and about pages. Adding global styles as needed.
 
 
 ---
 
 Tool use: **todo_write**
 
-Error parsing todo list data
+## Todo List
+
+- [-] Update card borders/accents from blue to white/red in match components
+- [ ] Update achievements page colors
+- [ ] Update about page colors
+- [ ] Update ranking-system page colors
+- [ ] Add global card styles to global.css
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/styles/global.css</summary>
+
+**Chunk 1**
+Lines added: 11, lines removed: undefined
+
+```diff
+@@ -2,3 +2,14 @@
+  @tailwind components;
+  @tailwind utilities;
++ 
++ @layer components {
++   /* Card styles with white/red accents */
++   .card-border {
++     @apply border border-white/20 hover:border-patriot-red-500/50 transition;
++   }
++   
++   .card-bg {
++     @apply bg-patriot-blue-900/50 backdrop-blur-sm;
++   }
++ }
+  
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -153,6 +153,6 @@
+              key={match.id}
+              onClick={() => handleMatchClick(match)}
+-             className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
+-               match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : ''
++             className={`rounded-lg border border-white/20 p-3 sm:p-4 transition ${
++               match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : 'hover:border-white/40'
+              }`}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -144,6 +144,6 @@
+              key={match.id}
+              onClick={() => handleMatchClick(match)}
+-             className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
+-               match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : ''
++             className={`rounded-lg border border-white/20 p-3 sm:p-4 transition ${
++               match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : 'hover:border-white/40'
+              }`}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -158,6 +158,6 @@
+                key={match.id}
+                onClick={() => handleMatchClick(match)}
+-               className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
+-                 match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : ''
++               className={`rounded-lg border border-white/20 p-3 sm:p-4 transition ${
++                 match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : 'hover:border-white/40'
+                }`}
+              >
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-patriot-blue-800|bg-patriot-blue-900|border-patriot-blue-800" in "src/components" • 25 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/TeamMatchesIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L187 |
+| `src/components/TeamMatchesIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L210 |
+| `src/components/TeamMatchesIsland.tsx` | `className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L237 |
+| `src/components/TeamMatchesIsland.tsx` | `<div className="p-4 border-b border-patriot-blue-800">` | L241 |
+| `src/components/TeamMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200">` | L261 |
+| `src/components/TeamMatchesIsland.tsx` | `<div className="flex border-b border-patriot-blue-800">` | L276 |
+| `src/components/TeamMatchesIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-patriot-blue-900/50 $\{isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'\}`\}>` | L374 |
+| `src/components/TeamMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">` | L377 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L166 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L205 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L214 |
+| `src/components/LeagueMatchesIsland.tsx` | `className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"` | L229 |
+| `src/components/LeagueMatchesIsland.tsx` | `className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L251 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="p-4 border-b border-patriot-blue-800">` | L254 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L271 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="flex border-b border-patriot-blue-800">` | L285 |
+| `src/components/LeagueMatchesIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-patriot-blue-900/50 $\{isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'\}`\}>` | L370 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">` | L373 |
+| `src/components/MatchesListIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L176 |
+| `src/components/MatchesListIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L219 |
+| `src/components/MatchesListIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L230 |
+| `src/components/MatchesListIsland.tsx` | `className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"` | L249 |
+| `src/components/MatchesListIsland.tsx` | `className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L268 |
+| `src/components/MatchesListIsland.tsx` | `<div className="p-4 border-b border-patriot-blue-800">` | L272 |
+| `src/components/MatchesListIsland.tsx` | `<div className="flex border-b border-patriot-blue-800">` | L307 |
+
+
+</details>
 
 ---
 
@@ -4119,33 +4308,359 @@ Error parsing todo list data
 
 ---
 
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
+Updating the achievements, about, and ranking-system pages:
 
 
 ---
 
 Tool use: **todo_write**
 
-Error parsing todo list data
+## Todo List
+
+- [x] Update card borders/accents from blue to white/red in match components
+- [-] Update achievements page colors
+- [ ] Update about page colors
+- [ ] Update ranking-system page colors
+- [ ] Add global card styles to global.css
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -20,5 +20,5 @@
+        <!-- Purpose Section -->
+        <section class="mb-12">
+-         <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
++         <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+            <h2 class="text-2xl font-semibold mb-4 pb-2 border-b border-neutral-800">Our Purpose</h2>
+            <p class="text-neutral-300 mb-4">
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -37,5 +37,5 @@
+          <div class="space-y-6">
+            <!-- Data Collection -->
+-           <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="text-2xl">📊</span>
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -50,5 +50,5 @@
+  
+            <!-- Verification Process -->
+-           <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="text-2xl">✅</span>
+```
+
+**Chunk 4**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -68,5 +68,5 @@
+  
+            <!-- Event Tiers -->
+-           <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="text-2xl">🏆</span>
+```
+
+**Chunk 5**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -88,5 +88,5 @@
+  
+            <!-- Dynamic Tier System -->
+-           <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="text-2xl">⚡</span>
+```
+
+**Chunk 6**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -111,5 +111,5 @@
+          <div class="space-y-6">
+            <!-- Team Rankings -->
+-           <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="text-2xl">👥</span>
+```
+
+**Chunk 7**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -134,5 +134,5 @@
+  
+            <!-- Player Ratings -->
+-           <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="text-2xl">⭐</span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -33,5 +33,5 @@
+        <!-- How It Works Section -->
+        <section class="mb-12">
+-         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">How It Works</h2>
++           <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">How It Works</h2>
+          
+          <div class="space-y-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -58,6 +58,6 @@
+                    Only verified matches count toward player ratings and official statistics. While we may display OCR-derived stats from screenshots for reference, these unverified results are clearly marked and do not impact rankings or player ratings.
+                  </p>
+-                 <div class="bg-blue-900/20 border border-blue-500/30 p-3 rounded-lg">
+-                   <p class="text-sm text-blue-300">
++                 <div class="bg-patriot-red-900/20 border border-patriot-red-500/30 p-3 rounded-lg">
++                   <p class="text-sm text-patriot-red-300">
+                      Look for the <span class="text-green-300 font-semibold">Verified</span> badge on matches to identify official, rating-eligible games.
+                    </p>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -107,5 +107,5 @@
+        <!-- Ranking Systems Section -->
+        <section class="mb-12">
+-         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Ranking Systems</h2>
++           <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Ranking Systems</h2>
+          
+          <div class="space-y-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: 4
+
+```diff
+@@ -120,10 +120,10 @@
+                  </p>
+                  <div class="grid md:grid-cols-2 gap-4">
+-                   <div class="bg-neutral-950 p-4 rounded-lg border border-blue-500/20">
+-                     <h4 class="font-semibold text-blue-400 mb-2">Ranking Points (70%)</h4>
++                   <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/20">
++                     <h4 class="font-semibold text-white mb-2">Ranking Points (70%)</h4>
+                      <p class="text-sm text-neutral-300">Measures team success across verified tournaments and events. Rewards consistent performance and achievement.</p>
+                    </div>
+-                   <div class="bg-neutral-950 p-4 rounded-lg border border-purple-500/20">
+-                     <h4 class="font-semibold text-purple-400 mb-2">ELO Rating (30%)</h4>
++                   <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-patriot-red-500/20">
++                     <h4 class="font-semibold text-patriot-red-400 mb-2">ELO Rating (30%)</h4>
+                      <p class="text-sm text-neutral-300">Evaluates relative team skill based on match outcomes and opponent strength. Adapts to current form.</p>
+                    </div>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 3
+
+```diff
+@@ -154,7 +154,7 @@
+  
+            <!-- Learn More -->
+-           <div class="bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg">
+-             <p class="text-blue-300">
+-               📘 For a detailed explanation of our ranking methodology, visit the <a href="/ranking-system" class="underline font-semibold hover:text-blue-200">Ranking System</a> page.
++           <div class="bg-patriot-red-900/20 border border-patriot-red-500/30 p-4 rounded-lg">
++             <p class="text-patriot-red-300">
++               📘 For a detailed explanation of our ranking methodology, visit the <a href="/ranking-system" class="underline font-semibold hover:text-patriot-red-200">Ranking System</a> page.
+              </p>
+            </div>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -164,5 +164,5 @@
+        <!-- Features Section -->
+        <section class="mb-12">
+-         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Platform Features</h2>
++         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Platform Features</h2>
+          
+          <div class="grid md:grid-cols-2 gap-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -167,5 +167,5 @@
+          
+          <div class="grid md:grid-cols-2 gap-6">
+-           <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-5 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">📈</span>
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -177,5 +177,5 @@
+            </div>
+  
+-           <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-5 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">📊</span>
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -187,5 +187,5 @@
+            </div>
+  
+-           <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-5 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">🎯</span>
+```
+
+**Chunk 4**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -197,5 +197,5 @@
+            </div>
+  
+-           <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-5 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">🏅</span>
+```
+
+**Chunk 5**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -207,5 +207,5 @@
+            </div>
+  
+-           <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-5 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">👥</span>
+```
+
+**Chunk 6**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -217,5 +217,5 @@
+            </div>
+  
+-           <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
++           <div class="bg-patriot-blue-900/50 p-5 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">📱</span>
+```
+
+</details>
 
 ---
 
@@ -4153,55 +4668,592 @@ Error parsing todo list data
 
 ---
 
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
+Updating the ranking-system page and achievements component:
 
 
 ---
 
 Tool use: **search_replace**
 
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -20,5 +20,5 @@
+        <!-- Team Ranking System -->
+        <section class="mb-12">
+-         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Team Ranking System</h2>
++         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Team Ranking System</h2>
+          
+          <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -22,5 +22,5 @@
+          <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Team Ranking System</h2>
+          
+-         <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
++         <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
+            <h3 class="text-xl font-medium mb-4">Hybrid Ranking System</h3>
+            <p class="text-neutral-300 mb-4">Teams are ranked using a combination of two complementary metrics to ensure both achievement and skill are fairly represented:</p>
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -55,5 +55,5 @@
+  
+          <!-- Event Tiers -->
+-         <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
++         <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
+            <h3 class="text-xl font-medium mb-4">Event Tiers</h3>
+            <div class="overflow-x-auto">
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -139,5 +139,5 @@
+  
+          <!-- Leaderboard Tiers -->
+-         <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
++         <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
+            <h3 class="text-xl font-medium mb-4">Leaderboard Tiers</h3>
+            <p class="text-neutral-300 mb-6">Teams are grouped into five performance tiers based on their hybrid score:</p>
+```
+
+**Chunk 4**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -204,5 +204,5 @@
+          <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Player Rating System</h2>
+          
+-         <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
++         <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
+            <p class="text-neutral-300 mb-6">
+              Each player receives a <span class="text-gold font-medium">Global Rating (0–100+)</span> derived from verified game stats and competitive context.
+```
+
+**Chunk 5**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -363,5 +363,5 @@
+          <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Match Data & Verification</h2>
+          
+-         <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800 mb-8">
++         <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
+            <h3 class="text-xl font-medium mb-4">From OCR to Verified Stats</h3>
+            <p class="text-neutral-300 mb-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -27,5 +27,5 @@
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+-             <div class="bg-neutral-950 p-5 rounded-lg border border-blue-500/20">
++             <div class="bg-patriot-blue-900/30 p-5 rounded-lg border border-white/20">
+                <div class="flex items-center mb-2">
+                  <span class="text-2xl mr-2">🧩</span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -36,5 +36,5 @@
+              </div>
+              
+-             <div class="bg-neutral-950 p-5 rounded-lg border border-purple-500/20">
++             <div class="bg-patriot-blue-900/30 p-5 rounded-lg border border-patriot-red-500/20">
+                <div class="flex items-center mb-2">
+                  <span class="text-2xl mr-2">📈</span>
+```
+
+</details>
+
+---
+
+The string to replace was not found in the file.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -202,5 +202,5 @@
+        <!-- Player Rating System -->
+        <section class="mb-12">
+-         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Player Rating System</h2>
++         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Player Rating System</h2>
+          
+          <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -177,5 +177,5 @@
+            
+            <div class="space-y-4">
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <h4 class="font-semibold mb-2">ELO Bounds & Normalization</h4>
+                <ul class="space-y-2 text-neutral-300 text-sm">
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -187,5 +187,5 @@
+              </div>
+              
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <h4 class="font-semibold mb-2">How ELO Works</h4>
+                <ul class="space-y-2 text-neutral-300 text-sm">
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -218,5 +218,5 @@
+            <div class="grid gap-4 mb-6">
+              <!-- Base Rating -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <h4 class="font-semibold text-blue-400 mb-2">1. Base Rating (50-70 points)</h4>
+                <p class="text-neutral-300 text-sm mb-3">Starting point that increases with experience:</p>
+```
+
+**Chunk 4**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -230,5 +230,5 @@
+  
+              <!-- Game Impact -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <h4 class="font-semibold text-green-400 mb-2">2. Game Impact (0-30 points)</h4>
+                <p class="text-neutral-300 text-sm mb-3">Performance-based score using comprehensive stats:</p>
+```
+
+**Chunk 5**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -247,5 +247,5 @@
+  
+              <!-- Event Bonus -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <h4 class="font-semibold text-purple-400 mb-2">3. Event Bonus (0-15 points)</h4>
+                <p class="text-neutral-300 text-sm mb-3">Rewards participation in high-tier competitions:</p>
+```
+
+**Chunk 6**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -261,5 +261,5 @@
+  
+              <!-- Consistency Bonus -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <h4 class="font-semibold text-yellow-400 mb-2">4. Consistency Bonus (0-3 points)</h4>
+                <p class="text-neutral-300 text-sm mb-3">Rewards reliable, steady performers:</p>
+```
+
+**Chunk 7**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -274,5 +274,5 @@
+  
+              <!-- Decay Penalty -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <h4 class="font-semibold text-red-400 mb-2">5. Decay Penalty (0-15 points)</h4>
+                <p class="text-neutral-300 text-sm mb-3">Encourages active participation:</p>
+```
+
+**Chunk 8**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -372,5 +372,5 @@
+            <div class="grid gap-4 mb-6">
+              <!-- OCR Processing -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">🤖</span>
+```
+
+**Chunk 9**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -392,5 +392,5 @@
+  
+              <!-- Under Review -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">⏳</span>
+```
+
+**Chunk 10**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -406,5 +406,5 @@
+  
+              <!-- Verified -->
+-             <div class="bg-neutral-950 p-4 rounded-lg">
++             <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">✅</span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -427,6 +427,6 @@
+            </div>
+  
+-           <div class="bg-neutral-950 p-4 rounded-lg border border-blue-500/20">
+-             <h4 class="font-semibold mb-2 text-blue-300">Why This Matters</h4>
++           <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-patriot-red-500/20">
++             <h4 class="font-semibold mb-2 text-patriot-red-300">Why This Matters</h4>
+              <ul class="space-y-2 text-sm text-neutral-300">
+                <li>• <span class="text-neutral-200">Transparency:</span> You can see match data immediately, even before verification</li>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -361,5 +361,5 @@
+        <!-- Match Data & Verification Section -->
+        <section id="verification" class="mb-12">
+-         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-neutral-800">Match Data & Verification</h2>
++         <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Match Data & Verification</h2>
+          
+          <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -83,5 +83,5 @@
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+-                 className="w-full px-4 py-2 pl-10 rounded-lg border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
++                 className="w-full px-4 py-2 pl-10 rounded-lg border border-white/20 bg-patriot-blue-900/50 text-white focus:outline-none focus:ring-2 focus:ring-patriot-red-500"
+                />
+                <svg className="absolute left-3 top-2.5 w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -94,5 +94,5 @@
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+-               className="px-4 py-2 rounded-lg border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
++               className="px-4 py-2 rounded-lg border border-white/20 bg-patriot-blue-900/50 text-white focus:outline-none focus:ring-2 focus:ring-patriot-red-500"
+              >
+                {categoryOptions.map((option) => (
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -107,5 +107,5 @@
+                value={rarity}
+                onChange={(e) => setRarity(e.target.value)}
+-               className="px-4 py-2 rounded-lg border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
++               className="px-4 py-2 rounded-lg border border-white/20 bg-patriot-blue-900/50 text-white focus:outline-none focus:ring-2 focus:ring-patriot-red-500"
+              >
+                {rarityOptions.map((option) => (
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -122,5 +122,5 @@
+                onClick={() => setView('grid')}
+                className={`p-2 rounded-lg transition-colors ${
+-                 view === 'grid' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 view === 'grid' ? 'bg-patriot-red-600 text-white' : 'bg-patriot-blue-900/50 text-neutral-300 hover:text-white border border-white/20'
+                }`}
+                title="Grid View"
+```
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx
+
 ---
 
 
 
 ---
 
+Finishing updates to achievements cards and ranking-system:
 
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -122,9 +122,9 @@
+            
+            <!-- Dynamic Tier Calculation -->
+-           <div class="mt-6 bg-blue-900/20 border border-blue-500/30 p-5 rounded-lg">
++           <div class="mt-6 bg-patriot-red-900/20 border border-patriot-red-500/30 p-5 rounded-lg">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">⚡</span>
+                <div>
+-                 <h4 class="text-lg font-semibold text-blue-300 mb-2">Dynamic Tier Calculation</h4>
++                 <h4 class="text-lg font-semibold text-patriot-red-300 mb-2">Dynamic Tier Calculation</h4>
+                  <p class="text-sm text-neutral-300 mb-3">
+                    Tournament tiers are calculated dynamically based on objective team strength metrics rather than relying solely on event labels. This system analyzes the participating teams' rankings, historical performance, and competitive pedigree to determine the true competitive level of each tournament.
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -133,5 +133,5 @@
+                onClick={() => setView('list')}
+                className={`p-2 rounded-lg transition-colors ${
+-                 view === 'list' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 view === 'list' ? 'bg-patriot-red-600 text-white' : 'bg-patriot-blue-900/50 text-neutral-300 hover:text-white border border-white/20'
+                }`}
+                title="List View"
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -192,5 +192,5 @@
+                key={achievement.id}
+                onClick={() => setSelectedAchievement(achievement)}
+-               className="rounded-lg border border-neutral-800 bg-neutral-900 p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-500"
++               className="rounded-lg border border-white/20 bg-patriot-blue-900/50 p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-patriot-red-500"
+              >
+                <div className="text-center">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 3
+
+```diff
+@@ -149,17 +149,17 @@
+              <span className="text-sm text-neutral-400">Active filters:</span>
+              {search && (
+-               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-neutral-700 bg-neutral-800 text-neutral-300">
++                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
+                  Search: "{search}"
+                  <button onClick={() => setSearch('')} className="hover:text-white">×</button>
+                </span>
+              )}
+              {category && (
+-               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-neutral-700 bg-neutral-800 text-neutral-300">
++                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
+                  Category: {categoryOptions.find(opt => opt.value === category)?.label}
+                  <button onClick={() => setCategory('')} className="hover:text-white">×</button>
+                </span>
+              )}
+              {rarity && (
+-               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-neutral-700 bg-neutral-800 text-neutral-300">
++                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
+                  Rarity: {rarityOptions.find(opt => opt.value === rarity)?.label}
+                  <button onClick={() => setRarity('')} className="hover:text-white">×</button>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -199,5 +199,5 @@
+                  </div>
+                  
+-                 <span className="inline-block px-3 py-1 rounded-full text-xs border border-neutral-700 bg-neutral-800 text-neutral-300 mb-3">
++                 <span className="inline-block px-3 py-1 rounded-full text-xs border border-white/20 bg-patriot-blue-900/50 text-neutral-200 mb-3">
+                    {achievement.badge}
+                  </span>
+```
+
+</details>
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx
 
 ---
 
@@ -4209,7 +5261,219 @@ Tool use: **search_replace**
 
 ---
 
+Finishing updates to the achievements list view and modal:
 
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -231,5 +231,5 @@
+        {/* List View */}
+        {view === 'list' && filteredAchievements.length > 0 && (
+-         <div className="rounded-lg border border-neutral-800 bg-neutral-900 overflow-hidden">
++         <div className="rounded-lg border border-white/20 bg-patriot-blue-900/50 overflow-hidden">
+            {filteredAchievements.map((achievement, index) => (
+              <div
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -236,6 +236,6 @@
+                key={achievement.id}
+                onClick={() => setSelectedAchievement(achievement)}
+-               className={`p-4 cursor-pointer hover:bg-neutral-800 transition-colors ${
+-                 index !== filteredAchievements.length - 1 ? 'border-b border-neutral-800' : ''
++               className={`p-4 cursor-pointer hover:bg-patriot-blue-900 transition-colors ${
++                 index !== filteredAchievements.length - 1 ? 'border-b border-white/20' : ''
+                }`}
+              >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -248,5 +248,5 @@
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-lg font-semibold text-white">{achievement.title}</h3>
+-                     <span className="px-2 py-0.5 rounded text-xs border border-neutral-700 bg-neutral-800 text-neutral-300">
++                     <span className="px-2 py-0.5 rounded text-xs border border-white/20 bg-patriot-blue-900/50 text-neutral-200">
+                        {achievement.badge}
+                      </span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -276,5 +276,5 @@
+          >
+            <div 
+-             className="bg-neutral-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-neutral-800"
++             className="bg-patriot-blue-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/20"
+              onClick={(e) => e.stopPropagation()}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -290,5 +290,5 @@
+                  <p className="text-neutral-400 mb-6">{selectedAchievement.description}</p>
+                  
+-                 <div className="bg-neutral-800 p-4 rounded-lg mb-6">
++                 <div className="bg-patriot-blue-900/50 p-4 rounded-lg mb-6 border border-white/10">
+                    <h3 className="text-sm font-semibold text-white mb-2">Requirements</h3>
+                    <p className="text-sm text-neutral-300">{selectedAchievement.requirements}</p>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/AchievementsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -309,5 +309,5 @@
+                  <button
+                    onClick={() => setSelectedAchievement(null)}
+-                   className="px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors"
++                   className="px-6 py-2 rounded-lg bg-patriot-red-600 hover:bg-patriot-red-700 text-white transition-colors"
+                  >
+                    Close
+```
+
+</details>
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Update card borders/accents from blue to white/red in match components
+- [x] Update achievements page colors
+- [x] Update about page colors
+- [x] Update ranking-system page colors
+- [x] Add global card styles to global.css
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 4 files</summary>
+      
+Lint paths:
+
+- `src/styles/global.css`
+- `src/pages/about.astro`
+- `src/pages/ranking-system.astro`
+- `src/components/AchievementsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+
+
+---
+
+## Summary of updates
+
+### 1. Global styles (`global.css`)
+- Added card utility classes for white/red accents
+- `.card-border` for borders with red hover
+- `.card-bg` for semi-transparent backgrounds
+
+### 2. Card accents — white/red (blue removed)
+- Match cards: `border-white/20` with `hover:border-patriot-red-500`
+- Cards use white borders with red hover states
+- Removed blue accents from card borders
+
+### 3. Achievements page
+- Updated card borders to white/red
+- Filters use white borders with red focus rings
+- Grid/list view buttons use red active states
+- Modal uses new color scheme
+
+### 4. About page
+- All cards use `border-white/20` with red hover
+- Section borders updated to white
+- Info boxes use red accents instead of blue
+- Feature cards have white borders with red hover
+
+### 5. Ranking system page
+- All cards use white borders with red hover
+- Section borders updated to white
+- Info cards use white/red accents
+- Dynamic tier info box uses red instead of blue
+
+### Color scheme
+- Card borders: `border-white/20` (white with 20% opacity)
+- Hover states: `hover:border-patriot-red-500` (red on hover)
+- Backgrounds: `bg-patriot-blue-900/50` (semi-transparent dark blue)
+- Buttons/accents: Red (`patriot-red-600`, `patriot-red-500`)
+- Section dividers: `border-white/20`
+
+The site now uses white and red accents on cards, with a darker blue used only for backgrounds. The global CSS file is set up for reusable card styles.
 
 ---
 

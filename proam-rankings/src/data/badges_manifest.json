@@ -1,0 +1,367 @@
+{
+  "generated_at": "2025-10-29T19:51:58.705077Z",
+  "count": 45,
+  "items": [
+    {
+      "id": "0cacfc22-6149-4847-aa0d-99116d8372e1",
+      "name": "1K Dimes",
+      "slug": "1k-dimes",
+      "rarity": "Common",
+      "category": "Assists",
+      "file": "/mnt/data/badges/1k-dimes.svg"
+    },
+    {
+      "id": "0fe0cae9-6516-4d7e-87e4-e6b420c77056",
+      "name": "100 Club",
+      "slug": "100-club",
+      "rarity": "Legendary",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/100-club.svg"
+    },
+    {
+      "id": "1a2f0747-5e3f-4861-9366-e8a0a7bfba5b",
+      "name": "30 Board Club",
+      "slug": "30-board-club",
+      "rarity": "Legendary",
+      "category": "Rebounding",
+      "file": "/mnt/data/badges/30-board-club.svg"
+    },
+    {
+      "id": "2942cbc6-2e2b-41f4-9980-b41804a72147",
+      "name": "60 Bomb",
+      "slug": "60-bomb",
+      "rarity": "Epic",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/60-bomb.svg"
+    },
+    {
+      "id": "35ac38d9-a3ac-440d-977f-4365676037e4",
+      "name": "30K Club",
+      "slug": "30k-club",
+      "rarity": "Legendary",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/30k-club.svg"
+    },
+    {
+      "id": "37373b69-b8f5-4c20-b877-6ba1eab604c8",
+      "name": "15K Scorer",
+      "slug": "15k-scorer",
+      "rarity": "Epic",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/15k-scorer.svg"
+    },
+    {
+      "id": "3a25c1be-de7e-4c8c-a63d-b2db437a776b",
+      "name": "2.5K Dimes",
+      "slug": "25k-dimes",
+      "rarity": "Rare",
+      "category": "Assists",
+      "file": "/mnt/data/badges/25k-dimes.svg"
+    },
+    {
+      "id": "3f5629e5-8b12-4eeb-9d29-a0382602e9bb",
+      "name": "10K Boards",
+      "slug": "10k-boards",
+      "rarity": "Legendary",
+      "category": "Rebounding",
+      "file": "/mnt/data/badges/10k-boards.svg"
+    },
+    {
+      "id": "43696ceb-13ef-4eed-a178-ec1b57a3e7e0",
+      "name": "20K Scorer",
+      "slug": "20k-scorer",
+      "rarity": "Legendary",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/20k-scorer.svg"
+    },
+    {
+      "id": "4607a690-3979-422c-957e-8fada1348d8d",
+      "name": "Double-Double Machine",
+      "slug": "double-double-machine",
+      "rarity": "Epic",
+      "category": "Mixed Stats",
+      "file": "/mnt/data/badges/double-double-machine.svg"
+    },
+    {
+      "id": "48300602-dc40-4e14-83ab-5c9601292fc4",
+      "name": "10+ APG",
+      "slug": "10-apg",
+      "rarity": "Legendary",
+      "category": "Assists",
+      "file": "/mnt/data/badges/10-apg.svg"
+    },
+    {
+      "id": "4d01e7ad-b3d1-4feb-b4a4-29f4d0228874",
+      "name": "1K Boards",
+      "slug": "1k-boards",
+      "rarity": "Common",
+      "category": "Rebounding",
+      "file": "/mnt/data/badges/1k-boards.svg"
+    },
+    {
+      "id": "4fe92a18-eccc-4520-9ab3-1ea1c173675d",
+      "name": "Sharp Shooter",
+      "slug": "sharp-shooter",
+      "rarity": "Epic",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/sharp-shooter.svg"
+    },
+    {
+      "id": "5989d2c0-eee5-4564-aba6-f9415d55dbcc",
+      "name": "Clamps",
+      "slug": "clamps",
+      "rarity": "Rare",
+      "category": "Defense",
+      "file": "/mnt/data/badges/clamps.svg"
+    },
+    {
+      "id": "6813c031-7096-49a9-a470-c7e523aeb5a0",
+      "name": "Consistency Award",
+      "slug": "consistency-award",
+      "rarity": "Epic",
+      "category": "Streak & Longevity",
+      "file": "/mnt/data/badges/consistency-award.svg"
+    },
+    {
+      "id": "6927c4fe-d7ee-4dc4-ba23-889eaa817064",
+      "name": "10K Dimes",
+      "slug": "10k-dimes",
+      "rarity": "Legendary",
+      "category": "Assists",
+      "file": "/mnt/data/badges/10k-dimes.svg"
+    },
+    {
+      "id": "6bd9a936-05d8-4afc-bf82-0e70398b7f58",
+      "name": "Shot Block Party",
+      "slug": "shot-block-party",
+      "rarity": "Epic",
+      "category": "Defense",
+      "file": "/mnt/data/badges/shot-block-party.svg"
+    },
+    {
+      "id": "6ce83746-55cd-4211-ba67-e8eeb7dfd6f0",
+      "name": "Season Swatter",
+      "slug": "season-swatter",
+      "rarity": "Legendary",
+      "category": "Defense",
+      "file": "/mnt/data/badges/season-swatter.svg"
+    },
+    {
+      "id": "6e202ffd-9cb2-4ce7-8ecd-b35dc2aa564d",
+      "name": "2.5K Scorer",
+      "slug": "25k-scorer",
+      "rarity": "Common",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/25k-scorer.svg"
+    },
+    {
+      "id": "83575d7b-20b0-4ce3-8931-607310934c1b",
+      "name": "Iron Man",
+      "slug": "iron-man",
+      "rarity": "Rare",
+      "category": "Streak & Longevity",
+      "file": "/mnt/data/badges/iron-man.svg"
+    },
+    {
+      "id": "84f1b8e9-f5df-4fa0-90aa-e17887ee0500",
+      "name": "Underdog Upset",
+      "slug": "underdog-upset",
+      "rarity": "Legendary",
+      "category": "Legendary",
+      "file": "/mnt/data/badges/underdog-upset.svg"
+    },
+    {
+      "id": "85ab65d7-a969-49b0-a37c-e7ae75e5eef0",
+      "name": "Floor General",
+      "slug": "floor-general",
+      "rarity": "Legendary",
+      "category": "Streak & Longevity",
+      "file": "/mnt/data/badges/floor-general.svg"
+    },
+    {
+      "id": "8a4d9145-2a6e-42d1-b349-c11a94be9652",
+      "name": "5K Boards",
+      "slug": "5k-boards",
+      "rarity": "Epic",
+      "category": "Rebounding",
+      "file": "/mnt/data/badges/5k-boards.svg"
+    },
+    {
+      "id": "8e20caa5-b365-4af4-ac45-c32b1591599b",
+      "name": "Pickpocket",
+      "slug": "pickpocket",
+      "rarity": "Epic",
+      "category": "Defense",
+      "file": "/mnt/data/badges/pickpocket.svg"
+    },
+    {
+      "id": "932f4fdb-55ba-4d39-b1e1-84b880d8b729",
+      "name": "Career Longevity",
+      "slug": "career-longevity",
+      "rarity": "Epic",
+      "category": "Streak & Longevity",
+      "file": "/mnt/data/badges/career-longevity.svg"
+    },
+    {
+      "id": "990f59d8-bfbc-4c4d-b08e-cdb663b0a3be",
+      "name": "5K Scorer",
+      "slug": "5k-scorer",
+      "rarity": "Rare",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/5k-scorer.svg"
+    },
+    {
+      "id": "9da46126-2e8f-4a1b-a846-7ffefb6d30b2",
+      "name": "25K Scorer",
+      "slug": "25k-scorer",
+      "rarity": "Legendary",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/25k-scorer.svg"
+    },
+    {
+      "id": "9e07a9ac-25e9-4d51-a680-4da4e2a78ddd",
+      "name": "Perfect Game",
+      "slug": "perfect-game",
+      "rarity": "Legendary",
+      "category": "Legendary",
+      "file": "/mnt/data/badges/perfect-game.svg"
+    },
+    {
+      "id": "a0fc23be-085a-4408-9f4c-b7bd1017852d",
+      "name": "7.5K Scorer",
+      "slug": "75k-scorer",
+      "rarity": "Rare",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/75k-scorer.svg"
+    },
+    {
+      "id": "ad61f4ca-6544-4d79-b202-502258733bc8",
+      "name": "Flawless",
+      "slug": "flawless",
+      "rarity": "Legendary",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/flawless.svg"
+    },
+    {
+      "id": "bfe808e6-5408-479f-a79f-f7d019dda895",
+      "name": "Hot Streak",
+      "slug": "hot-streak",
+      "rarity": "Rare",
+      "category": "Streak & Longevity",
+      "file": "/mnt/data/badges/hot-streak.svg"
+    },
+    {
+      "id": "c52e98cb-f4aa-46c7-8c27-5b19ba258598",
+      "name": "1K Scorer",
+      "slug": "1k-scorer",
+      "rarity": "Common",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/1k-scorer.svg"
+    },
+    {
+      "id": "c55bdc30-aeab-4cf0-be57-032517fb6fd9",
+      "name": "5K Dimes",
+      "slug": "5k-dimes",
+      "rarity": "Epic",
+      "category": "Assists",
+      "file": "/mnt/data/badges/5k-dimes.svg"
+    },
+    {
+      "id": "cbba50e0-9f17-47c5-bab5-4a0a848321e6",
+      "name": "Triple-Double Machine",
+      "slug": "triple-double-machine",
+      "rarity": "Legendary",
+      "category": "Mixed Stats",
+      "file": "/mnt/data/badges/triple-double-machine.svg"
+    },
+    {
+      "id": "cddfc03a-4dd4-4815-a538-0796751575b6",
+      "name": "5x5 Club",
+      "slug": "5x5-club",
+      "rarity": "Legendary",
+      "category": "Mixed Stats",
+      "file": "/mnt/data/badges/5x5-club.svg"
+    },
+    {
+      "id": "d3692f9b-b8e8-4908-b7c0-0bb884b2f84f",
+      "name": "Carry Job",
+      "slug": "carry-job",
+      "rarity": "Legendary",
+      "category": "Legendary",
+      "file": "/mnt/data/badges/carry-job.svg"
+    },
+    {
+      "id": "da2ec5c9-b79e-43f7-9739-e46706ca0220",
+      "name": "Double Dimes",
+      "slug": "double-dimes",
+      "rarity": "Epic",
+      "category": "Assists",
+      "file": "/mnt/data/badges/double-dimes.svg"
+    },
+    {
+      "id": "de11ec1a-34ec-481d-9f70-6976b526210b",
+      "name": "Quadruple-Double",
+      "slug": "quadruple-double",
+      "rarity": "Legendary",
+      "category": "Mixed Stats",
+      "file": "/mnt/data/badges/quadruple-double.svg"
+    },
+    {
+      "id": "dfc530df-6cbd-47b7-81e2-1a1438b7df0a",
+      "name": "Efficiency King",
+      "slug": "efficiency-king",
+      "rarity": "Epic",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/efficiency-king.svg"
+    },
+    {
+      "id": "e4b510ed-e290-471a-8bdb-a15167e86833",
+      "name": "Season Stealer",
+      "slug": "season-stealer",
+      "rarity": "Legendary",
+      "category": "Defense",
+      "file": "/mnt/data/badges/season-stealer.svg"
+    },
+    {
+      "id": "e904af7e-b3ac-48eb-b5f8-ba1b17c8293b",
+      "name": "40 Bomb",
+      "slug": "40-bomb",
+      "rarity": "Rare",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/40-bomb.svg"
+    },
+    {
+      "id": "f44e3424-fe83-4807-a82d-edae5b5821ab",
+      "name": "Board Leader",
+      "slug": "board-leader",
+      "rarity": "Legendary",
+      "category": "Rebounding",
+      "file": "/mnt/data/badges/board-leader.svg"
+    },
+    {
+      "id": "f55e798d-f372-4506-b79c-4c7d6f97e0ed",
+      "name": "81 Club",
+      "slug": "81-club",
+      "rarity": "Legendary",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/81-club.svg"
+    },
+    {
+      "id": "f85debed-d9e0-4e01-a64b-0eb5f6f11897",
+      "name": "10K Scorer",
+      "slug": "10k-scorer",
+      "rarity": "Epic",
+      "category": "Scoring",
+      "file": "/mnt/data/badges/10k-scorer.svg"
+    },
+    {
+      "id": "febe7dcd-c396-4a04-a8ce-99cf26ccb5dd",
+      "name": "Defensive Beast",
+      "slug": "defensive-beast",
+      "rarity": "Legendary",
+      "category": "Defense",
+      "file": "/mnt/data/badges/defensive-beast.svg"
+    }
+  ]
+}
+

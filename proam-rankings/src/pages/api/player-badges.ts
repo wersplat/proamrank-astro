@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { supa } from '../../lib/supabase';
+import { getBadgeUrl } from '../../lib/badgeMapper';
 
 export const GET: APIRoute = async ({ url, locals }) => {
   const playerId = url.searchParams.get('playerId');
@@ -77,7 +78,10 @@ export const GET: APIRoute = async ({ url, locals }) => {
         else if (predicate.includes('triple') || predicate.includes('double')) category = 'mixed';
       }
 
-      // Get icon based on badge title/category
+      // Get R2 base URL from environment
+      const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL || import.meta.env.R2_PUBLIC_BASE_URL;
+      
+      // Get fallback emoji icon (used when badge image is not available)
       const getIcon = (title: string, cat: string): string => {
         const lowerTitle = title.toLowerCase();
         if (lowerTitle.includes('bomb') || lowerTitle.includes('club') || lowerTitle.includes('scorer')) return '💥';
@@ -123,11 +127,16 @@ export const GET: APIRoute = async ({ url, locals }) => {
         player_stats: award.stats // Include the stats from the award
       } : undefined;
 
+      // Try to get badge URL from R2
+      const badgeUrl = getBadgeUrl(award.title, r2BaseUrl);
+      const fallbackIcon = getIcon(award.title, category);
+      
       return {
         id: award.id,
         name: award.title,
         description: getDescription(award.title, award.stats),
-        icon: getIcon(award.title, category),
+        icon: fallbackIcon, // Always keep fallback icon for error cases
+        badgeImage: badgeUrl || undefined, // Set badgeImage if URL exists
         category,
         rarity,
         unlocked: true,

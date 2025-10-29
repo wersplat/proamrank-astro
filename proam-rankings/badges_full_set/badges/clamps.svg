@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="720" height="840" viewBox="0 0 720 840" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#BFC5CC"/>
+      <stop offset="100%" stop-color="#7D858F"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Hex frame -->
+  <path d="M360 20 L650 170 L650 470 L360 620 L70 470 L70 170 Z"
+        fill="url(#bgGrad)" stroke="#E5E9EF" stroke-width="10" />
+  <path d="M360 70 L600 190 L600 450 L360 570 L120 450 L120 190 Z"
+        fill="#2A2F36" opacity="0.92" stroke="#E5E9EF" stroke-width="6" filter="url(#glow)"/>
+
+  <!-- Icon area -->
+  <g transform="translate(160,170) scale(3)">
+    
+        <g fill="#ffffff" opacity="0.95">
+          <path d="M50 20 l26 8 v18 c0 20 -12 28 -26 36 c-14 -8 -26 -16 -26 -36 v-18 z"/>
+        </g>
+        
+  </g>
+
+  <!-- Title ribbon -->
+  <rect x="120" y="610" rx="18" ry="18" width="480" height="86" fill="url(#bgGrad)" stroke="#E5E9EF" stroke-width="6"/>
+  <text x="360" y="668" text-anchor="middle" font-family="Inter, Arial, sans-serif"
+        font-weight="800" font-size="44" fill="#111">CLAMPS</text>
+
+  <!-- Rarity tag -->
+  <g>
+    <rect x="280" y="710" rx="12" ry="12" width="160" height="52" fill="#2A2F36" stroke="#E5E9EF" stroke-width="4"/>
+    <text x="360" y="744" text-anchor="middle" font-family="Inter, Arial, sans-serif"
+          font-weight="700" font-size="28" fill="#E5E9EF">COMMON</text>
+  </g>
+</svg>
