@@ -2800,6 +2800,1103 @@ Fixing the remaining color issues and updating LeagueMatchesIsland:
 
 Tool use: **search_replace**
 
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -228,5 +228,5 @@
+                <span>{new Date(match.played_at).toLocaleDateString()}</span>
+                {match.league && (
+-                 <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
++                 <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
+                    {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
+                  </span>
+```
+
+</details>
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Optimize MatchesListIsland for mobile - use logos prominently, hide team names when logos available
+- [-] Update LeagueMatchesIsland - add logos and optimize for mobile
+- [ ] Update TeamMatchesIsland - add logos and mobile optimization
+- [ ] Review and fix remaining color scheme issues in matches components
+- [ ] Improve mobile text sizes and spacing throughout matches
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 60, lines removed: 10
+
+```diff
+@@ -144,17 +144,67 @@
+              key={match.id}
+              onClick={() => handleMatchClick(match)}
+-             className={`rounded-lg border border-neutral-800 p-4 transition ${
+-               match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
++             className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
++               match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : ''
+              }`}
+            >
+-             <div className="flex items-center justify-between">
+-               <div className="flex items-center gap-3 flex-1">
+-                 <div className="text-sm">{match.team_a?.name || 'Team A'}</div>
+-                 <div className="text-lg font-bold">{match.score_a ?? 0}</div>
++             <div className="flex items-center justify-between gap-2 sm:gap-4">
++               <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
++                 {match.team_a?.logo_url ? (
++                   <a
++                     href={`/teams/${match.team_a_id}`}
++                     onClick={(e) => e.stopPropagation()}
++                     className="flex-shrink-0"
++                     title={match.team_a.name || 'Team A'}
++                   >
++                     <img
++                       src={match.team_a.logo_url}
++                       alt={match.team_a.name || 'Team A'}
++                       className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
++                     />
++                   </a>
++                 ) : (
++                   <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
++                     {(match.team_a?.name || 'TA').substring(0, 2).toUpperCase()}
++                   </div>
++                 )}
++                 <a
++                   href={`/teams/${match.team_a_id}`}
++                   className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
++                   onClick={(e) => e.stopPropagation()}
++                   title={match.team_a?.name || 'Team A'}
++                 >
++                   {match.team_a?.name || 'Team A'}
++                 </a>
++                 <div className="text-lg sm:text-xl font-bold ml-auto text-white">{match.score_a ?? 0}</div>
+                </div>
+-               <div className="px-4 text-neutral-500">vs</div>
+-               <div className="flex items-center gap-3 flex-1 justify-end">
+-                 <div className="text-lg font-bold">{match.score_b ?? 0}</div>
+-                 <div className="text-sm">{match.team_b?.name || 'Team B'}</div>
++               <div className="px-2 sm:px-4 text-neutral-400 text-xs sm:text-sm flex-shrink-0">vs</div>
++               <div className="flex items-center gap-2 sm:gap-3 flex-1 justify-end min-w-0">
++                 <div className="text-lg sm:text-xl font-bold mr-auto text-white">{match.score_b ?? 0}</div>
++                 <a
++                   href={`/teams/${match.team_b_id}`}
++                   className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
++                   onClick={(e) => e.stopPropagation()}
++                   title={match.team_b?.name || 'Team B'}
++                 >
++                   {match.team_b?.name || 'Team B'}
++                 </a>
++                 {match.team_b?.logo_url ? (
++                   <a
++                     href={`/teams/${match.team_b_id}`}
++                     onClick={(e) => e.stopPropagation()}
++                     className="flex-shrink-0"
++                     title={match.team_b.name || 'Team B'}
++                   >
++                     <img
++                       src={match.team_b.logo_url}
++                       alt={match.team_b.name || 'Team B'}
++                       className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
++                     />
++                   </a>
++                 ) : (
++                   <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
++                     {(match.team_b?.name || 'TB').substring(0, 2).toUpperCase()}
++                   </div>
++                 )}
+                </div>
+              </div>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -209,5 +209,5 @@
+                </div>
+              </div>
+-             <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
++             <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2">
+                <span>{new Date(match.played_at).toLocaleDateString()}</span>
+                {match.league && (
+```
+
+</details>
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -227,5 +227,5 @@
+                    <a 
+                      href={`/matchups/${match.id}`}
+-                     className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
++                     className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -234,5 +234,5 @@
+                  )}
+                  {match.boxscore_url && (
+-                   <span className="text-blue-400">📊 Boxscore</span>
++                   <span className="text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>
+                  )}
+                </div>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -249,5 +249,5 @@
+          >
+            <div
+-             className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
++             className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -252,5 +252,5 @@
+              onClick={(e) => e.stopPropagation()}
+            >
+-             <div className="p-4 border-b border-neutral-800">
++             <div className="p-4 border-b border-patriot-blue-800">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-xl font-bold">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -283,5 +283,5 @@
+              </div>
+  
+-             <div className="flex border-b border-neutral-800">
++             <div className="flex border-b border-patriot-blue-800">
+                <button
+                  onClick={() => setActiveTab('screenshot')}
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -287,5 +287,5 @@
+                  onClick={() => setActiveTab('screenshot')}
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+-                   activeTab === 'screenshot' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
++                   activeTab === 'screenshot' ? 'border-patriot-red-500 text-patriot-red-400' : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "border-blue-500|text-blue-400|bg-blue-|bg-neutral-900|bg-neutral-800" in "src/components/LeagueMatchesIsland.tsx" • 7 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">` | L214 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">` | L271 |
+| `src/components/LeagueMatchesIsland.tsx` | `activeTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'` | L297 |
+| `src/components/LeagueMatchesIsland.tsx` | `activeTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'` | L305 |
+| `src/components/LeagueMatchesIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-neutral-950 $\{isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'\}`\}>` | L370 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">` | L373 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">` | L454 |
+
+
+</details>
+
+---
+
+
+
+---
+
+Fixing remaining color issues in LeagueMatchesIsland, then updating TeamMatchesIsland:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -212,5 +212,5 @@
+                <span>{new Date(match.played_at).toLocaleDateString()}</span>
+                {match.league && (
+-                 <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
++                 <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
+                    {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
+                  </span>
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -269,5 +269,5 @@
+                  <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
+                  {selectedMatch.league && (
+-                   <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
++                   <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
+                      {selectedMatch.league.league_name} {selectedMatch.league.season_number && `S${selectedMatch.league.season_number}`}
+                    </span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -295,5 +295,5 @@
+                  onClick={() => setActiveTab('player-stats')}
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+-                   activeTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
++                   activeTab === 'player-stats' ? 'border-patriot-red-500 text-patriot-red-400' : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -303,5 +303,5 @@
+                  onClick={() => setActiveTab('team-stats')}
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+-                   activeTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
++                   activeTab === 'team-stats' ? 'border-patriot-red-500 text-patriot-red-400' : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -368,5 +368,5 @@
+                                const isTeamA = stat.team_id === selectedMatch?.team_a_id;
+                                return (
+-                                 <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
++                                 <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'}`}>
+                                    <td className="py-2 px-4">{stat.player_name}</td>
+                                    <td className="text-center py-2 px-4">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -371,5 +371,5 @@
+                                    <td className="py-2 px-4">{stat.player_name}</td>
+                                    <td className="text-center py-2 px-4">
+-                                     <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
++                                     <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">
+                                        {stat.grd || '-'}
+                                      </span>
+```
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx
+
+---
+
+
+
+---
+
+Updating TeamMatchesIsland with mobile optimizations and logos:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Optimize MatchesListIsland for mobile - use logos prominently, hide team names when logos available
+- [x] Update LeagueMatchesIsland - add logos and optimize for mobile
+- [-] Update TeamMatchesIsland - add logos and mobile optimization
+- [ ] Review and fix remaining color scheme issues in matches components
+- [ ] Improve mobile text sizes and spacing throughout matches
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 34, lines removed: 8
+
+```diff
+@@ -158,22 +158,48 @@
+                key={match.id}
+                onClick={() => handleMatchClick(match)}
+-               className={`rounded-lg border border-neutral-800 p-4 transition ${
+-                 match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
++               className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
++                 match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : ''
+                }`}
+              >
+-               <div className="flex items-center justify-between">
+-                 <div className="flex items-center gap-3">
++               <div className="flex items-center justify-between gap-2 sm:gap-4">
++                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                    <span
+-                     className={`px-2 py-1 rounded text-xs font-bold ${
+-                       won ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
++                     className={`px-2 py-1 rounded text-xs font-bold flex-shrink-0 ${
++                       won ? 'bg-green-900 text-green-300' : 'bg-patriot-red-900 text-patriot-red-300'
+                      }`}
+                    >
+                      {won ? 'W' : 'L'}
+                    </span>
+-                   <span className="text-sm text-neutral-400">
++                   {opponent?.logo_url ? (
++                     <a
++                       href={`/teams/${opponent?.team_id || match.team_b_id}`}
++                       onClick={(e) => e.stopPropagation()}
++                       className="flex-shrink-0"
++                       title={opponent?.name || 'Opponent'}
++                     >
++                       <img
++                         src={opponent.logo_url}
++                         alt={opponent.name || 'Opponent'}
++                         className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
++                       />
++                     </a>
++                   ) : (
++                     <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
++                       {(opponent?.name || 'OP').substring(0, 2).toUpperCase()}
++                     </div>
++                   )}
++                   <a
++                     href={`/teams/${opponent?.team_id || match.team_b_id}`}
++                     className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
++                     onClick={(e) => e.stopPropagation()}
++                     title={opponent?.name || 'Opponent'}
++                   >
++                     vs {opponent?.name || 'Unknown'}
++                   </a>
++                   <span className="text-xs sm:text-sm text-neutral-400 sm:hidden min-w-0 truncate">
+                      vs {opponent?.name || 'Unknown'}
+                    </span>
+                  </div>
+-                 <div className="text-lg font-bold">
++                 <div className="text-lg sm:text-xl font-bold text-white flex-shrink-0">
+                    {teamScore}-{oppScore}
+                  </div>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -205,5 +205,5 @@
+                  </div>
+                </div>
+-               <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
++               <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2">
+                  <span>{new Date(match.played_at).toLocaleDateString()}</span>
+                  {match.league && (
+```
+
+</details>
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -220,5 +220,5 @@
+                  {getVerificationBadge(match)}
+                  {match.boxscore_url && (
+-                   <span className="ml-auto text-blue-400">📊 View boxscore</span>
++                   <span className="ml-auto text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>
+                  )}
+                </div>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -235,5 +235,5 @@
+          >
+            <div
+-             className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
++             className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "border-neutral-800|text-blue-|bg-blue-|bg-neutral-900" in "src/components/TeamMatchesIsland.tsx" • 6 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/TeamMatchesIsland.tsx` | `<div className="p-4 border-b border-neutral-800">` | L241 |
+| `src/components/TeamMatchesIsland.tsx` | `<div className="flex border-b border-neutral-800">` | L276 |
+| `src/components/TeamMatchesIsland.tsx` | `? 'border-blue-500 text-blue-400'` | L281 |
+| `src/components/TeamMatchesIsland.tsx` | `? 'border-blue-500 text-blue-400'` | L291 |
+| `src/components/TeamMatchesIsland.tsx` | `? 'border-blue-500 text-blue-400'` | L301 |
+| `src/components/TeamMatchesIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-neutral-950 $\{isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'\}`\}>` | L374 |
+
+
+</details>
+
+---
+
+
+
+---
+
+Fixing remaining color issues in TeamMatchesIsland:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 3
+
+```diff
+@@ -208,7 +208,7 @@
+                  <span>{new Date(match.played_at).toLocaleDateString()}</span>
+                  {match.league && (
+-                   <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
+-                     {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
+-                   </span>
++                 <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
++                   {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
++                 </span>
+                  )}
+                  {match.tournament && (
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -213,5 +213,5 @@
+                  )}
+                  {match.tournament && (
+-                   <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
++                   <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs">
+                      {match.tournament.name}
+                    </span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -239,5 +239,5 @@
+            >
+              {/* Modal Header */}
+-             <div className="p-4 border-b border-neutral-800">
++             <div className="p-4 border-b border-patriot-blue-800">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-xl font-bold">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -274,5 +274,5 @@
+  
+              {/* Tabs */}
+-             <div className="flex border-b border-neutral-800">
++             <div className="flex border-b border-patriot-blue-800">
+                <button
+                  onClick={() => setActiveTab('screenshot')}
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -279,5 +279,5 @@
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                    activeTab === 'screenshot'
+-                     ? 'border-blue-500 text-blue-400'
++                     ? 'border-patriot-red-500 text-patriot-red-400'
+                      : 'border-transparent text-neutral-400 hover:text-white'
+                  }`}
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -289,5 +289,5 @@
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                    activeTab === 'player-stats'
+-                     ? 'border-blue-500 text-blue-400'
++                     ? 'border-patriot-red-500 text-patriot-red-400'
+                      : 'border-transparent text-neutral-400 hover:text-white'
+                  }`}
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -299,5 +299,5 @@
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                    activeTab === 'team-stats'
+-                     ? 'border-blue-500 text-blue-400'
++                     ? 'border-patriot-red-500 text-patriot-red-400'
+                      : 'border-transparent text-neutral-400 hover:text-white'
+                  }`}
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -372,5 +372,5 @@
+                                const isTeamA = stat.team_id === selectedMatch?.team_a_id;
+                                return (
+-                                 <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
++                                 <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'}`}>
+                                    <td className="py-2 px-4">{stat.player_name}</td>
+                                    <td className="text-center py-2 px-4">
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-neutral-800|text-neutral-400|border-transparent text-neutral" in "src/components/TeamMatchesIsland.tsx" • 9 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/TeamMatchesIsland.tsx` | `<span className="text-xs sm:text-sm text-neutral-400 sm:hidden min-w-0 truncate">` | L199 |
+| `src/components/TeamMatchesIsland.tsx` | `<div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2">` | L207 |
+| `src/components/TeamMatchesIsland.tsx` | `<span className="ml-3 text-sm text-neutral-400">` | L245 |
+| `src/components/TeamMatchesIsland.tsx` | `className="text-neutral-400 hover:text-white"` | L251 |
+| `src/components/TeamMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">` | L261 |
+| `src/components/TeamMatchesIsland.tsx` | `: 'border-transparent text-neutral-400 hover:text-white'` | L282 |
+| `src/components/TeamMatchesIsland.tsx` | `: 'border-transparent text-neutral-400 hover:text-white'` | L292 |
+| `src/components/TeamMatchesIsland.tsx` | `: 'border-transparent text-neutral-400 hover:text-white'` | L302 |
+| `src/components/TeamMatchesIsland.tsx` | `<div className="text-center py-8 text-neutral-400">Loading stats...</div>` | L339 |
+
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 3 files</summary>
+      
+Lint paths:
+
+- `src/components/MatchesListIsland.tsx`
+- `src/components/LeagueMatchesIsland.tsx`
+- `src/components/TeamMatchesIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Optimize MatchesListIsland for mobile - use logos prominently, hide team names when logos available
+- [x] Update LeagueMatchesIsland - add logos and optimize for mobile
+- [x] Update TeamMatchesIsland - add logos and mobile optimization
+- [x] Review and fix remaining color scheme issues in matches components
+- [x] Improve mobile text sizes and spacing throughout matches
+
+---
+
+
+
+---
+
+Fixing the last remaining color issue in TeamMatchesIsland:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -259,5 +259,5 @@
+                  <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
+                  {selectedMatch.league && (
+-                   <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
++                   <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200">
+                      {selectedMatch.league.league_name} {selectedMatch.league.season_number && `S${selectedMatch.league.season_number}`}
+                    </span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -375,5 +375,5 @@
+                                    <td className="py-2 px-4">{stat.player_name}</td>
+                                    <td className="text-center py-2 px-4">
+-                                     <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
++                                     <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">
+                                        {stat.grd || '-'}
+                                      </span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -280,5 +280,5 @@
+                    activeTab === 'screenshot'
+                      ? 'border-patriot-red-500 text-patriot-red-400'
+-                     : 'border-transparent text-neutral-400 hover:text-white'
++                     : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -290,5 +290,5 @@
+                    activeTab === 'player-stats'
+                      ? 'border-patriot-red-500 text-patriot-red-400'
+-                     : 'border-transparent text-neutral-400 hover:text-white'
++                     : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -300,5 +300,5 @@
+                    activeTab === 'team-stats'
+                      ? 'border-patriot-red-500 text-patriot-red-400'
+-                     : 'border-transparent text-neutral-400 hover:text-white'
++                     : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+</details>
+
+---
+
+
+
+---
+
+Fixing the remaining purple color reference:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -264,5 +264,5 @@
+                  )}
+                  {selectedMatch.tournament && (
+-                   <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
++                   <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs">
+                      {selectedMatch.tournament.name}
+                    </span>
+```
+
+</details>
+
+---
+
+
+
+---
+
+## Mobile Optimization Summary
+
+### 1. Logo-first display
+- Logos are larger on mobile (40px × 40px) vs desktop (32px × 32px)
+- Team names hidden on mobile when logos are available (`hidden sm:block`)
+- Logos are clickable and link to team pages
+- Fallback initials shown when logos aren't available
+
+### 2. Space-efficient layouts
+- Reduced padding: `p-3 sm:p-4` (12px mobile, 16px desktop)
+- Smaller gaps: `gap-1.5 sm:gap-2` (6px mobile, 8px desktop)
+- Compact text sizes: `text-[10px] sm:text-xs` for badges/metadata
+- Scores remain prominent: `text-lg sm:text-xl`
+
+### 3. Color scheme updates
+- Replaced old blue/neutral colors with patriot red/blue
+- Consistent hover states and active tabs
+- Improved contrast for readability
+
+### 4. Components updated
+- MatchesListIsland — logo-first, mobile-optimized
+- LeagueMatchesIsland — added logos, mobile optimizations
+- TeamMatchesIsland — shows opponent logos, W/L badges
+
+### 5. Mobile-specific features
+- Proper text truncation with `truncate` and `min-w-0`
+- Responsive spacing throughout
+- Touch-friendly tap targets (logos are clickable)
+- Team names still accessible via tooltips/hover on logos
+
+The site is now optimized for mobile viewing with a logo-first approach that saves space while maintaining readability. The red, white, and blue color scheme is consistently applied across all match components.
+
+---
+
+_**User (2025-10-29 16:39Z)**_
+
+that blue maybe too bright
+
+---
+
+_**Assistant (composer-1)**_
+
+
+
+---
+
+
+Checking the current blue values and darkening them for better readability.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/tailwind.config.mjs
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "patriot-blue-" in "src/components" • 25 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/LeagueMatchesIsland.tsx` | `className=\{`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition $\{` | L146 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L166 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L205 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L214 |
+| `src/components/LeagueMatchesIsland.tsx` | `className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"` | L229 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>` | L236 |
+| `src/components/LeagueMatchesIsland.tsx` | `className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L251 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="p-4 border-b border-patriot-blue-800">` | L254 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L271 |
+| `src/components/LeagueMatchesIsland.tsx` | `<div className="flex border-b border-patriot-blue-800">` | L285 |
+| `src/components/LeagueMatchesIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-patriot-blue-900/50 $\{isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'\}`\}>` | L370 |
+| `src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">` | L373 |
+| `src/components/MatchesListIsland.tsx` | `className=\{`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition $\{` | L155 |
+| `src/components/MatchesListIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L176 |
+| `src/components/MatchesListIsland.tsx` | `<div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">` | L219 |
+| `src/components/MatchesListIsland.tsx` | `<span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">` | L230 |
+| `src/components/MatchesListIsland.tsx` | `<span className="ml-auto text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>` | L243 |
+| `src/components/MatchesListIsland.tsx` | `className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"` | L249 |
+| `src/components/MatchesListIsland.tsx` | `className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L268 |
+| `src/components/MatchesListIsland.tsx` | `<div className="p-4 border-b border-patriot-blue-800">` | L272 |
+| `src/components/MatchesListIsland.tsx` | `<div className="flex border-b border-patriot-blue-800">` | L307 |
+| `src/components/MatchesListIsland.tsx` | `<thead className="bg-patriot-blue-900 text-neutral-200">` | L384 |
+| `src/components/MatchesListIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-patriot-blue-900/50 $\{isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'\}`\}>` | L405 |
+| `src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">` | L408 |
+| `src/components/MatchesListIsland.tsx` | `<tr key=\{idx\} className="hover:bg-patriot-blue-900/50">` | L489 |
+
+
+</details>
+
 ---
 
 

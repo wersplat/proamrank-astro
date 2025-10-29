@@ -29,16 +29,16 @@ export default {
             900: "#7F1D1D",
           },
           blue: {
-            50: "#EFF6FF",
-            100: "#DBEAFE",
-            200: "#BFDBFE",
-            300: "#93C5FD",
-            400: "#60A5FA",
-            500: "#3B82F6",
-            600: "#2563EB",
-            700: "#1D4ED8",
-            800: "#1E3A8A", // Primary blue
-            900: "#1E40AF",
+            50: "#1E293B",
+            100: "#1E3A5F",
+            200: "#1E3A7A",
+            300: "#1E4785", // Darker blue for text
+            400: "#3B5B8A", // Muted blue for links/text
+            500: "#2C4A6B",
+            600: "#1E3A5F",
+            700: "#1A3250",
+            800: "#132842", // Darker navy blue
+            900: "#0F1B2E", // Very dark navy for backgrounds
           },
         }
       }
