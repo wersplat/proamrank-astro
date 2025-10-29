@@ -152,63 +152,87 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
           <div
             key={match.id}
             onClick={() => handleMatchClick(match)}
-            className={`rounded-lg border border-patriot-blue-800 p-4 transition ${
+            className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
               match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : ''
             }`}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2 sm:gap-4">
               {/* Team A */}
-              <div className="flex items-center gap-3 flex-1">
-                {match.team_a?.logo_url && (
-                  <img
-                    src={match.team_a.logo_url}
-                    alt=""
-                    className="h-8 w-8 rounded"
-                  />
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                {match.team_a?.logo_url ? (
+                  <a
+                    href={`/teams/${match.team_a_id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-shrink-0"
+                    title={match.team_a.name || 'Team A'}
+                  >
+                    <img
+                      src={match.team_a.logo_url}
+                      alt={match.team_a.name || 'Team A'}
+                      className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
+                    />
+                  </a>
+                ) : (
+                  <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
+                    {(match.team_a?.name || 'TA').substring(0, 2).toUpperCase()}
+                  </div>
                 )}
                 <a
                   href={`/teams/${match.team_a_id}`}
-                  className="hover:text-patriot-red-400 truncate"
+                  className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
                   onClick={(e) => e.stopPropagation()}
+                  title={match.team_a?.name || 'Team A'}
                 >
                   {match.team_a?.name || 'Team A'}
                 </a>
-                <span className="text-xl font-bold ml-auto">{match.score_a ?? 0}</span>
+                <span className="text-lg sm:text-xl font-bold ml-auto text-white">{match.score_a ?? 0}</span>
               </div>
 
               {/* VS */}
-              <div className="px-6 text-neutral-500 font-medium">VS</div>
+              <div className="px-2 sm:px-6 text-neutral-400 text-xs sm:text-sm font-medium flex-shrink-0">VS</div>
 
               {/* Team B */}
-              <div className="flex items-center gap-3 flex-1 justify-end">
-                <span className="text-xl font-bold mr-auto">{match.score_b ?? 0}</span>
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 justify-end min-w-0">
+                <span className="text-lg sm:text-xl font-bold mr-auto text-white">{match.score_b ?? 0}</span>
                 <a
                   href={`/teams/${match.team_b_id}`}
-                  className="hover:text-patriot-red-400 truncate"
+                  className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
                   onClick={(e) => e.stopPropagation()}
+                  title={match.team_b?.name || 'Team B'}
                 >
                   {match.team_b?.name || 'Team B'}
                 </a>
-                {match.team_b?.logo_url && (
-                  <img
-                    src={match.team_b.logo_url}
-                    alt=""
-                    className="h-8 w-8 rounded"
-                  />
+                {match.team_b?.logo_url ? (
+                  <a
+                    href={`/teams/${match.team_b_id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-shrink-0"
+                    title={match.team_b.name || 'Team B'}
+                  >
+                    <img
+                      src={match.team_b.logo_url}
+                      alt={match.team_b.name || 'Team B'}
+                      className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
+                    />
+                  </a>
+                ) : (
+                  <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
+                    {(match.team_b?.name || 'TB').substring(0, 2).toUpperCase()}
+                  </div>
                 )}
               </div>
             </div>
 
             {/* Match Info */}
-            <div className="flex items-center flex-wrap gap-2 mt-3 text-xs text-neutral-500">
+            <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3 text-[10px] sm:text-xs text-neutral-400">
               <span>{new Date(match.played_at).toLocaleDateString()}</span>
               {match.league && (
-                <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
                   {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
                 </span>
               )}
               {match.tournament && (
-                <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
+                <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs">
                   {match.tournament.name}
                 </span>
               )}
@@ -216,13 +240,13 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
               {match.game_year && <span>• {match.game_year}</span>}
               {getVerificationBadge(match)}
               {match.boxscore_url && (
-                <span className="ml-auto text-patriot-blue-400">📊 View boxscore</span>
+                <span className="ml-auto text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>
               )}
               <div className="flex gap-2">
                 {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
                   <a 
                     href={`/matchups/${match.id}`}
-                    className="text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-2 py-1 rounded transition"
+                    className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"
                     onClick={(e) => e.stopPropagation()}
                   >
                     Spotlight

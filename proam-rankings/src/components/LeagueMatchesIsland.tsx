@@ -143,25 +143,75 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
           <div
             key={match.id}
             onClick={() => handleMatchClick(match)}
-            className={`rounded-lg border border-neutral-800 p-4 transition ${
-              match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
+            className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
+              match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : ''
             }`}
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 flex-1">
-                <div className="text-sm">{match.team_a?.name || 'Team A'}</div>
-                <div className="text-lg font-bold">{match.score_a ?? 0}</div>
+            <div className="flex items-center justify-between gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                {match.team_a?.logo_url ? (
+                  <a
+                    href={`/teams/${match.team_a_id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-shrink-0"
+                    title={match.team_a.name || 'Team A'}
+                  >
+                    <img
+                      src={match.team_a.logo_url}
+                      alt={match.team_a.name || 'Team A'}
+                      className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
+                    />
+                  </a>
+                ) : (
+                  <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
+                    {(match.team_a?.name || 'TA').substring(0, 2).toUpperCase()}
+                  </div>
+                )}
+                <a
+                  href={`/teams/${match.team_a_id}`}
+                  className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
+                  onClick={(e) => e.stopPropagation()}
+                  title={match.team_a?.name || 'Team A'}
+                >
+                  {match.team_a?.name || 'Team A'}
+                </a>
+                <div className="text-lg sm:text-xl font-bold ml-auto text-white">{match.score_a ?? 0}</div>
               </div>
-              <div className="px-4 text-neutral-500">vs</div>
-              <div className="flex items-center gap-3 flex-1 justify-end">
-                <div className="text-lg font-bold">{match.score_b ?? 0}</div>
-                <div className="text-sm">{match.team_b?.name || 'Team B'}</div>
+              <div className="px-2 sm:px-4 text-neutral-400 text-xs sm:text-sm flex-shrink-0">vs</div>
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 justify-end min-w-0">
+                <div className="text-lg sm:text-xl font-bold mr-auto text-white">{match.score_b ?? 0}</div>
+                <a
+                  href={`/teams/${match.team_b_id}`}
+                  className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
+                  onClick={(e) => e.stopPropagation()}
+                  title={match.team_b?.name || 'Team B'}
+                >
+                  {match.team_b?.name || 'Team B'}
+                </a>
+                {match.team_b?.logo_url ? (
+                  <a
+                    href={`/teams/${match.team_b_id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-shrink-0"
+                    title={match.team_b.name || 'Team B'}
+                  >
+                    <img
+                      src={match.team_b.logo_url}
+                      alt={match.team_b.name || 'Team B'}
+                      className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
+                    />
+                  </a>
+                ) : (
+                  <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
+                    {(match.team_b?.name || 'TB').substring(0, 2).toUpperCase()}
+                  </div>
+                )}
               </div>
             </div>
-            <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
+            <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2">
               <span>{new Date(match.played_at).toLocaleDateString()}</span>
               {match.league && (
-                <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
                   {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
                 </span>
               )}
@@ -176,14 +226,14 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
                 {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
                   <a 
                     href={`/matchups/${match.id}`}
-                    className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                    className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"
                     onClick={(e) => e.stopPropagation()}
                   >
                     Spotlight
                   </a>
                 )}
                 {match.boxscore_url && (
-                  <span className="text-blue-400">📊 Boxscore</span>
+                  <span className="text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>
                 )}
               </div>
             </div>
@@ -198,10 +248,10 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
           onClick={closeModal}
         >
           <div
-            className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-neutral-800">
+            <div className="p-4 border-b border-patriot-blue-800">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-xl font-bold">
                   {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
@@ -218,7 +268,7 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
               <div className="flex items-center gap-2 text-xs text-neutral-500">
                 <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
                 {selectedMatch.league && (
-                  <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                  <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
                     {selectedMatch.league.league_name} {selectedMatch.league.season_number && `S${selectedMatch.league.season_number}`}
                   </span>
                 )}
@@ -232,11 +282,11 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
               </div>
             </div>
 
-            <div className="flex border-b border-neutral-800">
+            <div className="flex border-b border-patriot-blue-800">
               <button
                 onClick={() => setActiveTab('screenshot')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
-                  activeTab === 'screenshot' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+                  activeTab === 'screenshot' ? 'border-patriot-red-500 text-patriot-red-400' : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Screenshot
@@ -244,7 +294,7 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
               <button
                 onClick={() => setActiveTab('player-stats')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
-                  activeTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+                  activeTab === 'player-stats' ? 'border-patriot-red-500 text-patriot-red-400' : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Player Stats
@@ -252,7 +302,7 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
               <button
                 onClick={() => setActiveTab('team-stats')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
-                  activeTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+                  activeTab === 'team-stats' ? 'border-patriot-red-500 text-patriot-red-400' : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Team Stats
@@ -317,10 +367,10 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
                             {sortedStats.map((stat, idx) => {
                               const isTeamA = stat.team_id === selectedMatch?.team_a_id;
                               return (
-                                <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
+                                <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'}`}>
                                   <td className="py-2 px-4">{stat.player_name}</td>
                                   <td className="text-center py-2 px-4">
-                                    <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                    <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">
                                       {stat.grd || '-'}
                                     </span>
                                   </td>

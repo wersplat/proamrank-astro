@@ -157,43 +157,69 @@ export default function TeamMatchesIsland({
             <div
               key={match.id}
               onClick={() => handleMatchClick(match)}
-              className={`rounded-lg border border-neutral-800 p-4 transition ${
-                match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
+              className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
+                match.boxscore_url ? 'cursor-pointer hover:border-patriot-red-500' : ''
               }`}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between gap-2 sm:gap-4">
+                <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <span
-                    className={`px-2 py-1 rounded text-xs font-bold ${
-                      won ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
+                    className={`px-2 py-1 rounded text-xs font-bold flex-shrink-0 ${
+                      won ? 'bg-green-900 text-green-300' : 'bg-patriot-red-900 text-patriot-red-300'
                     }`}
                   >
                     {won ? 'W' : 'L'}
                   </span>
-                  <span className="text-sm text-neutral-400">
+                  {opponent?.logo_url ? (
+                    <a
+                      href={`/teams/${opponent?.team_id || match.team_b_id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-shrink-0"
+                      title={opponent?.name || 'Opponent'}
+                    >
+                      <img
+                        src={opponent.logo_url}
+                        alt={opponent.name || 'Opponent'}
+                        className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
+                      />
+                    </a>
+                  ) : (
+                    <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
+                      {(opponent?.name || 'OP').substring(0, 2).toUpperCase()}
+                    </div>
+                  )}
+                  <a
+                    href={`/teams/${opponent?.team_id || match.team_b_id}`}
+                    className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
+                    onClick={(e) => e.stopPropagation()}
+                    title={opponent?.name || 'Opponent'}
+                  >
+                    vs {opponent?.name || 'Unknown'}
+                  </a>
+                  <span className="text-xs sm:text-sm text-neutral-400 sm:hidden min-w-0 truncate">
                     vs {opponent?.name || 'Unknown'}
                   </span>
                 </div>
-                <div className="text-lg font-bold">
+                <div className="text-lg sm:text-xl font-bold text-white flex-shrink-0">
                   {teamScore}-{oppScore}
                 </div>
               </div>
-              <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
+              <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2">
                 <span>{new Date(match.played_at).toLocaleDateString()}</span>
                 {match.league && (
-                  <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
-                    {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
-                  </span>
+                <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
+                  {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
+                </span>
                 )}
                 {match.tournament && (
-                  <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
+                  <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs">
                     {match.tournament.name}
                   </span>
                 )}
                 {match.stage && <span>• {match.stage}</span>}
                 {getVerificationBadge(match)}
                 {match.boxscore_url && (
-                  <span className="ml-auto text-blue-400">📊 View boxscore</span>
+                  <span className="ml-auto text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>
                 )}
               </div>
             </div>
@@ -208,11 +234,11 @@ export default function TeamMatchesIsland({
           onClick={closeModal}
         >
           <div
-            className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-4 border-b border-neutral-800">
+            <div className="p-4 border-b border-patriot-blue-800">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-xl font-bold">
                   {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
@@ -232,12 +258,12 @@ export default function TeamMatchesIsland({
               <div className="flex items-center gap-2 text-xs text-neutral-500">
                 <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
                 {selectedMatch.league && (
-                  <span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                  <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200">
                     {selectedMatch.league.league_name} {selectedMatch.league.season_number && `S${selectedMatch.league.season_number}`}
                   </span>
                 )}
                 {selectedMatch.tournament && (
-                  <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
+                  <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs">
                     {selectedMatch.tournament.name}
                   </span>
                 )}
@@ -247,13 +273,13 @@ export default function TeamMatchesIsland({
             </div>
 
             {/* Tabs */}
-            <div className="flex border-b border-neutral-800">
+            <div className="flex border-b border-patriot-blue-800">
               <button
                 onClick={() => setActiveTab('screenshot')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
                   activeTab === 'screenshot'
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-neutral-400 hover:text-white'
+                    ? 'border-patriot-red-500 text-patriot-red-400'
+                    : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Screenshot
@@ -262,8 +288,8 @@ export default function TeamMatchesIsland({
                 onClick={() => setActiveTab('player-stats')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
                   activeTab === 'player-stats'
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-neutral-400 hover:text-white'
+                    ? 'border-patriot-red-500 text-patriot-red-400'
+                    : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Player Stats
@@ -272,8 +298,8 @@ export default function TeamMatchesIsland({
                 onClick={() => setActiveTab('team-stats')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
                   activeTab === 'team-stats'
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-neutral-400 hover:text-white'
+                    ? 'border-patriot-red-500 text-patriot-red-400'
+                    : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Team Stats
@@ -345,10 +371,10 @@ export default function TeamMatchesIsland({
                             {sortedStats.map((stat, idx) => {
                               const isTeamA = stat.team_id === selectedMatch?.team_a_id;
                               return (
-                                <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
+                                <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'}`}>
                                   <td className="py-2 px-4">{stat.player_name}</td>
                                   <td className="text-center py-2 px-4">
-                                    <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                    <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">
                                       {stat.grd || '-'}
                                     </span>
                                   </td>

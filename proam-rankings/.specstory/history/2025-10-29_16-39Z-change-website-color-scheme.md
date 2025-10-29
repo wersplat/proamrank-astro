@@ -16,3 +16,2793 @@ _**Assistant (composer-1)**_
 
 ---
 
+
+Reviewing the current styling setup to understand how colors are applied.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/styles/global.css
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/tailwind.config.mjs
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How are colors defined and used in the main layout or page components?" • **10** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `tailwind.config.mjs` | L12 |
+| `src/components/Navigation.astro` | L53 |
+| `src/pages/index.astro` | L36-81 |
+| `src/pages/tournaments/[id].astro` | L231-268 |
+| `src/pages/leagues/[id].astro` | L202-251 |
+| `src/pages/tournaments/index.astro` | L67-111 |
+| `src/components/TournamentTabsIsland.tsx` | L119-1351 |
+| `src/pages/ranking-system.astro` | L24 |
+| `src/styles/global.css` | L3 |
+| `src/pages/teams/[id].astro` | L96-150 |
+
+</details>
+
+---
+
+
+
+---
+
+Checking more components to understand the full color usage:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/Navigation.astro
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-|text-|border-|from-|to-" • 1953 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `./src/lib/db.types.ts` | `"auto-corrected": boolean \| null` | L7712 |
+| `./src/lib/db.types.ts` | `"auto-corrected"?: boolean \| null` | L7721 |
+| `./src/lib/db.types.ts` | `"auto-corrected"?: boolean \| null` | L7730 |
+| `./src/lib/db.types1.ts` | `"auto-corrected": boolean \| null` | L5824 |
+| `./src/lib/db.types1.ts` | `"auto-corrected"?: boolean \| null` | L5833 |
+| `./src/lib/db.types1.ts` | `"auto-corrected"?: boolean \| null` | L5842 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-xs font-medium flex items-center gap-1">` | L76 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-xs font-medium flex items-center gap-1">` | L85 |
+| `./src/components/MatchesListIsland.tsx` | `className=\{`rounded-lg border border-neutral-800 p-4 transition $\{` | L155 |
+| `./src/components/MatchesListIsland.tsx` | `match.boxscore_url ? 'hover:border-blue-500 cursor-pointer' : ''` | L156 |
+| `./src/components/MatchesListIsland.tsx` | `className="hover:text-blue-400 truncate"` | L171 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="text-xl font-bold ml-auto">\{match.score_a ?? 0\}</span>` | L176 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="px-6 text-neutral-500 font-medium">VS</div>` | L180 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="text-xl font-bold mr-auto">\{match.score_b ?? 0\}</span>` | L184 |
+| `./src/components/MatchesListIsland.tsx` | `className="hover:text-blue-400 truncate"` | L187 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="flex items-center flex-wrap gap-2 mt-3 text-xs text-neutral-500">` | L203 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">` | L206 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">` | L211 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="ml-auto text-blue-400">📊 View boxscore</span>` | L219 |
+| `./src/components/MatchesListIsland.tsx` | `className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"` | L225 |
+| `./src/components/MatchesListIsland.tsx` | `className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"` | L240 |
+| `./src/components/MatchesListIsland.tsx` | `className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L244 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="p-4 border-b border-neutral-800">` | L248 |
+| `./src/components/MatchesListIsland.tsx` | `<h2 className="text-xl font-bold">` | L250 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="ml-3 text-sm text-neutral-400">` | L252 |
+| `./src/components/MatchesListIsland.tsx` | `className="text-neutral-400 hover:text-white"` | L258 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="flex items-center gap-2 text-xs text-neutral-500">` | L265 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">` | L268 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">` | L273 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="flex border-b border-neutral-800">` | L283 |
+| `./src/components/MatchesListIsland.tsx` | `className=\{`px-4 py-3 text-sm font-medium border-b-2 transition $\{` | L286 |
+| `./src/components/MatchesListIsland.tsx` | `? 'border-blue-500 text-blue-400'` | L288 |
+| `./src/components/MatchesListIsland.tsx` | `: 'border-transparent text-neutral-400 hover:text-white'` | L289 |
+| `./src/components/MatchesListIsland.tsx` | `className=\{`px-4 py-3 text-sm font-medium border-b-2 transition $\{` | L296 |
+| `./src/components/MatchesListIsland.tsx` | `? 'border-blue-500 text-blue-400'` | L298 |
+| `./src/components/MatchesListIsland.tsx` | `: 'border-transparent text-neutral-400 hover:text-white'` | L299 |
+| `./src/components/MatchesListIsland.tsx` | `className=\{`px-4 py-3 text-sm font-medium border-b-2 transition $\{` | L306 |
+| `./src/components/MatchesListIsland.tsx` | `? 'border-blue-500 text-blue-400'` | L308 |
+| `./src/components/MatchesListIsland.tsx` | `: 'border-transparent text-neutral-400 hover:text-white'` | L309 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">` | L333 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="mb-4 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-300 text-sm">` | L341 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="text-center py-8 text-neutral-400">Loading stats...</div>` | L346 |
+| `./src/components/MatchesListIsland.tsx` | `<table className="w-full text-sm">` | L359 |
+| `./src/components/MatchesListIsland.tsx` | `<thead className="bg-neutral-950 text-neutral-300">` | L360 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-left py-2 px-4">Player</th>` | L362 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-center py-2 px-4">GRD</th>` | L363 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">PTS</th>` | L364 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">REB</th>` | L365 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">AST</th>` | L366 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">STL</th>` | L367 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">BLK</th>` | L368 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">TO</th>` | L369 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">PF</th>` | L370 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">FG</th>` | L371 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">3PT</th>` | L372 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">FT</th>` | L373 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">+/-</th>` | L374 |
+| `./src/components/MatchesListIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-neutral-950 $\{isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'\}`\}>` | L381 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-center py-2 px-4">` | L383 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">` | L384 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4 font-semibold">\{stat.points\}</td>` | L388 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.rebounds\}</td>` | L389 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.assists\}</td>` | L390 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.steals\}</td>` | L391 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.blocks\}</td>` | L392 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.turnovers\}</td>` | L393 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.fouls\}</td>` | L394 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.fgm\}/\{stat.fga\}</td>` | L395 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.three_points_made\}/\{stat.three_points_attempted\}</td>` | L396 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.ftm\}/\{stat.fta\}</td>` | L397 |
+| `./src/components/MatchesListIsland.tsx` | `<td className=\{`text-right py-2 px-4 font-semibold $\{` | L398 |
+| `./src/components/MatchesListIsland.tsx` | `(stat.plus_minus ?? 0) > 0 ? 'text-green-400' :` | L399 |
+| `./src/components/MatchesListIsland.tsx` | `(stat.plus_minus ?? 0) < 0 ? 'text-red-400' :` | L400 |
+| `./src/components/MatchesListIsland.tsx` | `'text-neutral-400'` | L401 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="text-center py-8 text-neutral-400">` | L413 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">` | L424 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="text-center py-8 text-neutral-400">Loading stats...</div>` | L432 |
+| `./src/components/MatchesListIsland.tsx` | `<table className="w-full text-sm">` | L434 |
+| `./src/components/MatchesListIsland.tsx` | `<thead className="bg-neutral-950 text-neutral-300">` | L435 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-left py-2 px-4">Team</th>` | L437 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-center py-2 px-4">GRD</th>` | L438 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">PTS</th>` | L439 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">REB</th>` | L440 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">AST</th>` | L441 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">STL</th>` | L442 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">BLK</th>` | L443 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">TO</th>` | L444 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">PF</th>` | L445 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">FG%</th>` | L446 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">3PT%</th>` | L447 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">FT%</th>` | L448 |
+| `./src/components/MatchesListIsland.tsx` | `<th className="text-right py-2 px-4">+/-</th>` | L449 |
+| `./src/components/MatchesListIsland.tsx` | `<tr key=\{idx\} className="hover:bg-neutral-950">` | L465 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-center py-2 px-4">` | L469 |
+| `./src/components/MatchesListIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">` | L470 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4 font-semibold">\{stat.points\}</td>` | L474 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.rebounds\}</td>` | L475 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.assists\}</td>` | L476 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.steals\}</td>` | L477 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.blocks\}</td>` | L478 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.turnovers\}</td>` | L479 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{stat.fouls\}</td>` | L480 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{fgPct\}%</td>` | L481 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{threePct\}%</td>` | L482 |
+| `./src/components/MatchesListIsland.tsx` | `<td className="text-right py-2 px-4">\{ftPct\}%</td>` | L483 |
+| `./src/components/MatchesListIsland.tsx` | `<td className=\{`text-right py-2 px-4 font-semibold $\{` | L484 |
+| `./src/components/MatchesListIsland.tsx` | `(stat.plus_minus ?? 0) > 0 ? 'text-green-400' :` | L485 |
+| `./src/components/MatchesListIsland.tsx` | `(stat.plus_minus ?? 0) < 0 ? 'text-red-400' :` | L486 |
+| `./src/components/MatchesListIsland.tsx` | `'text-neutral-400'` | L487 |
+| `./src/components/MatchesListIsland.tsx` | `<div className="text-center py-8 text-neutral-400">` | L497 |
+| `./src/components/SpotlightMatchup.tsx` | `const [activeTab, setActiveTab] = useState<'rosters' \| 'stats' \| 'head-to-head'>('rosters');` | L75 |
+| `./src/components/SpotlightMatchup.tsx` | `'Max': 'text-yellow-400',` | L108 |
+| `./src/components/SpotlightMatchup.tsx` | `'SuperMax': 'text-red-400',` | L109 |
+| `./src/components/SpotlightMatchup.tsx` | `'Mid': 'text-green-400',` | L110 |
+| `./src/components/SpotlightMatchup.tsx` | `'Min': 'text-blue-400',` | L111 |
+| `./src/components/SpotlightMatchup.tsx` | `'Rookie': 'text-purple-400'` | L112 |
+| `./src/components/SpotlightMatchup.tsx` | `return colors[tier \|\| ''] \|\| 'text-neutral-400';` | L114 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4 border border-neutral-700 hover:border-blue-500 transition">` | L121 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{player.gamertag\}</div>` | L125 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">` | L126 |
+| `./src/components/SpotlightMatchup.tsx` | `className="text-purple-400 hover:text-purple-300 transition"` | L141 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="grid grid-cols-5 gap-2 text-sm">` | L152 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L153 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-400">PPG</div>` | L154 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{stats.avg_points?.toFixed(1) \|\| '0.0'\}</div>` | L155 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L157 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-400">APG</div>` | L158 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{stats.avg_assists?.toFixed(1) \|\| '0.0'\}</div>` | L159 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L161 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-400">RPG</div>` | L162 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{stats.avg_rebounds?.toFixed(1) \|\| '0.0'\}</div>` | L163 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L165 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-400">SPG</div>` | L166 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{stats.avg_steals?.toFixed(1) \|\| '0.0'\}</div>` | L167 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L169 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-400">BPG</div>` | L170 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{stats.avg_blocks?.toFixed(1) \|\| '0.0'\}</div>` | L171 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className=\{`rounded-lg p-6 mb-6 $\{isWinner && match.winner_id ? 'bg-green-900/20 border-green-500' : 'bg-neutral-800'\} border`\}>` | L188 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="w-16 h-16 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xl font-bold">` | L197 |
+| `./src/components/SpotlightMatchup.tsx` | `<h2 className="text-2xl font-bold text-white">\{team.name\}</h2>` | L202 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="flex items-center gap-4 text-sm text-neutral-400">` | L203 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L213 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-4xl font-bold text-white">` | L214 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-green-400 font-semibold mt-2">` | L218 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4 mb-6 border border-neutral-700">` | L228 |
+| `./src/components/SpotlightMatchup.tsx` | `<h3 className="text-lg font-semibold mb-3 text-white">Tournament Stats</h3>` | L229 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="grid grid-cols-2 gap-4 text-sm">` | L230 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L231 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-400">Points For</div>` | L232 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{team.tournament_stats.points_for.toLocaleString()\}</div>` | L233 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L235 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-400">Points Against</div>` | L236 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="font-semibold text-white">\{team.tournament_stats.points_against.toLocaleString()\}</div>` | L237 |
+| `./src/components/SpotlightMatchup.tsx` | `<h3 className="text-lg font-semibold text-white">Roster</h3>` | L245 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center py-8 text-neutral-400">` | L267 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L279 |
+| `./src/components/SpotlightMatchup.tsx` | `<h1 className="text-3xl font-bold text-white mb-2">` | L280 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-lg text-neutral-300 mb-2">` | L283 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400 mb-4">` | L286 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="inline-block bg-blue-900 text-blue-300 px-3 py-1 rounded text-sm font-semibold">` | L290 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L298 |
+| `./src/components/SpotlightMatchup.tsx` | `className="inline-flex items-center gap-2 bg-purple-900 hover:bg-purple-800 text-purple-300 px-4 py-2 rounded-lg transition font-semibold"` | L303 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="w-px bg-neutral-700"></div>` | L316 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="flex border-b border-neutral-700 mb-4">` | L322 |
+| `./src/components/SpotlightMatchup.tsx` | `className=\{`flex-1 py-2 text-sm font-medium $\{` | L325 |
+| `./src/components/SpotlightMatchup.tsx` | `? 'text-blue-400 border-b-2 border-blue-400'` | L327 |
+| `./src/components/SpotlightMatchup.tsx` | `: 'text-neutral-400 hover:text-white'` | L328 |
+| `./src/components/SpotlightMatchup.tsx` | `className=\{`flex-1 py-2 text-sm font-medium $\{` | L335 |
+| `./src/components/SpotlightMatchup.tsx` | `? 'text-blue-400 border-b-2 border-blue-400'` | L337 |
+| `./src/components/SpotlightMatchup.tsx` | `: 'text-neutral-400 hover:text-white'` | L338 |
+| `./src/components/SpotlightMatchup.tsx` | `onClick=\{() => setActiveTab('head-to-head')\}` | L345 |
+| `./src/components/SpotlightMatchup.tsx` | `className=\{`flex-1 py-2 text-sm font-medium $\{` | L346 |
+| `./src/components/SpotlightMatchup.tsx` | `activeTab === 'head-to-head'` | L347 |
+| `./src/components/SpotlightMatchup.tsx` | `? 'text-blue-400 border-b-2 border-blue-400'` | L348 |
+| `./src/components/SpotlightMatchup.tsx` | `: 'text-neutral-400 hover:text-white'` | L349 |
+| `./src/components/SpotlightMatchup.tsx` | `Head-to-Head` | L352 |
+| `./src/components/SpotlightMatchup.tsx` | `\{/* Head-to-Head Section */\}` | L358 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">` | L360 |
+| `./src/components/SpotlightMatchup.tsx` | `<h3 className="text-xl font-bold text-white mb-6">Head-to-Head History</h3>` | L361 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L365 |
+| `./src/components/SpotlightMatchup.tsx` | `<h4 className="text-lg font-semibold text-white mb-4">All-Time Series</h4>` | L366 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L368 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-2xl font-bold text-white">\{match.head_to_head.team_a_wins\}</div>` | L369 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">\{match.team_a.name\}</div>` | L370 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-500 text-sm">vs</div>` | L372 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L373 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-2xl font-bold text-white">\{match.head_to_head.team_b_wins\}</div>` | L374 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">\{match.team_b.name\}</div>` | L375 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center text-sm text-neutral-400">` | L378 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L384 |
+| `./src/components/SpotlightMatchup.tsx` | `<h4 className="text-lg font-semibold text-white mb-4">Average Scores</h4>` | L385 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L387 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-xl font-bold text-white">\{match.head_to_head.team_1_avg_score?.toFixed(1) \|\| '0.0'\}</div>` | L388 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">Team A</div>` | L389 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-500 text-sm">avg</div>` | L391 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L392 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-xl font-bold text-white">\{match.head_to_head.team_2_avg_score?.toFixed(1) \|\| '0.0'\}</div>` | L393 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">Team B</div>` | L394 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center text-sm text-neutral-400">` | L397 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L406 |
+| `./src/components/SpotlightMatchup.tsx` | `<h4 className="text-lg font-semibold text-white mb-2">Last Meeting</h4>` | L407 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">` | L408 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-xs text-neutral-500 mt-1">` | L417 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L424 |
+| `./src/components/SpotlightMatchup.tsx` | `<h4 className="text-lg font-semibold text-white mb-4">Last 5 Meetings</h4>` | L425 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L427 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-lg font-bold text-white">\{match.head_to_head.team_1_last_5_wins\}</div>` | L428 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">\{match.team_a.name\}</div>` | L429 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-neutral-500 text-sm">vs</div>` | L431 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-center">` | L432 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-lg font-bold text-white">\{match.head_to_head.team_2_last_5_wins\}</div>` | L433 |
+| `./src/components/SpotlightMatchup.tsx` | `<div className="text-sm text-neutral-400">\{match.team_b.name\}</div>` | L434 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-xs font-medium flex items-center gap-1">` | L75 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-xs font-medium flex items-center gap-1">` | L84 |
+| `./src/components/LeagueMatchesIsland.tsx` | `className=\{`rounded-lg border border-neutral-800 p-4 transition $\{` | L146 |
+| `./src/components/LeagueMatchesIsland.tsx` | `match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''` | L147 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="text-sm">\{match.team_a?.name \|\| 'Team A'\}</div>` | L152 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="text-lg font-bold">\{match.score_a ?? 0\}</div>` | L153 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="px-4 text-neutral-500">vs</div>` | L155 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="text-lg font-bold">\{match.score_b ?? 0\}</div>` | L157 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="text-sm">\{match.team_b?.name \|\| 'Team B'\}</div>` | L158 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">` | L161 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">` | L164 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">` | L169 |
+| `./src/components/LeagueMatchesIsland.tsx` | `className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"` | L179 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="text-blue-400">📊 Boxscore</span>` | L186 |
+| `./src/components/LeagueMatchesIsland.tsx` | `className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"` | L197 |
+| `./src/components/LeagueMatchesIsland.tsx` | `className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"` | L201 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="p-4 border-b border-neutral-800">` | L204 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<h2 className="text-xl font-bold">` | L206 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="ml-3 text-sm text-neutral-400">` | L208 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<button onClick=\{closeModal\} className="text-neutral-400 hover:text-white">` | L212 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="flex items-center gap-2 text-xs text-neutral-500">` | L218 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">` | L221 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">` | L226 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="flex border-b border-neutral-800">` | L235 |
+| `./src/components/LeagueMatchesIsland.tsx` | `className=\{`px-4 py-3 text-sm font-medium border-b-2 transition $\{` | L238 |
+| `./src/components/LeagueMatchesIsland.tsx` | `activeTab === 'screenshot' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'` | L239 |
+| `./src/components/LeagueMatchesIsland.tsx` | `className=\{`px-4 py-3 text-sm font-medium border-b-2 transition $\{` | L246 |
+| `./src/components/LeagueMatchesIsland.tsx` | `activeTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'` | L247 |
+| `./src/components/LeagueMatchesIsland.tsx` | `className=\{`px-4 py-3 text-sm font-medium border-b-2 transition $\{` | L254 |
+| `./src/components/LeagueMatchesIsland.tsx` | `activeTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'` | L255 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">` | L272 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="mb-4 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-300 text-sm">` | L280 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<div className="text-center py-8 text-neutral-400">Loading stats...</div>` | L285 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<table className="w-full text-sm">` | L298 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<thead className="bg-neutral-950 text-neutral-300">` | L299 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-left py-2 px-4">Player</th>` | L301 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-center py-2 px-4">GRD</th>` | L302 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">PTS</th>` | L303 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">REB</th>` | L304 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">AST</th>` | L305 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">STL</th>` | L306 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">BLK</th>` | L307 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">TO</th>` | L308 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">PF</th>` | L309 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">FG</th>` | L310 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">3PT</th>` | L311 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">FT</th>` | L312 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<th className="text-right py-2 px-4">+/-</th>` | L313 |
+| `./src/components/LeagueMatchesIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-neutral-950 $\{isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'\}`\}>` | L320 |
+
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-|text-|border-|from-|to-" • 0 matches</summary>
+
+Output mode: content
+
+
+_No matches found_
+
+</details>
+
+---
+
+
+
+---
+
+Checking a few more components to see all color usage:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro
+
+---
+
+Tool use: **glob_file_search**
+
+<details>
+<summary>Searched codebase "*.tsx" • **20** results in **1** directory</summary>
+
+Directory: **/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components** (20 files)
+
+| File |
+|------|
+| `MatchesListIsland.tsx` |
+| `SpotlightMatchup.tsx` |
+| `LeagueMatchesIsland.tsx` |
+| `BracketDisplay.tsx` |
+| `LeagueTabsIsland.tsx` |
+| `PlayerBadgesIsland.tsx` |
+| `player/tabs/Badges.tsx` |
+| `TournamentTabsIsland.tsx` |
+| `RankTableIsland.tsx` |
+| `SentryTestComponent.tsx` |
+| `TeamTabsIsland.tsx` |
+| `TeamMatchesIsland.tsx` |
+| `player/tabs/Overview.tsx` |
+| `player/Tabs.tsx` |
+| `AchievementsIsland.tsx` |
+| `player/tabs/Career.tsx` |
+| `player/tabs/Media.tsx` |
+| `player/tabs/Games.tsx` |
+| `PlayerStatsIsland.tsx` |
+| `PlayerGamesIsland.tsx` |
+
+</details>
+
+---
+
+
+
+---
+
+Updating the color scheme to red, white, and blue, maintaining readability. Updating Tailwind config and key components:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [-] Update Tailwind config with red, white, and blue color scheme
+- [ ] Update Navigation component colors (logo gradient, nav links, active states)
+- [ ] Update page backgrounds and text colors throughout the site
+- [ ] Update component colors (cards, borders, hover states, status indicators)
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/tailwind.config.mjs</summary>
+
+**Chunk 1**
+Lines added: 37, lines removed: 2
+
+```diff
+@@ -5,6 +5,41 @@
+      extend: {
+        colors: {
+-         brand: { gold: "#D4AF37", black: "#0a0a0a", blue: "#0051FF", xbox: "#9BF00B" },
+-         gold: "#D4AF37"
++         brand: { 
++           gold: "#D4AF37", 
++           black: "#0a0a0a", 
++           blue: "#1E3A8A", // Deep blue (replacing bright blue)
++           red: "#DC2626", // Vibrant red
++           white: "#FFFFFF",
++           navy: "#0F172A", // Very dark blue for backgrounds
++           xbox: "#9BF00B" 
++         },
++         gold: "#D4AF37",
++         // Custom red, white, blue palette
++         patriot: {
++           red: {
++             50: "#FEF2F2",
++             100: "#FEE2E2",
++             200: "#FECACA",
++             300: "#FCA5A5",
++             400: "#F87171",
++             500: "#EF4444",
++             600: "#DC2626", // Primary red
++             700: "#B91C1C",
++             800: "#991B1B",
++             900: "#7F1D1D",
++           },
++           blue: {
++             50: "#EFF6FF",
++             100: "#DBEAFE",
++             200: "#BFDBFE",
++             300: "#93C5FD",
++             400: "#60A5FA",
++             500: "#3B82F6",
++             600: "#2563EB",
++             700: "#1D4ED8",
++             800: "#1E3A8A", // Primary blue
++             900: "#1E40AF",
++           },
++         }
+        }
+      }
+```
+
+</details>
+
+---
+
+
+
+---
+
+Updating the Navigation component with the new color scheme:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Update Tailwind config with red, white, and blue color scheme
+- [-] Update Navigation component colors (logo gradient, nav links, active states)
+- [ ] Update page backgrounds and text colors throughout the site
+- [ ] Update component colors (cards, borders, hover states, status indicators)
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/Navigation.astro</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -4,11 +4,11 @@
+  ---
+  
+- <nav class="bg-neutral-900 border-b border-neutral-800 sticky top-0 z-50">
++ <nav class="bg-patriot-blue-900 border-b border-patriot-blue-800 sticky top-0 z-50">
+    <div class="mx-auto max-w-6xl px-6 py-4">
+      <div class="flex items-center justify-between">
+        <!-- Logo/Title -->
+        <a href="/" class="flex items-center gap-2" aria-label="Pro-Am Rankings Home">
+          <img src="/GR.svg" alt="Pro-Am Rankings" class="h-8 w-auto" loading="eager" decoding="async" />
+-         <span class="text-xl font-bold bg-gradient-to-r from-blue-500 to-lime-400 bg-clip-text text-transparent">
++         <span class="text-xl font-bold bg-gradient-to-r from-patriot-red-600 via-white to-patriot-blue-600 bg-clip-text text-transparent">
+            Pro-Am Rankings
+          </span>
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -20,5 +20,5 @@
+            <a 
+              href="/" 
+-             class={`hover:text-blue-400 transition ${currentPath === '/' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-red-400 transition ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              Home
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -28,5 +28,5 @@
+            <a 
+              href="/teams" 
+-             class={`hover:text-blue-400 transition ${currentPath.startsWith('/teams') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              Teams
+```
+
+**Chunk 4**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -36,5 +36,5 @@
+            <a 
+              href="/players" 
+-             class={`hover:text-blue-400 transition ${currentPath.startsWith('/players') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              Players
+```
+
+**Chunk 5**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -44,5 +44,5 @@
+            <a 
+              href="/leagues" 
+-             class={`hover:text-blue-400 transition ${currentPath.startsWith('/leagues') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              Leagues
+```
+
+**Chunk 6**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -52,5 +52,5 @@
+            <a 
+              href="/tournaments" 
+-             class={`hover:text-blue-400 transition ${currentPath.startsWith('/tournaments') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              Tournaments
+```
+
+**Chunk 7**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -60,5 +60,5 @@
+            <a 
+              href="/matches" 
+-             class={`hover:text-blue-400 transition ${currentPath.startsWith('/matches') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              Matches
+```
+
+**Chunk 8**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -68,5 +68,5 @@
+            <a 
+              href="/achievements" 
+-             class={`hover:text-blue-400 transition ${currentPath.startsWith('/achievements') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              Achievements
+```
+
+**Chunk 9**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -76,5 +76,5 @@
+            <a 
+              href="/ranking-system" 
+-             class={`hover:text-blue-400 transition ${currentPath === '/ranking-system' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-blue-400 transition ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              System
+```
+
+**Chunk 10**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -84,5 +84,5 @@
+            <a 
+              href="/about" 
+-             class={`hover:text-blue-400 transition ${currentPath === '/about' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
++             class={`hover:text-patriot-red-400 transition ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            >
+              About
+```
+
+**Chunk 11**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -94,5 +94,5 @@
+        <button 
+          id="mobile-menu-button"
+-         class="lg:hidden text-neutral-300 hover:text-white"
++         class="lg:hidden text-neutral-200 hover:text-white"
+          aria-label="Toggle menu"
+        >
+```
+
+**Chunk 12**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -109,5 +109,5 @@
+            <a 
+              href="/" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/' ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            >
+              Home
+```
+
+**Chunk 13**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -117,5 +117,5 @@
+            <a 
+              href="/teams" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/teams') ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            >
+              Teams
+```
+
+**Chunk 14**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -125,5 +125,5 @@
+            <a 
+              href="/players" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/players') ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            >
+              Players
+```
+
+**Chunk 15**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -133,5 +133,5 @@
+            <a 
+              href="/leagues" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/leagues') ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            >
+              Leagues
+```
+
+**Chunk 16**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -141,5 +141,5 @@
+            <a 
+              href="/tournaments" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/tournaments') ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            >
+              Tournaments
+```
+
+**Chunk 17**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -149,5 +149,5 @@
+            <a 
+              href="/matches" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/matches') ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            >
+              Matches
+```
+
+**Chunk 18**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -157,5 +157,5 @@
+            <a 
+              href="/achievements" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/achievements') ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            >
+              Achievements
+```
+
+**Chunk 19**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -165,5 +165,5 @@
+            <a 
+              href="/ranking-system" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/ranking-system' ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            >
+              Ranking System
+```
+
+**Chunk 20**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -173,5 +173,5 @@
+            <a 
+              href="/about" 
+-             class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/about' ? 'bg-neutral-800 text-blue-400' : ''}`}
++             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            >
+              About
+```
+
+</details>
+
+---
+
+
+
+---
+
+Updating page backgrounds. Searching for body tag usages:
+
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "body class=" in "src/pages" • 21 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/pages/students/index.astro` | `<body class="bg-neutral-950 text-white">` | L107 |
+| `src/pages/colleges/[id].astro` | `<body class="bg-neutral-950 text-white">` | L36 |
+| `src/pages/colleges/index.astro` | `<body class="bg-neutral-950 text-white">` | L83 |
+| `src/pages/leagues/[id].astro` | `<body class="bg-neutral-950 text-white">` | L575 |
+| `src/pages/matches/index.astro` | `<body class="bg-neutral-950 text-white">` | L377 |
+| `src/pages/index.astro` | `<body class="bg-neutral-950 text-white">` | L75 |
+| `src/pages/matchups/[id].astro` | `<body class="bg-neutral-950 text-white">` | L423 |
+| `src/pages/players/[id].astro` | `<body class="bg-neutral-950 text-white">` | L171 |
+| `src/pages/teams/[id].astro` | `<body class="bg-neutral-950 text-white">` | L164 |
+| `src/pages/teams/index.astro` | `<body class="bg-neutral-950 text-white">` | L118 |
+| `src/pages/leagues/index.astro` | `<body class="bg-neutral-950 text-white">` | L144 |
+| `src/pages/tournaments/[id].astro` | `<body class="bg-neutral-950 text-white">` | L261 |
+| `src/pages/tournaments/index.astro` | `<body class="bg-neutral-950 text-white">` | L127 |
+| `src/pages/players/index.astro` | `<body class="bg-neutral-950 text-white">` | L127 |
+| `src/pages/ranking-system.astro` | `<body class="bg-neutral-950 text-white">` | L12 |
+| `src/pages/ranking-system.astro` | `<tbody class="divide-y divide-neutral-800">` | L68 |
+| `src/pages/ranking-system.astro` | `<tbody class="divide-y divide-neutral-800">` | L301 |
+| `src/pages/ranking-system.astro` | `<tbody class="divide-y divide-neutral-800">` | L453 |
+| `src/pages/about.astro` | `<body class="bg-neutral-950 text-white">` | L12 |
+| `src/pages/sentry-test.astro` | `<body class="bg-gray-100 min-h-screen p-8">` | L15 |
+| `src/pages/achievements/index.astro` | `<body class="bg-neutral-950 text-white min-h-screen">` | L23 |
+
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro
+
+---
+
+
+
+---
+
+Updating page backgrounds and key component colors. Starting with the main pages, then updating components:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Update Tailwind config with red, white, and blue color scheme
+- [x] Update Navigation component colors (logo gradient, nav links, active states)
+- [-] Update page backgrounds and text colors throughout the site
+- [ ] Update component colors (cards, borders, hover states, status indicators)
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -73,5 +73,5 @@
+      <title>Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -82,5 +82,5 @@
+        <section class="space-y-2 sm:hidden">
+          {rows.map((r: typeof rows[0]) => (
+-           <article class="rounded border border-neutral-800 p-3">
++           <article class="rounded border border-patriot-blue-800 p-3">
+              <header class="flex items-center gap-3">
+                {r.logo_url ? (
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -88,5 +88,5 @@
+                     alt="" class="h-8 w-8 rounded object-cover" loading="lazy" />
+                ) : (
+-                 <div class="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                 <div class="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold">
+                    {r.team_name?.substring(0, 2).toUpperCase() || '??'}
+                  </div>
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-neutral-950" in "src/pages" • 16 matches</summary>
+
+Output mode: files_with_matches
+
+
+| File |
+|------|
+| `src/pages/students/index.astro` |
+| `src/pages/colleges/[id].astro` |
+| `src/pages/colleges/index.astro` |
+| `src/pages/leagues/[id].astro` |
+| `src/pages/matches/index.astro` |
+| `src/pages/matchups/[id].astro` |
+| `src/pages/players/[id].astro` |
+| `src/pages/teams/[id].astro` |
+| `src/pages/teams/index.astro` |
+| `src/pages/leagues/index.astro` |
+| `src/pages/tournaments/[id].astro` |
+| `src/pages/tournaments/index.astro` |
+| `src/pages/players/index.astro` |
+| `src/pages/ranking-system.astro` |
+| `src/pages/about.astro` |
+| `src/pages/achievements/index.astro` |
+
+
+</details>
+
+---
+
+
+
+---
+
+Updating body backgrounds across all pages:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -116,5 +116,5 @@
+      <title>Teams - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -125,5 +125,5 @@
+      <title>Players - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -142,5 +142,5 @@
+      <title>Leagues - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -125,5 +125,5 @@
+      <title>Tournaments - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -259,5 +259,5 @@
+      <title>{tournament.name} - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -162,5 +162,5 @@
+      <title>{team.name} - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -169,5 +169,5 @@
+      <title>{player.gamertag} - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -573,5 +573,5 @@
+      <title>{league.league_name} - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matches/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -375,5 +375,5 @@
+      <title>Recent Matches - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matchups/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -421,5 +421,5 @@
+      <title>{spotlightMatch.stage} - {spotlightMatch.team_a.name} vs {spotlightMatch.team_b.name} - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -10,5 +10,5 @@
+      <title>About - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-5xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -10,5 +10,5 @@
+      <title>Ranking System - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-5xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/achievements/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -21,5 +21,5 @@
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    </head>
+-   <body class="bg-neutral-950 text-white min-h-screen">
++   <body class="bg-brand-navy text-white min-h-screen">
+      <Navigation />
+      
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/colleges/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -81,5 +81,5 @@
+      <title>Colleges - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/colleges/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -34,5 +34,5 @@
+      <title>{college.name} - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-5xl p-6">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/students/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -105,5 +105,5 @@
+      <title>Prospective Students - Pro-Am Rankings</title>
+    </head>
+-   <body class="bg-neutral-950 text-white">
++   <body class="bg-brand-navy text-white">
+      <Navigation />
+      <main class="mx-auto max-w-6xl p-6">
+```
+
+</details>
+
+---
+
+
+
+---
+
+Updating component colors, starting with common patterns in key components:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Update Tailwind config with red, white, and blue color scheme
+- [x] Update Navigation component colors (logo gradient, nav links, active states)
+- [x] Update page backgrounds and text colors throughout the site
+- [-] Update component colors (cards, borders, hover states, status indicators)
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/RankTableIsland.tsx
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "What are the most common color classes used in cards, buttons, and interactive elements?" • **11** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/components/TournamentTabsIsland.tsx` | L119-1351 |
+| `src/components/AchievementsIsland.tsx` | L4-321 |
+| `src/components/Navigation.astro` | L53 |
+| `src/components/player/tabs/Media.tsx` | L18-254 |
+| `src/components/player/tabs/Badges.tsx` | L7-488 |
+| `src/components/player/Tabs.tsx` | L7-66 |
+| `src/components/PlayerBadgesIsland.tsx` | L7-488 |
+| `src/components/AchievementsIsland.tsx` | L35-321 |
+| `src/components/Navigation.astro` | L159-194 |
+| `src/components/Navigation.astro` | L46-106 |
+| `src/components/LeagueTabsIsland.tsx` | L122-1668 |
+
+</details>
+
+---
+
+
+
+---
+
+Updating common component color patterns, starting with RankTableIsland:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/RankTableIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 6, lines removed: 6
+
+```diff
+@@ -23,18 +23,18 @@
+    return (
+      <table className="w-full text-sm hidden sm:table" id="rankings-table">
+-       <thead className="text-neutral-300 sticky top-0 bg-neutral-950">
++       <thead className="text-neutral-200 sticky top-0 bg-patriot-blue-900">
+          <tr>
+            <th className="text-left py-2">Rank</th>
+            <th className="text-left py-2">Team</th>
+-           <th className="text-right py-2 cursor-pointer hover:text-white" onClick={() => setSortKey("hybrid_score")}>Score</th>
+-           <th className="text-right py-2 cursor-pointer hover:text-white" onClick={() => setSortKey("elo_rating")}>Elo</th>
+-           <th className="text-right py-2 cursor-pointer hover:text-white" onClick={() => setSortKey("current_rp")}>RP</th>
++           <th className="text-right py-2 cursor-pointer hover:text-patriot-red-400 transition" onClick={() => setSortKey("hybrid_score")}>Score</th>
++           <th className="text-right py-2 cursor-pointer hover:text-patriot-blue-400 transition" onClick={() => setSortKey("elo_rating")}>Elo</th>
++           <th className="text-right py-2 cursor-pointer hover:text-patriot-red-400 transition" onClick={() => setSortKey("current_rp")}>RP</th>
+            <th className="text-center py-2">Tier</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sorted.map((r, idx) => (
+-           <tr key={r.team_id} className="border-b border-neutral-800 hover:bg-neutral-900">
+-             <td className="py-2 text-neutral-400">#{idx + 1}</td>
++           <tr key={r.team_id} className="border-b border-patriot-blue-800 hover:bg-patriot-blue-900/50 transition">
++             <td className="py-2 text-neutral-300">#{idx + 1}</td>
+              <td className="py-2 flex items-center gap-2">
+                {r.logo_url ? (
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -46,5 +46,5 @@
+                  />
+                ) : (
+-                 <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
++                 <div className="h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold">
+                    {r.team_name?.substring(0, 2).toUpperCase() || '??'}
+                  </div>
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -56,5 +56,5 @@
+              <td className="text-right">{r.current_rp ?? 0}</td>
+              <td className="text-center">
+-               <span className="px-2 py-0.5 rounded text-xs font-bold bg-neutral-800">
++               <span className="px-2 py-0.5 rounded text-xs font-bold bg-patriot-blue-800 text-white">
+                  {r.leaderboard_tier || '-'}
+                </span>
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-blue-600|text-blue-400|hover:text-blue-400|border-blue-500" in "src/components" • 19 matches</summary>
+
+Output mode: files_with_matches
+
+
+| File |
+|------|
+| `src/components/MatchesListIsland.tsx` |
+| `src/components/SpotlightMatchup.tsx` |
+| `src/components/LeagueMatchesIsland.tsx` |
+| `src/components/BracketDisplay.tsx` |
+| `src/components/LeagueTabsIsland.tsx` |
+| `src/components/PlayerBadgesIsland.tsx` |
+| `src/components/player/tabs/Badges.tsx` |
+| `src/components/TournamentTabsIsland.tsx` |
+| `src/components/SentryTestComponent.tsx` |
+| `src/components/TeamTabsIsland.tsx` |
+| `src/components/TeamMatchesIsland.tsx` |
+| `src/components/player/tabs/Overview.tsx` |
+| `src/components/player/Tabs.tsx` |
+| `src/components/AchievementsIsland.tsx` |
+| `src/components/player/tabs/Career.tsx` |
+| `src/components/player/tabs/Media.tsx` |
+| `src/components/player/tabs/Games.tsx` |
+| `src/components/PlayerStatsIsland.tsx` |
+| `src/components/PlayerGamesIsland.tsx` |
+
+
+</details>
+
+---
+
+
+
+---
+
+Updating key components, focusing on the most visible ones. Reviewing and updating MatchesListIsland, SpotlightMatchup, and button components:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx
+
+---
+
+
+
+---
+
+Updating MatchesListIsland and SpotlightMatchup components:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -153,6 +153,6 @@
+              key={match.id}
+              onClick={() => handleMatchClick(match)}
+-             className={`rounded-lg border border-neutral-800 p-4 transition ${
+-               match.boxscore_url ? 'hover:border-blue-500 cursor-pointer' : ''
++             className={`rounded-lg border border-patriot-blue-800 p-4 transition ${
++               match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : ''
+              }`}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -169,5 +169,5 @@
+                  <a
+                    href={`/teams/${match.team_a_id}`}
+-                   className="hover:text-blue-400 truncate"
++                   className="hover:text-patriot-red-400 truncate"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -185,5 +185,5 @@
+                  <a
+                    href={`/teams/${match.team_b_id}`}
+-                   className="hover:text-blue-400 truncate"
++                   className="hover:text-patriot-red-400 truncate"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -217,5 +217,5 @@
+                {getVerificationBadge(match)}
+                {match.boxscore_url && (
+-                 <span className="ml-auto text-blue-400">📊 View boxscore</span>
++                 <span className="ml-auto text-patriot-blue-400">📊 View boxscore</span>
+                )}
+                <div className="flex gap-2">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -223,5 +223,5 @@
+                    <a 
+                      href={`/matchups/${match.id}`}
+-                     className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
++                     className="text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-2 py-1 rounded transition"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+```
+
+</details>
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -271,5 +271,5 @@
+                  )}
+                  {selectedMatch.tournament && (
+-                   <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
++                   <span className="px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300">
+                      {selectedMatch.tournament.name}
+                    </span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -286,6 +286,6 @@
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                    activeTab === 'screenshot'
+-                     ? 'border-blue-500 text-blue-400'
+-                     : 'border-transparent text-neutral-400 hover:text-white'
++                     ? 'border-patriot-red-500 text-patriot-red-400'
++                     : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+**Chunk 2**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -296,6 +296,6 @@
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                    activeTab === 'player-stats'
+-                     ? 'border-blue-500 text-blue-400'
+-                     : 'border-transparent text-neutral-400 hover:text-white'
++                     ? 'border-patriot-red-500 text-patriot-red-400'
++                     : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+**Chunk 3**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -306,6 +306,6 @@
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                    activeTab === 'team-stats'
+-                     ? 'border-blue-500 text-blue-400'
+-                     : 'border-transparent text-neutral-400 hover:text-white'
++                     ? 'border-patriot-red-500 text-patriot-red-400'
++                     : 'border-transparent text-neutral-300 hover:text-white'
+                  }`}
+                >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -119,5 +119,5 @@
+      
+      return (
+-       <div className="bg-neutral-800 rounded-lg p-4 border border-neutral-700 hover:border-blue-500 transition">
++       <div className="bg-patriot-blue-900 rounded-lg p-4 border border-patriot-blue-800 hover:border-patriot-red-500 transition">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+```
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx
+
+---
+
+
+
+---
+
+Updating button components across the codebase, focusing on active button states:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/player/tabs/Media.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -123,6 +123,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'all' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-blue-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+**Chunk 2**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -133,6 +133,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'youtube' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-blue-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+**Chunk 3**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -143,6 +143,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'twitch' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-blue-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+**Chunk 4**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -153,6 +153,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'twitter' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-blue-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+**Chunk 5**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -163,6 +163,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'instagram' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-blue-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/player/tabs/Badges.tsx</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -154,6 +154,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'all' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-red-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+**Chunk 2**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -164,6 +164,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'unlocked' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-red-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+**Chunk 3**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -174,6 +174,6 @@
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === 'locked' 
+-                 ? 'bg-blue-600 text-white' 
+-                 : 'bg-neutral-800 text-neutral-400 hover:text-white'
++                 ? 'bg-patriot-red-600 text-white' 
++                 : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+              }`}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -226,5 +226,5 @@
+          {/* Team Stats */}
+          {team.tournament_stats && (
+-           <div className="bg-neutral-800 rounded-lg p-4 mb-6 border border-neutral-700">
++           <div className="bg-patriot-blue-900 rounded-lg p-4 mb-6 border border-patriot-blue-800">
+              <h3 className="text-lg font-semibold mb-3 text-white">Tournament Stats</h3>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-neutral-800|bg-neutral-900|border-neutral-800|border-neutral-700" in "src/components/SpotlightMatchup.tsx" • 7 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/SpotlightMatchup.tsx` | `<div className=\{`rounded-lg p-6 mb-6 $\{isWinner && match.winner_id ? 'bg-green-900/20 border-green-500' : 'bg-neutral-800'\} border`\}>` | L188 |
+| `src/components/SpotlightMatchup.tsx` | `<div className="flex border-b border-neutral-700 mb-4">` | L322 |
+| `src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">` | L360 |
+| `src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L365 |
+| `src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L384 |
+| `src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L406 |
+| `src/components/SpotlightMatchup.tsx` | `<div className="bg-neutral-800 rounded-lg p-4">` | L424 |
+
+
+</details>
+
+---
+
+
+
+---
+
+Updating remaining neutral colors in SpotlightMatchup:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -186,5 +186,5 @@
+        <div className={`flex-1 ${isTeamA ? 'pr-4' : 'pl-4'}`}>
+          {/* Team Header */}
+-         <div className={`rounded-lg p-6 mb-6 ${isWinner && match.winner_id ? 'bg-green-900/20 border-green-500' : 'bg-neutral-800'} border`}>
++         <div className={`rounded-lg p-6 mb-6 ${isWinner && match.winner_id ? 'bg-green-900/20 border-green-500' : 'bg-patriot-blue-900'} border border-patriot-blue-800`}>
+            <div className="flex items-center gap-4 mb-3">
+              {team.logo_url ? (
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -320,5 +320,5 @@
+        {/* Tab Navigation for Mobile */}
+        <div className="md:hidden">
+-         <div className="flex border-b border-neutral-700 mb-4">
++         <div className="flex border-b border-patriot-blue-800 mb-4">
+            <button
+              onClick={() => setActiveTab('rosters')}
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -358,5 +358,5 @@
+        {/* Head-to-Head Section */}
+        {match.head_to_head && (
+-         <div className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">
++         <div className="bg-patriot-blue-900 rounded-lg p-6 border border-patriot-blue-800">
+            <h3 className="text-xl font-bold text-white mb-6">Head-to-Head History</h3>
+            
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -363,5 +363,5 @@
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Overall Record */}
+-             <div className="bg-neutral-800 rounded-lg p-4">
++             <div className="bg-patriot-blue-800 rounded-lg p-4">
+                <h4 className="text-lg font-semibold text-white mb-4">All-Time Series</h4>
+                <div className="flex justify-between items-center mb-4">
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -382,5 +382,5 @@
+  
+              {/* Average Scores */}
+-             <div className="bg-neutral-800 rounded-lg p-4">
++             <div className="bg-patriot-blue-800 rounded-lg p-4">
+                <h4 className="text-lg font-semibold text-white mb-4">Average Scores</h4>
+                <div className="flex justify-between items-center mb-4">
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -404,5 +404,5 @@
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              {match.head_to_head.last_meeting && (
+-               <div className="bg-neutral-800 rounded-lg p-4">
++               <div className="bg-patriot-blue-800 rounded-lg p-4">
+                  <h4 className="text-lg font-semibold text-white mb-2">Last Meeting</h4>
+                  <div className="text-sm text-neutral-400">
+```
+
+**Chunk 4**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -422,5 +422,5 @@
+              )}
+  
+-             <div className="bg-neutral-800 rounded-lg p-4">
++             <div className="bg-patriot-blue-800 rounded-lg p-4">
+                <h4 className="text-lg font-semibold text-white mb-4">Last 5 Meetings</h4>
+                <div className="flex justify-between items-center">
+```
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx
+
+---
+
+
+
+---
+
+Updating modal colors and remaining tab styles:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -242,5 +242,5 @@
+          >
+            <div
+-             className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
++             className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -246,5 +246,5 @@
+            >
+              {/* Modal Header */}
+-             <div className="p-4 border-b border-neutral-800">
++             <div className="p-4 border-b border-patriot-blue-800">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-xl font-bold">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -281,5 +281,5 @@
+  
+              {/* Tabs */}
+-             <div className="flex border-b border-neutral-800">
++             <div className="flex border-b border-patriot-blue-800">
+                <button
+                  onClick={() => setActiveTab('screenshot')}
+```
+
+</details>
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -325,5 +325,5 @@
+              className={`flex-1 py-2 text-sm font-medium ${
+                activeTab === 'rosters'
+-                 ? 'text-blue-400 border-b-2 border-blue-400'
++                 ? 'text-patriot-red-400 border-b-2 border-patriot-red-400'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+```
+
+**Chunk 2**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -335,5 +335,5 @@
+              className={`flex-1 py-2 text-sm font-medium ${
+                activeTab === 'stats'
+-                 ? 'text-blue-400 border-b-2 border-blue-400'
++                 ? 'text-patriot-red-400 border-b-2 border-patriot-red-400'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -346,5 +346,5 @@
+                className={`flex-1 py-2 text-sm font-medium ${
+                  activeTab === 'head-to-head'
+-                   ? 'text-blue-400 border-b-2 border-blue-400'
++                   ? 'text-patriot-red-400 border-b-2 border-patriot-red-400'
+                    : 'text-neutral-400 hover:text-white'
+                }`}
+```
+
+</details>
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "text-blue-400|border-blue-400" in "src/components/SpotlightMatchup.tsx" • 1 match</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/SpotlightMatchup.tsx` | `'Min': 'text-blue-400',` | L111 |
+
+
+</details>
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [x] Update Tailwind config with red, white, and blue color scheme
+- [x] Update Navigation component colors (logo gradient, nav links, active states)
+- [x] Update page backgrounds and text colors throughout the site
+- [x] Update component colors (cards, borders, hover states, status indicators)
+
+---
+
+
+
+---
+
+Fixing the remaining blue-400 reference and checking for any other important updates:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/SpotlightMatchup.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -109,5 +109,5 @@
+        'SuperMax': 'text-red-400',
+        'Mid': 'text-green-400',
+-       'Min': 'text-blue-400',
++       'Min': 'text-patriot-blue-400',
+        'Rookie': 'text-purple-400'
+      };
+```
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx
+
+---
+
+Tool use: **grep**
+
+<details>
+<summary>Grep for "bg-neutral-950|bg-neutral-900" in "src/components/MatchesListIsland.tsx" • 4 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `src/components/MatchesListIsland.tsx` | `<thead className="bg-neutral-950 text-neutral-300">` | L360 |
+| `src/components/MatchesListIsland.tsx` | `<tr key=\{idx\} className=\{`hover:bg-neutral-950 $\{isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'\}`\}>` | L381 |
+| `src/components/MatchesListIsland.tsx` | `<thead className="bg-neutral-950 text-neutral-300">` | L435 |
+| `src/components/MatchesListIsland.tsx` | `<tr key=\{idx\} className="hover:bg-neutral-950">` | L465 |
+
+
+</details>
+
+---
+
+
+
+---
+
+Updating table headers and team colors:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -358,5 +358,5 @@
+                        return (
+                          <table className="w-full text-sm">
+-                           <thead className="bg-neutral-950 text-neutral-300">
++                           <thead className="bg-patriot-blue-900 text-neutral-200">
+                              <tr>
+                                <th className="text-left py-2 px-4">Player</th>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -379,5 +379,5 @@
+                                const isTeamA = stat.team_id === selectedMatch?.team_a_id;
+                                return (
+-                                 <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
++                                 <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-950/20' : 'bg-patriot-red-950/20'}`}>
+                                    <td className="py-2 px-4">{stat.player_name}</td>
+                                    <td className="text-center py-2 px-4">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -463,5 +463,5 @@
+  
+                            return (
+-                             <tr key={idx} className="hover:bg-neutral-950">
++                             <tr key={idx} className="hover:bg-patriot-blue-900/50">
+                                <td className="py-2 px-4 font-semibold">
+                                  {stat.teams?.name || 'Team'}
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -382,5 +382,5 @@
+                                    <td className="py-2 px-4">{stat.player_name}</td>
+                                    <td className="text-center py-2 px-4">
+-                                     <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
++                                     <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">
+                                        {stat.grd || '-'}
+                                      </span>
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 3 files</summary>
+      
+Lint paths:
+
+- `tailwind.config.mjs`
+- `src/components/Navigation.astro`
+- `src/components/RankTableIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+
+
+---
+
+Fixing invalid color references (patriot-blue-950 and patriot-red-950):
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -379,5 +379,5 @@
+                                const isTeamA = stat.team_id === selectedMatch?.team_a_id;
+                                return (
+-                                 <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-950/20' : 'bg-patriot-red-950/20'}`}>
++                                 <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'}`}>
+                                    <td className="py-2 px-4">{stat.player_name}</td>
+                                    <td className="text-center py-2 px-4">
+```
+
+</details>
+
+---
+
+Tool use: **read_lints**
+
+<details>
+          <summary>Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `src/components`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+
+---
+
+
+
+---
+
+Updated the site to a red, white, and blue color scheme while maintaining readability. Summary of changes:
+
+## Changes Made:
+
+### 1. **Tailwind Configuration**
+   - Added custom `patriot` color palette with red and blue shades
+   - Added `brand-navy` (#0F172A) for dark backgrounds
+
+### 2. **Navigation**
+   - Logo gradient: red → white → blue
+   - Active links alternate between red and blue
+   - Nav background: dark blue (`patriot-blue-900`)
+
+### 3. **Page Backgrounds**
+   - Changed from `bg-neutral-950` to `bg-brand-navy` across all pages
+
+### 4. **Components**
+   - Cards/borders: `patriot-blue-800` and `patriot-blue-900`
+   - Hover states: red and blue accents
+   - Active buttons: `patriot-blue-600` or `patriot-red-600`
+   - Table headers: `patriot-blue-900`
+   - Links: red/blue hover states
+
+### Readability Features:
+- ✅ Dark navy background for contrast
+- ✅ White text maintained
+- ✅ Lighter blue tints for cards and borders
+- ✅ Status colors preserved (green for positive, red for negative)
+- ✅ Sufficient contrast for accessibility
+
+The site now uses a consistent red, white, and blue theme. Start your dev server to review the changes, or tell me if you want any adjustments.
+
+---
+
+_**User (2025-10-29 16:39Z)**_
+
+ok can you review for mobile readability, 
+
+in the matches tables we may need to use logos when available to save space,
+
+90% of users will view site on a mobile phone
+
+---
+
+_**Assistant (composer-1)**_
+
+
+
+---
+
+
+Reviewing mobile readability and optimizing matches tables for mobile. Examining matches components to identify improvements.
+
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx
+
+---
+
+Tool use: **codebase_search**
+
+<details>
+                <summary>Searched codebase "How are matches displayed on mobile devices with team names and logos?" • **7** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/components/TeamTabsIsland.tsx` | L111-963 |
+| `src/components/MatchesListIsland.tsx` | L44-508 |
+| `src/components/TournamentTabsIsland.tsx` | L119-1351 |
+| `src/components/LeagueTabsIsland.tsx` | L122-1668 |
+| `src/components/LeagueMatchesIsland.tsx` | L43-440 |
+| `src/components/TeamMatchesIsland.tsx` | L44-475 |
+| `src/components/RankTableIsland.tsx` | L11-66 |
+
+</details>
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matches/index.astro
+
+---
+
+
+
+---
+
+Examining mobile-specific layouts and identifying improvements:
+
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx
+
+---
+
+Tool use: **read_file**
+
+Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx
+
+---
+
+
+
+---
+
+Optimizing matches components for mobile: prioritizing logos, improving spacing, and enhancing readability. Starting with the main matches components:
+
+
+---
+
+Tool use: **todo_write**
+
+## Todo List
+
+- [-] Optimize MatchesListIsland for mobile - use logos prominently, hide team names when logos available
+- [ ] Update LeagueMatchesIsland - add logos and optimize for mobile
+- [ ] Update TeamMatchesIsland - add logos and mobile optimization
+- [ ] Review and fix remaining color scheme issues in matches components
+- [ ] Improve mobile text sizes and spacing throughout matches
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 44, lines removed: 20
+
+```diff
+@@ -157,43 +157,67 @@
+              }`}
+            >
+-             <div className="flex items-center justify-between">
++             <div className="flex items-center justify-between gap-2 sm:gap-4">
+                {/* Team A */}
+-               <div className="flex items-center gap-3 flex-1">
+-                 {match.team_a?.logo_url && (
+-                   <img
+-                     src={match.team_a.logo_url}
+-                     alt=""
+-                     className="h-8 w-8 rounded"
+-                   />
++               <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
++                 {match.team_a?.logo_url ? (
++                   <a
++                     href={`/teams/${match.team_a_id}`}
++                     onClick={(e) => e.stopPropagation()}
++                     className="flex-shrink-0"
++                     title={match.team_a.name || 'Team A'}
++                   >
++                     <img
++                       src={match.team_a.logo_url}
++                       alt={match.team_a.name || 'Team A'}
++                       className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
++                     />
++                   </a>
++                 ) : (
++                   <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
++                     {(match.team_a?.name || 'TA').substring(0, 2).toUpperCase()}
++                   </div>
+                  )}
+                  <a
+                    href={`/teams/${match.team_a_id}`}
+-                   className="hover:text-patriot-red-400 truncate"
++                   className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
+                    onClick={(e) => e.stopPropagation()}
++                   title={match.team_a?.name || 'Team A'}
+                  >
+                    {match.team_a?.name || 'Team A'}
+                  </a>
+-                 <span className="text-xl font-bold ml-auto">{match.score_a ?? 0}</span>
++                 <span className="text-lg sm:text-xl font-bold ml-auto text-white">{match.score_a ?? 0}</span>
+                </div>
+  
+                {/* VS */}
+-               <div className="px-6 text-neutral-500 font-medium">VS</div>
++               <div className="px-2 sm:px-6 text-neutral-400 text-xs sm:text-sm font-medium flex-shrink-0">VS</div>
+  
+                {/* Team B */}
+-               <div className="flex items-center gap-3 flex-1 justify-end">
+-                 <span className="text-xl font-bold mr-auto">{match.score_b ?? 0}</span>
++               <div className="flex items-center gap-2 sm:gap-3 flex-1 justify-end min-w-0">
++                 <span className="text-lg sm:text-xl font-bold mr-auto text-white">{match.score_b ?? 0}</span>
+                  <a
+                    href={`/teams/${match.team_b_id}`}
+-                   className="hover:text-patriot-red-400 truncate"
++                   className="hover:text-patriot-red-400 truncate text-sm sm:text-base hidden sm:block min-w-0"
+                    onClick={(e) => e.stopPropagation()}
++                   title={match.team_b?.name || 'Team B'}
+                  >
+                    {match.team_b?.name || 'Team B'}
+                  </a>
+-                 {match.team_b?.logo_url && (
+-                   <img
+-                     src={match.team_b.logo_url}
+-                     alt=""
+-                     className="h-8 w-8 rounded"
+-                   />
++                 {match.team_b?.logo_url ? (
++                   <a
++                     href={`/teams/${match.team_b_id}`}
++                     onClick={(e) => e.stopPropagation()}
++                     className="flex-shrink-0"
++                     title={match.team_b.name || 'Team B'}
++                   >
++                     <img
++                       src={match.team_b.logo_url}
++                       alt={match.team_b.name || 'Team B'}
++                       className="h-10 w-10 sm:h-8 sm:w-8 rounded object-cover"
++                     />
++                   </a>
++                 ) : (
++                   <div className="h-10 w-10 sm:h-8 sm:w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold flex-shrink-0">
++                     {(match.team_b?.name || 'TB').substring(0, 2).toUpperCase()}
++                   </div>
+                  )}
+                </div>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -153,5 +153,5 @@
+              key={match.id}
+              onClick={() => handleMatchClick(match)}
+-             className={`rounded-lg border border-patriot-blue-800 p-4 transition ${
++             className={`rounded-lg border border-patriot-blue-800 p-3 sm:p-4 transition ${
+                match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : ''
+              }`}
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -225,5 +225,5 @@
+  
+              {/* Match Info */}
+-             <div className="flex items-center flex-wrap gap-2 mt-3 text-xs text-neutral-500">
++             <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3 text-[10px] sm:text-xs text-neutral-400">
+                <span>{new Date(match.played_at).toLocaleDateString()}</span>
+                {match.league && (
+```
+
+</details>
+
+---
+
+The model provided an ambiguous search string to replace.
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -233,5 +233,5 @@
+                )}
+                {match.tournament && (
+-                 <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
++                 <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs">
+                    {match.tournament.name}
+                  </span>
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -241,5 +241,5 @@
+                {getVerificationBadge(match)}
+                {match.boxscore_url && (
+-                 <span className="ml-auto text-patriot-blue-400">📊 View boxscore</span>
++                 <span className="ml-auto text-patriot-blue-400 text-[10px] sm:text-xs">📊 Boxscore</span>
+                )}
+                <div className="flex gap-2">
+```
+
+</details>
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -247,5 +247,5 @@
+                    <a 
+                      href={`/matchups/${match.id}`}
+-                     className="text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-2 py-1 rounded transition"
++                     className="text-[10px] sm:text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded transition"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+```
+
+</details>
+
+---
+
+
+
+---
+
+Fixing the remaining color issues and updating LeagueMatchesIsland:
+
+
+---
+
+Tool use: **search_replace**
+
+---
+
+
+
+---
+
