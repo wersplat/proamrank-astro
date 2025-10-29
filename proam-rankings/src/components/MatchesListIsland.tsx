@@ -152,8 +152,8 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
           <div
             key={match.id}
             onClick={() => handleMatchClick(match)}
-            className={`rounded-lg border border-neutral-800 p-4 transition ${
-              match.boxscore_url ? 'hover:border-blue-500 cursor-pointer' : ''
+            className={`rounded-lg border border-patriot-blue-800 p-4 transition ${
+              match.boxscore_url ? 'hover:border-patriot-red-500 cursor-pointer' : ''
             }`}
           >
             <div className="flex items-center justify-between">
@@ -168,7 +168,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                 )}
                 <a
                   href={`/teams/${match.team_a_id}`}
-                  className="hover:text-blue-400 truncate"
+                  className="hover:text-patriot-red-400 truncate"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {match.team_a?.name || 'Team A'}
@@ -184,7 +184,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                 <span className="text-xl font-bold mr-auto">{match.score_b ?? 0}</span>
                 <a
                   href={`/teams/${match.team_b_id}`}
-                  className="hover:text-blue-400 truncate"
+                  className="hover:text-patriot-red-400 truncate"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {match.team_b?.name || 'Team B'}
@@ -216,13 +216,13 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
               {match.game_year && <span>• {match.game_year}</span>}
               {getVerificationBadge(match)}
               {match.boxscore_url && (
-                <span className="ml-auto text-blue-400">📊 View boxscore</span>
+                <span className="ml-auto text-patriot-blue-400">📊 View boxscore</span>
               )}
               <div className="flex gap-2">
                 {(match.stage === "Semi Finals" || match.stage === "Finals" || match.stage === "Grand Finals") && (
                   <a 
                     href={`/matchups/${match.id}`}
-                    className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                    className="text-xs bg-patriot-blue-900 hover:bg-patriot-blue-800 text-patriot-blue-300 px-2 py-1 rounded transition"
                     onClick={(e) => e.stopPropagation()}
                   >
                     Spotlight
@@ -241,11 +241,11 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
           onClick={closeModal}
         >
           <div
-            className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-4 border-b border-neutral-800">
+            <div className="p-4 border-b border-patriot-blue-800">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-xl font-bold">
                   {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
@@ -270,7 +270,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                   </span>
                 )}
                 {selectedMatch.tournament && (
-                  <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
+                  <span className="px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300">
                     {selectedMatch.tournament.name}
                   </span>
                 )}
@@ -280,13 +280,13 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
             </div>
 
             {/* Tabs */}
-            <div className="flex border-b border-neutral-800">
+            <div className="flex border-b border-patriot-blue-800">
               <button
                 onClick={() => setActiveTab('screenshot')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
                   activeTab === 'screenshot'
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-neutral-400 hover:text-white'
+                    ? 'border-patriot-red-500 text-patriot-red-400'
+                    : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Screenshot
@@ -295,8 +295,8 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                 onClick={() => setActiveTab('player-stats')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
                   activeTab === 'player-stats'
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-neutral-400 hover:text-white'
+                    ? 'border-patriot-red-500 text-patriot-red-400'
+                    : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Player Stats
@@ -305,8 +305,8 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                 onClick={() => setActiveTab('team-stats')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
                   activeTab === 'team-stats'
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-neutral-400 hover:text-white'
+                    ? 'border-patriot-red-500 text-patriot-red-400'
+                    : 'border-transparent text-neutral-300 hover:text-white'
                 }`}
               >
                 Team Stats
@@ -357,7 +357,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
 
                       return (
                         <table className="w-full text-sm">
-                          <thead className="bg-neutral-950 text-neutral-300">
+                          <thead className="bg-patriot-blue-900 text-neutral-200">
                             <tr>
                               <th className="text-left py-2 px-4">Player</th>
                               <th className="text-center py-2 px-4">GRD</th>
@@ -378,10 +378,10 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                             {sortedStats.map((stat, idx) => {
                               const isTeamA = stat.team_id === selectedMatch?.team_a_id;
                               return (
-                                <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
+                                <tr key={idx} className={`hover:bg-patriot-blue-900/50 ${isTeamA ? 'bg-patriot-blue-900/20' : 'bg-patriot-red-900/20'}`}>
                                   <td className="py-2 px-4">{stat.player_name}</td>
                                   <td className="text-center py-2 px-4">
-                                    <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                    <span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-xs font-bold">
                                       {stat.grd || '-'}
                                     </span>
                                   </td>
@@ -462,7 +462,7 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
                             : '0.0';
 
                           return (
-                            <tr key={idx} className="hover:bg-neutral-950">
+                            <tr key={idx} className="hover:bg-patriot-blue-900/50">
                               <td className="py-2 px-4 font-semibold">
                                 {stat.teams?.name || 'Team'}
                               </td>

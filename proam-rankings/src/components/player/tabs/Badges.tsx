@@ -153,8 +153,8 @@ export default function Badges({ player, playerId }: BadgesProps) {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'all' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-red-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             All ({totalCount})
@@ -163,8 +163,8 @@ export default function Badges({ player, playerId }: BadgesProps) {
             onClick={() => setFilter('unlocked')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'unlocked' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-red-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             Unlocked ({unlockedCount})
@@ -173,8 +173,8 @@ export default function Badges({ player, playerId }: BadgesProps) {
             onClick={() => setFilter('locked')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'locked' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-red-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             Locked ({totalCount - unlockedCount})

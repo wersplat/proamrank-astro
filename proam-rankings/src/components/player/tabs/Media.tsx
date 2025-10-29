@@ -122,8 +122,8 @@ export default function Media({ player, playerId }: MediaProps) {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'all' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-blue-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             All
@@ -132,8 +132,8 @@ export default function Media({ player, playerId }: MediaProps) {
             onClick={() => setFilter('youtube')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'youtube' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-blue-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             YouTube
@@ -142,8 +142,8 @@ export default function Media({ player, playerId }: MediaProps) {
             onClick={() => setFilter('twitch')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'twitch' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-blue-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             Twitch
@@ -152,8 +152,8 @@ export default function Media({ player, playerId }: MediaProps) {
             onClick={() => setFilter('twitter')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'twitter' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-blue-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             Twitter
@@ -162,8 +162,8 @@ export default function Media({ player, playerId }: MediaProps) {
             onClick={() => setFilter('instagram')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'instagram' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-neutral-800 text-neutral-400 hover:text-white'
+                ? 'bg-patriot-blue-600 text-white' 
+                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
             }`}
           >
             Instagram

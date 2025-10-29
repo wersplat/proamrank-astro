@@ -3,13 +3,13 @@
 const currentPath = Astro.url.pathname;
 ---
 
-<nav class="bg-neutral-900 border-b border-neutral-800 sticky top-0 z-50">
+<nav class="bg-patriot-blue-900 border-b border-patriot-blue-800 sticky top-0 z-50">
   <div class="mx-auto max-w-6xl px-6 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo/Title -->
       <a href="/" class="flex items-center gap-2" aria-label="Pro-Am Rankings Home">
         <img src="/GR.svg" alt="Pro-Am Rankings" class="h-8 w-auto" loading="eager" decoding="async" />
-        <span class="text-xl font-bold bg-gradient-to-r from-blue-500 to-lime-400 bg-clip-text text-transparent">
+        <span class="text-xl font-bold bg-gradient-to-r from-patriot-red-600 via-white to-patriot-blue-600 bg-clip-text text-transparent">
           Pro-Am Rankings
         </span>
       </a>
@@ -19,7 +19,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/" 
-            class={`hover:text-blue-400 transition ${currentPath === '/' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-red-400 transition ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
           >
             Home
           </a>
@@ -27,7 +27,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/teams" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/teams') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
           >
             Teams
           </a>
@@ -35,7 +35,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/players" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/players') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
           >
             Players
           </a>
@@ -43,7 +43,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/leagues" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/leagues') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
           >
             Leagues
           </a>
@@ -51,7 +51,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/tournaments" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/tournaments') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
           >
             Tournaments
           </a>
@@ -59,7 +59,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/matches" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/matches') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
           >
             Matches
           </a>
@@ -67,7 +67,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/achievements" 
-            class={`hover:text-blue-400 transition ${currentPath.startsWith('/achievements') ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
           >
             Achievements
           </a>
@@ -75,7 +75,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/ranking-system" 
-            class={`hover:text-blue-400 transition ${currentPath === '/ranking-system' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-blue-400 transition ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
           >
             System
           </a>
@@ -83,7 +83,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/about" 
-            class={`hover:text-blue-400 transition ${currentPath === '/about' ? 'text-blue-400 font-semibold' : 'text-neutral-300'}`}
+            class={`hover:text-patriot-red-400 transition ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
           >
             About
           </a>
@@ -93,7 +93,7 @@ const currentPath = Astro.url.pathname;
       <!-- Mobile Menu Button -->
       <button 
         id="mobile-menu-button"
-        class="lg:hidden text-neutral-300 hover:text-white"
+        class="lg:hidden text-neutral-200 hover:text-white"
         aria-label="Toggle menu"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/' ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Home
           </a>
@@ -116,7 +116,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/teams" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/teams') ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Teams
           </a>
@@ -124,7 +124,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/players" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/players') ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Players
           </a>
@@ -132,7 +132,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/leagues" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/leagues') ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Leagues
           </a>
@@ -140,7 +140,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/tournaments" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/tournaments') ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Tournaments
           </a>
@@ -148,7 +148,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/matches" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/matches') ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Matches
           </a>
@@ -156,7 +156,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/achievements" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath.startsWith('/achievements') ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Achievements
           </a>
@@ -164,7 +164,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/ranking-system" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/ranking-system' ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Ranking System
           </a>
@@ -172,7 +172,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/about" 
-            class={`block px-3 py-2 rounded hover:bg-neutral-800 ${currentPath === '/about' ? 'bg-neutral-800 text-blue-400' : ''}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             About
           </a>

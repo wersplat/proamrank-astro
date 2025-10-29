@@ -72,7 +72,7 @@ const rows = (data ?? []).map((team: any) => ({
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Pro-Am Rankings</title>
   </head>
-  <body class="bg-neutral-950 text-white">
+  <body class="bg-brand-navy text-white">
     <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <UpcomingSpotlightBanner />
@@ -81,13 +81,13 @@ const rows = (data ?? []).map((team: any) => ({
       <!-- Mobile cards (smaller screens) -->
       <section class="space-y-2 sm:hidden">
         {rows.map((r: typeof rows[0]) => (
-          <article class="rounded border border-neutral-800 p-3">
+          <article class="rounded border border-patriot-blue-800 p-3">
             <header class="flex items-center gap-3">
               {r.logo_url ? (
                 <img src={r.logo_url}
                    alt="" class="h-8 w-8 rounded object-cover" loading="lazy" />
               ) : (
-                <div class="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                <div class="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold">
                   {r.team_name?.substring(0, 2).toUpperCase() || '??'}
                 </div>
               )}

@@ -108,7 +108,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
       'Max': 'text-yellow-400',
       'SuperMax': 'text-red-400',
       'Mid': 'text-green-400',
-      'Min': 'text-blue-400',
+      'Min': 'text-patriot-blue-400',
       'Rookie': 'text-purple-400'
     };
     return colors[tier || ''] || 'text-neutral-400';
@@ -118,7 +118,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
     const stats = getPlayerStats(player.player_id, team);
     
     return (
-      <div className="bg-neutral-800 rounded-lg p-4 border border-neutral-700 hover:border-blue-500 transition">
+      <div className="bg-patriot-blue-900 rounded-lg p-4 border border-patriot-blue-800 hover:border-patriot-red-500 transition">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
@@ -185,7 +185,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
     return (
       <div className={`flex-1 ${isTeamA ? 'pr-4' : 'pl-4'}`}>
         {/* Team Header */}
-        <div className={`rounded-lg p-6 mb-6 ${isWinner && match.winner_id ? 'bg-green-900/20 border-green-500' : 'bg-neutral-800'} border`}>
+        <div className={`rounded-lg p-6 mb-6 ${isWinner && match.winner_id ? 'bg-green-900/20 border-green-500' : 'bg-patriot-blue-900'} border border-patriot-blue-800`}>
           <div className="flex items-center gap-4 mb-3">
             {team.logo_url ? (
               <img 
@@ -225,7 +225,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
 
         {/* Team Stats */}
         {team.tournament_stats && (
-          <div className="bg-neutral-800 rounded-lg p-4 mb-6 border border-neutral-700">
+          <div className="bg-patriot-blue-900 rounded-lg p-4 mb-6 border border-patriot-blue-800">
             <h3 className="text-lg font-semibold mb-3 text-white">Tournament Stats</h3>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="text-center">
@@ -319,12 +319,12 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
 
       {/* Tab Navigation for Mobile */}
       <div className="md:hidden">
-        <div className="flex border-b border-neutral-700 mb-4">
+        <div className="flex border-b border-patriot-blue-800 mb-4">
           <button
             onClick={() => setActiveTab('rosters')}
             className={`flex-1 py-2 text-sm font-medium ${
               activeTab === 'rosters'
-                ? 'text-blue-400 border-b-2 border-blue-400'
+                ? 'text-patriot-red-400 border-b-2 border-patriot-red-400'
                 : 'text-neutral-400 hover:text-white'
             }`}
           >
@@ -334,7 +334,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
             onClick={() => setActiveTab('stats')}
             className={`flex-1 py-2 text-sm font-medium ${
               activeTab === 'stats'
-                ? 'text-blue-400 border-b-2 border-blue-400'
+                ? 'text-patriot-red-400 border-b-2 border-patriot-red-400'
                 : 'text-neutral-400 hover:text-white'
             }`}
           >
@@ -345,7 +345,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
               onClick={() => setActiveTab('head-to-head')}
               className={`flex-1 py-2 text-sm font-medium ${
                 activeTab === 'head-to-head'
-                  ? 'text-blue-400 border-b-2 border-blue-400'
+                  ? 'text-patriot-red-400 border-b-2 border-patriot-red-400'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
@@ -357,12 +357,12 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
 
       {/* Head-to-Head Section */}
       {match.head_to_head && (
-        <div className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">
+        <div className="bg-patriot-blue-900 rounded-lg p-6 border border-patriot-blue-800">
           <h3 className="text-xl font-bold text-white mb-6">Head-to-Head History</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Overall Record */}
-            <div className="bg-neutral-800 rounded-lg p-4">
+            <div className="bg-patriot-blue-800 rounded-lg p-4">
               <h4 className="text-lg font-semibold text-white mb-4">All-Time Series</h4>
               <div className="flex justify-between items-center mb-4">
                 <div className="text-center">
@@ -381,7 +381,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
             </div>
 
             {/* Average Scores */}
-            <div className="bg-neutral-800 rounded-lg p-4">
+            <div className="bg-patriot-blue-800 rounded-lg p-4">
               <h4 className="text-lg font-semibold text-white mb-4">Average Scores</h4>
               <div className="flex justify-between items-center mb-4">
                 <div className="text-center">
@@ -403,7 +403,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
           {/* Last Meeting & Recent Form */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             {match.head_to_head.last_meeting && (
-              <div className="bg-neutral-800 rounded-lg p-4">
+              <div className="bg-patriot-blue-800 rounded-lg p-4">
                 <h4 className="text-lg font-semibold text-white mb-2">Last Meeting</h4>
                 <div className="text-sm text-neutral-400">
                   {new Date(match.head_to_head.last_meeting).toLocaleDateString('en-US', {
@@ -421,7 +421,7 @@ export default function SpotlightMatchup({ match }: SpotlightMatchupProps) {
               </div>
             )}
 
-            <div className="bg-neutral-800 rounded-lg p-4">
+            <div className="bg-patriot-blue-800 rounded-lg p-4">
               <h4 className="text-lg font-semibold text-white mb-4">Last 5 Meetings</h4>
               <div className="flex justify-between items-center">
                 <div className="text-center">
