@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+ * Theme CSS Variables
+ * 
+ * Theme variables are dynamically injected at the page level based on:
+ * - League pages: Theme from leagues_info table (--league-primary, --league-secondary, --league-accent)
+ * - Team pages: Theme from teams table (--team-primary, --team-secondary, --team-accent)
+ * - Player pages: Theme from player's current team (--team-primary, --team-secondary, --team-accent)
+ * 
+ * Usage Examples:
+ * 
+ * In CSS:
+ *   .themed-element {
+ *     background-color: var(--league-primary, #default-color);
+ *     border-color: var(--league-accent, #default-color);
+ *   }
+ * 
+ * In Tailwind (using arbitrary values):
+ *   <div class="bg-[var(--league-primary)] text-[var(--league-secondary)]">
+ * 
+ * In inline styles:
+ *   <div style="background-color: var(--team-primary)">
+ * 
+ * Note: Always provide fallback colors as the second parameter to var() since
+ * theme variables may not be present on all pages.
+ */
+
 @layer components {
   /* Card styles with white/red accents */
   .card-border {

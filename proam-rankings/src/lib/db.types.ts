@@ -3316,6 +3316,10 @@ export type Database = {
       }
       leagues_info: {
         Row: {
+          banner_url: string | null
+          color_accent: string | null
+          color_primary: string | null
+          color_secondary: string | null
           created_at: string
           id: string
           league: Database["public"]["Enums"]["leagues"] | null
@@ -3324,10 +3328,15 @@ export type Database = {
           lg_rules_url: string | null
           lg_url: string | null
           sponsor_info: string | null
+          theme_json: Json | null
           twitch_url: string | null
           twitter_id: string | null
         }
         Insert: {
+          banner_url?: string | null
+          color_accent?: string | null
+          color_primary?: string | null
+          color_secondary?: string | null
           created_at?: string
           id?: string
           league?: Database["public"]["Enums"]["leagues"] | null
@@ -3336,10 +3345,15 @@ export type Database = {
           lg_rules_url?: string | null
           lg_url?: string | null
           sponsor_info?: string | null
+          theme_json?: Json | null
           twitch_url?: string | null
           twitter_id?: string | null
         }
         Update: {
+          banner_url?: string | null
+          color_accent?: string | null
+          color_primary?: string | null
+          color_secondary?: string | null
           created_at?: string
           id?: string
           league?: Database["public"]["Enums"]["leagues"] | null
@@ -3348,6 +3362,7 @@ export type Database = {
           lg_rules_url?: string | null
           lg_url?: string | null
           sponsor_info?: string | null
+          theme_json?: Json | null
           twitch_url?: string | null
           twitter_id?: string | null
         }
@@ -13356,6 +13371,9 @@ export type Database = {
       }
       teams: {
         Row: {
+          color_accent: string | null
+          color_primary: string | null
+          color_secondary: string | null
           created_at: string | null
           current_rp: number | null
           elo_rating: number | null
@@ -13371,8 +13389,12 @@ export type Database = {
           name: string
           player_rank_score: number | null
           team_twitter: string | null
+          theme_json: Json | null
         }
         Insert: {
+          color_accent?: string | null
+          color_primary?: string | null
+          color_secondary?: string | null
           created_at?: string | null
           current_rp?: number | null
           elo_rating?: number | null
@@ -13388,8 +13410,12 @@ export type Database = {
           name: string
           player_rank_score?: number | null
           team_twitter?: string | null
+          theme_json?: Json | null
         }
         Update: {
+          color_accent?: string | null
+          color_primary?: string | null
+          color_secondary?: string | null
           created_at?: string | null
           current_rp?: number | null
           elo_rating?: number | null
@@ -13405,6 +13431,7 @@ export type Database = {
           name?: string
           player_rank_score?: number | null
           team_twitter?: string | null
+          theme_json?: Json | null
         }
         Relationships: [
           {

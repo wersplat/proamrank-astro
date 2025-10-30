@@ -2,6 +2,7 @@
 import Navigation from "../../components/Navigation.astro";
 import TeamTabsIsland from "../../components/TeamTabsIsland";
 import { supa } from "../../lib/supabase";
+import { generateThemeCSSVars } from "../../lib/theme";
 import "../../styles/global.css";
 
 // Enable SSR for dynamic team pages
@@ -118,19 +119,30 @@ const { data: yearStats } = await supa((Astro.locals as any).runtime)
   .eq("team_id", id)
   .order("game_year", { ascending: false });
 
-// Fetch global_rank from teams table since it's not in the mart
+// Fetch global_rank and theme colors from teams table since it's not in the mart
 let globalRank = null;
 let hybridScore = null;
+let teamThemeColors: any = null;
 if (teamData) {
   const { data: rankData } = await supa((Astro.locals as any).runtime)
     .from("teams")
-    .select("global_rank, hybrid_score")
+    .select("global_rank, hybrid_score, color_primary, color_secondary, color_accent")
     .eq("id", id)
     .maybeSingle();
   
   globalRank = rankData?.global_rank;
   hybridScore = rankData?.hybrid_score;
+  if (rankData) {
+    teamThemeColors = {
+      color_primary: rankData.color_primary,
+      color_secondary: rankData.color_secondary,
+      color_accent: rankData.color_accent,
+    };
+  }
 }
+
+// Generate CSS variables for team theme
+const teamThemeCSS = generateThemeCSSVars(teamThemeColors, 'team');
 
 // Map to expected format for template compatibility
 const team = teamData ? {
@@ -155,7 +167,7 @@ if (!team) {
 }
 ---
 
-<html lang="en">
+<html lang="en" style={teamThemeCSS || undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

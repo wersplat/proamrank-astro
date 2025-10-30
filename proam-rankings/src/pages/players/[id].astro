@@ -2,6 +2,7 @@
 import Navigation from "../../components/Navigation.astro";
 import PlayerTabs from "../../components/player/Tabs";
 import { supa } from "../../lib/supabase";
+import { generateThemeCSSVars } from "../../lib/theme";
 import "../../styles/global.css";
 
 // Enable SSR for dynamic player pages
@@ -70,6 +71,7 @@ const globalRatingData = perfData ? {
 
 // Get current team info if player has one - use team_analytics_mart
 let currentTeam = null;
+let teamThemeColors: any = null;
 if (playerData?.current_team_id) {
   const { data: teamData } = await supa(Astro.locals)
     .from("team_analytics_mart")
@@ -84,8 +86,26 @@ if (playerData?.current_team_id) {
       logo_url: teamData.logo_url,
       global_rank: null, // Not in mart but not critical for display
     };
+    
+    // Fetch theme colors from teams table
+    const { data: teamThemeData } = await supa(Astro.locals)
+      .from("teams")
+      .select("color_primary, color_secondary, color_accent")
+      .eq("id", playerData.current_team_id)
+      .maybeSingle();
+    
+    if (teamThemeData) {
+      teamThemeColors = {
+        color_primary: teamThemeData.color_primary,
+        color_secondary: teamThemeData.color_secondary,
+        color_accent: teamThemeData.color_accent,
+      };
+    }
   }
 }
+
+// Generate CSS variables for team theme (player profiles themed by current team)
+const teamThemeCSS = generateThemeCSSVars(teamThemeColors, 'team');
 
 // Get recent games (limited for initial display)
 const { data: statsData } = await supa(Astro.locals)
@@ -162,7 +182,7 @@ if (!player) {
 }
 ---
 
-<html lang="en">
+<html lang="en" style={teamThemeCSS || undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

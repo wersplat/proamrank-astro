@@ -2,6 +2,7 @@
 import Navigation from "../../components/Navigation.astro";
 import LeagueTabsIsland from "../../components/LeagueTabsIsland";
 import { supa } from "../../lib/supabase";
+import { generateThemeCSSVars } from "../../lib/theme";
 import "../../styles/global.css";
 
 // Enable SSR for dynamic league pages
@@ -41,14 +42,26 @@ if (seasonId) {
 
 // Get additional league info if we have a league_id
 let leagueInfo: any = null;
+let leagueThemeColors: any = null;
 if (leagueData?.league_id) {
   const { data: info } = await supa((Astro.locals as any).runtime)
     .from("leagues_info")
-    .select("id, league, lg_logo_url, lg_url, lg_discord, twitch_url, twitter_id")
+    .select("id, league, lg_logo_url, lg_url, lg_discord, twitch_url, twitter_id, color_primary, color_secondary, color_accent")
     .eq("id", leagueData.league_id)
     .maybeSingle();
   leagueInfo = info;
+  if (info) {
+    leagueThemeColors = {
+      color_primary: info.color_primary,
+      color_secondary: info.color_secondary,
+      color_accent: info.color_accent,
+    };
+  }
 }
+
+// Generate CSS variables for league theme - ensure it's a valid string
+const leagueThemeCSS = leagueThemeColors ? generateThemeCSSVars(leagueThemeColors, 'league') : '';
+
 
 // Get league results/standings for this season (no limit - show all teams)
 const { data: standings } = await supa((Astro.locals as any).runtime)
@@ -566,7 +579,7 @@ const leagueInfoForTabs = {
 };
 ---
 
-<html lang="en">
+<html lang="en" style={leagueThemeCSS || ''}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -585,10 +598,10 @@ const leagueInfoForTabs = {
           />
         )}
         <div class="flex-1">
-          <h1 class="text-3xl font-bold mb-2">{league.league_name}</h1>
+          <h1 class="text-3xl font-bold mb-2" style={leagueThemeColors?.color_primary ? `color: ${leagueThemeColors.color_primary}` : ''}>{league.league_name}</h1>
           <div class="flex flex-wrap gap-4 text-sm mb-3">
             {leagueTier && (
-              <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColors[leagueTier as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
+              <span class={`px-3 py-1 rounded text-sm font-bold border ${tierColors[leagueTier as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`} style={leagueThemeColors?.color_accent ? `border-color: ${leagueThemeColors.color_accent}` : ''}>
                 {leagueTier}
               </span>
             )}
@@ -619,17 +632,17 @@ const leagueInfoForTabs = {
           {leagueInfo && (
             <div class="flex flex-wrap gap-2 text-sm">
               {leagueInfo.lg_url && (
-                <a href={leagueInfo.lg_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+                <a href={leagueInfo.lg_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition" style={leagueThemeColors?.color_primary ? `background-color: ${leagueThemeColors.color_primary}` : ''}>
                   🌐 Website
                 </a>
               )}
               {leagueInfo.lg_discord && (
-                <a href={leagueInfo.lg_discord} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-indigo-900 hover:bg-indigo-800 transition">
+                <a href={leagueInfo.lg_discord} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-indigo-900 hover:bg-indigo-800 transition" style={leagueThemeColors?.color_secondary ? `background-color: ${leagueThemeColors.color_secondary}` : ''}>
                   💬 Discord
                 </a>
               )}
               {leagueInfo.twitch_url && (
-                <a href={leagueInfo.twitch_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-purple-900 hover:bg-purple-800 transition">
+                <a href={leagueInfo.twitch_url} target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded bg-purple-900 hover:bg-purple-800 transition" style={leagueThemeColors?.color_accent ? `background-color: ${leagueThemeColors.color_accent}` : ''}>
                   📺 Twitch
                 </a>
               )}
