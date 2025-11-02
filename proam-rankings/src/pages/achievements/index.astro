@@ -3,7 +3,7 @@ import Navigation from '../../components/Navigation.astro';
 import AchievementsIsland from '../../components/AchievementsIsland';
 
 const title = 'Achievements';
-const description = 'Browse all available achievements and badges in Pro-Am Rank';
+const description = 'Browse all available achievements and badges in G.R.A.D.E.';
 
 // Get query params for filters
 const searchParam = Astro.url.searchParams.get('search') || '';
@@ -16,7 +16,7 @@ const viewParam = Astro.url.searchParams.get('view') || 'grid';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} | Pro-Am Rank</title>
+    <title>{title} | G.R.A.D.E.</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>

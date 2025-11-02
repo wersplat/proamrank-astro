@@ -1,6 +1,6 @@
-# Pro-Am Rankings (Astro + Supabase + R2)
+# Global Rankings Analytics Engine (G.R.A.D.E.)
 
-Lightweight Astro version of the Pro-Am Rankings platform, matching the Next.js app's database schema.
+Lightweight Astro version of the Global Rankings Analytics Engine (G.R.A.D.E.) platform, matching the Next.js app's database schema.
 
 ## Features
 
