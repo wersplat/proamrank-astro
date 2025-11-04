@@ -244,6 +244,8 @@ export default function LeagueTabsIsland({
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff'>('open');
   const [statsFilter, setStatsFilter] = useState<'regular' | 'open' | 'playoff'>('regular');
+  const [statsView, setStatsView] = useState<'perGame' | 'totals'>('perGame');
+  const [playerSearchFilter, setPlayerSearchFilter] = useState<string>('');
   
   // Matches filter states
   const [dateStartFilter, setDateStartFilter] = useState<string | null>(null);
@@ -395,7 +397,22 @@ export default function LeagueTabsIsland({
     }
   };
 
-  const sortedPlayerStats = [...getFilteredStats()].sort((a, b) => {
+  // Filter and sort player stats
+  const filteredPlayerStats = useMemo(() => {
+    let filtered = getFilteredStats();
+    
+    // Apply player name search filter
+    if (playerSearchFilter.trim()) {
+      const searchLower = playerSearchFilter.toLowerCase().trim();
+      filtered = filtered.filter((player) =>
+        player.player_gamertag?.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    return filtered;
+  }, [statsFilter, playerSearchFilter, regularSeasonPlayerStats, openPlayerStats, playoffPlayerStats, leaguePlayerStats]);
+
+  const sortedPlayerStats = [...filteredPlayerStats].sort((a, b) => {
     const aVal = a[sortBy] ?? 0;
     const bVal = b[sortBy] ?? 0;
     const comparison = aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
@@ -409,6 +426,33 @@ export default function LeagueTabsIsland({
       setMatchesPage(1);
     }
   };
+
+  // Update sortBy when switching between totals and per-game views
+  useEffect(() => {
+    // Map between totals and per-game sort fields
+    const fieldMap: Record<string, { totals: keyof PlayerStatFull; perGame: keyof PlayerStatFull }> = {
+      points: { totals: 'points', perGame: 'avg_points' },
+      rebounds: { totals: 'rebounds', perGame: 'avg_rebounds' },
+      assists: { totals: 'assists', perGame: 'avg_assists' },
+      steals: { totals: 'steals', perGame: 'avg_steals' },
+      blocks: { totals: 'blocks', perGame: 'avg_blocks' },
+      turnovers: { totals: 'turnovers', perGame: 'avg_turnovers' },
+      avg_points: { totals: 'points', perGame: 'avg_points' },
+      avg_rebounds: { totals: 'rebounds', perGame: 'avg_rebounds' },
+      avg_assists: { totals: 'assists', perGame: 'avg_assists' },
+      avg_steals: { totals: 'steals', perGame: 'avg_steals' },
+      avg_blocks: { totals: 'blocks', perGame: 'avg_blocks' },
+      avg_turnovers: { totals: 'turnovers', perGame: 'avg_turnovers' },
+    };
+
+    const mapping = fieldMap[sortBy];
+    if (mapping) {
+      const newField = statsView === 'totals' ? mapping.totals : mapping.perGame;
+      if (newField !== sortBy) {
+        setSortBy(newField);
+      }
+    }
+  }, [statsView]);
 
   // Handle match click to open modal
   const handleMatchClick = async (match: Match) => {
@@ -452,6 +496,97 @@ export default function LeagueTabsIsland({
     setTeamStats([]);
     setError(null);
   };
+
+  // Helper function to resolve team ID to team name
+  const getTeamName = (teamId: string | null | undefined): string | null => {
+    if (!teamId) return null;
+    const team = standings.find(t => t.team_id === teamId);
+    return team?.team_name || null;
+  };
+
+  // Get regular season champion (first place team)
+  const regularSeasonChampion = useMemo(() => {
+    if (standings.length === 0) return null;
+    // Sort by wins, then win percentage
+    const sorted = [...standings].sort((a, b) => {
+      if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+        return (b.wins ?? 0) - (a.wins ?? 0);
+      }
+      return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+    });
+    return sorted[0]?.team_id || null;
+  }, [standings]);
+
+  // Resolve champion names
+  const openChampionName = openTournament?.champion ? getTeamName(openTournament.champion) : null;
+  const playoffChampionName = playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null;
+  const regularSeasonChampionName = regularSeasonChampion ? getTeamName(regularSeasonChampion) : null;
+
+  // Calculate triple crown achievements
+  const tripleCrownData = useMemo(() => {
+    const teamsWithChampionships = new Map<string, {
+      teamId: string;
+      teamName: string;
+      championships: string[];
+      count: number;
+    }>();
+
+    // Regular Season Champion
+    if (regularSeasonChampion) {
+      const teamName = getTeamName(regularSeasonChampion);
+      if (teamName) {
+        if (!teamsWithChampionships.has(regularSeasonChampion)) {
+          teamsWithChampionships.set(regularSeasonChampion, {
+            teamId: regularSeasonChampion,
+            teamName,
+            championships: [],
+            count: 0,
+          });
+        }
+        const data = teamsWithChampionships.get(regularSeasonChampion)!;
+        data.championships.push('Regular Season');
+        data.count = data.championships.length;
+      }
+    }
+
+    // Open Champion
+    if (openTournament?.champion) {
+      const teamName = getTeamName(openTournament.champion);
+      if (teamName) {
+        if (!teamsWithChampionships.has(openTournament.champion)) {
+          teamsWithChampionships.set(openTournament.champion, {
+            teamId: openTournament.champion,
+            teamName,
+            championships: [],
+            count: 0,
+          });
+        }
+        const data = teamsWithChampionships.get(openTournament.champion)!;
+        data.championships.push('Open Tournament');
+        data.count = data.championships.length;
+      }
+    }
+
+    // Playoff Champion
+    if (playoffTournament?.champion) {
+      const teamName = getTeamName(playoffTournament.champion);
+      if (teamName) {
+        if (!teamsWithChampionships.has(playoffTournament.champion)) {
+          teamsWithChampionships.set(playoffTournament.champion, {
+            teamId: playoffTournament.champion,
+            teamName,
+            championships: [],
+            count: 0,
+          });
+        }
+        const data = teamsWithChampionships.get(playoffTournament.champion)!;
+        data.championships.push('Playoff Tournament');
+        data.count = data.championships.length;
+      }
+    }
+
+    return Array.from(teamsWithChampionships.values());
+  }, [regularSeasonChampion, openTournament?.champion, playoffTournament?.champion, standings]);
 
   return (
     <div className="rounded-lg border border-neutral-800 bg-neutral-900/50">
@@ -1105,6 +1240,39 @@ export default function LeagueTabsIsland({
               </div>
             ) : (
               <>
+                {/* Player Search Filter */}
+                <div className="mb-4">
+                  <label className="text-sm text-neutral-400 mb-2 block">Search by Player Name</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={playerSearchFilter}
+                      onChange={(e) => setPlayerSearchFilter(e.target.value)}
+                      placeholder="Search by player name..."
+                      className="w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                    />
+                    <svg
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    {playerSearchFilter && (
+                      <button
+                        onClick={() => setPlayerSearchFilter('')}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        aria-label="Clear player search"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
                 {/* Stats Filter Toggle */}
                 <div className="mb-4 flex flex-wrap gap-2">
                   {(regularSeasonPlayerStats.length > 0 || leaguePlayerStats.length > 0) && (
@@ -1144,6 +1312,30 @@ export default function LeagueTabsIsland({
                     </button>
                   )}
                 </div>
+
+                {/* View Toggle (Per Game vs Totals) */}
+                <div className="mb-4 flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setStatsView('perGame')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                      statsView === 'perGame'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                    }`}
+                  >
+                    Per Game
+                  </button>
+                  <button
+                    onClick={() => setStatsView('totals')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                      statsView === 'totals'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                    }`}
+                  >
+                    Totals
+                  </button>
+                </div>
                 
                 <div className="mb-4 text-sm text-neutral-400">
                   {sortedPlayerStats.length} player{sortedPlayerStats.length !== 1 ? 's' : ''} • Click column headers to sort
@@ -1161,39 +1353,39 @@ export default function LeagueTabsIsland({
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
-                          onClick={() => handleSort('avg_points')}
+                          onClick={() => handleSort(statsView === 'totals' ? 'points' : 'avg_points')}
                         >
-                          PPG {sortBy === 'avg_points' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          {statsView === 'totals' ? 'PTS' : 'PPG'} {sortBy === (statsView === 'totals' ? 'points' : 'avg_points') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
-                          onClick={() => handleSort('avg_rebounds')}
+                          onClick={() => handleSort(statsView === 'totals' ? 'rebounds' : 'avg_rebounds')}
                         >
-                          RPG {sortBy === 'avg_rebounds' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          {statsView === 'totals' ? 'REB' : 'RPG'} {sortBy === (statsView === 'totals' ? 'rebounds' : 'avg_rebounds') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
-                          onClick={() => handleSort('avg_assists')}
+                          onClick={() => handleSort(statsView === 'totals' ? 'assists' : 'avg_assists')}
                         >
-                          APG {sortBy === 'avg_assists' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          {statsView === 'totals' ? 'AST' : 'APG'} {sortBy === (statsView === 'totals' ? 'assists' : 'avg_assists') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
-                          onClick={() => handleSort('avg_steals')}
+                          onClick={() => handleSort(statsView === 'totals' ? 'steals' : 'avg_steals')}
                         >
-                          SPG {sortBy === 'avg_steals' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          {statsView === 'totals' ? 'STL' : 'SPG'} {sortBy === (statsView === 'totals' ? 'steals' : 'avg_steals') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
-                          onClick={() => handleSort('avg_blocks')}
+                          onClick={() => handleSort(statsView === 'totals' ? 'blocks' : 'avg_blocks')}
                         >
-                          BPG {sortBy === 'avg_blocks' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          {statsView === 'totals' ? 'BLK' : 'BPG'} {sortBy === (statsView === 'totals' ? 'blocks' : 'avg_blocks') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
-                          onClick={() => handleSort('avg_turnovers')}
+                          onClick={() => handleSort(statsView === 'totals' ? 'turnovers' : 'avg_turnovers')}
                         >
-                          TOV {sortBy === 'avg_turnovers' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          {statsView === 'totals' ? 'TOV' : 'TOV'} {sortBy === (statsView === 'totals' ? 'turnovers' : 'avg_turnovers') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
                           className="text-right py-2 px-4 cursor-pointer hover:text-white"
@@ -1246,22 +1438,40 @@ export default function LeagueTabsIsland({
                             </td>
                             <td className="py-2 px-4 text-right">{player.games_played}</td>
                             <td className="py-2 px-4 text-right font-semibold text-blue-400">
-                              {player.avg_points?.toFixed(1) ?? '-'}
+                              {statsView === 'totals' 
+                                ? (player.points ?? 0).toLocaleString()
+                                : (player.avg_points?.toFixed(1) ?? '-')
+                              }
                             </td>
                             <td className="py-2 px-4 text-right">
-                              {player.avg_rebounds?.toFixed(1) ?? '-'}
+                              {statsView === 'totals' 
+                                ? (player.rebounds ?? 0).toLocaleString()
+                                : (player.avg_rebounds?.toFixed(1) ?? '-')
+                              }
                             </td>
                             <td className="py-2 px-4 text-right text-green-400">
-                              {player.avg_assists?.toFixed(1) ?? '-'}
+                              {statsView === 'totals' 
+                                ? (player.assists ?? 0).toLocaleString()
+                                : (player.avg_assists?.toFixed(1) ?? '-')
+                              }
                             </td>
                             <td className="py-2 px-4 text-right text-yellow-400">
-                              {player.avg_steals?.toFixed(1) ?? '-'}
+                              {statsView === 'totals' 
+                                ? (player.steals ?? 0).toLocaleString()
+                                : (player.avg_steals?.toFixed(1) ?? '-')
+                              }
                             </td>
                             <td className="py-2 px-4 text-right text-red-400">
-                              {player.avg_blocks?.toFixed(1) ?? '-'}
+                              {statsView === 'totals' 
+                                ? (player.blocks ?? 0).toLocaleString()
+                                : (player.avg_blocks?.toFixed(1) ?? '-')
+                              }
                             </td>
                             <td className="py-2 px-4 text-right text-neutral-400">
-                              {player.avg_turnovers?.toFixed(1) ?? '-'}
+                              {statsView === 'totals' 
+                                ? (player.turnovers ?? 0).toLocaleString()
+                                : (player.avg_turnovers?.toFixed(1) ?? '-')
+                              }
                             </td>
                             <td className="py-2 px-4 text-right">
                               {fgPercentage}{fgPercentage !== '-' ? '%' : ''}
@@ -1571,6 +1781,75 @@ export default function LeagueTabsIsland({
                     </div>
                   )}
                 </div>
+
+                {/* Champions Section */}
+                {(regularSeasonChampionName || openChampionName || playoffChampionName) && (
+                  <div className="pt-4 border-t border-neutral-800">
+                    <div className="text-sm text-neutral-400 mb-3">Season Champions</div>
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      <div>
+                        <div className="text-xs text-neutral-500 mb-1">Regular Season</div>
+                        <div className="text-lg font-semibold">
+                          {regularSeasonChampionName || 'TBD'}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-neutral-500 mb-1">Open Tournament</div>
+                        <div className="text-lg font-semibold">
+                          {openChampionName || 'TBD'}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-neutral-500 mb-1">Playoff Tournament</div>
+                        <div className="text-lg font-semibold">
+                          {playoffChampionName || 'TBD'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Triple Crown Progress */}
+                {tripleCrownData.length > 0 && (
+                  <div className="pt-4 border-t border-neutral-800">
+                    <div className="text-sm text-neutral-400 mb-3">Triple Crown Progress</div>
+                    <div className="space-y-4">
+                      {tripleCrownData.map((team) => {
+                        const progress = (team.count / 3) * 100;
+                        const isTripleCrown = team.count === 3;
+                        
+                        return (
+                          <div key={team.teamId} className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium">{team.teamName}</span>
+                              <span className={`text-xs font-semibold ${
+                                isTripleCrown ? 'text-yellow-400' : 'text-neutral-400'
+                              }`}>
+                                {team.count}/3
+                                {isTripleCrown && ' 🏆 Triple Crown Achieved!'}
+                              </span>
+                            </div>
+                            <div className="w-full bg-neutral-800 rounded-full h-3 overflow-hidden">
+                              <div
+                                className={`h-full transition-all duration-300 ${
+                                  isTripleCrown
+                                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-600'
+                                    : progress >= 67
+                                    ? 'bg-gradient-to-r from-blue-500 to-blue-600'
+                                    : 'bg-gradient-to-r from-neutral-600 to-neutral-700'
+                                }`}
+                                style={{ width: `${progress}%` }}
+                              />
+                            </div>
+                            <div className="text-xs text-neutral-500">
+                              {team.championships.join(', ')}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 {(leagueInfo.lg_url ||
                   leagueInfo.lg_discord ||
