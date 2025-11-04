@@ -1,9 +1,7 @@
 ---
+import BaseLayout from '../../components/BaseLayout.astro';
 import Navigation from '../../components/Navigation.astro';
 import AchievementsIsland from '../../components/AchievementsIsland';
-
-const title = 'Achievements';
-const description = 'Browse all available achievements and badges in G.R.A.D.E.';
 
 // Get query params for filters
 const searchParam = Astro.url.searchParams.get('search') || '';
@@ -12,16 +10,11 @@ const rarityParam = Astro.url.searchParams.get('rarity') || '';
 const viewParam = Astro.url.searchParams.get('view') || 'grid';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} | G.R.A.D.E.</title>
-    <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body class="bg-brand-navy text-white min-h-screen">
-    <Navigation />
+<BaseLayout 
+  title="Achievements"
+  description="Discover player achievements and milestones in NBA 2K Pro-Am competitive play. Track your progress and unlock badges by reaching milestones across various categories"
+>
+  <Navigation />
     
     <main class="container mx-auto px-4 py-8">
       {/* Header */}
@@ -41,6 +34,5 @@ const viewParam = Astro.url.searchParams.get('view') || 'grid';
         viewParam={viewParam}
       />
     </main>
-  </body>
-</html>
+</BaseLayout>
 

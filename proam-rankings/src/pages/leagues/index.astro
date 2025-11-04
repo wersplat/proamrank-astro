@@ -1,4 +1,5 @@
 ---
+import BaseLayout from "../../components/BaseLayout.astro";
 import Navigation from "../../components/Navigation.astro";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
@@ -135,14 +136,11 @@ const filtersActive = hasActiveFilters(
 );
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Leagues - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
+<BaseLayout 
+  title="Leagues"
+  description="View league standings, schedules, and results for NBA 2K Pro-Am competitions. Track season progress and match outcomes"
+>
+  <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
@@ -323,6 +321,5 @@ const filtersActive = hasActiveFilters(
         </div>
       )}
     </main>
-  </body>
-</html>
+</BaseLayout>
 

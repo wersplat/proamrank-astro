@@ -1,18 +1,17 @@
 ---
+import BaseLayout from "../components/BaseLayout.astro";
+import Navigation from "../components/Navigation.astro";
+
 // Server-side error test - Uncomment to test SSR error
 // throw new Error("[Sentry Test] Server-side SSR error from Astro page");
-
-const pageTitle = "Sentry Error Testing";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{pageTitle}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100 min-h-screen p-8">
+<BaseLayout 
+  title="Sentry Error Testing"
+  description="Test Sentry error tracking and monitoring for the G.R.A.D.E. platform"
+>
+  <Navigation />
+  <div class="bg-gray-100 min-h-screen p-8">
     <div class="max-w-4xl mx-auto">
       <h1 class="text-3xl font-bold mb-6 text-gray-800">🔍 Sentry Error Testing</h1>
       
@@ -160,6 +159,6 @@ const pageTitle = "Sentry Error Testing";
         console.log('Promise rejection captured by Sentry:', event.reason.message);
       });
     </script>
-  </body>
-</html>
+  </div>
+</BaseLayout>
 

@@ -1,4 +1,5 @@
 ---
+import BaseLayout from "../../components/BaseLayout.astro";
 import Navigation from "../../components/Navigation.astro";
 import { supa } from "../../lib/supabase";
 import "../../styles/global.css";
@@ -25,16 +26,19 @@ const { data: interestedStudents } = await supa(Astro.locals)
   .select("id, first_name, last_initial, gamertag, graduation_year, gpa, majors_desired")
   .order("gpa", { ascending: false, nullsFirst: false })
   .limit(10);
+
+if (!college) {
+  return Astro.redirect("/colleges");
+}
+
+const collegeDescription = `Learn about ${college.name}'s esports program, teams, and opportunities in NBA 2K Pro-Am competitive gaming.`;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{college.name} - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
+<BaseLayout 
+  title={college.name}
+  description={collegeDescription}
+>
+  <Navigation />
     <main class="mx-auto max-w-5xl p-6">
       <!-- College Header -->
       <div class="mb-8">
@@ -252,6 +256,5 @@ const { data: interestedStudents } = await supa(Astro.locals)
         </a>
       </div>
     </main>
-  </body>
-</html>
+</BaseLayout>
 

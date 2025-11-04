@@ -412,18 +412,15 @@ const spotlightMatch = {
   head_to_head: headToHeadData
 };
 
+const matchupDescription = `View ${spotlightMatch.team_a.name} vs ${spotlightMatch.team_b.name} matchup details, statistics, and head-to-head history in NBA 2K Pro-Am competitions.`;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{spotlightMatch.stage} - {spotlightMatch.team_a.name} vs {spotlightMatch.team_b.name} - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
-    <main class="mx-auto max-w-6xl p-6">
-      <SpotlightMatchup match={spotlightMatch} />
-    </main>
-  </body>
-</html>
+<BaseLayout 
+  title={`${spotlightMatch.team_a.name} vs ${spotlightMatch.team_b.name}`}
+  description={matchupDescription}
+>
+  <Navigation />
+  <main class="mx-auto max-w-6xl p-6">
+    <SpotlightMatchup match={spotlightMatch} />
+  </main>
+</BaseLayout>

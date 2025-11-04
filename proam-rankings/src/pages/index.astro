@@ -1,4 +1,5 @@
 ---
+import BaseLayout from "../components/BaseLayout.astro";
 import Navigation from "../components/Navigation.astro";
 import RankTableIsland from "../components/RankTableIsland";
 import UpcomingSpotlightBanner from "../components/UpcomingSpotlightBanner.astro";
@@ -66,17 +67,21 @@ const rows = (data ?? []).map((team: any) => ({
 }));
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
-    <main class="mx-auto max-w-6xl p-6">
-      <UpcomingSpotlightBanner />
-      <h1 class="text-2xl font-bold mb-4">Global Rankings</h1>
+<BaseLayout 
+  title="Home"
+  description="Comprehensive global rankings and analytics for NBA 2K Pro-Am competitive teams and players"
+>
+  <Navigation />
+  <main class="mx-auto max-w-6xl p-6">
+    <UpcomingSpotlightBanner />
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold mb-4">NBA 2K Pro-Am Global Team Rankings</h1>
+      <p class="text-neutral-400 mb-4">
+        Explore the comprehensive NBA 2K Pro-Am Global Team Rankings featuring top competitive teams, 
+        real-time statistics, and performance analytics. Track team standings, ELO ratings, and ranking 
+        points across all major leagues and tournaments.
+      </p>
+    </div>
 
       <!-- Mobile cards (smaller screens) -->
       <section class="space-y-2 sm:hidden">
@@ -105,8 +110,7 @@ const rows = (data ?? []).map((team: any) => ({
         ))}
       </section>
 
-      <!-- Desktop table (hydrated island, optional) -->
-      <RankTableIsland client:idle rows={rows} />
-    </main>
-  </body>
-</html>
+    <!-- Desktop table (hydrated island, optional) -->
+    <RankTableIsland client:idle rows={rows} />
+  </main>
+</BaseLayout>

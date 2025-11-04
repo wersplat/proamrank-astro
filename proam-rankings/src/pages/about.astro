@@ -1,16 +1,14 @@
 ---
+import BaseLayout from "../components/BaseLayout.astro";
 import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>About - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
+<BaseLayout 
+  title="About"
+  description="Learn about the Global Rank Analytics Data Engine (G.R.A.D.E.) platform for NBA 2K Pro-Am competitive statistics and rankings"
+>
+  <Navigation />
     <main class="mx-auto max-w-5xl p-6">
       <div class="mb-8 text-center">
         <h1 class="text-3xl font-bold mb-2">About G.R.A.D.E.</h1>
@@ -228,6 +226,5 @@ import "../styles/global.css";
         </div>
       </section>
     </main>
-  </body>
-</html>
+</BaseLayout>
 

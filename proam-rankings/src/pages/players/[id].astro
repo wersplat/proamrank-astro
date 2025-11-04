@@ -1,4 +1,5 @@
 ---
+import BaseLayout from "../../components/BaseLayout.astro";
 import Navigation from "../../components/Navigation.astro";
 import PlayerTabs from "../../components/player/Tabs";
 import { supa } from "../../lib/supabase";
@@ -180,16 +181,15 @@ const formStreak = streakData; // From player_hot_streak_mart
 if (!player) {
   return Astro.redirect("/players");
 }
+
+const playerDescription = `View ${player.gamertag}'s profile, statistics, game logs, and achievements. Track player performance, ratings, and career progress in NBA 2K Pro-Am competitions.`;
 ---
 
-<html lang="en" style={teamThemeCSS || undefined}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{player.gamertag} - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
+<BaseLayout 
+  title={player.gamertag}
+  description={playerDescription}
+>
+  <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <!-- Player Header -->
       <div class="mb-8">
@@ -225,5 +225,4 @@ if (!player) {
         globalRating={globalRating}
       />
     </main>
-  </body>
-</html>
+</BaseLayout>

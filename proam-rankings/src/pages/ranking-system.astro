@@ -1,16 +1,14 @@
 ---
+import BaseLayout from "../components/BaseLayout.astro";
 import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ranking System - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
+<BaseLayout 
+  title="Ranking System"
+  description="Understand how teams and players are ranked in the G.R.A.D.E. system, including ELO ratings, ranking points, and player tier classifications"
+>
+  <Navigation />
     <main class="mx-auto max-w-5xl p-6">
       <div class="mb-8 text-center">
         <h1 class="text-3xl font-bold mb-2">Ranking System</h1>
@@ -472,8 +470,7 @@ import "../styles/global.css";
         </div>
       </section>
     </main>
-  </body>
-</html>
+</BaseLayout>
 
 <style>
   .text-gold {

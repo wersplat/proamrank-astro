@@ -108,6 +108,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/" 
+            aria-label="Navigate to Home page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Home
@@ -116,6 +117,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/teams" 
+            aria-label="Navigate to Teams page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Teams
@@ -124,6 +126,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/players" 
+            aria-label="Navigate to Players page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Players
@@ -132,6 +135,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/leagues" 
+            aria-label="Navigate to Leagues page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Leagues
@@ -140,6 +144,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/tournaments" 
+            aria-label="Navigate to Tournaments page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Tournaments
@@ -148,6 +153,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/matches" 
+            aria-label="Navigate to Matches page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Matches
@@ -156,6 +162,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/achievements" 
+            aria-label="Navigate to Achievements page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             Achievements
@@ -164,6 +171,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/ranking-system" 
+            aria-label="Navigate to Ranking System page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
           >
             Ranking System
@@ -172,6 +180,7 @@ const currentPath = Astro.url.pathname;
         <li>
           <a 
             href="/about" 
+            aria-label="Navigate to About page"
             class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
           >
             About

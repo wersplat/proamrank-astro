@@ -1,4 +1,5 @@
 ---
+import BaseLayout from "../../components/BaseLayout.astro";
 import Navigation from "../../components/Navigation.astro";
 import LeagueTabsIsland from "../../components/LeagueTabsIsland";
 import { supa } from "../../lib/supabase";
@@ -581,16 +582,15 @@ const leagueInfoForTabs = {
   open_champion: league.open_champion || null,
   playoff_champion: league.playoff_champion || null,
 };
+
+const leagueDescription = `View ${league.league_name} standings, schedules, match results, and statistics. Track season progress and team performance in this NBA 2K Pro-Am league.`;
 ---
 
-<html lang="en" style={leagueThemeCSS || ''}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{league.league_name} - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
+<BaseLayout 
+  title={league.league_name}
+  description={leagueDescription}
+>
+  <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <!-- League Header -->
       <div class="mb-8 flex items-start gap-6">
@@ -719,6 +719,5 @@ const leagueInfoForTabs = {
         divisionConferences={divisionConferences as any}
       />
     </main>
-  </body>
-</html>
+</BaseLayout>
 

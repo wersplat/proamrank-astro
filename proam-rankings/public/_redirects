@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects for www/non-www canonicalization
+# Update the domain below to match your actual domain
+# Example: Redirect www to non-www (adjust as needed)
+# https://www.proamrank.gg/* https://proamrank.gg/:splat 301
+
+# Note: For Cloudflare Pages, you may also need to configure the preferred domain
+# in the Cloudflare Pages dashboard under Custom Domains settings.
+# This file will be automatically processed by Cloudflare Pages during deployment.
+

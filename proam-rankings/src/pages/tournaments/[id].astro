@@ -1,4 +1,5 @@
 ---
+import BaseLayout from "../../components/BaseLayout.astro";
 import Navigation from "../../components/Navigation.astro";
 import TournamentTabsIsland from "../../components/TournamentTabsIsland";
 import { supa } from "../../lib/supabase";
@@ -250,16 +251,15 @@ const tierColors: Record<string, string> = {
   'T5': 'bg-gray-900 text-gray-300 border-gray-500',
 };
 const tierColor = tierColors[tournamentTier as string] || 'bg-gray-900 text-gray-300 border-gray-500';
+
+const tournamentDescription = `View ${tournament.name} bracket, results, matches, and prize information. Track tournament progress and team performance in this NBA 2K Pro-Am competition.`;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{tournament.name} - G.R.A.D.E.</title>
-  </head>
-  <body class="bg-brand-navy text-white">
-    <Navigation />
+<BaseLayout 
+  title={tournament.name}
+  description={tournamentDescription}
+>
+  <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <!-- Tournament Header -->
       <div class="mb-8">
@@ -389,6 +389,5 @@ const tierColor = tierColors[tournamentTier as string] || 'bg-gray-900 text-gray
         playerStats={fullPlayerStats as any}
       />
     </main>
-  </body>
-</html>
+</BaseLayout>
 
