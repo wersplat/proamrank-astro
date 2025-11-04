@@ -1,12 +1,7 @@
 # Cloudflare Pages redirects for www/non-www canonicalization
-# Update the domain below to match your actual domain
-# Example: Redirect www to non-www (adjust as needed)
-# https://www.proamrank.gg/* https://proamrank.gg/:splat 301
+# Note: www to non-www redirects should be configured in Cloudflare Dashboard
+# Settings → Custom domains → configure preferred domain
+# The _redirects file only supports relative URL redirects
 
-# Note: For Cloudflare Pages, you may also need to configure the preferred domain
-# in the Cloudflare Pages dashboard under Custom Domains settings.
-# This file will be automatically processed by Cloudflare Pages during deployment.
-
-# Redirect www to non-www, but exclude static assets
-/_astro/* 200
-https://www.proamrank.gg/* https://proamrank.gg/:splat 301
+# This file is intentionally left minimal since www redirects
+# should be handled at the Cloudflare CDN level, not in _redirects
