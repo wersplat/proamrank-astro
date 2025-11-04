@@ -134,6 +134,9 @@ type LeagueInfo = {
   lg_discord?: string;
   twitch_url?: string;
   twitter_id?: string;
+  regular_season_champion?: string | null;
+  open_champion?: string | null;
+  playoff_champion?: string | null;
 };
 
 type BracketMatch = {
@@ -504,23 +507,23 @@ export default function LeagueTabsIsland({
     return team?.team_name || null;
   };
 
-  // Get regular season champion (first place team)
-  const regularSeasonChampion = useMemo(() => {
-    if (standings.length === 0) return null;
-    // Sort by wins, then win percentage
-    const sorted = [...standings].sort((a, b) => {
-      if ((b.wins ?? 0) !== (a.wins ?? 0)) {
-        return (b.wins ?? 0) - (a.wins ?? 0);
-      }
-      return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
-    });
-    return sorted[0]?.team_id || null;
-  }, [standings]);
-
-  // Resolve champion names
-  const openChampionName = openTournament?.champion ? getTeamName(openTournament.champion) : null;
-  const playoffChampionName = playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null;
-  const regularSeasonChampionName = regularSeasonChampion ? getTeamName(regularSeasonChampion) : null;
+  // Get champions from leagueInfo (from league_season_performance_mart)
+  // best_record_team is already a team name, while open_champion and playoff_champion are team IDs
+  const regularSeasonChampionName = leagueInfo?.regular_season_champion || null;
+  const openChampionName = leagueInfo?.open_champion ? getTeamName(leagueInfo.open_champion) : null;
+  const playoffChampionName = leagueInfo?.playoff_champion ? getTeamName(leagueInfo.playoff_champion) : null;
+  
+  // Get team IDs for triple crown calculation (fallback to tournament objects if leagueInfo not available)
+  const regularSeasonChampionId = useMemo(() => {
+    if (regularSeasonChampionName) {
+      const team = standings.find(t => t.team_name === regularSeasonChampionName);
+      return team?.team_id || null;
+    }
+    return null;
+  }, [regularSeasonChampionName, standings]);
+  
+  const openChampionId = leagueInfo?.open_champion || openTournament?.champion || null;
+  const playoffChampionId = leagueInfo?.playoff_champion || playoffTournament?.champion || null;
 
   // Calculate triple crown achievements
   const tripleCrownData = useMemo(() => {
@@ -532,61 +535,52 @@ export default function LeagueTabsIsland({
     }>();
 
     // Regular Season Champion
-    if (regularSeasonChampion) {
-      const teamName = getTeamName(regularSeasonChampion);
-      if (teamName) {
-        if (!teamsWithChampionships.has(regularSeasonChampion)) {
-          teamsWithChampionships.set(regularSeasonChampion, {
-            teamId: regularSeasonChampion,
-            teamName,
-            championships: [],
-            count: 0,
-          });
-        }
-        const data = teamsWithChampionships.get(regularSeasonChampion)!;
-        data.championships.push('Regular Season');
-        data.count = data.championships.length;
+    if (regularSeasonChampionId && regularSeasonChampionName) {
+      if (!teamsWithChampionships.has(regularSeasonChampionId)) {
+        teamsWithChampionships.set(regularSeasonChampionId, {
+          teamId: regularSeasonChampionId,
+          teamName: regularSeasonChampionName,
+          championships: [],
+          count: 0,
+        });
       }
+      const data = teamsWithChampionships.get(regularSeasonChampionId)!;
+      data.championships.push('Regular Season');
+      data.count = data.championships.length;
     }
 
     // Open Champion
-    if (openTournament?.champion) {
-      const teamName = getTeamName(openTournament.champion);
-      if (teamName) {
-        if (!teamsWithChampionships.has(openTournament.champion)) {
-          teamsWithChampionships.set(openTournament.champion, {
-            teamId: openTournament.champion,
-            teamName,
-            championships: [],
-            count: 0,
-          });
-        }
-        const data = teamsWithChampionships.get(openTournament.champion)!;
-        data.championships.push('Open Tournament');
-        data.count = data.championships.length;
+    if (openChampionId && openChampionName) {
+      if (!teamsWithChampionships.has(openChampionId)) {
+        teamsWithChampionships.set(openChampionId, {
+          teamId: openChampionId,
+          teamName: openChampionName,
+          championships: [],
+          count: 0,
+        });
       }
+      const data = teamsWithChampionships.get(openChampionId)!;
+      data.championships.push('Open Tournament');
+      data.count = data.championships.length;
     }
 
     // Playoff Champion
-    if (playoffTournament?.champion) {
-      const teamName = getTeamName(playoffTournament.champion);
-      if (teamName) {
-        if (!teamsWithChampionships.has(playoffTournament.champion)) {
-          teamsWithChampionships.set(playoffTournament.champion, {
-            teamId: playoffTournament.champion,
-            teamName,
-            championships: [],
-            count: 0,
-          });
-        }
-        const data = teamsWithChampionships.get(playoffTournament.champion)!;
-        data.championships.push('Playoff Tournament');
-        data.count = data.championships.length;
+    if (playoffChampionId && playoffChampionName) {
+      if (!teamsWithChampionships.has(playoffChampionId)) {
+        teamsWithChampionships.set(playoffChampionId, {
+          teamId: playoffChampionId,
+          teamName: playoffChampionName,
+          championships: [],
+          count: 0,
+        });
       }
+      const data = teamsWithChampionships.get(playoffChampionId)!;
+      data.championships.push('Playoff Tournament');
+      data.count = data.championships.length;
     }
 
     return Array.from(teamsWithChampionships.values());
-  }, [regularSeasonChampion, openTournament?.champion, playoffTournament?.champion, standings]);
+  }, [regularSeasonChampionId, regularSeasonChampionName, openChampionId, openChampionName, playoffChampionId, playoffChampionName]);
 
   return (
     <div className="rounded-lg border border-neutral-800 bg-neutral-900/50">

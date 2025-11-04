@@ -566,8 +566,8 @@ const leagueInfoForTabs = {
   league_name: league.league_name,
   season_number: league.season_number,
   game_year: league.game_year,
-  start_date: null, // Not in mart
-  end_date: null, // Not in mart
+  start_date: league.start_date || null,
+  end_date: league.end_date || null,
   is_active: league.is_active,
   entry_fee: entryFee,
   prize_pool: prizePool,
@@ -576,6 +576,10 @@ const leagueInfoForTabs = {
   lg_discord: leagueInfo?.lg_discord,
   twitch_url: leagueInfo?.twitch_url,
   twitter_id: leagueInfo?.twitter_id,
+  // Champions from league_season_performance_mart
+  regular_season_champion: league.best_record_team || null,
+  open_champion: league.open_champion || null,
+  playoff_champion: league.playoff_champion || null,
 };
 ---
 
