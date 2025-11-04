@@ -7,3 +7,6 @@
 # in the Cloudflare Pages dashboard under Custom Domains settings.
 # This file will be automatically processed by Cloudflare Pages during deployment.
 
+# Redirect www to non-www, but exclude static assets
+/_astro/* 200
+https://www.proamrank.gg/* https://proamrank.gg/:splat 301

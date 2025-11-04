@@ -234,3 +234,105 @@ You're in ask mode, so switch to agent mode if you want me to apply this change 
 
 ---
 
+_**User (2025-11-04 22:21Z)**_
+
+https://www.proamrank.gg/_astro/about.XhvN6B6D.css  is showing as text/html when going to www. 
+
+---
+
+_**Agent (model composer-1, mode Ask)**_
+
+
+
+---
+
+
+The `www` subdomain is serving CSS/JS with the wrong MIME type (`text/html`). Checking redirects and headers configuration:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/public/_redirects</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/public/_headers</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="search" data-tool-name="codebase_search">
+<details>
+                <summary>Tool use: **codebase_search** • Searched codebase "How are www and non-www domains configured for Cloudflare Pages?" • **6** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `proam-rankings/astro.config.mjs` | L26 |
+| `proam-rankings/documentation/CRON_SETUP.md` | L75 |
+| `proam-rankings/README.md` | L48-83 |
+| `proam-rankings/wrangler.toml` | L35 |
+| `proam-rankings/README.md` | L52 |
+| `proam-rankings/documentation/SENTRY_SETUP.md` | L60 |
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+The `www` subdomain is serving CSS/JS with `text/html` because:
+
+1. The `_redirects` file has a commented-out www→non-www redirect.
+2. Static assets (`/_astro/*`) may be getting caught by a redirect or not getting the correct headers on `www`.
+
+Options:
+
+## Solution 1: Redirect www to non-www (Recommended)
+
+Uncomment and update the redirect, but exclude static assets:
+
+```4:9:public/_redirects
+# Redirect www to non-www, but exclude static assets
+/_astro/* 200
+https://www.proamrank.gg/* https://proamrank.gg/:splat 301
+```
+
+The `/_astro/* 200` rule keeps static assets served directly without redirecting.
+
+## Solution 2: Ensure both domains work correctly
+
+If you want both `www` and non-www to work:
+
+1. Cloudflare Pages dashboard:
+   - Settings → Custom domains
+   - Ensure both `proamrank.gg` and `www.proamrank.gg` are configured
+
+2. Cloudflare DNS:
+   - Ensure `www` is a CNAME pointing to your Pages project
+   - Or use a Page Rule/Redirect rule at the Cloudflare level
+
+## Solution 3: Add explicit headers for www subdomain
+
+Cloudflare Pages `_headers` should apply to all custom domains, but you can verify the headers are working. The current `_headers` file looks correct. Ensure it’s deployed to `dist`.
+
+Recommendation: Use Solution 1 — redirect `www` to non-www and exclude `/_astro/*` from the redirect so static assets are served correctly on both domains.
+
+After making changes:
+1. Rebuild: `npm run build`
+2. Redeploy to Cloudflare Pages
+3. Clear Cloudflare cache (or wait for propagation)
+
+Should I implement Solution 1?
+
+---
+
