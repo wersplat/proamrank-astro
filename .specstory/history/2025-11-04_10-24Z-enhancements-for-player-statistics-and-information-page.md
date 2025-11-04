@@ -1860,3 +1860,1387 @@ No linting errors. Implementation is complete.
 
 ---
 
+_**User (2025-11-04 10:19Z)**_
+
+not for the brackets, the brackets were fine, undo that change.
+
+
+
+i meant for the triple crown tracker
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+Reverting the champions display to use tournament objects and calculating regular season from standings. Updating only the triple crown tracker to use `league_season_performance_mart`.
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 24, lines removed: 13
+
+```diff
+@@ -508,18 +508,29 @@
+    };
+  
+-   // Get champions from leagueInfo (from league_season_performance_mart)
+-   // best_record_team is already a team name, while open_champion and playoff_champion are team IDs
+-   const regularSeasonChampionName = leagueInfo?.regular_season_champion || null;
+-   const openChampionName = leagueInfo?.open_champion ? getTeamName(leagueInfo.open_champion) : null;
+-   const playoffChampionName = leagueInfo?.playoff_champion ? getTeamName(leagueInfo.playoff_champion) : null;
++   // Get regular season champion (first place team) - for display
++   const regularSeasonChampion = useMemo(() =&gt; {
++     if (standings.length === 0) return null;
++     // Sort by wins, then win percentage
++     const sorted = [...standings].sort((a, b) =&gt; {
++       if ((b.wins ?? 0) !== (a.wins ?? 0)) {
++         return (b.wins ?? 0) - (a.wins ?? 0);
++       }
++       return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
++     });
++     return sorted[0]?.team_id || null;
++   }, [standings]);
++ 
++   // Resolve champion names for display (using tournament objects and standings)
++   const regularSeasonChampionName = regularSeasonChampion ? getTeamName(regularSeasonChampion) : null;
++   const openChampionName = openTournament?.champion ? getTeamName(openTournament.champion) : null;
++   const playoffChampionName = playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null;
+    
+-   // Get team IDs for triple crown calculation (fallback to tournament objects if leagueInfo not available)
+-   const regularSeasonChampionId = useMemo(() =&gt; {
+-     if (regularSeasonChampionName) {
+-       const team = standings.find(t =&gt; t.team_name === regularSeasonChampionName);
+-       return team?.team_id || null;
+-     }
+-     return null;
+-   }, [regularSeasonChampionName, standings]);
++   // Get team IDs for triple crown calculation (use league_season_performance_mart data)
++   const regularSeasonChampionId = leagueInfo?.regular_season_champion 
++     ? (() =&gt; {
++         const team = standings.find(t =&gt; t.team_name === leagueInfo.regular_season_champion);
++         return team?.team_id || null;
++       })()
++     : regularSeasonChampion;
+    
+    const openChampionId = leagueInfo?.open_champion || openTournament?.champion || null;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Updating the triple crown calculation to use champion names from `leagueInfo` when available:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -537,5 +537,5 @@
+    const playoffChampionId = leagueInfo?.playoff_champion || playoffTournament?.champion || null;
+  
+-   // Calculate triple crown achievements
++   // Calculate triple crown achievements (using league_season_performance_mart data)
+    const tripleCrownData = useMemo(() =&gt; {
+      const teamsWithChampionships = new Map&lt;string, {
+```
+
+**Chunk 2**
+Lines added: 52, lines removed: 43
+
+```diff
+@@ -546,51 +546,60 @@
+      }&gt;();
+  
+-     // Regular Season Champion
+-     if (regularSeasonChampionId &amp;&amp; regularSeasonChampionName) {
+-       if (!teamsWithChampionships.has(regularSeasonChampionId)) {
+-         teamsWithChampionships.set(regularSeasonChampionId, {
+-           teamId: regularSeasonChampionId,
+-           teamName: regularSeasonChampionName,
+-           championships: [],
+-           count: 0,
+-         });
+-       }
+-       const data = teamsWithChampionships.get(regularSeasonChampionId)!;
+-       data.championships.push(&#39;Regular Season&#39;);
+-       data.count = data.championships.length;
+-     }
++     // Regular Season Champion (from league_season_performance_mart)
++     if (regularSeasonChampionId) {
++       const teamName = leagueInfo?.regular_season_champion || getTeamName(regularSeasonChampionId);
++       if (teamName) {
++         if (!teamsWithChampionships.has(regularSeasonChampionId)) {
++           teamsWithChampionships.set(regularSeasonChampionId, {
++             teamId: regularSeasonChampionId,
++             teamName,
++             championships: [],
++             count: 0,
++           });
++         }
++         const data = teamsWithChampionships.get(regularSeasonChampionId)!;
++         data.championships.push(&#39;Regular Season&#39;);
++         data.count = data.championships.length;
++       }
++     }
+  
+-     // Open Champion
+-     if (openChampionId &amp;&amp; openChampionName) {
+-       if (!teamsWithChampionships.has(openChampionId)) {
+-         teamsWithChampionships.set(openChampionId, {
+-           teamId: openChampionId,
+-           teamName: openChampionName,
+-           championships: [],
+-           count: 0,
+-         });
+-       }
+-       const data = teamsWithChampionships.get(openChampionId)!;
+-       data.championships.push(&#39;Open Tournament&#39;);
+-       data.count = data.championships.length;
+-     }
++     // Open Champion (from league_season_performance_mart)
++     if (openChampionId) {
++       const teamName = leagueInfo?.open_champion ? getTeamName(leagueInfo.open_champion) : getTeamName(openChampionId);
++       if (teamName) {
++         if (!teamsWithChampionships.has(openChampionId)) {
++           teamsWithChampionships.set(openChampionId, {
++             teamId: openChampionId,
++             teamName,
++             championships: [],
++             count: 0,
++           });
++         }
++         const data = teamsWithChampionships.get(openChampionId)!;
++         data.championships.push(&#39;Open Tournament&#39;);
++         data.count = data.championships.length;
++       }
++     }
+  
+-     // Playoff Champion
+-     if (playoffChampionId &amp;&amp; playoffChampionName) {
+-       if (!teamsWithChampionships.has(playoffChampionId)) {
+-         teamsWithChampionships.set(playoffChampionId, {
+-           teamId: playoffChampionId,
+-           teamName: playoffChampionName,
+-           championships: [],
+-           count: 0,
+-         });
+-       }
+-       const data = teamsWithChampionships.get(playoffChampionId)!;
+-       data.championships.push(&#39;Playoff Tournament&#39;);
+-       data.count = data.championships.length;
+-     }
++     // Playoff Champion (from league_season_performance_mart)
++     if (playoffChampionId) {
++       const teamName = leagueInfo?.playoff_champion ? getTeamName(leagueInfo.playoff_champion) : getTeamName(playoffChampionId);
++       if (teamName) {
++         if (!teamsWithChampionships.has(playoffChampionId)) {
++           teamsWithChampionships.set(playoffChampionId, {
++             teamId: playoffChampionId,
++             teamName,
++             championships: [],
++             count: 0,
++           });
++         }
++         const data = teamsWithChampionships.get(playoffChampionId)!;
++         data.championships.push(&#39;Playoff Tournament&#39;);
++         data.count = data.championships.length;
++       }
++     }
+  
+      return Array.from(teamsWithChampionships.values());
+-   }, [regularSeasonChampionId, regularSeasonChampionName, openChampionId, openChampionName, playoffChampionId, playoffChampionName]);
++   }, [regularSeasonChampionId, openChampionId, playoffChampionId, leagueInfo, getTeamName]);
+  
+    return (
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Fixing the dependency array — `getTeamName` is a function, not a dependency:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -601,5 +601,5 @@
+  
+      return Array.from(teamsWithChampionships.values());
+-   }, [regularSeasonChampionId, openChampionId, playoffChampionId, leagueInfo, getTeamName]);
++   }, [regularSeasonChampionId, openChampionId, playoffChampionId, leagueInfo, standings]);
+  
+    return (
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Refactoring the regularSeasonChampionId calculation to use useMemo:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 7, lines removed: 6
+
+```diff
+@@ -527,10 +527,11 @@
+    
+    // Get team IDs for triple crown calculation (use league_season_performance_mart data)
+-   const regularSeasonChampionId = leagueInfo?.regular_season_champion 
+-     ? (() =&gt; {
+-         const team = standings.find(t =&gt; t.team_name === leagueInfo.regular_season_champion);
+-         return team?.team_id || null;
+-       })()
+-     : regularSeasonChampion;
++   const regularSeasonChampionId = useMemo(() =&gt; {
++     if (leagueInfo?.regular_season_champion) {
++       const team = standings.find(t =&gt; t.team_name === leagueInfo.regular_season_champion);
++       return team?.team_id || null;
++     }
++     return regularSeasonChampion;
++   }, [leagueInfo?.regular_season_champion, standings, regularSeasonChampion]);
+    
+    const openChampionId = leagueInfo?.open_champion || openTournament?.champion || null;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Checking for linting errors:
+
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="read_lints">
+<details>
+          <summary>Tool use: **read_lints** • Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Changes complete:
+
+1. **Champions display** (Information tab): Uses tournament objects (`openTournament.champion`, `playoffTournament.champion`) and calculates regular season champion from standings — unchanged from before.
+
+2. **Triple crown tracker**: Uses `league_season_performance_mart` data:
+   - `leagueInfo.regular_season_champion` (from `best_record_team`)
+   - `leagueInfo.open_champion`
+   - `leagueInfo.playoff_champion`
+
+Brackets remain unchanged and still use the tournament objects. Only the triple crown tracker uses the mart data, which avoids extra queries. No linting errors.
+
+---
+
+_**User (2025-11-04 10:19Z)**_
+
+regular season champion doesnt need to be indicated in the brackets at all, just in the information tab
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+Verifying that the regular season champion is only used in the Information tab and not in any bracket logic:
+
+
+---
+
+<tool-use data-tool-type="grep" data-tool-name="grep">
+<details>
+<summary>Tool use: **grep** • Grep for "regularSeasonChampion|regular_season_champion" in "proam-rankings/src/components/LeagueTabsIsland.tsx" • 17 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `regular_season_champion?: string \| null;` | L137 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `const regularSeasonChampion = useMemo(() => \{` | L511 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `const regularSeasonChampionName = regularSeasonChampion ? getTeamName(regularSeasonChampion) : null;` | L524 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `const regularSeasonChampionId = useMemo(() => \{` | L529 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `if (leagueInfo?.regular_season_champion) \{` | L530 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `const team = standings.find(t => t.team_name === leagueInfo.regular_season_champion);` | L531 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `return regularSeasonChampion;` | L534 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `\}, [leagueInfo?.regular_season_champion, standings, regularSeasonChampion]);` | L535 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `if (regularSeasonChampionId) \{` | L550 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `const teamName = leagueInfo?.regular_season_champion \|\| getTeamName(regularSeasonChampionId);` | L551 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `if (!teamsWithChampionships.has(regularSeasonChampionId)) \{` | L553 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `teamsWithChampionships.set(regularSeasonChampionId, \{` | L554 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `teamId: regularSeasonChampionId,` | L555 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `const data = teamsWithChampionships.get(regularSeasonChampionId)!;` | L561 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `\}, [regularSeasonChampionId, openChampionId, playoffChampionId, leagueInfo, standings]);` | L604 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `\{(regularSeasonChampionName \|\| openChampionName \|\| playoffChampionName) && (` | L1801 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | `\{regularSeasonChampionName \|\| 'TBD'\}` | L1808 |
+
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Confirmed: regular season champion is only used in the Information tab and the triple crown tracker, not in brackets. The brackets tab uses `openTournament` and `playoffTournament` objects, which are separate.
+
+Current usage:
+- Information tab: Shows Regular Season, Open Tournament, and Playoff Tournament champions
+- Triple crown tracker: Uses all three champions to calculate progress
+- Brackets tab: Only uses `openTournament` and `playoffTournament` objects (no regular season champion)
+
+No changes needed. Regular season champion is not used in any bracket logic or display.
+
+---
+
+_**User (2025-11-04 10:19Z)**_
+
+the triple crown tracker isnt working, it only shows the regular season champion.
+
+use three icons indicating open/regular/playoff next to team name (if team has won one or multiple of the season championships)
+
+fill those stars in for a season champion win if all three filled indicate that triple crown has been achieved.
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+Fixing the triple crown tracker and updating the UI to show three icons per team. Investigating why only the regular season champion appears:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Fixing the triple crown tracker logic and updating the UI to show three icons next to each team name:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 1
+
+```diff
+@@ -543,5 +543,7 @@
+        teamId: string;
+        teamName: string;
+-       championships: string[];
++       hasRegularSeason: boolean;
++       hasOpen: boolean;
++       hasPlayoff: boolean;
+        count: number;
+      }&gt;();
+```
+
+**Chunk 2**
+Lines added: 17, lines removed: 11
+
+```diff
+@@ -555,47 +557,53 @@
+              teamId: regularSeasonChampionId,
+              teamName,
+-             championships: [],
++             hasRegularSeason: false,
++             hasOpen: false,
++             hasPlayoff: false,
+              count: 0,
+            });
+          }
+          const data = teamsWithChampionships.get(regularSeasonChampionId)!;
+-         data.championships.push(&#39;Regular Season&#39;);
+-         data.count = data.championships.length;
++         data.hasRegularSeason = true;
++         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
+        }
+      }
+  
+      // Open Champion (from league_season_performance_mart)
+      if (openChampionId) {
+-       const teamName = leagueInfo?.open_champion ? getTeamName(leagueInfo.open_champion) : getTeamName(openChampionId);
++       const teamName = getTeamName(openChampionId);
+        if (teamName) {
+          if (!teamsWithChampionships.has(openChampionId)) {
+            teamsWithChampionships.set(openChampionId, {
+              teamId: openChampionId,
+              teamName,
+-             championships: [],
++             hasRegularSeason: false,
++             hasOpen: false,
++             hasPlayoff: false,
+              count: 0,
+            });
+          }
+          const data = teamsWithChampionships.get(openChampionId)!;
+-         data.championships.push(&#39;Open Tournament&#39;);
+-         data.count = data.championships.length;
++         data.hasOpen = true;
++         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
+        }
+      }
+  
+      // Playoff Champion (from league_season_performance_mart)
+      if (playoffChampionId) {
+-       const teamName = leagueInfo?.playoff_champion ? getTeamName(leagueInfo.playoff_champion) : getTeamName(playoffChampionId);
++       const teamName = getTeamName(playoffChampionId);
+        if (teamName) {
+          if (!teamsWithChampionships.has(playoffChampionId)) {
+            teamsWithChampionships.set(playoffChampionId, {
+              teamId: playoffChampionId,
+              teamName,
+-             championships: [],
++             hasRegularSeason: false,
++             hasOpen: false,
++             hasPlayoff: false,
+              count: 0,
+            });
+          }
+          const data = teamsWithChampionships.get(playoffChampionId)!;
+-         data.championships.push(&#39;Playoff Tournament&#39;);
+-         data.count = data.championships.length;
++         data.hasPlayoff = true;
++         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
+        }
+      }
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Updating the UI to show three icons next to each team name:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 75, lines removed: 27
+
+```diff
+@@ -1837,35 +1837,83 @@
+                    &lt;div className=&quot;pt-4 border-t border-neutral-800&quot;&gt;
+                      &lt;div className=&quot;text-sm text-neutral-400 mb-3&quot;&gt;Triple Crown Progress&lt;/div&gt;
+-                     &lt;div className=&quot;space-y-4&quot;&gt;
++                     &lt;div className=&quot;space-y-3&quot;&gt;
+                        {tripleCrownData.map((team) =&gt; {
+-                         const progress = (team.count / 3) * 100;
+                          const isTripleCrown = team.count === 3;
+                          
+                          return (
+-                           &lt;div key={team.teamId} className=&quot;space-y-2&quot;&gt;
+-                             &lt;div className=&quot;flex items-center justify-between&quot;&gt;
+-                               &lt;span className=&quot;text-sm font-medium&quot;&gt;{team.teamName}&lt;/span&gt;
+-                               &lt;span className={&#96;text-xs font-semibold ${
+-                                 isTripleCrown ? &#39;text-yellow-400&#39; : &#39;text-neutral-400&#39;
+-                               }&#96;}&gt;
+-                                 {team.count}/3
+-                                 {isTripleCrown &amp;&amp; &#39; 🏆 Triple Crown Achieved!&#39;}
+-                               &lt;/span&gt;
+-                             &lt;/div&gt;
+-                             &lt;div className=&quot;w-full bg-neutral-800 rounded-full h-3 overflow-hidden&quot;&gt;
+-                               &lt;div
+-                                 className={&#96;h-full transition-all duration-300 ${
+-                                   isTripleCrown
+-                                     ? &#39;bg-gradient-to-r from-yellow-500 to-yellow-600&#39;
+-                                     : progress &gt;= 67
+-                                     ? &#39;bg-gradient-to-r from-blue-500 to-blue-600&#39;
+-                                     : &#39;bg-gradient-to-r from-neutral-600 to-neutral-700&#39;
+-                                 }&#96;}
+-                                 style={{ width: &#96;${progress}%&#96; }}
+-                               /&gt;
+-                             &lt;/div&gt;
+-                             &lt;div className=&quot;text-xs text-neutral-500&quot;&gt;
+-                               {team.championships.join(&#39;, &#39;)}
+-                             &lt;/div&gt;
++                           &lt;div key={team.teamId} className=&quot;flex items-center gap-3&quot;&gt;
++                             &lt;span className=&quot;text-sm font-medium flex-1&quot;&gt;{team.teamName}&lt;/span&gt;
++                             &lt;div className=&quot;flex items-center gap-2&quot;&gt;
++                               {/* Regular Season Icon */}
++                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                                 &lt;svg
++                                   className={&#96;w-5 h-5 ${
++                                     team.hasRegularSeason
++                                       ? &#39;text-yellow-400 fill-current&#39;
++                                       : &#39;text-neutral-600&#39;
++                                   }&#96;}
++                                   fill=&quot;none&quot;
++                                   stroke=&quot;currentColor&quot;
++                                   viewBox=&quot;0 0 24 24&quot;
++                                 &gt;
++                                   &lt;path
++                                     strokeLinecap=&quot;round&quot;
++                                     strokeLinejoin=&quot;round&quot;
++                                     strokeWidth={2}
++                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                   /&gt;
++                                 &lt;/svg&gt;
++                                 &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;RS&lt;/span&gt;
++                               &lt;/div&gt;
++                               
++                               {/* Open Tournament Icon */}
++                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                                 &lt;svg
++                                   className={&#96;w-5 h-5 ${
++                                     team.hasOpen
++                                       ? &#39;text-blue-400 fill-current&#39;
++                                       : &#39;text-neutral-600&#39;
++                                   }&#96;}
++                                   fill=&quot;none&quot;
++                                   stroke=&quot;currentColor&quot;
++                                   viewBox=&quot;0 0 24 24&quot;
++                                 &gt;
++                                   &lt;path
++                                     strokeLinecap=&quot;round&quot;
++                                     strokeLinejoin=&quot;round&quot;
++                                     strokeWidth={2}
++                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                   /&gt;
++                                 &lt;/svg&gt;
++                                 &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;Open&lt;/span&gt;
++                               &lt;/div&gt;
++                               
++                               {/* Playoff Tournament Icon */}
++                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                                 &lt;svg
++                                   className={&#96;w-5 h-5 ${
++                                     team.hasPlayoff
++                                       ? &#39;text-purple-400 fill-current&#39;
++                                       : &#39;text-neutral-600&#39;
++                                   }&#96;}
++                                   fill=&quot;none&quot;
++                                   stroke=&quot;currentColor&quot;
++                                   viewBox=&quot;0 0 24 24&quot;
++                                 &gt;
++                                   &lt;path
++                                     strokeLinecap=&quot;round&quot;
++                                     strokeLinejoin=&quot;round&quot;
++                                     strokeWidth={2}
++                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                   /&gt;
++                                 &lt;/svg&gt;
++                                 &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;Playoff&lt;/span&gt;
++                               &lt;/div&gt;
++                             &lt;/div&gt;
++                             {isTripleCrown &amp;&amp; (
++                               &lt;span className=&quot;text-xs font-semibold text-yellow-400 ml-2&quot;&gt;
++                                 🏆 Triple Crown!
++                               &lt;/span&gt;
++                             )}
+                            &lt;/div&gt;
+                          );
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Replacing the icons with star icons for clarity:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 4, lines removed: 4
+
+```diff
+@@ -1845,13 +1845,13 @@
+                              &lt;span className=&quot;text-sm font-medium flex-1&quot;&gt;{team.teamName}&lt;/span&gt;
+                              &lt;div className=&quot;flex items-center gap-2&quot;&gt;
+-                               {/* Regular Season Icon */}
+-                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                               {/* Regular Season Star */}
++                               &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Regular Season&quot;&gt;
+                                  &lt;svg
+                                    className={&#96;w-5 h-5 ${
+                                      team.hasRegularSeason
+-                                       ? &#39;text-yellow-400 fill-current&#39;
++                                       ? &#39;text-yellow-400&#39;
+                                        : &#39;text-neutral-600&#39;
+                                    }&#96;}
+-                                   fill=&quot;none&quot;
++                                   fill={team.hasRegularSeason ? &#39;currentColor&#39; : &#39;none&#39;}
+                                    stroke=&quot;currentColor&quot;
+                                    viewBox=&quot;0 0 24 24&quot;
+```
+
+**Chunk 2**
+Lines added: 6, lines removed: 6
+
+```diff
+@@ -1860,20 +1860,20 @@
+                                      strokeLinecap=&quot;round&quot;
+                                      strokeLinejoin=&quot;round&quot;
+-                                     strokeWidth={2}
+-                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                     strokeWidth={team.hasRegularSeason ? 0 : 1.5}
++                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
+                                    /&gt;
+                                  &lt;/svg&gt;
+                                  &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;RS&lt;/span&gt;
+                                &lt;/div&gt;
+                                
+-                               {/* Open Tournament Icon */}
+-                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                               {/* Open Tournament Star */}
++                               &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Open Tournament&quot;&gt;
+                                  &lt;svg
+                                    className={&#96;w-5 h-5 ${
+                                      team.hasOpen
+-                                       ? &#39;text-blue-400 fill-current&#39;
++                                       ? &#39;text-blue-400&#39;
+                                        : &#39;text-neutral-600&#39;
+                                    }&#96;}
+-                                   fill=&quot;none&quot;
++                                   fill={team.hasOpen ? &#39;currentColor&#39; : &#39;none&#39;}
+                                    stroke=&quot;currentColor&quot;
+                                    viewBox=&quot;0 0 24 24&quot;
+```
+
+**Chunk 3**
+Lines added: 6, lines removed: 6
+
+```diff
+@@ -1882,20 +1882,20 @@
+                                      strokeLinecap=&quot;round&quot;
+                                      strokeLinejoin=&quot;round&quot;
+-                                     strokeWidth={2}
+-                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                     strokeWidth={team.hasOpen ? 0 : 1.5}
++                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
+                                    /&gt;
+                                  &lt;/svg&gt;
+                                  &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;Open&lt;/span&gt;
+                                &lt;/div&gt;
+                                
+-                               {/* Playoff Tournament Icon */}
+-                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                               {/* Playoff Tournament Star */}
++                               &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Playoff Tournament&quot;&gt;
+                                  &lt;svg
+                                    className={&#96;w-5 h-5 ${
+                                      team.hasPlayoff
+-                                       ? &#39;text-purple-400 fill-current&#39;
++                                       ? &#39;text-purple-400&#39;
+                                        : &#39;text-neutral-600&#39;
+                                    }&#96;}
+-                                   fill=&quot;none&quot;
++                                   fill={team.hasPlayoff ? &#39;currentColor&#39; : &#39;none&#39;}
+                                    stroke=&quot;currentColor&quot;
+                                    viewBox=&quot;0 0 24 24&quot;
+```
+
+**Chunk 4**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -1904,6 +1904,6 @@
+                                      strokeLinecap=&quot;round&quot;
+                                      strokeLinejoin=&quot;round&quot;
+-                                     strokeWidth={2}
+-                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                     strokeWidth={team.hasPlayoff ? 0 : 1.5}
++                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
+                                    /&gt;
+                                  &lt;/svg&gt;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Checking for linting errors and verifying the logic:
+
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="read_lints">
+<details>
+          <summary>Tool use: **read_lints** • Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+I've updated the triple crown tracker. Summary:
+
+1. **Fixed the logic**: It now tracks all three championships (Regular Season, Open, Playoff) correctly.
+
+2. **Updated UI**: Shows three star icons next to each team name:
+   - Regular Season star (yellow) — labeled "RS"
+   - Open Tournament star (blue) — labeled "Open"
+   - Playoff Tournament star (purple) — labeled "Playoff"
+
+3. **Star fill logic**: Stars are filled (colored) when the team has won that championship, and empty (gray) when they haven't.
+
+4. **Triple Crown indicator**: If all three stars are filled, shows "🏆 Triple Crown!" next to the team name.
+
+The tracker now uses data from `league_season_performance_mart` for all three champions and displays them with the icon system. Each team that has won at least one championship will appear with their stars filled accordingly.
+
+---
+
+_**User (2025-11-04 10:19Z)**_
+
+yeah its not showing the open or playoff champions in the information tab
+
+all the needed information is in the mart
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+Updating the Information tab to use champion data from `leagueInfo` (from the mart). `best_record_team` is already a name, but `open_champion` and `playoff_champion` are IDs. Checking how to resolve them properly:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/src/pages/leagues/[id].astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Updating the Information tab to use champion data from `leagueInfo` (mart). Adding a helper to resolve team names from tournament matches when they're not in standings:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 18, lines removed: 1
+
+```diff
+@@ -505,5 +505,22 @@
+      if (!teamId) return null;
+      const team = standings.find(t =&gt; t.team_id === teamId);
+-     return team?.team_name || null;
++     if (team?.team_name) return team.team_name;
++     
++     // Fallback: check tournament matches for team names
++     if (openTournament?.matches) {
++       for (const match of openTournament.matches) {
++         if (match.team_a_id === teamId &amp;&amp; match.team_a?.name) return match.team_a.name;
++         if (match.team_b_id === teamId &amp;&amp; match.team_b?.name) return match.team_b.name;
++       }
++     }
++     
++     if (playoffTournament?.matches) {
++       for (const match of playoffTournament.matches) {
++         if (match.team_a_id === teamId &amp;&amp; match.team_a?.name) return match.team_a.name;
++         if (match.team_b_id === teamId &amp;&amp; match.team_b?.name) return match.team_b.name;
++       }
++     }
++     
++     return null;
+    };
+  
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 5, lines removed: 4
+
+```diff
+@@ -538,8 +538,9 @@
+    }, [standings]);
+  
+-   // Resolve champion names for display (using tournament objects and standings)
+-   const regularSeasonChampionName = regularSeasonChampion ? getTeamName(regularSeasonChampion) : null;
+-   const openChampionName = openTournament?.champion ? getTeamName(openTournament.champion) : null;
+-   const playoffChampionName = playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null;
++   // Resolve champion names for display (using league_season_performance_mart data)
++   // best_record_team is already a team name, while open_champion and playoff_champion are team IDs
++   const regularSeasonChampionName = leagueInfo?.regular_season_champion || (regularSeasonChampion ? getTeamName(regularSeasonChampion) : null);
++   const openChampionName = leagueInfo?.open_champion ? getTeamName(leagueInfo.open_champion) : (openTournament?.champion ? getTeamName(openTournament.champion) : null);
++   const playoffChampionName = leagueInfo?.playoff_champion ? getTeamName(leagueInfo.playoff_champion) : (playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null);
+    
+    // Get team IDs for triple crown calculation (use league_season_performance_mart data)
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Checking for linting errors:
+
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="read_lints">
+<details>
+          <summary>Tool use: **read_lints** • Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+</tool-use>
+
+---
+
+_**User (2025-11-04 10:19Z)**_
+
+check that again they are text fields
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+Checking the mart definition to confirm the data types:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/marts/League Season Performance Mart.sql</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/marts/League Season Performance Mart.sql</summary>
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Checking the database schema to confirm the data types:
+
+
+---
+
+<tool-use data-tool-type="grep" data-tool-name="grep">
+<details>
+<summary>Tool use: **grep** • Grep for "open_champion|playoff_champion" in "proam-rankings/src/pages/leagues/[id].astro" • 6 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `proam-rankings/src/pages/leagues/[id].astro` | `.select("open_champion, open_prize, status, start_date, finals_date, tournament_type, series_format")` | L396 |
+| `proam-rankings/src/pages/leagues/[id].astro` | `champion: openTournamentData.open_champion,` | L463 |
+| `proam-rankings/src/pages/leagues/[id].astro` | `.select("playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type, series_format")` | L478 |
+| `proam-rankings/src/pages/leagues/[id].astro` | `champion: playoffTournamentData.playoff_champion,` | L545 |
+| `proam-rankings/src/pages/leagues/[id].astro` | `open_champion: league.open_champion \|\| null,` | L581 |
+| `proam-rankings/src/pages/leagues/[id].astro` | `playoff_champion: league.playoff_champion \|\| null,` | L582 |
+
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="search" data-tool-name="codebase_search">
+<details>
+                <summary>Tool use: **codebase_search** • Searched codebase "league_open open_champion team name text" • **2** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | L165-2241 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | L198-2241 |
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Updating the code to treat `open_champion` and `playoff_champion` as team names (text fields), not IDs:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 3
+
+```diff
+@@ -539,8 +539,8 @@
+  
+    // Resolve champion names for display (using league_season_performance_mart data)
+-   // best_record_team is already a team name, while open_champion and playoff_champion are team IDs
++   // All champions from the mart are team names (text fields)
+    const regularSeasonChampionName = leagueInfo?.regular_season_champion || (regularSeasonChampion ? getTeamName(regularSeasonChampion) : null);
+-   const openChampionName = leagueInfo?.open_champion ? getTeamName(leagueInfo.open_champion) : (openTournament?.champion ? getTeamName(openTournament.champion) : null);
+-   const playoffChampionName = leagueInfo?.playoff_champion ? getTeamName(leagueInfo.playoff_champion) : (playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null);
++   const openChampionName = leagueInfo?.open_champion || (openTournament?.champion ? getTeamName(openTournament.champion) : null);
++   const playoffChampionName = leagueInfo?.playoff_champion || (playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null);
+    
+    // Get team IDs for triple crown calculation (use league_season_performance_mart data)
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -545,4 +545,5 @@
+    
+    // Get team IDs for triple crown calculation (use league_season_performance_mart data)
++   // Champions from mart are team names, so we need to resolve them to IDs
+    const regularSeasonChampionId = useMemo(() =&gt; {
+      if (leagueInfo?.regular_season_champion) {
+```
+
+**Chunk 2**
+Lines added: 29, lines removed: 2
+
+```diff
+@@ -553,6 +554,33 @@
+    }, [leagueInfo?.regular_season_champion, standings, regularSeasonChampion]);
+    
+-   const openChampionId = leagueInfo?.open_champion || openTournament?.champion || null;
+-   const playoffChampionId = leagueInfo?.playoff_champion || playoffTournament?.champion || null;
++   const openChampionId = useMemo(() =&gt; {
++     if (leagueInfo?.open_champion) {
++       const team = standings.find(t =&gt; t.team_name === leagueInfo.open_champion);
++       if (team) return team.team_id;
++       // Fallback: check tournament matches
++       if (openTournament?.matches) {
++         for (const match of openTournament.matches) {
++           if (match.team_a?.name === leagueInfo.open_champion) return match.team_a_id;
++           if (match.team_b?.name === leagueInfo.open_champion) return match.team_b_id;
++         }
++       }
++     }
++     return openTournament?.champion || null;
++   }, [leagueInfo?.open_champion, standings, openTournament]);
++   
++   const playoffChampionId = useMemo(() =&gt; {
++     if (leagueInfo?.playoff_champion) {
++       const team = standings.find(t =&gt; t.team_name === leagueInfo.playoff_champion);
++       if (team) return team.team_id;
++       // Fallback: check tournament matches
++       if (playoffTournament?.matches) {
++         for (const match of playoffTournament.matches) {
++           if (match.team_a?.name === leagueInfo.playoff_champion) return match.team_a_id;
++           if (match.team_b?.name === leagueInfo.playoff_champion) return match.team_b_id;
++         }
++       }
++     }
++     return playoffTournament?.champion || null;
++   }, [leagueInfo?.playoff_champion, standings, playoffTournament]);
+  
+    // Calculate triple crown achievements (using league_season_performance_mart data)
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Updating the triple crown calculation to use team names directly from `leagueInfo`:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 44, lines removed: 53
+
+```diff
+@@ -596,61 +596,52 @@
+  
+      // Regular Season Champion (from league_season_performance_mart)
+-     if (regularSeasonChampionId) {
+-       const teamName = leagueInfo?.regular_season_champion || getTeamName(regularSeasonChampionId);
+-       if (teamName) {
+-         if (!teamsWithChampionships.has(regularSeasonChampionId)) {
+-           teamsWithChampionships.set(regularSeasonChampionId, {
+-             teamId: regularSeasonChampionId,
+-             teamName,
+-             hasRegularSeason: false,
+-             hasOpen: false,
+-             hasPlayoff: false,
+-             count: 0,
+-           });
+-         }
+-         const data = teamsWithChampionships.get(regularSeasonChampionId)!;
+-         data.hasRegularSeason = true;
+-         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
+-       }
+-     }
++     if (regularSeasonChampionName &amp;&amp; regularSeasonChampionId) {
++       if (!teamsWithChampionships.has(regularSeasonChampionId)) {
++         teamsWithChampionships.set(regularSeasonChampionId, {
++           teamId: regularSeasonChampionId,
++           teamName: regularSeasonChampionName,
++           hasRegularSeason: false,
++           hasOpen: false,
++           hasPlayoff: false,
++           count: 0,
++         });
++       }
++       const data = teamsWithChampionships.get(regularSeasonChampionId)!;
++       data.hasRegularSeason = true;
++       data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
++     }
+  
+      // Open Champion (from league_season_performance_mart)
+-     if (openChampionId) {
+-       const teamName = getTeamName(openChampionId);
+-       if (teamName) {
+-         if (!teamsWithChampionships.has(openChampionId)) {
+-           teamsWithChampionships.set(openChampionId, {
+-             teamId: openChampionId,
+-             teamName,
+-             hasRegularSeason: false,
+-             hasOpen: false,
+-             hasPlayoff: false,
+-             count: 0,
+-           });
+-         }
+-         const data = teamsWithChampionships.get(openChampionId)!;
+-         data.hasOpen = true;
+-         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
+-       }
+-     }
++     if (openChampionName &amp;&amp; openChampionId) {
++       if (!teamsWithChampionships.has(openChampionId)) {
++         teamsWithChampionships.set(openChampionId, {
++           teamId: openChampionId,
++           teamName: openChampionName,
++           hasRegularSeason: false,
++           hasOpen: false,
++           hasPlayoff: false,
++           count: 0,
++         });
++       }
++       const data = teamsWithChampionships.get(openChampionId)!;
++       data.hasOpen = true;
++       data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
++     }
+  
+      // Playoff Champion (from league_season_performance_mart)
+-     if (playoffChampionId) {
+-       const teamName = getTeamName(playoffChampionId);
+-       if (teamName) {
+-         if (!teamsWithChampionships.has(playoffChampionId)) {
+-           teamsWithChampionships.set(playoffChampionId, {
+-             teamId: playoffChampionId,
+-             teamName,
+-             hasRegularSeason: false,
+-             hasOpen: false,
+-             hasPlayoff: false,
+-             count: 0,
+-           });
+-         }
+-         const data = teamsWithChampionships.get(playoffChampionId)!;
+-         data.hasPlayoff = true;
+-         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
+-       }
++     if (playoffChampionName &amp;&amp; playoffChampionId) {
++       if (!teamsWithChampionships.has(playoffChampionId)) {
++         teamsWithChampionships.set(playoffChampionId, {
++           teamId: playoffChampionId,
++           teamName: playoffChampionName,
++           hasRegularSeason: false,
++           hasOpen: false,
++           hasPlayoff: false,
++           count: 0,
++         });
++       }
++       const data = teamsWithChampionships.get(playoffChampionId)!;
++       data.hasPlayoff = true;
++       data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
+      }
+  
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -647,5 +647,5 @@
+  
+      return Array.from(teamsWithChampionships.values());
+-   }, [regularSeasonChampionId, openChampionId, playoffChampionId, leagueInfo, standings]);
++   }, [regularSeasonChampionId, regularSeasonChampionName, openChampionId, openChampionName, playoffChampionId, playoffChampionName]);
+  
+    return (
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+Checking for linting errors:
+
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="read_lints">
+<details>
+          <summary>Tool use: **read_lints** • Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `proam-rankings/src/components/LeagueTabsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Updated the code to treat `open_champion` and `playoff_champion` as team names (text fields) from the mart, not IDs.
+
+1. **Champion names for display**: Use `leagueInfo.open_champion` and `leagueInfo.playoff_champion` directly as team names (no ID resolution needed for display).
+
+2. **Team ID resolution for triple crown**: Added lookups to find team IDs from team names by:
+   - Checking standings first
+   - Falling back to tournament matches if not found in standings
+
+3. **Triple crown calculation**: Uses the resolved champion names and IDs.
+
+The Information tab should now display all three champions (Regular Season, Open Tournament, and Playoff Tournament) from the mart, and the triple crown tracker should correctly show which teams have won which championships.
+
+---
+

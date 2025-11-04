@@ -504,79 +504,145 @@ export default function LeagueTabsIsland({
   const getTeamName = (teamId: string | null | undefined): string | null => {
     if (!teamId) return null;
     const team = standings.find(t => t.team_id === teamId);
-    return team?.team_name || null;
+    if (team?.team_name) return team.team_name;
+    
+    // Fallback: check tournament matches for team names
+    if (openTournament?.matches) {
+      for (const match of openTournament.matches) {
+        if (match.team_a_id === teamId && match.team_a?.name) return match.team_a.name;
+        if (match.team_b_id === teamId && match.team_b?.name) return match.team_b.name;
+      }
+    }
+    
+    if (playoffTournament?.matches) {
+      for (const match of playoffTournament.matches) {
+        if (match.team_a_id === teamId && match.team_a?.name) return match.team_a.name;
+        if (match.team_b_id === teamId && match.team_b?.name) return match.team_b.name;
+      }
+    }
+    
+    return null;
   };
 
-  // Get champions from leagueInfo (from league_season_performance_mart)
-  // best_record_team is already a team name, while open_champion and playoff_champion are team IDs
-  const regularSeasonChampionName = leagueInfo?.regular_season_champion || null;
-  const openChampionName = leagueInfo?.open_champion ? getTeamName(leagueInfo.open_champion) : null;
-  const playoffChampionName = leagueInfo?.playoff_champion ? getTeamName(leagueInfo.playoff_champion) : null;
+  // Get regular season champion (first place team) - for display
+  const regularSeasonChampion = useMemo(() => {
+    if (standings.length === 0) return null;
+    // Sort by wins, then win percentage
+    const sorted = [...standings].sort((a, b) => {
+      if ((b.wins ?? 0) !== (a.wins ?? 0)) {
+        return (b.wins ?? 0) - (a.wins ?? 0);
+      }
+      return (b.win_percentage ?? 0) - (a.win_percentage ?? 0);
+    });
+    return sorted[0]?.team_id || null;
+  }, [standings]);
+
+  // Resolve champion names for display (using league_season_performance_mart data)
+  // All champions from the mart are team names (text fields)
+  const regularSeasonChampionName = leagueInfo?.regular_season_champion || (regularSeasonChampion ? getTeamName(regularSeasonChampion) : null);
+  const openChampionName = leagueInfo?.open_champion || (openTournament?.champion ? getTeamName(openTournament.champion) : null);
+  const playoffChampionName = leagueInfo?.playoff_champion || (playoffTournament?.champion ? getTeamName(playoffTournament.champion) : null);
   
-  // Get team IDs for triple crown calculation (fallback to tournament objects if leagueInfo not available)
+  // Get team IDs for triple crown calculation (use league_season_performance_mart data)
+  // Champions from mart are team names, so we need to resolve them to IDs
   const regularSeasonChampionId = useMemo(() => {
-    if (regularSeasonChampionName) {
-      const team = standings.find(t => t.team_name === regularSeasonChampionName);
+    if (leagueInfo?.regular_season_champion) {
+      const team = standings.find(t => t.team_name === leagueInfo.regular_season_champion);
       return team?.team_id || null;
     }
-    return null;
-  }, [regularSeasonChampionName, standings]);
+    return regularSeasonChampion;
+  }, [leagueInfo?.regular_season_champion, standings, regularSeasonChampion]);
   
-  const openChampionId = leagueInfo?.open_champion || openTournament?.champion || null;
-  const playoffChampionId = leagueInfo?.playoff_champion || playoffTournament?.champion || null;
+  const openChampionId = useMemo(() => {
+    if (leagueInfo?.open_champion) {
+      const team = standings.find(t => t.team_name === leagueInfo.open_champion);
+      if (team) return team.team_id;
+      // Fallback: check tournament matches
+      if (openTournament?.matches) {
+        for (const match of openTournament.matches) {
+          if (match.team_a?.name === leagueInfo.open_champion) return match.team_a_id;
+          if (match.team_b?.name === leagueInfo.open_champion) return match.team_b_id;
+        }
+      }
+    }
+    return openTournament?.champion || null;
+  }, [leagueInfo?.open_champion, standings, openTournament]);
+  
+  const playoffChampionId = useMemo(() => {
+    if (leagueInfo?.playoff_champion) {
+      const team = standings.find(t => t.team_name === leagueInfo.playoff_champion);
+      if (team) return team.team_id;
+      // Fallback: check tournament matches
+      if (playoffTournament?.matches) {
+        for (const match of playoffTournament.matches) {
+          if (match.team_a?.name === leagueInfo.playoff_champion) return match.team_a_id;
+          if (match.team_b?.name === leagueInfo.playoff_champion) return match.team_b_id;
+        }
+      }
+    }
+    return playoffTournament?.champion || null;
+  }, [leagueInfo?.playoff_champion, standings, playoffTournament]);
 
-  // Calculate triple crown achievements
+  // Calculate triple crown achievements (using league_season_performance_mart data)
   const tripleCrownData = useMemo(() => {
     const teamsWithChampionships = new Map<string, {
       teamId: string;
       teamName: string;
-      championships: string[];
+      hasRegularSeason: boolean;
+      hasOpen: boolean;
+      hasPlayoff: boolean;
       count: number;
     }>();
 
-    // Regular Season Champion
-    if (regularSeasonChampionId && regularSeasonChampionName) {
+    // Regular Season Champion (from league_season_performance_mart)
+    if (regularSeasonChampionName && regularSeasonChampionId) {
       if (!teamsWithChampionships.has(regularSeasonChampionId)) {
         teamsWithChampionships.set(regularSeasonChampionId, {
           teamId: regularSeasonChampionId,
           teamName: regularSeasonChampionName,
-          championships: [],
+          hasRegularSeason: false,
+          hasOpen: false,
+          hasPlayoff: false,
           count: 0,
         });
       }
       const data = teamsWithChampionships.get(regularSeasonChampionId)!;
-      data.championships.push('Regular Season');
-      data.count = data.championships.length;
+      data.hasRegularSeason = true;
+      data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
     }
 
-    // Open Champion
-    if (openChampionId && openChampionName) {
+    // Open Champion (from league_season_performance_mart)
+    if (openChampionName && openChampionId) {
       if (!teamsWithChampionships.has(openChampionId)) {
         teamsWithChampionships.set(openChampionId, {
           teamId: openChampionId,
           teamName: openChampionName,
-          championships: [],
+          hasRegularSeason: false,
+          hasOpen: false,
+          hasPlayoff: false,
           count: 0,
         });
       }
       const data = teamsWithChampionships.get(openChampionId)!;
-      data.championships.push('Open Tournament');
-      data.count = data.championships.length;
+      data.hasOpen = true;
+      data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
     }
 
-    // Playoff Champion
-    if (playoffChampionId && playoffChampionName) {
+    // Playoff Champion (from league_season_performance_mart)
+    if (playoffChampionName && playoffChampionId) {
       if (!teamsWithChampionships.has(playoffChampionId)) {
         teamsWithChampionships.set(playoffChampionId, {
           teamId: playoffChampionId,
           teamName: playoffChampionName,
-          championships: [],
+          hasRegularSeason: false,
+          hasOpen: false,
+          hasPlayoff: false,
           count: 0,
         });
       }
       const data = teamsWithChampionships.get(playoffChampionId)!;
-      data.championships.push('Playoff Tournament');
-      data.count = data.championships.length;
+      data.hasPlayoff = true;
+      data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
     }
 
     return Array.from(teamsWithChampionships.values());
@@ -1807,37 +1873,85 @@ export default function LeagueTabsIsland({
                 {tripleCrownData.length > 0 && (
                   <div className="pt-4 border-t border-neutral-800">
                     <div className="text-sm text-neutral-400 mb-3">Triple Crown Progress</div>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {tripleCrownData.map((team) => {
-                        const progress = (team.count / 3) * 100;
                         const isTripleCrown = team.count === 3;
                         
                         return (
-                          <div key={team.teamId} className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-medium">{team.teamName}</span>
-                              <span className={`text-xs font-semibold ${
-                                isTripleCrown ? 'text-yellow-400' : 'text-neutral-400'
-                              }`}>
-                                {team.count}/3
-                                {isTripleCrown && ' 🏆 Triple Crown Achieved!'}
+                          <div key={team.teamId} className="flex items-center gap-3">
+                            <span className="text-sm font-medium flex-1">{team.teamName}</span>
+                            <div className="flex items-center gap-2">
+                              {/* Regular Season Star */}
+                              <div className="flex flex-col items-center gap-1" title="Regular Season">
+                                <svg
+                                  className={`w-5 h-5 ${
+                                    team.hasRegularSeason
+                                      ? 'text-yellow-400'
+                                      : 'text-neutral-600'
+                                  }`}
+                                  fill={team.hasRegularSeason ? 'currentColor' : 'none'}
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={team.hasRegularSeason ? 0 : 1.5}
+                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                                  />
+                                </svg>
+                                <span className="text-[8px] text-neutral-500">RS</span>
+                              </div>
+                              
+                              {/* Open Tournament Star */}
+                              <div className="flex flex-col items-center gap-1" title="Open Tournament">
+                                <svg
+                                  className={`w-5 h-5 ${
+                                    team.hasOpen
+                                      ? 'text-blue-400'
+                                      : 'text-neutral-600'
+                                  }`}
+                                  fill={team.hasOpen ? 'currentColor' : 'none'}
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={team.hasOpen ? 0 : 1.5}
+                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                                  />
+                                </svg>
+                                <span className="text-[8px] text-neutral-500">Open</span>
+                              </div>
+                              
+                              {/* Playoff Tournament Star */}
+                              <div className="flex flex-col items-center gap-1" title="Playoff Tournament">
+                                <svg
+                                  className={`w-5 h-5 ${
+                                    team.hasPlayoff
+                                      ? 'text-purple-400'
+                                      : 'text-neutral-600'
+                                  }`}
+                                  fill={team.hasPlayoff ? 'currentColor' : 'none'}
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={team.hasPlayoff ? 0 : 1.5}
+                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                                  />
+                                </svg>
+                                <span className="text-[8px] text-neutral-500">Playoff</span>
+                              </div>
+                            </div>
+                            {isTripleCrown && (
+                              <span className="text-xs font-semibold text-yellow-400 ml-2">
+                                🏆 Triple Crown!
                               </span>
-                            </div>
-                            <div className="w-full bg-neutral-800 rounded-full h-3 overflow-hidden">
-                              <div
-                                className={`h-full transition-all duration-300 ${
-                                  isTripleCrown
-                                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-600'
-                                    : progress >= 67
-                                    ? 'bg-gradient-to-r from-blue-500 to-blue-600'
-                                    : 'bg-gradient-to-r from-neutral-600 to-neutral-700'
-                                }`}
-                                style={{ width: `${progress}%` }}
-                              />
-                            </div>
-                            <div className="text-xs text-neutral-500">
-                              {team.championships.join(', ')}
-                            </div>
+                            )}
                           </div>
                         );
                       })}
