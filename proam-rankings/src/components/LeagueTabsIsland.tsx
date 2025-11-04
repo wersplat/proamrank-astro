@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import BracketDisplay from "./BracketDisplay";
 
 type PlayerStat = {
@@ -244,6 +244,12 @@ export default function LeagueTabsIsland({
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedTournamentType, setSelectedTournamentType] = useState<'open' | 'playoff'>('open');
   const [statsFilter, setStatsFilter] = useState<'regular' | 'open' | 'playoff'>('regular');
+  
+  // Matches filter states
+  const [dateStartFilter, setDateStartFilter] = useState<string | null>(null);
+  const [dateEndFilter, setDateEndFilter] = useState<string | null>(null);
+  const [teamSearchFilter, setTeamSearchFilter] = useState<string>('');
+  const [teamSearchOpen, setTeamSearchOpen] = useState(false);
 
   const tabs = [
     { id: 0, label: "Standings" },
@@ -255,12 +261,75 @@ export default function LeagueTabsIsland({
     { id: 6, label: "Information" },
   ];
 
+  // Extract unique team names from matches
+  const uniqueTeamNames = useMemo(() => {
+    const teamNames = new Set<string>();
+    matches.forEach((match) => {
+      if (match.team_a?.name) teamNames.add(match.team_a.name);
+      if (match.team_b?.name) teamNames.add(match.team_b.name);
+    });
+    return Array.from(teamNames).sort();
+  }, [matches]);
+
+  // Filter matches based on date range and team search
+  const filteredMatches = useMemo(() => {
+    let filtered = [...matches];
+
+    // Filter by date range
+    if (dateStartFilter || dateEndFilter) {
+      filtered = filtered.filter((match) => {
+        const matchDate = new Date(match.played_at);
+        matchDate.setHours(0, 0, 0, 0);
+
+        if (dateStartFilter) {
+          const startDate = new Date(dateStartFilter);
+          startDate.setHours(0, 0, 0, 0);
+          if (matchDate < startDate) return false;
+        }
+
+        if (dateEndFilter) {
+          const endDate = new Date(dateEndFilter);
+          endDate.setHours(23, 59, 59, 999);
+          if (matchDate > endDate) return false;
+        }
+
+        return true;
+      });
+    }
+
+    // Filter by team name
+    if (teamSearchFilter.trim()) {
+      const searchLower = teamSearchFilter.toLowerCase().trim();
+      filtered = filtered.filter((match) => {
+        const teamAName = match.team_a?.name?.toLowerCase() || '';
+        const teamBName = match.team_b?.name?.toLowerCase() || '';
+        return teamAName.includes(searchLower) || teamBName.includes(searchLower);
+      });
+    }
+
+    return filtered;
+  }, [matches, dateStartFilter, dateEndFilter, teamSearchFilter]);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setMatchesPage(1);
+  }, [dateStartFilter, dateEndFilter, teamSearchFilter]);
+
+  // Filtered team names for autocomplete dropdown
+  const filteredTeamNames = useMemo(() => {
+    if (!teamSearchFilter.trim()) return uniqueTeamNames;
+    const searchLower = teamSearchFilter.toLowerCase().trim();
+    return uniqueTeamNames.filter((name) =>
+      name.toLowerCase().includes(searchLower)
+    );
+  }, [uniqueTeamNames, teamSearchFilter]);
+
   // Pagination for matches
   const MATCHES_PER_PAGE = 25;
-  const totalMatchPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
+  const totalMatchPages = Math.ceil(filteredMatches.length / MATCHES_PER_PAGE);
   const matchesStartIndex = (matchesPage - 1) * MATCHES_PER_PAGE;
   const matchesEndIndex = matchesStartIndex + MATCHES_PER_PAGE;
-  const paginatedMatches = matches.slice(matchesStartIndex, matchesEndIndex);
+  const paginatedMatches = filteredMatches.slice(matchesStartIndex, matchesEndIndex);
 
   // Generate page numbers for pagination
   const getPageNumbers = (current: number, total: number): number[] => {
@@ -775,15 +844,151 @@ export default function LeagueTabsIsland({
         {/* Matches Tab */}
         {activeTab === 2 && (
           <div>
+            {/* Filter Controls */}
+            <div className="mb-6 space-y-4">
+              {/* Date Range Filters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-sm text-neutral-400">Start Date</label>
+                  <div className="relative">
+                    <input
+                      type="date"
+                      value={dateStartFilter || ''}
+                      onChange={(e) => setDateStartFilter(e.target.value || null)}
+                      className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                    />
+                    {dateStartFilter && (
+                      <button
+                        onClick={() => setDateStartFilter(null)}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        aria-label="Clear start date"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm text-neutral-400">End Date</label>
+                  <div className="relative">
+                    <input
+                      type="date"
+                      value={dateEndFilter || ''}
+                      onChange={(e) => setDateEndFilter(e.target.value || null)}
+                      className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                    />
+                    {dateEndFilter && (
+                      <button
+                        onClick={() => setDateEndFilter(null)}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        aria-label="Clear end date"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Team Search Filter */}
+              <div className="space-y-1">
+                <label className="text-sm text-neutral-400">Search by Team</label>
+                <div className="relative">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={teamSearchFilter}
+                      onChange={(e) => {
+                        setTeamSearchFilter(e.target.value);
+                        setTeamSearchOpen(true);
+                      }}
+                      onFocus={() => setTeamSearchOpen(true)}
+                      onBlur={() => {
+                        // Delay closing to allow clicks on dropdown items
+                        setTimeout(() => setTeamSearchOpen(false), 200);
+                      }}
+                      placeholder="Search by team name..."
+                      className="w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                    />
+                    <svg
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    {teamSearchFilter && (
+                      <button
+                        onClick={() => {
+                          setTeamSearchFilter('');
+                          setTeamSearchOpen(false);
+                        }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        aria-label="Clear team search"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  {/* Autocomplete Dropdown */}
+                  {teamSearchOpen && filteredTeamNames.length > 0 && (
+                    <div className="absolute z-50 w-full mt-1 bg-neutral-800 border border-neutral-700 rounded shadow-lg max-h-60 overflow-y-auto">
+                      {filteredTeamNames.map((teamName) => {
+                        const lowerSearch = teamSearchFilter.toLowerCase().trim();
+                        const lowerName = teamName.toLowerCase();
+                        const index = lowerSearch ? lowerName.indexOf(lowerSearch) : -1;
+                        
+                        return (
+                          <button
+                            key={teamName}
+                            type="button"
+                            onClick={() => {
+                              setTeamSearchFilter(teamName);
+                              setTeamSearchOpen(false);
+                            }}
+                            className="w-full text-left px-4 py-2 hover:bg-neutral-700 text-white transition"
+                          >
+                            {index !== -1 && lowerSearch ? (
+                              <>
+                                {teamName.substring(0, index)}
+                                <span className="bg-blue-500/30 font-semibold">
+                                  {teamName.substring(index, index + teamSearchFilter.trim().length)}
+                                </span>
+                                {teamName.substring(index + teamSearchFilter.trim().length)}
+                              </>
+                            ) : (
+                              teamName
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {/* Matches count and page info */}
-            {matches.length > 0 && (
+            {filteredMatches.length > 0 && (
               <div className="mb-4 text-sm text-neutral-400">
-                Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, matches.length)} of {matches.length} matches
+                Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, filteredMatches.length)} of {filteredMatches.length} matches
+                {(dateStartFilter || dateEndFilter || teamSearchFilter.trim()) && (
+                  <span className="ml-2 text-neutral-500">
+                    (filtered from {matches.length} total)
+                  </span>
+                )}
               </div>
             )}
 
             <div className="space-y-2">
-              {matches.length === 0 ? (
+              {filteredMatches.length === 0 ? (
                 <div className="text-center py-8 text-neutral-400">
                   No matches found.
                 </div>
