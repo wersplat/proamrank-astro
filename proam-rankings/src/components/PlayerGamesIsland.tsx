@@ -217,6 +217,61 @@ export default function PlayerGamesIsland({ games }: { games: Game[] }) {
                   </div>
                 </div>
 
+                {/* Match Context Links */}
+                {getMatchData(selectedGame) && (
+                  <div className="space-y-2">
+                    {(getMatchData(selectedGame).team_a?.name || getMatchData(selectedGame).team_b?.name) && (
+                      <div>
+                        <div className="text-neutral-400 text-sm mb-1">Teams</div>
+                        <div className="flex flex-wrap gap-2">
+                          {getMatchData(selectedGame).team_a?.name && (
+                            <a
+                              href={`/teams/${getMatchData(selectedGame).team_a_id}`}
+                              className="text-blue-400 hover:text-blue-300 transition"
+                            >
+                              {getMatchData(selectedGame).team_a.name}
+                            </a>
+                          )}
+                          {getMatchData(selectedGame).team_a?.name && getMatchData(selectedGame).team_b?.name && (
+                            <span className="text-neutral-500">vs</span>
+                          )}
+                          {getMatchData(selectedGame).team_b?.name && (
+                            <a
+                              href={`/teams/${getMatchData(selectedGame).team_b_id}`}
+                              className="text-blue-400 hover:text-blue-300 transition"
+                            >
+                              {getMatchData(selectedGame).team_b.name}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {(getMatchData(selectedGame).league || getMatchData(selectedGame).tournament) && (
+                      <div>
+                        <div className="text-neutral-400 text-sm mb-1">Context</div>
+                        <div className="flex flex-wrap gap-2">
+                          {getMatchData(selectedGame).league && getMatchData(selectedGame).season_id && (
+                            <a
+                              href={`/leagues/${getMatchData(selectedGame).season_id}`}
+                              className="px-2 py-1 rounded bg-patriot-blue-800 text-neutral-200 text-xs hover:bg-patriot-blue-700 transition"
+                            >
+                              {getMatchData(selectedGame).league.league_name} {getMatchData(selectedGame).league.season_number && `S${getMatchData(selectedGame).league.season_number}`}
+                            </a>
+                          )}
+                          {getMatchData(selectedGame).tournament && getMatchData(selectedGame).tournament_id && (
+                            <a
+                              href={`/tournaments/${getMatchData(selectedGame).tournament_id}`}
+                              className="px-2 py-1 rounded bg-patriot-red-900/30 text-patriot-red-300 text-xs hover:bg-patriot-red-900/50 transition"
+                            >
+                              {getMatchData(selectedGame).tournament.name}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center p-4 rounded-lg bg-neutral-800">
                     <div className="text-neutral-400 text-sm mb-1">Points</div>

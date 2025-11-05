@@ -36,20 +36,25 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
         {sorted.map((r, idx) => (
           <tr key={r.team_id} className="border-b border-patriot-blue-800 hover:bg-patriot-blue-900/50 transition">
             <td className="py-2 text-neutral-300">#{idx + 1}</td>
-            <td className="py-2 flex items-center gap-2">
-              {r.logo_url ? (
-                <img 
-                  src={r.logo_url} 
-                  alt="" 
-                  className="h-6 w-6 rounded object-cover" 
-                  loading="lazy" 
-                />
-              ) : (
-                <div className="h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold">
-                  {r.team_name?.substring(0, 2).toUpperCase() || '??'}
-                </div>
-              )}
-              {r.team_name}
+            <td className="py-2">
+              <a 
+                href={`/teams/${r.team_id}`}
+                className="flex items-center gap-2 hover:text-patriot-red-400 transition"
+              >
+                {r.logo_url ? (
+                  <img 
+                    src={r.logo_url} 
+                    alt="" 
+                    className="h-6 w-6 rounded object-cover" 
+                    loading="lazy" 
+                  />
+                ) : (
+                  <div className="h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold">
+                    {r.team_name?.substring(0, 2).toUpperCase() || '??'}
+                  </div>
+                )}
+                {r.team_name}
+              </a>
             </td>
             <td className="text-right font-medium">{Math.round(r.hybrid_score ?? 0)}</td>
             <td className="text-right">{Math.round(r.elo_rating ?? 1500)}</td>

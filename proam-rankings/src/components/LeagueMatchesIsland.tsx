@@ -210,15 +210,23 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
             </div>
             <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2">
               <span>{new Date(match.played_at).toLocaleDateString()}</span>
-              {match.league && (
-                <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
+              {match.league && match.season_id && (
+                <a
+                  href={`/leagues/${match.season_id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition"
+                >
                   {match.league.league_name} {match.league.season_number && `S${match.league.season_number}`}
-                </span>
+                </a>
               )}
-              {match.tournament && (
-                <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
+              {match.tournament && match.tournament_id && (
+                <a
+                  href={`/tournaments/${match.tournament_id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300 hover:bg-purple-900/50 transition"
+                >
                   {match.tournament.name}
-                </span>
+                </a>
               )}
               {match.stage && <span>• {match.stage}</span>}
               {getVerificationBadge(match)}
@@ -267,15 +275,21 @@ export default function LeagueMatchesIsland({ matches }: { matches: Match[] }) {
               </div>
               <div className="flex items-center gap-2 text-xs text-neutral-500">
                 <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
-                {selectedMatch.league && (
-                  <span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs">
+                {selectedMatch.league && selectedMatch.season_id && (
+                  <a
+                    href={`/leagues/${selectedMatch.season_id}`}
+                    className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition"
+                  >
                     {selectedMatch.league.league_name} {selectedMatch.league.season_number && `S${selectedMatch.league.season_number}`}
-                  </span>
+                  </a>
                 )}
-                {selectedMatch.tournament && (
-                  <span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">
+                {selectedMatch.tournament && selectedMatch.tournament_id && (
+                  <a
+                    href={`/tournaments/${selectedMatch.tournament_id}`}
+                    className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300 hover:bg-purple-900/50 transition"
+                  >
                     {selectedMatch.tournament.name}
-                  </span>
+                  </a>
                 )}
                 {selectedMatch.stage && <span>• {selectedMatch.stage}</span>}
                 {getVerificationBadge(selectedMatch)}

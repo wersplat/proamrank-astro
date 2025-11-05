@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../components/BaseLayout.astro";
 import Navigation from "../../components/Navigation.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import TeamTabsIsland from "../../components/TeamTabsIsland";
 import { supa } from "../../lib/supabase";
 import { generateThemeCSSVars } from "../../lib/theme";
@@ -176,6 +177,11 @@ const teamDescription = `View ${team.name}'s profile, roster, match history, and
 >
   <Navigation />
     <main class="mx-auto max-w-6xl p-6">
+      <Breadcrumbs items={[
+        { label: "Home", href: "/" },
+        { label: "Teams", href: "/teams" },
+        { label: team.name, href: `/teams/${team.id}` }
+      ]} />
       <!-- Team Header -->
       <div class="mb-8 flex items-start gap-6">
         {team.logo_url ? (

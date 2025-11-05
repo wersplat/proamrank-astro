@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../components/BaseLayout.astro";
 import Navigation from "../../components/Navigation.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import PlayerTabs from "../../components/player/Tabs";
 import { supa } from "../../lib/supabase";
 import { generateThemeCSSVars } from "../../lib/theme";
@@ -190,7 +191,12 @@ const playerDescription = `View ${player.gamertag}'s profile, statistics, game l
   description={playerDescription}
 >
   <Navigation />
-    <main class="mx-auto max-w-6xl p-6">
+  <main class="mx-auto max-w-6xl p-6">
+    <Breadcrumbs items={[
+      { label: "Home", href: "/" },
+      { label: "Players", href: "/players" },
+      { label: player?.gamertag || "Player", href: `/players/${id}` }
+    ]} />
       <!-- Player Header -->
       <div class="mb-8">
         <h1 class="text-3xl font-bold mb-2">{player.gamertag}</h1>

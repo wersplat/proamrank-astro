@@ -86,27 +86,29 @@ const rows = (data ?? []).map((team: any) => ({
       <!-- Mobile cards (smaller screens) -->
       <section class="space-y-2 sm:hidden">
         {rows.map((r: typeof rows[0]) => (
-          <article class="rounded border border-patriot-blue-800 p-3">
-            <header class="flex items-center gap-3">
-              {r.logo_url ? (
-                <img src={r.logo_url}
-                   alt="" class="h-8 w-8 rounded object-cover" loading="lazy" />
-              ) : (
-                <div class="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold">
-                  {r.team_name?.substring(0, 2).toUpperCase() || '??'}
-                </div>
-              )}
-              <div class="font-semibold">{r.team_name}</div>
-              {r.leaderboard_tier && (
-                <div class="ml-auto text-xs font-bold text-neutral-400">{r.leaderboard_tier}</div>
-              )}
-            </header>
-            <dl class="mt-2 grid grid-cols-3 text-sm">
-              <div><dt class="text-neutral-400">Score</dt><dd class="font-medium">{Math.round(r.hybrid_score ?? 0)}</dd></div>
-              <div><dt class="text-neutral-400">Elo</dt><dd class="font-medium">{Math.round(r.elo_rating ?? 1500)}</dd></div>
-              <div><dt class="text-neutral-400">RP</dt><dd>{r.current_rp ?? 0}</dd></div>
-            </dl>
-          </article>
+          <a href={`/teams/${r.team_id}`} class="block rounded border border-patriot-blue-800 p-3 hover:border-patriot-red-500 transition">
+            <article>
+              <header class="flex items-center gap-3">
+                {r.logo_url ? (
+                  <img src={r.logo_url}
+                     alt="" class="h-8 w-8 rounded object-cover" loading="lazy" />
+                ) : (
+                  <div class="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold">
+                    {r.team_name?.substring(0, 2).toUpperCase() || '??'}
+                  </div>
+                )}
+                <div class="font-semibold">{r.team_name}</div>
+                {r.leaderboard_tier && (
+                  <div class="ml-auto text-xs font-bold text-neutral-400">{r.leaderboard_tier}</div>
+                )}
+              </header>
+              <dl class="mt-2 grid grid-cols-3 text-sm">
+                <div><dt class="text-neutral-400">Score</dt><dd class="font-medium">{Math.round(r.hybrid_score ?? 0)}</dd></div>
+                <div><dt class="text-neutral-400">Elo</dt><dd class="font-medium">{Math.round(r.elo_rating ?? 1500)}</dd></div>
+                <div><dt class="text-neutral-400">RP</dt><dd>{r.current_rp ?? 0}</dd></div>
+              </dl>
+            </article>
+          </a>
         ))}
       </section>
 

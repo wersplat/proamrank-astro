@@ -446,8 +446,30 @@ export default function TeamTabsIsland({
                             <div className="text-sm font-semibold">vs {opponent?.name || "Unknown"}</div>
                             <div className="text-xs text-neutral-500 flex items-center gap-2 flex-wrap">
                               <span>{new Date(match.played_at).toLocaleDateString()}</span>
-                              {match.league?.league_name && <span>• {match.league.league_name}</span>}
-                              {match.tournament?.name && <span>• {match.tournament.name}</span>}
+                              {match.league?.league_name && match.season_id && (
+                                <>
+                                  <span>•</span>
+                                  <a
+                                    href={`/leagues/${match.season_id}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="hover:text-blue-400 transition"
+                                  >
+                                    {match.league.league_name}
+                                  </a>
+                                </>
+                              )}
+                              {match.tournament?.name && match.tournament_id && (
+                                <>
+                                  <span>•</span>
+                                  <a
+                                    href={`/tournaments/${match.tournament_id}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="hover:text-purple-400 transition"
+                                  >
+                                    {match.tournament.name}
+                                  </a>
+                                </>
+                              )}
                               {getVerificationBadge(match)}
                             </div>
                           </div>
