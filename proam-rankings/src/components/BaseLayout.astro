@@ -2,12 +2,23 @@
 interface Props {
   title: string;
   description: string;
+  ogImage?: string;
+  ogType?: string;
+  ogUrl?: string;
+  twitterCard?: "summary" | "summary_large_image";
 }
 
-const { title, description } = Astro.props;
+const { title, description, ogImage, ogType = "website", ogUrl, twitterCard = "summary_large_image" } = Astro.props;
 const fullTitle = title.includes("Global Rank Analytics Data Engine") 
   ? title 
   : `${title} - Global Rank Analytics Data Engine (G.R.A.D.E)`;
+
+// Construct absolute URLs
+const siteUrl = Astro.url.origin;
+const canonicalUrl = ogUrl || Astro.url.href;
+const defaultImage = `${siteUrl}/GR.svg`;
+const ogImageUrl = ogImage ? (ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`) : defaultImage;
+const siteName = "Global Rank Analytics Data Engine (G.R.A.D.E.)";
 ---
 
 <html lang="en">
@@ -16,6 +27,24 @@ const fullTitle = title.includes("Global Rank Analytics Data Engine")
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content={siteName} />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+    
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   </head>

@@ -585,12 +585,19 @@ const leagueInfoForTabs = {
 };
 
 const leagueDescription = `View ${league.league_name} standings, schedules, match results, and statistics. Track season progress and team performance in this NBA 2K Pro-Am league.`;
+
+// Construct Open Graph image URL
+const ogImage = league.league_logo || "/GR.svg";
+const ogUrl = Astro.url.href;
 ---
 
 <BaseLayout 
   title={league.league_name}
   description={leagueDescription}
->
+  ogImage={ogImage}
+  ogType="website"
+  ogUrl={ogUrl}
+/>
   <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <Breadcrumbs items={[

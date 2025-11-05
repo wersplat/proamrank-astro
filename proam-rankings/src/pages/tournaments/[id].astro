@@ -254,12 +254,19 @@ const tierColors: Record<string, string> = {
 const tierColor = tierColors[tournamentTier as string] || 'bg-gray-900 text-gray-300 border-gray-500';
 
 const tournamentDescription = `View ${tournament.name} bracket, results, matches, and prize information. Track tournament progress and team performance in this NBA 2K Pro-Am competition.`;
+
+// Construct Open Graph image URL (prefer banner, fallback to default)
+const ogImage = tournament.banner_url || "/GR.svg";
+const ogUrl = Astro.url.href;
 ---
 
 <BaseLayout 
   title={tournament.name}
   description={tournamentDescription}
->
+  ogImage={ogImage}
+  ogType="website"
+  ogUrl={ogUrl}
+/>
   <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <Breadcrumbs items={[

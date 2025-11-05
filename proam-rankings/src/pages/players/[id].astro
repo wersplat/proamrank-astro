@@ -184,12 +184,19 @@ if (!player) {
 }
 
 const playerDescription = `View ${player.gamertag}'s profile, statistics, game logs, and achievements. Track player performance, ratings, and career progress in NBA 2K Pro-Am competitions.`;
+
+// Construct Open Graph image URL (use default for now, could add player avatars later)
+const ogImage = "/GR.svg";
+const ogUrl = Astro.url.href;
 ---
 
 <BaseLayout 
   title={player.gamertag}
   description={playerDescription}
->
+  ogImage={ogImage}
+  ogType="profile"
+  ogUrl={ogUrl}
+/>
   <Navigation />
   <main class="mx-auto max-w-6xl p-6">
     <Breadcrumbs items={[

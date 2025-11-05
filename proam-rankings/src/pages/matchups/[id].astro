@@ -413,12 +413,19 @@ const spotlightMatch = {
 };
 
 const matchupDescription = `View ${spotlightMatch.team_a.name} vs ${spotlightMatch.team_b.name} matchup details, statistics, and head-to-head history in NBA 2K Pro-Am competitions.`;
+
+// Construct Open Graph image URL (use team logos if available, fallback to default)
+const ogImage = spotlightMatch.team_a.logo_url || spotlightMatch.team_b.logo_url || "/GR.svg";
+const ogUrl = Astro.url.href;
 ---
 
 <BaseLayout 
   title={`${spotlightMatch.team_a.name} vs ${spotlightMatch.team_b.name}`}
   description={matchupDescription}
->
+  ogImage={ogImage}
+  ogType="website"
+  ogUrl={ogUrl}
+/>
   <Navigation />
   <main class="mx-auto max-w-6xl p-6">
     <SpotlightMatchup match={spotlightMatch} />
