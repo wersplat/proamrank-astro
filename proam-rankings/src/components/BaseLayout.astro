@@ -6,9 +6,10 @@ interface Props {
   ogType?: string;
   ogUrl?: string;
   twitterCard?: "summary" | "summary_large_image";
+  logoUnderlay?: string;
 }
 
-const { title, description, ogImage, ogType = "website", ogUrl, twitterCard = "summary_large_image" } = Astro.props;
+const { title, description, ogImage, ogType = "website", ogUrl, twitterCard = "summary_large_image", logoUnderlay } = Astro.props;
 const fullTitle = title.includes("Global Rank Analytics Data Engine") 
   ? title 
   : `${title} - Global Rank Analytics Data Engine (G.R.A.D.E)`;
@@ -106,7 +107,7 @@ const websiteStructuredData = {
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-patriot-red-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-brand-navy">
       Skip to main content
     </a>
-    <slot />
+    <slot logoUnderlay={logoUnderlay} />
   </body>
 </html>
 

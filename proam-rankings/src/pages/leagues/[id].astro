@@ -599,7 +599,7 @@ const ogUrl = Astro.url.href;
   ogUrl={ogUrl}
 />
   <Navigation />
-    <main class="mx-auto max-w-6xl p-6 grade-pattern">
+    <main class="mx-auto max-w-6xl p-6 logo-underlay" style={`--logo-url: url('${leagueInfo?.lg_logo_url || '/GR.svg'}')`}>
       <Breadcrumbs items={[
         { label: "Home", href: "/" },
         { label: "Leagues", href: "/leagues" },

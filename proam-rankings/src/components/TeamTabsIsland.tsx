@@ -245,7 +245,7 @@ export default function TeamTabsIsland({
   };
 
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50">
+    <div className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/30">
       {/* Tabs Header */}
       <div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto">
         {tabs.map((tab) => (
