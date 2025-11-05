@@ -52,9 +52,9 @@ export default function Media({ player, playerId }: MediaProps) {
   if (error) {
     return (
       <div>
-        <h2 className="text-xl font-bold mb-6 text-white">Media & Highlights</h2>
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-red-400">Error loading media: {error}</p>
+        <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Media & Highlights</h2>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-red-600 dark:text-red-400">Error loading media: {error}</p>
         </div>
       </div>
     );
@@ -73,12 +73,12 @@ export default function Media({ player, playerId }: MediaProps) {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'youtube': return 'text-red-400';
-      case 'twitch': return 'text-purple-400';
-      case 'twitter': return 'text-blue-400';
-      case 'instagram': return 'text-pink-400';
-      case 'tiktok': return 'text-white';
-      default: return 'text-neutral-400';
+      case 'youtube': return 'text-red-600 dark:text-red-400';
+      case 'twitch': return 'text-purple-600 dark:text-purple-400';
+      case 'twitter': return 'text-blue-600 dark:text-blue-400';
+      case 'instagram': return 'text-pink-600 dark:text-pink-400';
+      case 'tiktok': return 'text-gray-900 dark:text-white';
+      default: return 'text-gray-600 dark:text-neutral-400';
     }
   };
 
@@ -115,7 +115,7 @@ export default function Media({ player, playerId }: MediaProps) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-white">Media & Highlights</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Media & Highlights</h2>
         {mediaItems.length > 0 && (
         <div className="flex gap-2">
           <button
@@ -123,7 +123,7 @@ export default function Media({ player, playerId }: MediaProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'all' 
                 ? 'bg-patriot-blue-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             All
@@ -133,7 +133,7 @@ export default function Media({ player, playerId }: MediaProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'youtube' 
                 ? 'bg-patriot-blue-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             YouTube
@@ -143,7 +143,7 @@ export default function Media({ player, playerId }: MediaProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'twitch' 
                 ? 'bg-patriot-blue-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             Twitch
@@ -153,7 +153,7 @@ export default function Media({ player, playerId }: MediaProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'twitter' 
                 ? 'bg-patriot-blue-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             Twitter
@@ -163,7 +163,7 @@ export default function Media({ player, playerId }: MediaProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'instagram' 
                 ? 'bg-patriot-blue-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             Instagram
@@ -178,11 +178,11 @@ export default function Media({ player, playerId }: MediaProps) {
         {filteredMedia.map((item) => (
           <div 
             key={item.id}
-            className="rounded-lg border border-neutral-800 overflow-hidden bg-neutral-900 hover:bg-neutral-800 transition-all duration-200 cursor-pointer group"
+            className="rounded-lg border border-gray-200 dark:border-neutral-800 overflow-hidden bg-white dark:bg-neutral-900 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-all duration-200 cursor-pointer group"
             onClick={() => window.open(item.url, '_blank')}
           >
             {/* Thumbnail */}
-            <div className="relative aspect-video bg-neutral-800">
+            <div className="relative aspect-video bg-gray-200 dark:bg-neutral-800">
               {item.thumbnailUrl ? (
                 <img 
                   src={item.thumbnailUrl} 
@@ -190,7 +190,7 @@ export default function Media({ player, playerId }: MediaProps) {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-4xl text-neutral-500">
+                <div className="w-full h-full flex items-center justify-center text-4xl text-gray-500 dark:text-neutral-500">
                   {getTypeIcon(item.type)}
                 </div>
               )}
@@ -211,16 +211,16 @@ export default function Media({ player, playerId }: MediaProps) {
 
             {/* Content */}
             <div className="p-4">
-              <h4 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
+              <h4 className="text-gray-900 dark:text-white font-semibold mb-2 line-clamp-2 group-hover:text-patriot-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {item.title}
               </h4>
 
-              <p className="text-neutral-400 text-sm mb-4 line-clamp-2">
+              <p className="text-gray-600 dark:text-neutral-400 text-sm mb-4 line-clamp-2">
                 {item.description}
               </p>
 
               {/* Stats */}
-              <div className="flex justify-between items-center text-xs text-neutral-500">
+              <div className="flex justify-between items-center text-xs text-gray-500 dark:text-neutral-500">
                 <span>{formatDate(item.publishedAt)}</span>
                 <div className="flex gap-3">
                   {item.views && (
@@ -238,16 +238,16 @@ export default function Media({ player, playerId }: MediaProps) {
       )}
 
       {filteredMedia.length === 0 && !loading && (
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-neutral-400 text-lg">
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400 text-lg">
             {mediaItems.length === 0 ? 'No media available yet' : 'No media found for the selected filter'}
           </p>
         </div>
       )}
       
       {loading && (
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-neutral-400">Loading media...</p>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400">Loading media...</p>
         </div>
       )}
     </div>

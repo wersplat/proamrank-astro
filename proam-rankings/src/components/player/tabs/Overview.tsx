@@ -18,31 +18,31 @@ export default function Overview({ player, team, performance, globalRating }: Ov
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-6 text-white">Player Overview</h2>
+      <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Player Overview</h2>
       
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Basic Info */}
-        <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-          <h3 className="text-lg font-semibold mb-4 text-white">Basic Information</h3>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-white dark:bg-neutral-900">
+          <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Basic Information</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-neutral-400">Gamertag:</span>
-              <span className="font-semibold text-white">{player.gamertag}</span>
+              <span className="text-gray-600 dark:text-neutral-400">Gamertag:</span>
+              <span className="font-semibold text-gray-900 dark:text-white">{player.gamertag}</span>
             </div>
             {player.alternate_gamertag && (
               <div className="flex justify-between">
-                <span className="text-neutral-400">Alternate Gamertag:</span>
-                <span className="font-semibold text-neutral-300">{player.alternate_gamertag}</span>
+                <span className="text-gray-600 dark:text-neutral-400">Alternate Gamertag:</span>
+                <span className="font-semibold text-gray-700 dark:text-neutral-300">{player.alternate_gamertag}</span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-neutral-400">Position:</span>
-              <span className="font-semibold text-white">{player.position || 'Unknown'}</span>
+              <span className="text-gray-600 dark:text-neutral-400">Position:</span>
+              <span className="font-semibold text-gray-900 dark:text-white">{player.position || 'Unknown'}</span>
             </div>
             {player.salary_tier && (
               <div className="flex justify-between">
-                <span className="text-neutral-400">Salary Tier:</span>
-                <span className="font-semibold text-yellow-400">Tier {player.salary_tier}</span>
+                <span className="text-gray-600 dark:text-neutral-400">Salary Tier:</span>
+                <span className="font-semibold text-yellow-600 dark:text-yellow-400">Tier {player.salary_tier}</span>
               </div>
             )}
           </div>
@@ -50,8 +50,8 @@ export default function Overview({ player, team, performance, globalRating }: Ov
 
         {/* Team Info */}
         {team && (
-          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-            <h3 className="text-lg font-semibold mb-4 text-white">Current Team</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-white dark:bg-neutral-900">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Current Team</h3>
             <div className="flex items-center gap-4 mb-4">
               {team.logo_url && (
                 <img 
@@ -61,17 +61,17 @@ export default function Overview({ player, team, performance, globalRating }: Ov
                 />
               )}
               <div>
-                <div className="font-semibold text-lg text-white mb-1">
+                <div className="font-semibold text-lg text-gray-900 dark:text-white mb-1">
                   {team.name}
                 </div>
-                <div className="text-neutral-400 text-sm">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm">
                   Rank #{team.global_rank || 'N/A'} • {team.current_rp || 0} RP
                 </div>
               </div>
             </div>
             <a 
               href={`/teams/${team.id}`}
-              className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
+              className="text-patriot-blue-600 dark:text-blue-400 hover:text-patriot-blue-700 dark:hover:text-blue-300 text-sm transition-colors"
             >
               View Team Details →
             </a>
@@ -80,59 +80,59 @@ export default function Overview({ player, team, performance, globalRating }: Ov
 
         {/* Global Rating - New comprehensive rating card */}
         {globalRating && (
-          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900 lg:col-span-2">
-            <h3 className="text-lg font-semibold mb-4 text-white">Global Rating</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-white dark:bg-neutral-900 lg:col-span-2">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Global Rating</h3>
             
             <div className="flex flex-col sm:flex-row gap-6 mb-6">
               {/* Main Rating Display */}
               <div className="text-center sm:text-left">
-                <div className="text-neutral-400 text-sm mb-2">Overall Rating</div>
-                <div className="text-5xl font-bold text-white mb-3">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-2">Overall Rating</div>
+                <div className="text-5xl font-bold text-gray-900 dark:text-white mb-3">
                   {globalRating.global_rating?.toFixed(1) || '-'}
                 </div>
                 <div className={`inline-flex px-4 py-2 rounded-lg border font-bold text-sm ${getRatingTierColor(globalRating.rating_tier)}`}>
                   {globalRating.rating_tier || 'Unranked'} - {getRatingTierLabel(globalRating.rating_tier)}
                 </div>
-                <div className="text-xs text-neutral-500 mt-2">
+                <div className="text-xs text-gray-500 dark:text-neutral-500 mt-2">
                   Range: {getRatingTierRange(globalRating.rating_tier)}
                 </div>
               </div>
 
               {/* Rating Components Breakdown */}
               <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className="bg-neutral-950 p-3 rounded-lg">
-                  <div className="text-neutral-400 text-xs mb-1">Base</div>
-                  <div className="text-lg font-bold text-blue-400">
+                <div className="bg-gray-100 dark:bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Base</div>
+                  <div className="text-lg font-bold text-patriot-blue-600 dark:text-blue-400">
                     +{globalRating.base_rating?.toFixed(1) || 0}
                   </div>
                 </div>
-                <div className="bg-neutral-950 p-3 rounded-lg">
-                  <div className="text-neutral-400 text-xs mb-1">Game Impact</div>
-                  <div className="text-lg font-bold text-green-400">
+                <div className="bg-gray-100 dark:bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Game Impact</div>
+                  <div className="text-lg font-bold text-green-600 dark:text-green-400">
                     +{globalRating.game_impact?.toFixed(1) || 0}
                   </div>
                 </div>
-                <div className="bg-neutral-950 p-3 rounded-lg">
-                  <div className="text-neutral-400 text-xs mb-1">Event Bonus</div>
-                  <div className="text-lg font-bold text-purple-400">
+                <div className="bg-gray-100 dark:bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Event Bonus</div>
+                  <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
                     +{globalRating.event_bonus?.toFixed(1) || 0}
                   </div>
                 </div>
-                <div className="bg-neutral-950 p-3 rounded-lg">
-                  <div className="text-neutral-400 text-xs mb-1">Consistency</div>
-                  <div className="text-lg font-bold text-yellow-400">
+                <div className="bg-gray-100 dark:bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Consistency</div>
+                  <div className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
                     +{globalRating.consistency_bonus?.toFixed(1) || 0}
                   </div>
                 </div>
-                <div className="bg-neutral-950 p-3 rounded-lg">
-                  <div className="text-neutral-400 text-xs mb-1">Decay</div>
-                  <div className="text-lg font-bold text-red-400">
+                <div className="bg-gray-100 dark:bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Decay</div>
+                  <div className="text-lg font-bold text-red-600 dark:text-red-400">
                     -{globalRating.decay_penalty?.toFixed(1) || 0}
                   </div>
                 </div>
-                <div className="bg-neutral-950 p-3 rounded-lg">
-                  <div className="text-neutral-400 text-xs mb-1">Games</div>
-                  <div className="text-lg font-bold text-white">
+                <div className="bg-gray-100 dark:bg-neutral-950 p-3 rounded-lg">
+                  <div className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Games</div>
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
                     {globalRating.total_games || 0}
                   </div>
                 </div>
@@ -141,7 +141,7 @@ export default function Overview({ player, team, performance, globalRating }: Ov
 
             {/* Activity Status */}
             <div className="flex items-center justify-between text-sm">
-              <span className="text-neutral-400">Last Activity:</span>
+              <span className="text-gray-600 dark:text-neutral-400">Last Activity:</span>
               <span className={getActivityStatusColor(globalRating.days_since_last_game)}>
                 {formatDaysInactive(globalRating.days_since_last_game)}
               </span>
@@ -150,37 +150,37 @@ export default function Overview({ player, team, performance, globalRating }: Ov
         )}
 
         {/* Key Stats */}
-        <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-          <h3 className="text-lg font-semibold mb-4 text-white">Key Stats</h3>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-white dark:bg-neutral-900">
+          <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Key Stats</h3>
           <div className="grid grid-cols-2 gap-4">
             {player.player_rp !== null && player.player_rp !== undefined && (
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Ranking Points</div>
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Ranking Points</div>
+                <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">
                   {player.player_rp}
                 </div>
               </div>
             )}
             {performance?.games_played && (
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Games Played</div>
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Games Played</div>
+                <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">
                   {performance.games_played}
                 </div>
               </div>
             )}
             {performance?.avg_points && (
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">PPG</div>
-                <div className="text-2xl font-bold text-green-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">PPG</div>
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                   {performance.avg_points.toFixed(1)}
                 </div>
               </div>
             )}
             {globalRating?.peak_performance && (
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Peak Impact</div>
-                <div className="text-2xl font-bold text-yellow-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Peak Impact</div>
+                <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
                   {globalRating.peak_performance.toFixed(1)}
                 </div>
               </div>
@@ -190,42 +190,42 @@ export default function Overview({ player, team, performance, globalRating }: Ov
 
         {/* Season Averages */}
         {performance && (
-          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-            <h3 className="text-lg font-semibold mb-4 text-white">Season Averages</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-white dark:bg-neutral-900">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Season Averages</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Points</div>
-                <div className="text-xl font-bold text-white">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Points</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">
                   {performance.avg_points?.toFixed(1) || '-'}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Assists</div>
-                <div className="text-xl font-bold text-white">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Assists</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">
                   {performance.avg_assists?.toFixed(1) || '-'}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Rebounds</div>
-                <div className="text-xl font-bold text-white">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Rebounds</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">
                   {performance.avg_rebounds?.toFixed(1) || '-'}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Steals</div>
-                <div className="text-xl font-bold text-white">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Steals</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">
                   {performance.avg_steals?.toFixed(1) || '-'}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Blocks</div>
-                <div className="text-xl font-bold text-white">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Blocks</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">
                   {performance.avg_blocks?.toFixed(1) || '-'}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Turnovers</div>
-                <div className="text-xl font-bold text-white">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Turnovers</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">
                   {performance.avg_turnovers?.toFixed(1) || '-'}
                 </div>
               </div>
@@ -235,15 +235,15 @@ export default function Overview({ player, team, performance, globalRating }: Ov
 
         {/* Social Media & Contact */}
         {(player.twitter_id || player.discord_id || player.twitch) && (
-          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900 lg:col-span-2">
-            <h3 className="text-lg font-semibold mb-4 text-white">Social Media & Contact</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-white dark:bg-neutral-900 lg:col-span-2">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Social Media & Contact</h3>
             <div className="flex flex-wrap gap-6">
               {player.twitter_id && (
                 <a
                   href={`https://twitter.com/${player.twitter_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-neutral-300 hover:text-blue-400 transition-colors"
+                  className="flex items-center gap-2 text-gray-700 dark:text-neutral-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
                   <svg 
                     className="w-5 h-5" 
@@ -256,7 +256,7 @@ export default function Overview({ player, team, performance, globalRating }: Ov
                 </a>
               )}
               {player.discord_id && (
-                <div className="flex items-center gap-2 text-neutral-300">
+                <div className="flex items-center gap-2 text-gray-700 dark:text-neutral-300">
                   <svg 
                     className="w-5 h-5 text-[#5865F2]" 
                     viewBox="0 0 24 24" 
@@ -272,7 +272,7 @@ export default function Overview({ player, team, performance, globalRating }: Ov
                   href={`https://twitch.tv/${player.twitch}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-neutral-300 hover:text-[#9146FF] transition-colors"
+                  className="flex items-center gap-2 text-gray-700 dark:text-neutral-300 hover:text-[#9146FF] transition-colors"
                 >
                   <svg 
                     className="w-5 h-5" 

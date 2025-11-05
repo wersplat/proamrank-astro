@@ -26,17 +26,17 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
   ];
 
   return (
-    <div className="rounded-lg border border-neutral-800 bg-neutral-900">
+    <div className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
       {/* Tab Navigation */}
-      <div className="flex border-b border-neutral-800 overflow-x-auto">
+      <div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
               activeTab === tab.id
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-neutral-800'
-                : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
+                ? 'text-patriot-blue-600 dark:text-blue-400 border-b-2 border-patriot-blue-600 dark:border-blue-400 bg-gray-50 dark:bg-neutral-800'
+                : 'text-gray-700 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-neutral-800'
             }`}
           >
             {tab.label}

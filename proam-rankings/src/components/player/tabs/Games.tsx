@@ -39,22 +39,22 @@ export default function Games({ player, recentGames }: GamesProps) {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-6 text-white">Game History</h2>
+      <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Game History</h2>
       
       {recentGames && recentGames.length > 0 ? (
         <div>
           <div className="mb-4 flex justify-between items-center">
-            <p className="text-neutral-400">
+            <p className="text-gray-600 dark:text-neutral-400">
               Showing {recentGames.length} recent games
             </p>
-            <div className="text-sm text-neutral-500">
+            <div className="text-sm text-gray-500 dark:text-neutral-500">
               Click any row for details
             </div>
           </div>
 
-          <div className="rounded-lg border border-neutral-800 overflow-hidden">
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-neutral-800 text-neutral-300">
+              <thead className="bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300">
                 <tr>
                   <th className="text-left py-3 px-4">Date</th>
                   <th className="text-center py-3 px-4">PTS</th>
@@ -68,8 +68,8 @@ export default function Games({ player, recentGames }: GamesProps) {
                   <th className="text-center py-3 px-4">📊</th>
                 </tr>
               </thead>
-              <tbody>
-                {recentGames.map((game) => {
+              <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
+                {recentGames.map((game, idx) => {
                   const matchData = getMatchData(game);
                   const hasBoxscore = matchData?.boxscore_url;
                   const fgPercentage = game.fga && game.fga > 0 ? ((game.fgm || 0) / game.fga * 100).toFixed(1) : '0.0';
@@ -80,24 +80,24 @@ export default function Games({ player, recentGames }: GamesProps) {
                   return (
                     <tr 
                       key={game.id}
-                      className="hover:bg-neutral-800 cursor-pointer transition-colors"
+                      className={`hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer transition-colors ${idx % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-gray-50 dark:bg-transparent'}`}
                       onClick={() => setSelectedGame(game)}
                     >
-                      <td className="py-3 px-4 text-white">
+                      <td className="py-3 px-4 text-gray-900 dark:text-white">
                         {matchData?.played_at ? formatDate(matchData.played_at) : 'N/A'}
                       </td>
                       <td className={`py-3 px-4 text-center font-semibold ${
-                        game.points >= 20 ? 'text-green-400' : 'text-white'
+                        game.points >= 20 ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'
                       }`}>
                         {game.points || 0}
                       </td>
-                      <td className="py-3 px-4 text-center text-white">{game.assists || 0}</td>
-                      <td className="py-3 px-4 text-center text-white">{game.rebounds || 0}</td>
-                      <td className="py-3 px-4 text-center text-white">{game.steals || 0}</td>
-                      <td className="py-3 px-4 text-center text-white">{game.blocks || 0}</td>
-                      <td className="py-3 px-4 text-center text-white">{game.turnovers || 0}</td>
-                      <td className="py-3 px-4 text-center text-white">{fgPercentage}%</td>
-                      <td className="py-3 px-4 text-center text-white">{threePtPercentage}%</td>
+                      <td className="py-3 px-4 text-center text-gray-900 dark:text-white">{game.assists || 0}</td>
+                      <td className="py-3 px-4 text-center text-gray-900 dark:text-white">{game.rebounds || 0}</td>
+                      <td className="py-3 px-4 text-center text-gray-900 dark:text-white">{game.steals || 0}</td>
+                      <td className="py-3 px-4 text-center text-gray-900 dark:text-white">{game.blocks || 0}</td>
+                      <td className="py-3 px-4 text-center text-gray-900 dark:text-white">{game.turnovers || 0}</td>
+                      <td className="py-3 px-4 text-center text-gray-900 dark:text-white">{fgPercentage}%</td>
+                      <td className="py-3 px-4 text-center text-gray-900 dark:text-white">{threePtPercentage}%</td>
                       <td className="py-3 px-4 text-center">
                         {hasBoxscore && (
                           <span className="text-lg">📊</span>
@@ -112,42 +112,42 @@ export default function Games({ player, recentGames }: GamesProps) {
 
           {/* Game Averages */}
           {averages && (
-            <div className="mt-6 rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-              <h3 className="text-lg font-semibold mb-4 text-white">Recent Averages (Last {recentGames.length} games)</h3>
+            <div className="mt-6 rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-gray-50 dark:bg-neutral-900">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Recent Averages (Last {recentGames.length} games)</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 <div className="text-center">
-                  <div className="text-neutral-400 text-sm mb-1">Points</div>
-                  <div className="text-xl font-bold text-blue-400">
+                  <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Points</div>
+                  <div className="text-xl font-bold text-patriot-blue-600 dark:text-blue-400">
                     {averages.points.toFixed(1)}
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-neutral-400 text-sm mb-1">Assists</div>
-                  <div className="text-xl font-bold text-blue-400">
+                  <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Assists</div>
+                  <div className="text-xl font-bold text-patriot-blue-600 dark:text-blue-400">
                     {averages.assists.toFixed(1)}
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-neutral-400 text-sm mb-1">Rebounds</div>
-                  <div className="text-xl font-bold text-blue-400">
+                  <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Rebounds</div>
+                  <div className="text-xl font-bold text-patriot-blue-600 dark:text-blue-400">
                     {averages.rebounds.toFixed(1)}
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-neutral-400 text-sm mb-1">Steals</div>
-                  <div className="text-xl font-bold text-blue-400">
+                  <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Steals</div>
+                  <div className="text-xl font-bold text-patriot-blue-600 dark:text-blue-400">
                     {averages.steals.toFixed(1)}
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-neutral-400 text-sm mb-1">Blocks</div>
-                  <div className="text-xl font-bold text-blue-400">
+                  <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Blocks</div>
+                  <div className="text-xl font-bold text-patriot-blue-600 dark:text-blue-400">
                     {averages.blocks.toFixed(1)}
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-neutral-400 text-sm mb-1">Turnovers</div>
-                  <div className="text-xl font-bold text-blue-400">
+                  <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Turnovers</div>
+                  <div className="text-xl font-bold text-patriot-blue-600 dark:text-blue-400">
                     {averages.turnovers.toFixed(1)}
                   </div>
                 </div>
@@ -156,8 +156,8 @@ export default function Games({ player, recentGames }: GamesProps) {
           )}
         </div>
       ) : (
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-neutral-400 text-lg">
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400 text-lg">
             No games found for this player
           </p>
         </div>
@@ -166,13 +166,13 @@ export default function Games({ player, recentGames }: GamesProps) {
       {/* Game Detail Modal */}
       {selectedGame && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-neutral-900 rounded-lg border border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-white">Game Details</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Game Details</h3>
                 <button
                   onClick={() => setSelectedGame(null)}
-                  className="text-neutral-400 hover:text-white text-2xl"
+                  className="text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white text-2xl"
                 >
                   ×
                 </button>
@@ -181,43 +181,43 @@ export default function Games({ player, recentGames }: GamesProps) {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-neutral-400 text-sm">Date</div>
-                    <div className="text-white">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm">Date</div>
+                    <div className="text-gray-900 dark:text-white">
                       {getMatchData(selectedGame)?.played_at 
                         ? new Date(getMatchData(selectedGame).played_at).toLocaleDateString()
                         : 'N/A'}
                     </div>
                   </div>
                   <div>
-                    <div className="text-neutral-400 text-sm">Match ID</div>
-                    <div className="text-white">{selectedGame.match_id}</div>
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm">Match ID</div>
+                    <div className="text-gray-900 dark:text-white">{selectedGame.match_id}</div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-4 rounded-lg bg-neutral-800">
-                    <div className="text-neutral-400 text-sm mb-1">Points</div>
-                    <div className="text-2xl font-bold text-white">{selectedGame.points || 0}</div>
+                  <div className="text-center p-4 rounded-lg bg-gray-100 dark:bg-neutral-800">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Points</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedGame.points || 0}</div>
                   </div>
-                  <div className="text-center p-4 rounded-lg bg-neutral-800">
-                    <div className="text-neutral-400 text-sm mb-1">Assists</div>
-                    <div className="text-2xl font-bold text-white">{selectedGame.assists || 0}</div>
+                  <div className="text-center p-4 rounded-lg bg-gray-100 dark:bg-neutral-800">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Assists</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedGame.assists || 0}</div>
                   </div>
-                  <div className="text-center p-4 rounded-lg bg-neutral-800">
-                    <div className="text-neutral-400 text-sm mb-1">Rebounds</div>
-                    <div className="text-2xl font-bold text-white">{selectedGame.rebounds || 0}</div>
+                  <div className="text-center p-4 rounded-lg bg-gray-100 dark:bg-neutral-800">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Rebounds</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedGame.rebounds || 0}</div>
                   </div>
-                  <div className="text-center p-4 rounded-lg bg-neutral-800">
-                    <div className="text-neutral-400 text-sm mb-1">Steals</div>
-                    <div className="text-2xl font-bold text-white">{selectedGame.steals || 0}</div>
+                  <div className="text-center p-4 rounded-lg bg-gray-100 dark:bg-neutral-800">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Steals</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedGame.steals || 0}</div>
                   </div>
-                  <div className="text-center p-4 rounded-lg bg-neutral-800">
-                    <div className="text-neutral-400 text-sm mb-1">Blocks</div>
-                    <div className="text-2xl font-bold text-white">{selectedGame.blocks || 0}</div>
+                  <div className="text-center p-4 rounded-lg bg-gray-100 dark:bg-neutral-800">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Blocks</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedGame.blocks || 0}</div>
                   </div>
-                  <div className="text-center p-4 rounded-lg bg-neutral-800">
-                    <div className="text-neutral-400 text-sm mb-1">Turnovers</div>
-                    <div className="text-2xl font-bold text-white">{selectedGame.turnovers || 0}</div>
+                  <div className="text-center p-4 rounded-lg bg-gray-100 dark:bg-neutral-800">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Turnovers</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedGame.turnovers || 0}</div>
                   </div>
                 </div>
 

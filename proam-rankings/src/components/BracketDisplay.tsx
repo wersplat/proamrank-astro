@@ -86,11 +86,11 @@ export default function BracketDisplay({
 
   const getFormatBadge = (format: BracketFormat) => {
     const badges = {
-      "single-elimination": { label: "Single Elimination", color: "bg-blue-900 text-blue-300" },
-      "double-elimination": { label: "Double Elimination", color: "bg-purple-900 text-purple-300" },
-      "swiss": { label: "Swiss System", color: "bg-green-900 text-green-300" },
-      "round-robin": { label: "Round Robin", color: "bg-yellow-900 text-yellow-300" },
-      "unknown": { label: "Tournament", color: "bg-neutral-800 text-neutral-300" },
+      "single-elimination": { label: "Single Elimination", color: "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300" },
+      "double-elimination": { label: "Double Elimination", color: "bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300" },
+      "swiss": { label: "Swiss System", color: "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300" },
+      "round-robin": { label: "Round Robin", color: "bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300" },
+      "unknown": { label: "Tournament", color: "bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300" },
     };
     const badge = badges[format];
     return (
@@ -102,7 +102,7 @@ export default function BracketDisplay({
 
   const getWinnerClass = (match: BracketMatch, teamId: string) => {
     if (!match.winner_id) return "";
-    return match.winner_id === teamId ? "font-bold text-green-400" : "text-neutral-500 line-through";
+    return match.winner_id === teamId ? "font-bold text-green-600 dark:text-green-400" : "text-gray-500 dark:text-neutral-500 line-through";
   };
 
   const groupMatchesByStage = (matches: BracketMatch[], stages: string[]) => {
@@ -208,14 +208,14 @@ export default function BracketDisplay({
             
             return (
               <div key={stage} className="flex flex-col gap-4 min-w-[200px]">
-                <h3 className="text-sm font-bold text-neutral-400 text-center sticky top-0 bg-neutral-900 py-2">
+                <h3 className="text-sm font-bold text-gray-600 dark:text-neutral-400 text-center sticky top-0 bg-white dark:bg-neutral-900 py-2">
                   {stage}
                 </h3>
                 <div className="flex flex-col gap-4">
                   {series.map((seriesData) => (
                     <div
                       key={seriesData.seriesKey}
-                      className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:border-blue-500 transition cursor-pointer"
+                      className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer"
                       onClick={() => setSelectedSeries(seriesData)}
                     >
                       <div className={`text-sm mb-1 ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamA?.id || '')}`}>
@@ -224,13 +224,13 @@ export default function BracketDisplay({
                             {seriesData.teamA?.logo_url ? (
                               <img src={seriesData.teamA.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                             ) : (
-                              <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                              <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                 {seriesData.teamA?.name?.substring(0, 2).toUpperCase() || 'A'}
                               </div>
                             )}
-                            <span className="truncate">{seriesData.teamA?.name || "TBD"}</span>
+                            <span className="truncate text-gray-900 dark:text-white">{seriesData.teamA?.name || "TBD"}</span>
                           </div>
-                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === seriesData.teamA.id).length}</span>
+                          <span className="font-bold text-gray-900 dark:text-white">{seriesData.matches.filter(m => m.winner_id === seriesData.teamA.id).length}</span>
                         </div>
                       </div>
                       <div className={`text-sm ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamB?.id || '')}`}>
@@ -239,26 +239,26 @@ export default function BracketDisplay({
                             {seriesData.teamB?.logo_url ? (
                               <img src={seriesData.teamB.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                             ) : (
-                              <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                              <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                 {seriesData.teamB?.name?.substring(0, 2).toUpperCase() || 'B'}
                               </div>
                             )}
-                            <span className="truncate">{seriesData.teamB?.name || "TBD"}</span>
+                            <span className="truncate text-gray-900 dark:text-white">{seriesData.teamB?.name || "TBD"}</span>
                           </div>
-                          <span className="font-bold">{seriesData.matches.filter(m => m.winner_id === seriesData.teamB.id).length}</span>
+                          <span className="font-bold text-gray-900 dark:text-white">{seriesData.matches.filter(m => m.winner_id === seriesData.teamB.id).length}</span>
                         </div>
                       </div>
-                      <div className="mt-2 pt-2 border-t border-neutral-700">
+                      <div className="mt-2 pt-2 border-t border-gray-200 dark:border-neutral-700">
                         <div className="flex justify-between items-center">
-                          <span className="text-xs text-neutral-400">
+                          <span className="text-xs text-gray-600 dark:text-neutral-400">
                             Series #{seriesData.seriesNumber}
                           </span>
-                          <span className="text-xs text-neutral-300 font-semibold">
+                          <span className="text-xs text-gray-700 dark:text-neutral-300 font-semibold">
                             {getSeriesDisplayWithWins(seriesData)}
                           </span>
                         </div>
                         {seriesData.matches.length > 1 && (
-                          <div className="text-xs text-neutral-500 mt-1">
+                          <div className="text-xs text-gray-500 dark:text-neutral-500 mt-1">
                             {seriesData.matches.length} games
                           </div>
                         )}
@@ -267,7 +267,7 @@ export default function BracketDisplay({
                           <div className="mt-2">
                             <a 
                               href={`/matchups/${seriesData.matches[0]?.id}`}
-                              className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                              className="text-xs bg-patriot-blue-100 dark:bg-blue-900 hover:bg-patriot-blue-200 dark:hover:bg-blue-800 text-patriot-blue-700 dark:text-blue-300 px-2 py-1 rounded transition"
                               onClick={(e) => e.stopPropagation()}
                             >
                               Spotlight Matchup
@@ -298,19 +298,19 @@ export default function BracketDisplay({
       <div className="space-y-8">
         {/* Winners Bracket */}
         <div>
-          <h3 className="text-lg font-bold mb-4 text-blue-400">Winners Bracket</h3>
+          <h3 className="text-lg font-bold mb-4 text-patriot-blue-600 dark:text-blue-400">Winners Bracket</h3>
           <div className="overflow-x-auto">
             <div className="flex gap-8 min-w-max p-4">
               {winnersStages.map((stage) => (
                 <div key={stage} className="flex flex-col gap-4 min-w-[200px]">
-                  <h4 className="text-sm font-bold text-neutral-400 text-center sticky top-0 bg-neutral-900 py-2">
+                  <h4 className="text-sm font-bold text-gray-600 dark:text-neutral-400 text-center sticky top-0 bg-white dark:bg-neutral-900 py-2">
                     {stage}
                   </h4>
                   <div className="flex flex-col gap-4">
                     {winnersMatches[stage]?.map((match) => (
                       <div
                         key={match.id}
-                        className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:border-blue-500 transition cursor-pointer"
+                        className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer"
                         onClick={() => setSelectedMatch(match)}
                       >
                         <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
@@ -319,13 +319,13 @@ export default function BracketDisplay({
                               {match.team_a?.logo_url ? (
                                 <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                               ) : (
-                                <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                   {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
                                 </div>
                               )}
-                              <span className="truncate">{match.team_a?.name || "TBD"}</span>
+                              <span className="truncate text-gray-900 dark:text-white">{match.team_a?.name || "TBD"}</span>
                             </div>
-                            <span className="font-bold">{match.score_a ?? "-"}</span>
+                            <span className="font-bold text-gray-900 dark:text-white">{match.score_a ?? "-"}</span>
                           </div>
                         </div>
                         <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
@@ -334,18 +334,18 @@ export default function BracketDisplay({
                               {match.team_b?.logo_url ? (
                                 <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                               ) : (
-                                <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                   {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
                                 </div>
                               )}
-                              <span className="truncate">{match.team_b?.name || "TBD"}</span>
+                              <span className="truncate text-gray-900 dark:text-white">{match.team_b?.name || "TBD"}</span>
                             </div>
-                            <span className="font-bold">{match.score_b ?? "-"}</span>
+                            <span className="font-bold text-gray-900 dark:text-white">{match.score_b ?? "-"}</span>
                           </div>
                         </div>
                         {match.series_number && (
-                          <div className="mt-2 pt-2 border-t border-neutral-700">
-                            <span className="text-xs text-neutral-400">
+                          <div className="mt-2 pt-2 border-t border-gray-200 dark:border-neutral-700">
+                            <span className="text-xs text-gray-600 dark:text-neutral-400">
                               {getSeriesDisplay(match.series_number, getMatchSeriesFormat(match))}
                             </span>
                           </div>
@@ -355,7 +355,7 @@ export default function BracketDisplay({
                           <div className="mt-2">
                             <a 
                               href={`/matchups/${match.id}`}
-                              className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                              className="text-xs bg-patriot-blue-100 dark:bg-blue-900 hover:bg-patriot-blue-200 dark:hover:bg-blue-800 text-patriot-blue-700 dark:text-blue-300 px-2 py-1 rounded transition"
                               onClick={(e) => e.stopPropagation()}
                             >
                               Spotlight Matchup
@@ -374,19 +374,19 @@ export default function BracketDisplay({
         {/* Losers Bracket */}
         {losersStages.length > 0 && (
           <div>
-            <h3 className="text-lg font-bold mb-4 text-red-400">Losers Bracket</h3>
+            <h3 className="text-lg font-bold mb-4 text-patriot-red-600 dark:text-red-400">Losers Bracket</h3>
             <div className="overflow-x-auto">
               <div className="flex gap-8 min-w-max p-4">
                 {losersStages.map((stage) => (
                   <div key={stage} className="flex flex-col gap-4 min-w-[200px]">
-                    <h4 className="text-sm font-bold text-neutral-400 text-center sticky top-0 bg-neutral-900 py-2">
+                    <h4 className="text-sm font-bold text-gray-600 dark:text-neutral-400 text-center sticky top-0 bg-white dark:bg-neutral-900 py-2">
                       {stage}
                     </h4>
                     <div className="flex flex-col gap-4">
                       {losersMatches[stage]?.map((match) => (
                         <div
                           key={match.id}
-                          className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:border-red-500 transition cursor-pointer"
+                          className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-red-500 dark:hover:border-red-500 transition cursor-pointer"
                           onClick={() => setSelectedMatch(match)}
                         >
                           <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
@@ -395,13 +395,13 @@ export default function BracketDisplay({
                                 {match.team_a?.logo_url ? (
                                   <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                                 ) : (
-                                  <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                  <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                     {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
                                   </div>
                                 )}
-                                <span className="truncate">{match.team_a?.name || "TBD"}</span>
+                                <span className="truncate text-gray-900 dark:text-white">{match.team_a?.name || "TBD"}</span>
                               </div>
-                              <span className="font-bold">{match.score_a ?? "-"}</span>
+                              <span className="font-bold text-gray-900 dark:text-white">{match.score_a ?? "-"}</span>
                             </div>
                           </div>
                           <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
@@ -410,18 +410,18 @@ export default function BracketDisplay({
                                 {match.team_b?.logo_url ? (
                                   <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                                 ) : (
-                                  <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                                  <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                     {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
                                   </div>
                                 )}
-                                <span className="truncate">{match.team_b?.name || "TBD"}</span>
+                                <span className="truncate text-gray-900 dark:text-white">{match.team_b?.name || "TBD"}</span>
                               </div>
-                              <span className="font-bold">{match.score_b ?? "-"}</span>
+                              <span className="font-bold text-gray-900 dark:text-white">{match.score_b ?? "-"}</span>
                             </div>
                           </div>
                           {match.series_number && seriesFormat && (
-                            <div className="mt-2 pt-2 border-t border-neutral-700">
-                              <span className="text-xs text-neutral-400">
+                            <div className="mt-2 pt-2 border-t border-gray-200 dark:border-neutral-700">
+                              <span className="text-xs text-gray-600 dark:text-neutral-400">
                                 {getSeriesDisplay(match.series_number, seriesFormat)}
                               </span>
                             </div>
@@ -431,7 +431,7 @@ export default function BracketDisplay({
                             <div className="mt-2">
                               <a 
                                 href={`/matchups/${match.id}`}
-                                className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                                className="text-xs bg-patriot-blue-100 dark:bg-blue-900 hover:bg-patriot-blue-200 dark:hover:bg-blue-800 text-patriot-blue-700 dark:text-blue-300 px-2 py-1 rounded transition"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 Spotlight Matchup
@@ -460,12 +460,12 @@ export default function BracketDisplay({
       <div className="space-y-6">
         {rounds.map((round) => (
           <div key={round}>
-            <h3 className="text-lg font-bold mb-3 text-neutral-300">{round}</h3>
+            <h3 className="text-lg font-bold mb-3 text-gray-700 dark:text-neutral-300">{round}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {groupedMatches[round]?.map((match) => (
                 <div
                   key={match.id}
-                  className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:border-green-500 transition cursor-pointer"
+                  className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-green-500 dark:hover:border-green-500 transition cursor-pointer"
                   onClick={() => setSelectedMatch(match)}
                 >
                   <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
@@ -474,13 +474,13 @@ export default function BracketDisplay({
                         {match.team_a?.logo_url ? (
                           <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                         ) : (
-                          <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                          <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                             {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
                           </div>
                         )}
-                        <span className="truncate">{match.team_a?.name || "TBD"}</span>
+                        <span className="truncate text-gray-900 dark:text-white">{match.team_a?.name || "TBD"}</span>
                       </div>
-                      <span className="font-bold">{match.score_a ?? "-"}</span>
+                      <span className="font-bold text-gray-900 dark:text-white">{match.score_a ?? "-"}</span>
                     </div>
                   </div>
                   <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
@@ -489,21 +489,21 @@ export default function BracketDisplay({
                         {match.team_b?.logo_url ? (
                           <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                         ) : (
-                          <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                          <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                             {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
                           </div>
                         )}
-                        <span className="truncate">{match.team_b?.name || "TBD"}</span>
+                        <span className="truncate text-gray-900 dark:text-white">{match.team_b?.name || "TBD"}</span>
                       </div>
-                      <span className="font-bold">{match.score_b ?? "-"}</span>
+                      <span className="font-bold text-gray-900 dark:text-white">{match.score_b ?? "-"}</span>
                     </div>
                   </div>
-                  <div className="text-xs text-neutral-500 mt-1">
+                  <div className="text-xs text-gray-500 dark:text-neutral-500 mt-1">
                     {new Date(match.played_at).toLocaleDateString()}
                   </div>
                   {match.series_number && seriesFormat && (
-                    <div className="mt-2 pt-2 border-t border-neutral-700">
-                      <span className="text-xs text-neutral-400">
+                    <div className="mt-2 pt-2 border-t border-gray-200 dark:border-neutral-700">
+                      <span className="text-xs text-gray-600 dark:text-neutral-400">
                         {getSeriesDisplay(match.series_number, seriesFormat)}
                       </span>
                     </div>
@@ -513,7 +513,7 @@ export default function BracketDisplay({
                     <div className="mt-2">
                       <a 
                         href={`/matchups/${match.id}`}
-                        className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                        className="text-xs bg-patriot-blue-100 dark:bg-blue-900 hover:bg-patriot-blue-200 dark:hover:bg-blue-800 text-patriot-blue-700 dark:text-blue-300 px-2 py-1 rounded transition"
                         onClick={(e) => e.stopPropagation()}
                       >
                         Spotlight Matchup
@@ -536,7 +536,7 @@ export default function BracketDisplay({
         {matches.map((match) => (
           <div
             key={match.id}
-            className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:border-yellow-500 transition cursor-pointer"
+            className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-yellow-500 dark:hover:border-yellow-500 transition cursor-pointer"
             onClick={() => setSelectedMatch(match)}
           >
             <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
@@ -545,13 +545,13 @@ export default function BracketDisplay({
                   {match.team_a?.logo_url ? (
                     <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                   ) : (
-                    <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                    <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                       {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
                     </div>
                   )}
-                  <span className="truncate">{match.team_a?.name || "TBD"}</span>
+                  <span className="truncate text-gray-900 dark:text-white">{match.team_a?.name || "TBD"}</span>
                 </div>
-                <span className="font-bold">{match.score_a ?? "-"}</span>
+                <span className="font-bold text-gray-900 dark:text-white">{match.score_a ?? "-"}</span>
               </div>
             </div>
             <div className={`text-sm ${getWinnerClass(match, match.team_b_id)}`}>
@@ -560,22 +560,22 @@ export default function BracketDisplay({
                   {match.team_b?.logo_url ? (
                     <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
                   ) : (
-                    <div className="w-5 h-5 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[8px] font-bold flex-shrink-0">
+                    <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                       {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
                     </div>
                   )}
-                  <span className="truncate">{match.team_b?.name || "TBD"}</span>
+                  <span className="truncate text-gray-900 dark:text-white">{match.team_b?.name || "TBD"}</span>
                 </div>
-                <span className="font-bold">{match.score_b ?? "-"}</span>
+                <span className="font-bold text-gray-900 dark:text-white">{match.score_b ?? "-"}</span>
               </div>
             </div>
-            <div className="flex items-center justify-between text-xs text-neutral-500 mt-1">
-              {match.stage && <span>{match.stage}</span>}
+            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-neutral-500 mt-1">
+              {match.stage && <span className="text-gray-700 dark:text-neutral-300">{match.stage}</span>}
               <span>{new Date(match.played_at).toLocaleDateString()}</span>
             </div>
             {match.series_number && seriesFormat && (
-              <div className="mt-2 pt-2 border-t border-neutral-700">
-                <span className="text-xs text-neutral-400">
+              <div className="mt-2 pt-2 border-t border-gray-200 dark:border-neutral-700">
+                <span className="text-xs text-gray-600 dark:text-neutral-400">
                   {getSeriesDisplay(match.series_number, seriesFormat)}
                 </span>
               </div>
@@ -585,7 +585,7 @@ export default function BracketDisplay({
               <div className="mt-2">
                 <a 
                   href={`/matchups/${match.id}`}
-                  className="text-xs bg-blue-900 hover:bg-blue-800 text-blue-300 px-2 py-1 rounded transition"
+                  className="text-xs bg-patriot-blue-100 dark:bg-blue-900 hover:bg-patriot-blue-200 dark:hover:bg-blue-800 text-patriot-blue-700 dark:text-blue-300 px-2 py-1 rounded transition"
                   onClick={(e) => e.stopPropagation()}
                 >
                   Spotlight Matchup
@@ -600,7 +600,7 @@ export default function BracketDisplay({
 
   if (matches.length === 0) {
     return (
-      <div className="text-center py-12 text-neutral-400">
+      <div className="text-center py-12 text-gray-600 dark:text-neutral-400">
         <p>No bracket matches available.</p>
         <p className="text-sm mt-2">Matches will appear here once the tournament begins.</p>
       </div>
@@ -610,50 +610,50 @@ export default function BracketDisplay({
   return (
     <div>
       {/* Tournament Info Header */}
-      <div className="mb-6 p-4 border border-neutral-800 rounded-lg bg-neutral-900/50">
+      <div className="mb-6 p-4 border border-gray-200 dark:border-neutral-800 rounded-lg bg-gray-50 dark:bg-neutral-900/50">
         <div className="flex flex-wrap items-center gap-3 mb-3">
-          <h2 className="text-xl font-bold">{tournamentName}</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{tournamentName}</h2>
           {getFormatBadge(format)}
           {status && (
             <span className={`px-3 py-1 rounded text-xs font-bold capitalize ${
-              status === 'completed' ? 'bg-green-900 text-green-300' :
-              status === 'in progress' ? 'bg-blue-900 text-blue-300' :
-              'bg-neutral-800 text-neutral-300'
+              status === 'completed' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' :
+              status === 'in progress' ? 'bg-patriot-blue-100 dark:bg-blue-900 text-patriot-blue-700 dark:text-blue-300' :
+              'bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300'
             }`}>
               {status}
             </span>
           )}
         </div>
-        <div className="flex flex-wrap gap-4 text-sm text-neutral-400">
+        <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-neutral-400">
           {startDate && (
             <div>
-              <span className="text-neutral-500">Start:</span>{" "}
-              <span className="text-neutral-300">{new Date(startDate).toLocaleDateString()}</span>
+              <span className="text-gray-500 dark:text-neutral-500">Start:</span>{" "}
+              <span className="text-gray-700 dark:text-neutral-300">{new Date(startDate).toLocaleDateString()}</span>
             </div>
           )}
           {finalsDate && (
             <div>
-              <span className="text-neutral-500">Finals:</span>{" "}
-              <span className="text-neutral-300">{new Date(finalsDate).toLocaleDateString()}</span>
+              <span className="text-gray-500 dark:text-neutral-500">Finals:</span>{" "}
+              <span className="text-gray-700 dark:text-neutral-300">{new Date(finalsDate).toLocaleDateString()}</span>
             </div>
           )}
           {prizePool && (
             <div>
-              <span className="text-neutral-500">Prize Pool:</span>{" "}
-              <span className="text-green-400 font-semibold">${prizePool.toLocaleString()}</span>
+              <span className="text-gray-500 dark:text-neutral-500">Prize Pool:</span>{" "}
+              <span className="text-green-600 dark:text-green-400 font-semibold">${prizePool.toLocaleString()}</span>
             </div>
           )}
           {champion && (
             <div>
-              <span className="text-neutral-500">Champion:</span>{" "}
-              <span className="text-yellow-400 font-bold">🏆 {champion}</span>
+              <span className="text-gray-500 dark:text-neutral-500">Champion:</span>{" "}
+              <span className="text-yellow-600 dark:text-yellow-400 font-bold">🏆 {champion}</span>
             </div>
           )}
         </div>
       </div>
 
       {/* Bracket Visualization */}
-      <div className="bg-neutral-900/30 rounded-lg p-4 border border-neutral-800">
+      <div className="bg-gray-50 dark:bg-neutral-900/30 rounded-lg p-4 border border-gray-200 dark:border-neutral-800">
         {format === "single-elimination" && renderSingleElimination()}
         {format === "double-elimination" && renderDoubleElimination()}
         {format === "swiss" && renderSwiss()}
@@ -667,15 +667,15 @@ export default function BracketDisplay({
           onClick={() => setSelectedMatch(null)}
         >
           <div
-            className="bg-neutral-900 rounded-lg max-w-md w-full border border-neutral-700"
+            className="bg-white dark:bg-neutral-900 rounded-lg max-w-md w-full border border-gray-200 dark:border-neutral-700"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-neutral-800">
+            <div className="p-4 border-b border-gray-200 dark:border-neutral-800">
               <div className="flex items-start justify-between gap-2">
-                <h3 className="text-lg font-bold">Match Details</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Match Details</h3>
                 <button
                   onClick={() => setSelectedMatch(null)}
-                  className="text-neutral-400 hover:text-white"
+                  className="text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -687,61 +687,61 @@ export default function BracketDisplay({
               <div className="space-y-3">
                 <div className={`p-3 rounded border ${
                   selectedMatch.winner_id === selectedMatch.team_a_id
-                    ? "border-green-500 bg-green-900/20"
-                    : "border-neutral-700 bg-neutral-800/50"
+                    ? "border-green-500 dark:border-green-500 bg-green-50 dark:bg-green-900/20"
+                    : "border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800/50"
                 }`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {selectedMatch.team_a?.logo_url ? (
                         <img src={selectedMatch.team_a.logo_url} alt="" className="w-8 h-8 rounded object-cover" />
                       ) : (
-                        <div className="w-8 h-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                        <div className="w-8 h-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-xs font-bold">
                           {selectedMatch.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
                         </div>
                       )}
-                      <span className="font-semibold">{selectedMatch.team_a?.name || "Team A"}</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedMatch.team_a?.name || "Team A"}</span>
                     </div>
-                    <span className="text-2xl font-bold">{selectedMatch.score_a ?? "-"}</span>
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{selectedMatch.score_a ?? "-"}</span>
                   </div>
                 </div>
                 <div className={`p-3 rounded border ${
                   selectedMatch.winner_id === selectedMatch.team_b_id
-                    ? "border-green-500 bg-green-900/20"
-                    : "border-neutral-700 bg-neutral-800/50"
+                    ? "border-green-500 dark:border-green-500 bg-green-50 dark:bg-green-900/20"
+                    : "border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800/50"
                 }`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {selectedMatch.team_b?.logo_url ? (
                         <img src={selectedMatch.team_b.logo_url} alt="" className="w-8 h-8 rounded object-cover" />
                       ) : (
-                        <div className="w-8 h-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                        <div className="w-8 h-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-xs font-bold">
                           {selectedMatch.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
                         </div>
                       )}
-                      <span className="font-semibold">{selectedMatch.team_b?.name || "Team B"}</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedMatch.team_b?.name || "Team B"}</span>
                     </div>
-                    <span className="text-2xl font-bold">{selectedMatch.score_b ?? "-"}</span>
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{selectedMatch.score_b ?? "-"}</span>
                   </div>
                 </div>
               </div>
-              <div className="mt-4 pt-4 border-t border-neutral-800 space-y-2 text-sm">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-800 space-y-2 text-sm">
                 {selectedMatch.stage && (
                   <div className="flex justify-between">
-                    <span className="text-neutral-400">Stage:</span>
-                    <span className="text-neutral-200">{selectedMatch.stage}</span>
+                    <span className="text-gray-600 dark:text-neutral-400">Stage:</span>
+                    <span className="text-gray-900 dark:text-neutral-200">{selectedMatch.stage}</span>
                   </div>
                 )}
                 {selectedMatch.series_number && (
                   <div className="flex justify-between">
-                    <span className="text-neutral-400">Series:</span>
-                    <span className="text-neutral-200">
+                    <span className="text-gray-600 dark:text-neutral-400">Series:</span>
+                    <span className="text-gray-900 dark:text-neutral-200">
                       {getSeriesDisplay(selectedMatch.series_number, getMatchSeriesFormat(selectedMatch))}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-neutral-400">Date:</span>
-                  <span className="text-neutral-200">
+                  <span className="text-gray-600 dark:text-neutral-400">Date:</span>
+                  <span className="text-gray-900 dark:text-neutral-200">
                     {new Date(selectedMatch.played_at).toLocaleString()}
                   </span>
                 </div>
@@ -758,15 +758,15 @@ export default function BracketDisplay({
           onClick={() => setSelectedSeries(null)}
         >
           <div
-            className="bg-neutral-900 rounded-lg max-w-2xl w-full border border-neutral-700"
+            className="bg-white dark:bg-neutral-900 rounded-lg max-w-2xl w-full border border-gray-200 dark:border-neutral-700"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-neutral-800">
+            <div className="p-4 border-b border-gray-200 dark:border-neutral-800">
               <div className="flex items-start justify-between gap-2">
-                <h3 className="text-lg font-bold">Series Details</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Series Details</h3>
                 <button
                   onClick={() => setSelectedSeries(null)}
-                  className="text-neutral-400 hover:text-white"
+                  className="text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -777,10 +777,10 @@ export default function BracketDisplay({
             <div className="p-4">
               <div className="space-y-4">
                 {/* Series Header */}
-                <div className="bg-neutral-800 rounded-lg p-4">
+                <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold">{selectedSeries.stage} - Series #{selectedSeries.seriesNumber}</h4>
-                    <span className="text-sm text-neutral-300 font-semibold">
+                    <h4 className="font-semibold text-gray-900 dark:text-white">{selectedSeries.stage} - Series #{selectedSeries.seriesNumber}</h4>
+                    <span className="text-sm text-gray-700 dark:text-neutral-300 font-semibold">
                       {getSeriesDisplayWithWins(selectedSeries)}
                     </span>
                   </div>
@@ -789,21 +789,21 @@ export default function BracketDisplay({
                       {selectedSeries.teamA?.logo_url ? (
                         <img src={selectedSeries.teamA.logo_url} alt="" className="w-6 h-6 rounded object-cover" />
                       ) : (
-                        <div className="w-6 h-6 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                        <div className="w-6 h-6 rounded bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-xs font-bold">
                           {selectedSeries.teamA?.name?.substring(0, 2).toUpperCase() || 'A'}
                         </div>
                       )}
-                      <span className="font-semibold">{selectedSeries.teamA?.name || "TBD"}</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedSeries.teamA?.name || "TBD"}</span>
                     </div>
-                    <span className="text-2xl font-bold">
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">
                       {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === selectedSeries.teamA.id).length} - {selectedSeries.matches.filter((m: BracketMatch) => m.winner_id === selectedSeries.teamB.id).length}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold">{selectedSeries.teamB?.name || "TBD"}</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedSeries.teamB?.name || "TBD"}</span>
                       {selectedSeries.teamB?.logo_url ? (
                         <img src={selectedSeries.teamB.logo_url} alt="" className="w-6 h-6 rounded object-cover" />
                       ) : (
-                        <div className="w-6 h-6 rounded bg-neutral-700 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                        <div className="w-6 h-6 rounded bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-xs font-bold">
                           {selectedSeries.teamB?.name?.substring(0, 2).toUpperCase() || 'B'}
                         </div>
                       )}
@@ -813,11 +813,11 @@ export default function BracketDisplay({
 
                 {/* Individual Games */}
                 <div className="space-y-2">
-                  <h5 className="font-semibold text-neutral-300">Games</h5>
+                  <h5 className="font-semibold text-gray-700 dark:text-neutral-300">Games</h5>
                   {selectedSeries.matches.map((match: BracketMatch, index: number) => (
                     <div
                       key={match.id}
-                      className="border border-neutral-700 rounded-lg p-3 bg-neutral-800/50 hover:bg-neutral-800 transition cursor-pointer"
+                      className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:bg-gray-100 dark:hover:bg-neutral-800 transition cursor-pointer"
                       onClick={() => {
                         setSelectedSeries(null);
                         setSelectedMatch(match);
@@ -825,14 +825,14 @@ export default function BracketDisplay({
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <span className="text-sm font-semibold text-neutral-400">Game {index + 1}</span>
+                          <span className="text-sm font-semibold text-gray-600 dark:text-neutral-400">Game {index + 1}</span>
                           <div className="flex items-center gap-2">
-                            <span className="text-sm">{match.score_a ?? "-"}</span>
-                            <span className="text-neutral-500">-</span>
-                            <span className="text-sm">{match.score_b ?? "-"}</span>
+                            <span className="text-sm text-gray-900 dark:text-white">{match.score_a ?? "-"}</span>
+                            <span className="text-gray-500 dark:text-neutral-500">-</span>
+                            <span className="text-sm text-gray-900 dark:text-white">{match.score_b ?? "-"}</span>
                           </div>
                         </div>
-                        <div className="text-xs text-neutral-500">
+                        <div className="text-xs text-gray-500 dark:text-neutral-500">
                           {new Date(match.played_at).toLocaleDateString()}
                         </div>
                       </div>

@@ -12,7 +12,7 @@ type Row = {
 };
 
 function getTierColor(tier: string | null): string {
-  if (!tier) return "bg-neutral-700 text-neutral-300";
+  if (!tier) return "bg-gray-300 dark:bg-neutral-700 text-gray-700 dark:text-neutral-300";
   const tierLower = tier.toLowerCase();
   if (tierLower.includes("prospect")) {
     return "bg-patriot-blue-500 text-white";
@@ -21,7 +21,7 @@ function getTierColor(tier: string | null): string {
   } else if (tierLower.includes("premier")) {
     return "bg-gradient-to-r from-patriot-red-500 to-patriot-red-600 text-white";
   }
-  return "bg-patriot-blue-800 text-white";
+  return "bg-patriot-blue-600 dark:bg-patriot-blue-800 text-white";
 }
 
 export default function MobileRankCard({ rows }: { rows: Row[] }) {
@@ -40,7 +40,7 @@ function MobileRankCardItem({ row, rank }: { row: Row; rank: number }) {
   return (
     <a 
       href={`/teams/${row.team_id}`}
-      className="block rounded-lg border border-patriot-blue-800 bg-patriot-blue-900/30 p-4 hover:border-patriot-red-500 hover:bg-patriot-blue-900/50 transition-all duration-200 animate-slide-up"
+      className="block rounded-lg border border-gray-200 dark:border-patriot-blue-800 bg-white dark:bg-patriot-blue-900/30 p-4 hover:border-patriot-red-500 dark:hover:border-patriot-red-500 hover:bg-gray-50 dark:hover:bg-patriot-blue-900/50 transition-all duration-200 animate-slide-up"
       onClick={(e) => {
         if (isExpanded) {
           e.preventDefault();
@@ -50,21 +50,21 @@ function MobileRankCardItem({ row, rank }: { row: Row; rank: number }) {
     >
       <article>
         <header className="flex items-center gap-3 mb-3">
-          <div className="text-neutral-400 font-bold text-sm w-8">#{rank}</div>
+          <div className="text-gray-600 dark:text-neutral-400 font-bold text-sm w-8">#{rank}</div>
           {row.logo_url ? (
             <img 
               src={row.logo_url}
               alt="" 
-              className="h-10 w-10 rounded object-cover ring-2 ring-patriot-blue-800" 
+              className="h-10 w-10 rounded object-cover ring-2 ring-gray-300 dark:ring-patriot-blue-800" 
               loading="lazy" 
             />
           ) : (
-            <div className="h-10 w-10 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800">
+            <div className="h-10 w-10 rounded bg-gray-200 dark:bg-patriot-blue-800 flex items-center justify-center text-gray-700 dark:text-neutral-300 text-xs font-bold ring-2 ring-gray-300 dark:ring-patriot-blue-800">
               {row.team_name?.substring(0, 2).toUpperCase() || '??'}
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <div className="font-semibold text-base truncate">{row.team_name}</div>
+            <div className="font-semibold text-base truncate text-gray-900 dark:text-white">{row.team_name}</div>
           </div>
           {row.leaderboard_tier && (
             <span className={`px-2 py-1 rounded text-xs font-bold ${getTierColor(row.leaderboard_tier)} shadow-sm`}>
@@ -74,17 +74,17 @@ function MobileRankCardItem({ row, rank }: { row: Row; rank: number }) {
         </header>
         
         <dl className="grid grid-cols-3 gap-3 mb-2">
-          <div className="text-center p-2 bg-patriot-blue-900/50 rounded">
-            <dt className="text-neutral-400 text-xs mb-1">Score</dt>
-            <dd className="font-bold text-lg text-patriot-red-400">{Math.round(row.hybrid_score ?? 0)}</dd>
+          <div className="text-center p-2 bg-gray-100 dark:bg-patriot-blue-900/50 rounded">
+            <dt className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Score</dt>
+            <dd className="font-bold text-lg text-patriot-red-600 dark:text-patriot-red-400">{Math.round(row.hybrid_score ?? 0)}</dd>
           </div>
-          <div className="text-center p-2 bg-patriot-blue-900/50 rounded">
-            <dt className="text-neutral-400 text-xs mb-1">Elo</dt>
-            <dd className="font-bold text-lg text-patriot-blue-400">{Math.round(row.elo_rating ?? 1500)}</dd>
+          <div className="text-center p-2 bg-gray-100 dark:bg-patriot-blue-900/50 rounded">
+            <dt className="text-gray-600 dark:text-neutral-400 text-xs mb-1">Elo</dt>
+            <dd className="font-bold text-lg text-patriot-blue-600 dark:text-patriot-blue-400">{Math.round(row.elo_rating ?? 1500)}</dd>
           </div>
-          <div className="text-center p-2 bg-patriot-blue-900/50 rounded">
-            <dt className="text-neutral-400 text-xs mb-1">RP</dt>
-            <dd className="font-bold text-lg">{row.current_rp ?? 0}</dd>
+          <div className="text-center p-2 bg-gray-100 dark:bg-patriot-blue-900/50 rounded">
+            <dt className="text-gray-600 dark:text-neutral-400 text-xs mb-1">RP</dt>
+            <dd className="font-bold text-lg text-gray-900 dark:text-white">{row.current_rp ?? 0}</dd>
           </div>
         </dl>
 
@@ -94,7 +94,7 @@ function MobileRankCardItem({ row, rank }: { row: Row; rank: number }) {
             e.stopPropagation();
             setIsExpanded(!isExpanded);
           }}
-          className="w-full mt-2 text-xs text-neutral-400 hover:text-neutral-300 flex items-center justify-center gap-1"
+          className="w-full mt-2 text-xs text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-300 flex items-center justify-center gap-1"
         >
           <span>{isExpanded ? 'Less' : 'More'} Details</span>
           <svg 
@@ -108,13 +108,13 @@ function MobileRankCardItem({ row, rank }: { row: Row; rank: number }) {
         </button>
 
         {isExpanded && (
-          <div className="mt-3 pt-3 border-t border-patriot-blue-800 animate-fade-in">
-            <div className="text-xs text-neutral-400 space-y-1">
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-patriot-blue-800 animate-fade-in">
+            <div className="text-xs text-gray-600 dark:text-neutral-400 space-y-1">
               <div className="flex justify-between">
                 <span>Global Rank:</span>
-                <span className="text-neutral-300 font-medium">#{row.global_rank ?? '-'}</span>
+                <span className="text-gray-900 dark:text-neutral-300 font-medium">#{row.global_rank ?? '-'}</span>
               </div>
-              <div className="text-neutral-500 text-[10px] mt-2">
+              <div className="text-gray-500 dark:text-neutral-500 text-[10px] mt-2">
                 Tap anywhere on card to view full team profile
               </div>
             </div>

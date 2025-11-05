@@ -124,11 +124,11 @@ const filtersActive = hasActiveFilters(
   description="Explore player statistics, ratings, and performance metrics for NBA 2K Pro-Am competitors. Search and filter players by position, tier, and rating"
 >
   <Navigation />
-    <main class="mx-auto max-w-6xl p-6">
+    <main class="mx-auto max-w-6xl p-6 grade-pattern">
       <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
-          <h1 class="text-2xl font-bold">Players</h1>
-          <div class="text-sm text-neutral-400">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Players</h1>
+          <div class="text-sm text-gray-600 dark:text-neutral-400">
             Page {currentPage} of {totalPages} • {count || 0} total
           </div>
         </div>
@@ -136,22 +136,22 @@ const filtersActive = hasActiveFilters(
         <!-- Filters -->
         <div class="flex flex-wrap gap-3 mb-4">
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Search:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Search:</label>
             <input
               type="text"
               id="searchInput"
               placeholder="Player name..."
               value={searchQuery}
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm w-48"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm w-48"
               onkeydown="if (event.key === 'Enter') window.location.href = updateFilter('search', this.value)"
             />
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Position:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Position:</label>
             <select 
               id="positionFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('position', this.value)"
             >
               <option value="all" selected={positionFilter === 'all'}>All Positions</option>
@@ -162,10 +162,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Tier:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Tier:</label>
             <select 
               id="tierFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('tier', this.value)"
             >
               <option value="all" selected={tierFilter === 'all'}>All Tiers</option>
@@ -176,10 +176,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Sort:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Sort:</label>
             <select 
               id="sortFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('sort', this.value)"
             >
               <option value="rating" selected={sortBy === 'rating'}>Global Rating</option>
@@ -191,7 +191,7 @@ const filtersActive = hasActiveFilters(
           {filtersActive && (
             <a 
               href="/players" 
-              class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+              class="px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
             >
               Clear Filters
             </a>
@@ -217,32 +217,32 @@ const filtersActive = hasActiveFilters(
         {players.map((player) => (
           <a 
             href={`/players/${player.player_id}`}
-            class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
+            class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
           >
             <div class="mb-3">
               <div class="flex items-start justify-between gap-2 mb-1">
-                <h2 class="font-bold text-lg flex-1">{player.gamertag}</h2>
+                <h2 class="font-bold text-lg flex-1 text-gray-900 dark:text-white">{player.gamertag}</h2>
                 {player.rating_tier && (
                   <span class={`px-2 py-0.5 rounded text-xs font-bold border ${getRatingTierColor(player.rating_tier)}`}>
                     {player.rating_tier}
                   </span>
                 )}
               </div>
-              <p class="text-sm text-neutral-400">{player.position || 'Unknown'}</p>
+              <p class="text-sm text-gray-600 dark:text-neutral-400">{player.position || 'Unknown'}</p>
             </div>
             
             <dl class="grid grid-cols-3 gap-2 text-sm mb-3">
               <div>
-                <dt class="text-neutral-400 text-xs">Rating</dt>
-                <dd class="font-semibold text-white">{player.global_rating?.toFixed(1) ?? '-'}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Rating</dt>
+                <dd class="font-semibold text-gray-900 dark:text-white">{player.global_rating?.toFixed(1) ?? '-'}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">Games</dt>
-                <dd class="font-semibold text-blue-400">{player.games_played ?? 0}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Games</dt>
+                <dd class="font-semibold text-patriot-blue-600 dark:text-blue-400">{player.games_played ?? 0}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">PPG</dt>
-                <dd class="font-semibold text-green-400">{player.avg_points?.toFixed(1) ?? '-'}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">PPG</dt>
+                <dd class="font-semibold text-green-600 dark:text-green-400">{player.avg_points?.toFixed(1) ?? '-'}</dd>
               </div>
             </dl>
           </a>
@@ -250,7 +250,7 @@ const filtersActive = hasActiveFilters(
       </div>
 
       {players.length === 0 && (
-        <div class="text-center py-12 text-neutral-400">
+        <div class="text-center py-12 text-gray-600 dark:text-neutral-400">
           No players found.
         </div>
       )}
@@ -261,12 +261,12 @@ const filtersActive = hasActiveFilters(
           {currentPage > 1 ? (
             <a 
               href={`/players?page=${currentPage - 1}${filterQuery}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               ← Previous
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               ← Previous
             </span>
           )}
@@ -278,7 +278,7 @@ const filtersActive = hasActiveFilters(
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
-                    : 'bg-neutral-800 hover:bg-neutral-700'
+                    : 'bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white'
                 }`}
               >
                 {pageNum}
@@ -289,12 +289,12 @@ const filtersActive = hasActiveFilters(
           {currentPage < totalPages ? (
             <a 
               href={`/players?page=${currentPage + 1}${filterQuery}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               Next →
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               Next →
             </span>
           )}

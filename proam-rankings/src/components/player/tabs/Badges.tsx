@@ -99,21 +99,21 @@ export default function Badges({ player, playerId }: BadgesProps) {
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'text-neutral-400';
-      case 'rare': return 'text-blue-400';
-      case 'epic': return 'text-purple-400';
-      case 'legendary': return 'text-yellow-400';
-      default: return 'text-neutral-400';
+      case 'common': return 'text-gray-600 dark:text-neutral-400';
+      case 'rare': return 'text-blue-600 dark:text-blue-400';
+      case 'epic': return 'text-purple-600 dark:text-purple-400';
+      case 'legendary': return 'text-yellow-600 dark:text-yellow-400';
+      default: return 'text-gray-600 dark:text-neutral-400';
     }
   };
 
   const getRarityBgColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'bg-neutral-800';
-      case 'rare': return 'bg-blue-900';
-      case 'epic': return 'bg-purple-900';
-      case 'legendary': return 'bg-yellow-900';
-      default: return 'bg-neutral-800';
+      case 'common': return 'bg-gray-200 dark:bg-neutral-800';
+      case 'rare': return 'bg-blue-100 dark:bg-blue-900';
+      case 'epic': return 'bg-purple-100 dark:bg-purple-900';
+      case 'legendary': return 'bg-yellow-100 dark:bg-yellow-900';
+      default: return 'bg-gray-200 dark:bg-neutral-800';
     }
   };
 
@@ -129,9 +129,9 @@ export default function Badges({ player, playerId }: BadgesProps) {
   if (error) {
     return (
       <div>
-        <h2 className="text-xl font-bold mb-6 text-white">Badges & Achievements</h2>
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-red-400">Error loading badges: {error}</p>
+        <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Badges & Achievements</h2>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-red-600 dark:text-red-400">Error loading badges: {error}</p>
         </div>
       </div>
     );
@@ -141,9 +141,9 @@ export default function Badges({ player, playerId }: BadgesProps) {
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-xl font-bold text-white">Badges & Achievements</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Badges & Achievements</h2>
           {achievementProgress && (
-            <p className="text-sm text-neutral-400 mt-1">
+            <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
               🏆 {achievementProgress.totalAchievementsEarned} Total Achievements Earned
             </p>
           )}
@@ -155,7 +155,7 @@ export default function Badges({ player, playerId }: BadgesProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'all' 
                 ? 'bg-patriot-red-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             All ({totalCount})
@@ -165,7 +165,7 @@ export default function Badges({ player, playerId }: BadgesProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'unlocked' 
                 ? 'bg-patriot-red-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             Unlocked ({unlockedCount})
@@ -175,7 +175,7 @@ export default function Badges({ player, playerId }: BadgesProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === 'locked' 
                 ? 'bg-patriot-red-600 text-white' 
-                : 'bg-patriot-blue-800 text-neutral-200 hover:text-white'
+                : 'bg-gray-200 dark:bg-patriot-blue-800 text-gray-700 dark:text-neutral-200 hover:bg-gray-300 dark:hover:bg-patriot-blue-700'
             }`}
           >
             Locked ({totalCount - unlockedCount})
@@ -189,16 +189,16 @@ export default function Badges({ player, playerId }: BadgesProps) {
         <div className="space-y-4 mb-6">
           {/* Active Streak */}
           {achievementProgress.activeStreakType && (
-            <div className="rounded-lg border border-orange-800/50 p-4 bg-orange-900/10">
+            <div className="rounded-lg border border-orange-300 dark:border-orange-800/50 p-4 bg-orange-50 dark:bg-orange-900/10">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">🔥</span>
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-orange-300">Active Streak</h3>
-                  <p className="text-white font-bold">
+                  <h3 className="text-sm font-semibold text-orange-700 dark:text-orange-300">Active Streak</h3>
+                  <p className="text-gray-900 dark:text-white font-bold">
                     {achievementProgress.activeStreakLength} {achievementProgress.activeStreakType}
                   </p>
                   {achievementProgress.streakLastGame && (
-                    <p className="text-xs text-neutral-400 mt-1">
+                    <p className="text-xs text-gray-600 dark:text-neutral-400 mt-1">
                       Last: {new Date(achievementProgress.streakLastGame).toLocaleDateString()}
                     </p>
                   )}
@@ -209,26 +209,26 @@ export default function Badges({ player, playerId }: BadgesProps) {
 
           {/* Next Milestone Alert */}
           {achievementProgress.nextAchievementAlert && (
-            <div className="rounded-lg border border-yellow-800/50 p-4 bg-yellow-900/10">
+            <div className="rounded-lg border border-yellow-300 dark:border-yellow-800/50 p-4 bg-yellow-50 dark:bg-yellow-900/10">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">🎯</span>
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-yellow-300">Close to Milestone!</h3>
-                  <p className="text-white font-medium">{achievementProgress.nextAchievementAlert}</p>
+                  <h3 className="text-sm font-semibold text-yellow-700 dark:text-yellow-300">Close to Milestone!</h3>
+                  <p className="text-gray-900 dark:text-white font-medium">{achievementProgress.nextAchievementAlert}</p>
                   <div className="flex gap-4 mt-2 text-sm">
                     {achievementProgress.pointsToNextMilestone !== null && achievementProgress.pointsToNextMilestone !== undefined && (
-                      <span className="text-neutral-300">
-                        <span className="text-yellow-400 font-semibold">{achievementProgress.pointsToNextMilestone}</span> points away
+                      <span className="text-gray-700 dark:text-neutral-300">
+                        <span className="text-yellow-600 dark:text-yellow-400 font-semibold">{achievementProgress.pointsToNextMilestone}</span> points away
                       </span>
                     )}
                     {achievementProgress.assistsToNextMilestone !== null && achievementProgress.assistsToNextMilestone !== undefined && (
-                      <span className="text-neutral-300">
-                        <span className="text-yellow-400 font-semibold">{achievementProgress.assistsToNextMilestone}</span> assists away
+                      <span className="text-gray-700 dark:text-neutral-300">
+                        <span className="text-yellow-600 dark:text-yellow-400 font-semibold">{achievementProgress.assistsToNextMilestone}</span> assists away
                       </span>
                     )}
                     {achievementProgress.reboundsToNextMilestone !== null && achievementProgress.reboundsToNextMilestone !== undefined && (
-                      <span className="text-neutral-300">
-                        <span className="text-yellow-400 font-semibold">{achievementProgress.reboundsToNextMilestone}</span> rebounds away
+                      <span className="text-gray-700 dark:text-neutral-300">
+                        <span className="text-yellow-600 dark:text-yellow-400 font-semibold">{achievementProgress.reboundsToNextMilestone}</span> rebounds away
                       </span>
                     )}
                   </div>
@@ -238,36 +238,36 @@ export default function Badges({ player, playerId }: BadgesProps) {
           )}
 
           {/* Milestone Achievements */}
-          <div className="rounded-lg border border-neutral-800 p-4 bg-neutral-900">
-            <h3 className="text-sm font-semibold mb-3 text-neutral-300">Career Milestones</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-4 bg-gray-50 dark:bg-neutral-900">
+            <h3 className="text-sm font-semibold mb-3 text-gray-700 dark:text-neutral-300">Career Milestones</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div className="text-center p-2 rounded bg-neutral-800/50">
-                <div className="text-2xl font-bold text-purple-400">{achievementProgress.count50PtGames}</div>
-                <div className="text-xs text-neutral-400">50+ Point Games</div>
+              <div className="text-center p-2 rounded bg-gray-100 dark:bg-neutral-800/50">
+                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{achievementProgress.count50PtGames}</div>
+                <div className="text-xs text-gray-600 dark:text-neutral-400">50+ Point Games</div>
               </div>
-              <div className="text-center p-2 rounded bg-neutral-800/50">
-                <div className="text-2xl font-bold text-blue-400">{achievementProgress.count40PtGames}</div>
-                <div className="text-xs text-neutral-400">40+ Point Games</div>
+              <div className="text-center p-2 rounded bg-gray-100 dark:bg-neutral-800/50">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{achievementProgress.count40PtGames}</div>
+                <div className="text-xs text-gray-600 dark:text-neutral-400">40+ Point Games</div>
               </div>
-              <div className="text-center p-2 rounded bg-neutral-800/50">
-                <div className="text-2xl font-bold text-indigo-400">{achievementProgress.count30PtGames}</div>
-                <div className="text-xs text-neutral-400">30+ Point Games</div>
+              <div className="text-center p-2 rounded bg-gray-100 dark:bg-neutral-800/50">
+                <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{achievementProgress.count30PtGames}</div>
+                <div className="text-xs text-gray-600 dark:text-neutral-400">30+ Point Games</div>
               </div>
-              <div className="text-center p-2 rounded bg-neutral-800/50">
-                <div className="text-2xl font-bold text-green-400">{achievementProgress.countTripleDoubles}</div>
-                <div className="text-xs text-neutral-400">Triple-Doubles</div>
+              <div className="text-center p-2 rounded bg-gray-100 dark:bg-neutral-800/50">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400">{achievementProgress.countTripleDoubles}</div>
+                <div className="text-xs text-gray-600 dark:text-neutral-400">Triple-Doubles</div>
               </div>
-              <div className="text-center p-2 rounded bg-neutral-800/50">
-                <div className="text-2xl font-bold text-cyan-400">{achievementProgress.countDoubleDoubles}</div>
-                <div className="text-xs text-neutral-400">Double-Doubles</div>
+              <div className="text-center p-2 rounded bg-gray-100 dark:bg-neutral-800/50">
+                <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{achievementProgress.countDoubleDoubles}</div>
+                <div className="text-xs text-gray-600 dark:text-neutral-400">Double-Doubles</div>
               </div>
-              <div className="text-center p-2 rounded bg-neutral-800/50">
-                <div className="text-2xl font-bold text-yellow-400">{achievementProgress.count10AssistGames}</div>
-                <div className="text-xs text-neutral-400">10+ Assist Games</div>
+              <div className="text-center p-2 rounded bg-gray-100 dark:bg-neutral-800/50">
+                <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{achievementProgress.count10AssistGames}</div>
+                <div className="text-xs text-gray-600 dark:text-neutral-400">10+ Assist Games</div>
               </div>
-              <div className="text-center p-2 rounded bg-neutral-800/50">
-                <div className="text-2xl font-bold text-orange-400">{achievementProgress.count10ReboundGames}</div>
-                <div className="text-xs text-neutral-400">10+ Rebound Games</div>
+              <div className="text-center p-2 rounded bg-gray-100 dark:bg-neutral-800/50">
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{achievementProgress.count10ReboundGames}</div>
+                <div className="text-xs text-gray-600 dark:text-neutral-400">10+ Rebound Games</div>
               </div>
             </div>
           </div>
@@ -276,15 +276,15 @@ export default function Badges({ player, playerId }: BadgesProps) {
 
       {/* Progress Summary */}
       {badges.length > 0 && (
-      <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900 mb-6">
-        <h3 className="text-lg font-semibold mb-4 text-white">Badges Progress</h3>
+      <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-gray-50 dark:bg-neutral-900 mb-6">
+        <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Badges Progress</h3>
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <div className="flex justify-between mb-2">
-              <span className="text-neutral-400">Badges Unlocked</span>
-              <span className="font-semibold text-white">{unlockedCount} / {totalCount}</span>
+              <span className="text-gray-600 dark:text-neutral-400">Badges Unlocked</span>
+              <span className="font-semibold text-gray-900 dark:text-white">{unlockedCount} / {totalCount}</span>
             </div>
-            <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-blue-500 to-green-400 transition-all duration-300"
                 style={{ width: `${totalCount > 0 ? (unlockedCount / totalCount) * 100 : 0}%` }}
@@ -292,10 +292,10 @@ export default function Badges({ player, playerId }: BadgesProps) {
             </div>
           </div>
           <div className="text-center min-w-[80px]">
-            <div className="text-2xl font-bold text-blue-400">
+            <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">
               {totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0}%
             </div>
-            <div className="text-neutral-400 text-sm">Complete</div>
+            <div className="text-gray-600 dark:text-neutral-400 text-sm">Complete</div>
           </div>
         </div>
       </div>
@@ -312,9 +312,9 @@ export default function Badges({ player, playerId }: BadgesProps) {
             onClick={() => isClickable && setSelectedBadge(badge)}
             className={`rounded-lg border p-6 transition-all duration-200 ${
               badge.unlocked 
-                ? 'border-neutral-700 bg-neutral-800' 
-                : 'border-neutral-800 bg-neutral-900 opacity-60'
-            } ${isClickable ? 'cursor-pointer hover:border-blue-500 hover:shadow-lg' : ''}`}
+                ? 'border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800' 
+                : 'border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 opacity-60'
+            } ${isClickable ? 'cursor-pointer hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-lg' : ''}`}
           >
             <div className="flex items-center gap-4 mb-4">
               <div className={`${badge.unlocked ? '' : 'opacity-50'} flex items-center justify-center`}>
@@ -338,7 +338,7 @@ export default function Badges({ player, playerId }: BadgesProps) {
                 )}
               </div>
               <div className="flex-1">
-                <h4 className="text-lg font-semibold text-white mb-1">
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
                   {badge.name}
                 </h4>
                 <div className={`inline-block px-2 py-1 rounded text-xs font-semibold uppercase tracking-wide ${getRarityBgColor(badge.rarity)} ${getRarityColor(badge.rarity)}`}>
@@ -347,18 +347,18 @@ export default function Badges({ player, playerId }: BadgesProps) {
               </div>
             </div>
 
-            <p className="text-neutral-400 text-sm mb-4 leading-relaxed">
+            <p className="text-gray-600 dark:text-neutral-400 text-sm mb-4 leading-relaxed">
               {badge.description}
             </p>
 
             {badge.unlocked ? (
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-green-400 text-sm font-semibold">
+                <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-semibold">
                   <span>✓</span>
                   <span>Unlocked {badge.unlockedAt ? new Date(badge.unlockedAt).toLocaleDateString() : ''}</span>
                 </div>
                 {isClickable && (
-                  <div className="text-blue-400 text-xs">
+                  <div className="text-patriot-blue-600 dark:text-blue-400 text-xs">
                     🎮 View Game
                   </div>
                 )}
@@ -368,10 +368,10 @@ export default function Badges({ player, playerId }: BadgesProps) {
                 {badge.progress !== undefined && badge.maxProgress !== undefined ? (
                   <div>
                     <div className="flex justify-between mb-2 text-sm">
-                      <span className="text-neutral-400">Progress</span>
-                      <span className="font-semibold text-white">{badge.progress} / {badge.maxProgress}</span>
+                      <span className="text-gray-600 dark:text-neutral-400">Progress</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{badge.progress} / {badge.maxProgress}</span>
                     </div>
-                    <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-gradient-to-r from-blue-500 to-green-400 transition-all duration-300"
                         style={{ width: `${(badge.progress / badge.maxProgress) * 100}%` }}
@@ -379,7 +379,7 @@ export default function Badges({ player, playerId }: BadgesProps) {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-neutral-500 text-sm">
+                  <div className="text-gray-500 dark:text-neutral-500 text-sm">
                     Not started
                   </div>
                 )}
@@ -392,16 +392,16 @@ export default function Badges({ player, playerId }: BadgesProps) {
       )}
 
       {filteredBadges.length === 0 && !loading && (
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-neutral-400 text-lg">
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400 text-lg">
             {badges.length === 0 ? 'No badges unlocked yet' : 'No badges found for the selected filter'}
           </p>
         </div>
       )}
       
       {loading && (
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-neutral-400">Loading badges...</p>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400">Loading badges...</p>
         </div>
       )}
 
@@ -412,22 +412,22 @@ export default function Badges({ player, playerId }: BadgesProps) {
           onClick={() => setSelectedBadge(null)}
         >
           <div 
-            className="bg-neutral-900 rounded-lg border border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+            className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-white">Achievement Unlocked</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Achievement Unlocked</h3>
                 <button
                   onClick={() => setSelectedBadge(null)}
-                  className="text-neutral-400 hover:text-white text-2xl"
+                  className="text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white text-2xl"
                 >
                   ×
                 </button>
               </div>
               
               {/* Achievement Info */}
-              <div className="mb-6 text-center p-4 bg-neutral-800 rounded-lg">
+              <div className="mb-6 text-center p-4 bg-gray-100 dark:bg-neutral-800 rounded-lg">
                 <div className="mb-2 flex items-center justify-center">
                   {selectedBadge.badgeImage ? (
                     <img 
@@ -448,9 +448,9 @@ export default function Badges({ player, playerId }: BadgesProps) {
                     <div className="text-4xl">{selectedBadge.icon}</div>
                   )}
                 </div>
-                <h4 className="text-lg font-bold text-white mb-1">{selectedBadge.name}</h4>
-                <p className="text-sm text-neutral-400 mb-2">{selectedBadge.description}</p>
-                <div className="flex items-center justify-center gap-2 text-green-400 text-sm">
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{selectedBadge.name}</h4>
+                <p className="text-sm text-gray-600 dark:text-neutral-400 mb-2">{selectedBadge.description}</p>
+                <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400 text-sm">
                   <span>✓</span>
                   <span>Unlocked {selectedBadge.unlockedAt ? new Date(selectedBadge.unlockedAt).toLocaleDateString() : ''}</span>
                 </div>
@@ -458,32 +458,32 @@ export default function Badges({ player, playerId }: BadgesProps) {
 
               {/* Game Details */}
               <div className="space-y-4">
-                <h4 className="text-lg font-semibold text-white border-b border-neutral-800 pb-2">Game Details</h4>
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-neutral-800 pb-2">Game Details</h4>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-neutral-400 text-sm">Date</div>
-                    <div className="text-white">
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm">Date</div>
+                    <div className="text-gray-900 dark:text-white">
                       {new Date(selectedBadge.gameData.played_at).toLocaleDateString()}
                     </div>
                   </div>
                   <div>
-                    <div className="text-neutral-400 text-sm">Match ID</div>
-                    <div className="text-white text-sm font-mono">{selectedBadge.match_id}</div>
+                    <div className="text-gray-600 dark:text-neutral-400 text-sm">Match ID</div>
+                    <div className="text-gray-900 dark:text-white text-sm font-mono">{selectedBadge.match_id}</div>
                   </div>
                 </div>
 
                 {/* Teams and Score */}
-                <div className="bg-neutral-800 rounded-lg p-4">
+                <div className="bg-gray-100 dark:bg-neutral-800 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 text-center">
-                      <div className="text-white font-semibold mb-1">{selectedBadge.gameData.team_a_name}</div>
-                      <div className="text-2xl font-bold text-blue-400">{selectedBadge.gameData.score_a}</div>
+                      <div className="text-gray-900 dark:text-white font-semibold mb-1">{selectedBadge.gameData.team_a_name}</div>
+                      <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">{selectedBadge.gameData.score_a}</div>
                     </div>
-                    <div className="text-neutral-500 px-4">vs</div>
+                    <div className="text-gray-500 dark:text-neutral-500 px-4">vs</div>
                     <div className="flex-1 text-center">
-                      <div className="text-white font-semibold mb-1">{selectedBadge.gameData.team_b_name}</div>
-                      <div className="text-2xl font-bold text-blue-400">{selectedBadge.gameData.score_b}</div>
+                      <div className="text-gray-900 dark:text-white font-semibold mb-1">{selectedBadge.gameData.team_b_name}</div>
+                      <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">{selectedBadge.gameData.score_b}</div>
                     </div>
                   </div>
                 </div>
@@ -491,25 +491,25 @@ export default function Badges({ player, playerId }: BadgesProps) {
                 {/* Player Stats */}
                 {selectedBadge.gameData.player_stats && (
                   <div>
-                    <h5 className="text-sm font-semibold text-neutral-300 mb-2">Your Performance</h5>
-                    <div className="bg-neutral-800 rounded-lg p-4">
+                    <h5 className="text-sm font-semibold text-gray-700 dark:text-neutral-300 mb-2">Your Performance</h5>
+                    <div className="bg-gray-100 dark:bg-neutral-800 rounded-lg p-4">
                       <div className="grid grid-cols-3 gap-4 text-center">
                         {selectedBadge.gameData.player_stats.per_game?.points !== undefined && (
                           <div>
-                            <div className="text-2xl font-bold text-white">{selectedBadge.gameData.player_stats.per_game.points}</div>
-                            <div className="text-xs text-neutral-400">Points</div>
+                            <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedBadge.gameData.player_stats.per_game.points}</div>
+                            <div className="text-xs text-gray-600 dark:text-neutral-400">Points</div>
                           </div>
                         )}
                         {selectedBadge.gameData.player_stats.per_game?.assists !== undefined && (
                           <div>
-                            <div className="text-2xl font-bold text-white">{selectedBadge.gameData.player_stats.per_game.assists}</div>
-                            <div className="text-xs text-neutral-400">Assists</div>
+                            <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedBadge.gameData.player_stats.per_game.assists}</div>
+                            <div className="text-xs text-gray-600 dark:text-neutral-400">Assists</div>
                           </div>
                         )}
                         {selectedBadge.gameData.player_stats.per_game?.rebounds !== undefined && (
                           <div>
-                            <div className="text-2xl font-bold text-white">{selectedBadge.gameData.player_stats.per_game.rebounds}</div>
-                            <div className="text-xs text-neutral-400">Rebounds</div>
+                            <div className="text-2xl font-bold text-gray-900 dark:text-white">{selectedBadge.gameData.player_stats.per_game.rebounds}</div>
+                            <div className="text-xs text-gray-600 dark:text-neutral-400">Rebounds</div>
                           </div>
                         )}
                       </div>

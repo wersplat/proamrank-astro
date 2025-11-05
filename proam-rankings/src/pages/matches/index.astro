@@ -374,11 +374,11 @@ const filtersActive = hasActiveFilters(
   description="Review match results, boxscores, and statistics from NBA 2K Pro-Am games. View detailed game logs and player performance data"
 >
   <Navigation />
-    <main class="mx-auto max-w-6xl p-6">
+    <main class="mx-auto max-w-6xl p-6 grade-pattern">
       <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
-          <h1 class="text-2xl font-bold">Recent Matches</h1>
-          <div class="text-sm text-neutral-400">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Recent Matches</h1>
+          <div class="text-sm text-gray-600 dark:text-neutral-400">
             Page {currentPage} of {totalPages} • {count || 0} total matches
           </div>
         </div>
@@ -386,22 +386,22 @@ const filtersActive = hasActiveFilters(
         <!-- Filters -->
         <div class="flex flex-wrap gap-3 mb-4">
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Player:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Player:</label>
             <input
               type="text"
               id="playerInput"
               placeholder="Player name..."
               value={playerSearch}
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm w-48"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm w-48"
               onkeydown="if (event.key === 'Enter') window.location.href = updateFilter('player', this.value)"
             />
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">League:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">League:</label>
             <select 
               id="leagueFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm max-w-[200px]"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm max-w-[200px]"
               onchange="window.location.href = updateFilter('league', this.value)"
             >
               <option value="all" selected={leagueFilter === 'all'}>All Leagues</option>
@@ -412,10 +412,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Tournament:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Tournament:</label>
             <select 
               id="tournamentFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm max-w-[200px]"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm max-w-[200px]"
               onchange="window.location.href = updateFilter('tournament', this.value)"
             >
               <option value="all" selected={tournamentFilter === 'all'}>All Tournaments</option>
@@ -426,10 +426,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Team:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Team:</label>
             <select 
               id="teamFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm max-w-[200px]"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm max-w-[200px]"
               onchange="window.location.href = updateFilter('team', this.value)"
             >
               <option value="all" selected={teamFilter === 'all'}>All Teams</option>
@@ -440,10 +440,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Year:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Year:</label>
             <select 
               id="yearFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('year', this.value)"
             >
               <option value="all" selected={yearFilter === 'all'}>All Years</option>
@@ -454,10 +454,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Status:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Status:</label>
             <select 
               id="verifiedFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('verified', this.value)"
             >
               <option value="all" selected={verifiedFilter === 'all'}>All</option>
@@ -468,10 +468,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Stage:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Stage:</label>
             <select 
               id="stageFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('stage', this.value)"
             >
               <option value="all" selected={stageFilter === 'all'}>All Stages</option>
@@ -484,7 +484,7 @@ const filtersActive = hasActiveFilters(
           {filtersActive && (
             <a 
               href="/matches" 
-              class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+              class="px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
             >
               Clear Filters
             </a>
@@ -506,17 +506,17 @@ const filtersActive = hasActiveFilters(
       </script>
 
       <!-- Verification Info Notice -->
-      <div class="mb-6 p-4 rounded-lg border border-blue-500/30 bg-blue-900/10">
+      <div class="mb-6 p-4 rounded-lg border border-blue-500/30 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-900/10">
         <div class="flex items-start gap-3">
-          <svg class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
           </svg>
           <div class="flex-1">
-            <h3 class="text-sm font-semibold text-blue-300 mb-1">About Match Verification</h3>
-            <p class="text-sm text-neutral-300">
-              Unless a match has the <span class="text-green-300 font-medium">Verified</span> badge, stats were derived from OCR (Optical Character Recognition) and may contain errors. 
+            <h3 class="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-1">About Match Verification</h3>
+            <p class="text-sm text-gray-700 dark:text-neutral-300">
+              Unless a match has the <span class="text-green-700 dark:text-green-300 font-medium">Verified</span> badge, stats were derived from OCR (Optical Character Recognition) and may contain errors. 
               Only verified stats are entered into our statistics tables and affect player ratings. 
-              <a href="/ranking-system#verification" class="text-blue-400 hover:text-blue-300 underline">Learn more</a>
+              <a href="/ranking-system#verification" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline">Learn more</a>
             </p>
           </div>
         </div>
@@ -526,7 +526,7 @@ const filtersActive = hasActiveFilters(
       <MatchesListIsland client:load matches={matches} />
 
       {matches.length === 0 && (
-        <div class="text-center py-12 text-neutral-400">
+        <div class="text-center py-12 text-gray-600 dark:text-neutral-400">
           No matches found.
         </div>
       )}
@@ -538,12 +538,12 @@ const filtersActive = hasActiveFilters(
           {currentPage > 1 ? (
             <a
               href={`/matches?page=${currentPage - 1}${filterQuery}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               ← Previous
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               ← Previous
             </span>
           )}
@@ -556,7 +556,7 @@ const filtersActive = hasActiveFilters(
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
-                    : 'bg-neutral-800 hover:bg-neutral-700'
+                    : 'bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white'
                 }`}
               >
                 {pageNum}
@@ -568,12 +568,12 @@ const filtersActive = hasActiveFilters(
           {currentPage < totalPages ? (
             <a
               href={`/matches?page=${currentPage + 1}${filterQuery}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               Next →
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               Next →
             </span>
           )}

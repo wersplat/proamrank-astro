@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ["./src/**/*.{astro,html,js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -39,6 +40,19 @@ export default {
             700: "#1A3250",
             800: "#132842", // Darker navy blue
             900: "#0F1B2E", // Very dark navy for backgrounds
+            // Light mode variants
+            light: {
+              50: "#EFF6FF", // Very light blue
+              100: "#DBEAFE", // Light blue
+              200: "#BFDBFE", // Lighter blue
+              300: "#93C5FD", // Medium light blue
+              400: "#60A5FA", // Medium blue
+              500: "#3B82F6", // Standard blue
+              600: "#2563EB", // Medium dark blue
+              700: "#1D4ED8", // Dark blue
+              800: "#1E40AF", // Darker blue
+              900: "#1E3A8A", // Very dark blue
+            }
           },
         }
       }

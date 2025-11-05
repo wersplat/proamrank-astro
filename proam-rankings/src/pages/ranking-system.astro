@@ -9,53 +9,53 @@ import "../styles/global.css";
   description="Understand how teams and players are ranked in the G.R.A.D.E. system, including ELO ratings, ranking points, and player tier classifications"
 >
   <Navigation />
-    <main class="mx-auto max-w-5xl p-6">
+    <main class="mx-auto max-w-5xl p-6 grade-pattern">
       <div class="mb-8 text-center">
-        <h1 class="text-3xl font-bold mb-2">Ranking System</h1>
-        <p class="text-neutral-400">Learn how teams and players are ranked in the NBA 2K Pro Am Global Rankings</p>
+        <h1 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Ranking System</h1>
+        <p class="text-gray-600 dark:text-neutral-400">Learn how teams and players are ranked in the NBA 2K Pro Am Global Rankings</p>
       </div>
 
       <!-- Team Ranking System -->
       <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Team Ranking System</h2>
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-gray-300 dark:border-white/20 text-gray-900 dark:text-white">Team Ranking System</h2>
         
-        <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
-          <h3 class="text-xl font-medium mb-4">Hybrid Ranking System</h3>
-          <p class="text-neutral-300 mb-4">Teams are ranked using a combination of two complementary metrics to ensure both achievement and skill are fairly represented:</p>
+        <div class="bg-gray-50 dark:bg-patriot-blue-900/50 p-6 rounded-xl border border-gray-200 dark:border-white/20 hover:border-patriot-red-500 dark:hover:border-patriot-red-500/50 transition mb-8">
+          <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">Hybrid Ranking System</h3>
+          <p class="text-gray-700 dark:text-neutral-300 mb-4">Teams are ranked using a combination of two complementary metrics to ensure both achievement and skill are fairly represented:</p>
           
           <div class="grid md:grid-cols-2 gap-6 mb-6">
-            <div class="bg-patriot-blue-900/30 p-5 rounded-lg border border-white/20">
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-gray-200 dark:border-white/20">
               <div class="flex items-center mb-2">
                 <span class="text-2xl mr-2">🧩</span>
                 <h4 class="text-lg font-semibold text-gold">Ranking Points (RP)</h4>
-                <span class="ml-auto bg-blue-500/20 text-blue-300 text-xs px-2 py-1 rounded">70% Weight</span>
+                <span class="ml-auto bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 text-xs px-2 py-1 rounded">70% Weight</span>
               </div>
-              <p class="text-neutral-400 text-sm">Measures team success across verified tournaments and events. Rewards consistent performance and achievement.</p>
+              <p class="text-gray-600 dark:text-neutral-400 text-sm">Measures team success across verified tournaments and events. Rewards consistent performance and achievement.</p>
             </div>
             
-            <div class="bg-patriot-blue-900/30 p-5 rounded-lg border border-patriot-red-500/20">
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-patriot-red-200 dark:border-patriot-red-500/20">
               <div class="flex items-center mb-2">
                 <span class="text-2xl mr-2">📈</span>
                 <h4 class="text-lg font-semibold text-gold">ELO Rating</h4>
-                <span class="ml-auto bg-purple-500/20 text-purple-300 text-xs px-2 py-1 rounded">30% Weight</span>
+                <span class="ml-auto bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded">30% Weight</span>
               </div>
-              <p class="text-neutral-400 text-sm">Evaluates relative team skill based on match outcomes and opponent strength. Reacts to current form and competition level.</p>
+              <p class="text-gray-600 dark:text-neutral-400 text-sm">Evaluates relative team skill based on match outcomes and opponent strength. Reacts to current form and competition level.</p>
             </div>
           </div>
           
-          <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800">
+          <div class="bg-gray-100 dark:bg-neutral-950 p-4 rounded-lg border border-gray-300 dark:border-neutral-800">
             <div class="flex items-center justify-center">
               <span class="text-gold mr-2">⚖️</span>
-              <code class="text-sm">Final Score = (RP Score × 0.70) + (ELO Normalized × 0.30)</code>
+              <code class="text-sm text-gray-900 dark:text-white">Final Score = (RP Score × 0.70) + (ELO Normalized × 0.30)</code>
             </div>
           </div>
         </div>
 
         <!-- Event Tiers -->
-        <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
-          <h3 class="text-xl font-medium mb-4">Event Tiers</h3>
+        <div class="bg-gray-50 dark:bg-patriot-blue-900/50 p-6 rounded-xl border border-gray-200 dark:border-white/20 hover:border-patriot-red-500 dark:hover:border-patriot-red-500/50 transition mb-8">
+          <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">Event Tiers</h3>
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-neutral-800">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-800">
               <thead>
                 <tr>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
@@ -63,55 +63,55 @@ import "../styles/global.css";
                   <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Max RP</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-neutral-800">
-                <tr class="hover:bg-neutral-950">
+              <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
                       <span>💎</span>
-                      <span class="font-medium">T1</span>
+                      <span class="font-medium text-gray-900 dark:text-white">T1</span>
                     </span>
                   </td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">Major LANs (Worlds, UPA Live Events)</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">Major LANs (Worlds, UPA Live Events)</td>
                   <td class="px-4 py-3 text-sm text-gold">1000 RP</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
                       <span>🏆</span>
-                      <span class="font-medium">T2</span>
+                      <span class="font-medium text-gray-900 dark:text-white">T2</span>
                     </span>
                   </td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">Monthly UPA Tournaments, UPA College Finals</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">Monthly UPA Tournaments, UPA College Finals</td>
                   <td class="px-4 py-3 text-sm text-gold">600 RP</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
                       <span>🥇</span>
-                      <span class="font-medium">T3</span>
+                      <span class="font-medium text-gray-900 dark:text-white">T3</span>
                     </span>
                   </td>
-                  <td class="px-4 py-3 text-sm text-neutral-300"> Draft, UPA College Regular</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300"> Draft, UPA College Regular</td>
                   <td class="px-4 py-3 text-sm text-gold">300 RP</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
                       <span>🥈</span>
-                      <span class="font-medium">T4</span>
+                      <span class="font-medium text-gray-900 dark:text-white">T4</span>
                     </span>
                   </td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">Invitationals, Showmatches, Non-UPA Verified Leagues</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">Invitationals, Showmatches, Non-UPA Verified Leagues</td>
                   <td class="px-4 py-3 text-sm text-gold">150 RP</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
                       <span>🥉</span>
-                      <span class="font-medium">T5</span>
+                      <span class="font-medium text-gray-900 dark:text-white">T5</span>
                     </span>
                   </td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">Community Events, Unverified Leagues</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">Community Events, Unverified Leagues</td>
                   <td class="px-4 py-3 text-sm text-gold">50 RP</td>
                 </tr>
               </tbody>
@@ -119,15 +119,15 @@ import "../styles/global.css";
           </div>
           
           <!-- Dynamic Tier Calculation -->
-          <div class="mt-6 bg-patriot-red-900/20 border border-patriot-red-500/30 p-5 rounded-lg">
+          <div class="mt-6 bg-red-50 dark:bg-patriot-red-900/20 border border-red-200 dark:border-patriot-red-500/30 p-5 rounded-lg">
             <div class="flex items-start gap-3">
               <span class="text-2xl">⚡</span>
               <div>
-                <h4 class="text-lg font-semibold text-patriot-red-300 mb-2">Dynamic Tier Calculation</h4>
-                <p class="text-sm text-neutral-300 mb-3">
+                <h4 class="text-lg font-semibold text-red-700 dark:text-patriot-red-300 mb-2">Dynamic Tier Calculation</h4>
+                <p class="text-sm text-gray-700 dark:text-neutral-300 mb-3">
                   Tournament tiers are calculated dynamically based on objective team strength metrics rather than relying solely on event labels. This system analyzes the participating teams' rankings, historical performance, and competitive pedigree to determine the true competitive level of each tournament.
                 </p>
-                <p class="text-sm text-neutral-400">
+                <p class="text-sm text-gray-600 dark:text-neutral-400">
                   This approach ensures that rankings and rating points accurately reflect the actual difficulty and prestige of each event, preventing tier inflation and maintaining competitive integrity across the ecosystem.
                 </p>
               </div>
@@ -136,9 +136,9 @@ import "../styles/global.css";
         </div>
 
         <!-- Leaderboard Tiers -->
-        <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
-          <h3 class="text-xl font-medium mb-4">Leaderboard Tiers</h3>
-          <p class="text-neutral-300 mb-6">Teams are grouped into five performance tiers based on their hybrid score:</p>
+        <div class="bg-gray-50 dark:bg-patriot-blue-900/50 p-6 rounded-xl border border-gray-200 dark:border-white/20 hover:border-patriot-red-500 dark:hover:border-patriot-red-500/50 transition mb-8">
+          <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">Leaderboard Tiers</h3>
+          <p class="text-gray-700 dark:text-neutral-300 mb-6">Teams are grouped into five performance tiers based on their hybrid score:</p>
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
             <div class="bg-purple-500/10 p-4 rounded-lg text-center border border-purple-500/20">
               <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 mb-2">S-Tier</div>
@@ -169,14 +169,14 @@ import "../styles/global.css";
         </div>
 
         <!-- ELO System -->
-        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
-          <h3 class="text-xl font-medium mb-4">ELO Rating System</h3>
-          <p class="text-neutral-300 mb-4">ELO ratings provide a dynamic measure of team skill based on match performance with <span class="text-gold font-medium">fixed normalization bounds</span> for consistent rankings:</p>
+        <div class="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-800">
+          <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">ELO Rating System</h3>
+          <p class="text-gray-700 dark:text-neutral-300 mb-4">ELO ratings provide a dynamic measure of team skill based on match performance with <span class="text-gold font-medium">fixed normalization bounds</span> for consistent rankings:</p>
           
           <div class="space-y-4">
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
-              <h4 class="font-semibold mb-2">ELO Bounds & Normalization</h4>
-              <ul class="space-y-2 text-neutral-300 text-sm">
+            <div class="bg-gray-50 dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+              <h4 class="font-semibold mb-2 text-gray-900 dark:text-white">ELO Bounds & Normalization</h4>
+              <ul class="space-y-2 text-gray-700 dark:text-neutral-300 text-sm">
                 <li>• <span class="text-gold">Starting ELO:</span> 1500 (normalizes to 437.5/1000)</li>
                 <li>• <span class="text-gold">Minimum Bound:</span> 800 (theoretical competitive floor)</li>
                 <li>• <span class="text-gold">Maximum Bound:</span> 2400 (practical competitive ceiling)</li>
@@ -184,9 +184,9 @@ import "../styles/global.css";
               </ul>
             </div>
             
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
-              <h4 class="font-semibold mb-2">How ELO Works</h4>
-              <ul class="space-y-2 text-neutral-300 text-sm">
+            <div class="bg-gray-50 dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+              <h4 class="font-semibold mb-2 text-gray-900 dark:text-white">How ELO Works</h4>
+              <ul class="space-y-2 text-gray-700 dark:text-neutral-300 text-sm">
                 <li>• Ratings increase when beating higher-rated teams</li>
                 <li>• Ratings decrease when losing to lower-rated teams</li>
                 <li>• The amount of change depends on the rating difference</li>
@@ -199,95 +199,95 @@ import "../styles/global.css";
 
       <!-- Player Rating System -->
       <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Player Rating System</h2>
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-gray-300 dark:border-white/20 text-gray-900 dark:text-white">Player Rating System</h2>
         
-        <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
-          <p class="text-neutral-300 mb-6">
+        <div class="bg-gray-50 dark:bg-patriot-blue-900/50 p-6 rounded-xl border border-gray-200 dark:border-white/20 hover:border-patriot-red-500 dark:hover:border-patriot-red-500/50 transition mb-8">
+          <p class="text-gray-700 dark:text-neutral-300 mb-6">
             Each player receives a <span class="text-gold font-medium">Global Rating (0–100+)</span> derived from verified game stats and competitive context.
             This rating helps evaluate player performance across different leagues and tournaments. The system automatically updates when new stats are verified.
           </p>
           
-          <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 mb-6 text-center">
-            <code class="text-sm">Global Rating = Base + Game Impact + Event Bonus + Consistency − Decay</code>
+          <div class="bg-gray-100 dark:bg-neutral-950 p-4 rounded-lg border border-gray-300 dark:border-neutral-800 mb-6 text-center">
+            <code class="text-sm text-gray-900 dark:text-white">Global Rating = Base + Game Impact + Event Bonus + Consistency − Decay</code>
           </div>
 
-          <h3 class="text-lg font-medium mb-4">Rating Components Breakdown</h3>
+          <h3 class="text-lg font-medium mb-4 text-gray-900 dark:text-white">Rating Components Breakdown</h3>
           
           <div class="grid gap-4 mb-6">
             <!-- Base Rating -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
-              <h4 class="font-semibold text-blue-400 mb-2">1. Base Rating (50-70 points)</h4>
-              <p class="text-neutral-300 text-sm mb-3">Starting point that increases with experience:</p>
-              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
-                <li>• <span class="text-neutral-300">No games:</span> 50 points (below average, new to system)</li>
-                <li>• <span class="text-neutral-300">&lt; 5 games:</span> 65 points (new player, establishing baseline)</li>
-                <li>• <span class="text-neutral-300">&lt; 10 games:</span> 68 points (getting established)</li>
-                <li>• <span class="text-neutral-300">10+ games:</span> 70 points (established player baseline)</li>
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+              <h4 class="font-semibold text-patriot-blue-600 dark:text-blue-400 mb-2">1. Base Rating (50-70 points)</h4>
+              <p class="text-gray-700 dark:text-neutral-300 text-sm mb-3">Starting point that increases with experience:</p>
+              <ul class="space-y-1 text-sm text-gray-600 dark:text-neutral-400 ml-4">
+                <li>• <span class="text-gray-900 dark:text-neutral-300">No games:</span> 50 points (below average, new to system)</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">&lt; 5 games:</span> 65 points (new player, establishing baseline)</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">&lt; 10 games:</span> 68 points (getting established)</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">10+ games:</span> 70 points (established player baseline)</li>
               </ul>
             </div>
 
             <!-- Game Impact -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
-              <h4 class="font-semibold text-green-400 mb-2">2. Game Impact (0-30 points)</h4>
-              <p class="text-neutral-300 text-sm mb-3">Performance-based score using comprehensive stats:</p>
-              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
-                <li>• <span class="text-green-400">Points</span> × True Shooting Plus (efficiency vs league average)</li>
-                <li>• <span class="text-green-400">Assists</span> × 1.5 (playmaking value)</li>
-                <li>• <span class="text-green-400">Rebounds</span> × 1.25 (board control)</li>
-                <li>• <span class="text-green-400">Steals</span> × 2.5 (defensive pressure)</li>
-                <li>• <span class="text-green-400">Blocks</span> × 2.0 (rim protection)</li>
-                <li>• <span class="text-red-400">Missed FGs</span> × -1.0 (efficiency penalty)</li>
-                <li>• <span class="text-red-400">Missed FTs</span> × -0.7 (efficiency penalty)</li>
-                <li>• <span class="text-red-400">Turnovers</span> × -2.0 (possession penalty)</li>
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+              <h4 class="font-semibold text-green-600 dark:text-green-400 mb-2">2. Game Impact (0-30 points)</h4>
+              <p class="text-gray-700 dark:text-neutral-300 text-sm mb-3">Performance-based score using comprehensive stats:</p>
+              <ul class="space-y-1 text-sm text-gray-600 dark:text-neutral-400 ml-4">
+                <li>• <span class="text-green-600 dark:text-green-400">Points</span> × True Shooting Plus (efficiency vs league average)</li>
+                <li>• <span class="text-green-600 dark:text-green-400">Assists</span> × 1.5 (playmaking value)</li>
+                <li>• <span class="text-green-600 dark:text-green-400">Rebounds</span> × 1.25 (board control)</li>
+                <li>• <span class="text-green-600 dark:text-green-400">Steals</span> × 2.5 (defensive pressure)</li>
+                <li>• <span class="text-green-600 dark:text-green-400">Blocks</span> × 2.0 (rim protection)</li>
+                <li>• <span class="text-red-600 dark:text-red-400">Missed FGs</span> × -1.0 (efficiency penalty)</li>
+                <li>• <span class="text-red-600 dark:text-red-400">Missed FTs</span> × -0.7 (efficiency penalty)</li>
+                <li>• <span class="text-red-600 dark:text-red-400">Turnovers</span> × -2.0 (possession penalty)</li>
               </ul>
-              <p class="text-neutral-500 text-xs mt-3">Weighted by event tier multiplier and averaged over recent 20 games</p>
+              <p class="text-gray-500 dark:text-neutral-500 text-xs mt-3">Weighted by event tier multiplier and averaged over recent 20 games</p>
             </div>
 
             <!-- Event Bonus -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
-              <h4 class="font-semibold text-purple-400 mb-2">3. Event Bonus (0-15 points)</h4>
-              <p class="text-neutral-300 text-sm mb-3">Rewards participation in high-tier competitions:</p>
-              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
-                <li>• <span class="text-neutral-300">T1 (Major LANs):</span> +8 bonus per game</li>
-                <li>• <span class="text-neutral-300">T2 (Franchise Events):</span> +5 bonus per game</li>
-                <li>• <span class="text-neutral-300">T3 (Qualifiers):</span> +3 bonus per game</li>
-                <li>• <span class="text-neutral-300">T4 (Invitationals):</span> +2 bonus per game</li>
-                <li>• <span class="text-neutral-300">T5 (Community):</span> +1 bonus per game</li>
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+              <h4 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">3. Event Bonus (0-15 points)</h4>
+              <p class="text-gray-700 dark:text-neutral-300 text-sm mb-3">Rewards participation in high-tier competitions:</p>
+              <ul class="space-y-1 text-sm text-gray-600 dark:text-neutral-400 ml-4">
+                <li>• <span class="text-gray-900 dark:text-neutral-300">T1 (Major LANs):</span> +8 bonus per game</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">T2 (Franchise Events):</span> +5 bonus per game</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">T3 (Qualifiers):</span> +3 bonus per game</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">T4 (Invitationals):</span> +2 bonus per game</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">T5 (Community):</span> +1 bonus per game</li>
               </ul>
-              <p class="text-neutral-500 text-xs mt-3">Sum of unique tier bonuses from recent games, capped at 15 points</p>
+              <p class="text-gray-500 dark:text-neutral-500 text-xs mt-3">Sum of unique tier bonuses from recent games, capped at 15 points</p>
             </div>
 
             <!-- Consistency Bonus -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
-              <h4 class="font-semibold text-yellow-400 mb-2">4. Consistency Bonus (0-3 points)</h4>
-              <p class="text-neutral-300 text-sm mb-3">Rewards reliable, steady performers:</p>
-              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
-                <li>• <span class="text-neutral-300">Very Consistent</span> (peak within 5pts of avg): +3 points</li>
-                <li>• <span class="text-neutral-300">Consistent</span> (peak within 10pts): +2 points</li>
-                <li>• <span class="text-neutral-300">Somewhat Consistent</span> (peak within 15pts): +1 point</li>
-                <li>• <span class="text-neutral-300">Inconsistent:</span> 0 points</li>
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+              <h4 class="font-semibold text-yellow-600 dark:text-yellow-400 mb-2">4. Consistency Bonus (0-3 points)</h4>
+              <p class="text-gray-700 dark:text-neutral-300 text-sm mb-3">Rewards reliable, steady performers:</p>
+              <ul class="space-y-1 text-sm text-gray-600 dark:text-neutral-400 ml-4">
+                <li>• <span class="text-gray-900 dark:text-neutral-300">Very Consistent</span> (peak within 5pts of avg): +3 points</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">Consistent</span> (peak within 10pts): +2 points</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">Somewhat Consistent</span> (peak within 15pts): +1 point</li>
+                <li>• <span class="text-gray-900 dark:text-neutral-300">Inconsistent:</span> 0 points</li>
               </ul>
-              <p class="text-neutral-500 text-xs mt-3">Compares peak performance to average game impact</p>
+              <p class="text-gray-500 dark:text-neutral-500 text-xs mt-3">Compares peak performance to average game impact</p>
             </div>
 
             <!-- Decay Penalty -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
-              <h4 class="font-semibold text-red-400 mb-2">5. Decay Penalty (0-15 points)</h4>
-              <p class="text-neutral-300 text-sm mb-3">Encourages active participation:</p>
-              <ul class="space-y-1 text-sm text-neutral-400 ml-4">
-                <li>• <span class="text-green-400">≤ 30 days:</span> No decay (active player)</li>
-                <li>• <span class="text-yellow-400">31-60 days:</span> -2 points (recently active)</li>
-                <li>• <span class="text-orange-400">61-90 days:</span> -5 points (moderate inactivity)</li>
-                <li>• <span class="text-red-400">91-180 days:</span> -10 points (prolonged absence)</li>
-                <li>• <span class="text-red-400">180+ days:</span> -15 points (severely inactive)</li>
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+              <h4 class="font-semibold text-red-600 dark:text-red-400 mb-2">5. Decay Penalty (0-15 points)</h4>
+              <p class="text-gray-700 dark:text-neutral-300 text-sm mb-3">Encourages active participation:</p>
+              <ul class="space-y-1 text-sm text-gray-600 dark:text-neutral-400 ml-4">
+                <li>• <span class="text-green-600 dark:text-green-400">≤ 30 days:</span> No decay (active player)</li>
+                <li>• <span class="text-yellow-600 dark:text-yellow-400">31-60 days:</span> -2 points (recently active)</li>
+                <li>• <span class="text-orange-600 dark:text-orange-400">61-90 days:</span> -5 points (moderate inactivity)</li>
+                <li>• <span class="text-red-600 dark:text-red-400">91-180 days:</span> -10 points (prolonged absence)</li>
+                <li>• <span class="text-red-600 dark:text-red-400">180+ days:</span> -15 points (severely inactive)</li>
               </ul>
-              <p class="text-neutral-500 text-xs mt-3">Based on days since last verified game</p>
+              <p class="text-gray-500 dark:text-neutral-500 text-xs mt-3">Based on days since last verified game</p>
             </div>
           </div>
           
-          <h3 class="text-xl font-medium mb-4">Player Tiers</h3>
+          <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">Player Tiers</h3>
           <div class="overflow-x-auto mb-4">
-            <table class="min-w-full divide-y divide-neutral-800">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-800">
               <thead>
                 <tr>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
@@ -296,61 +296,61 @@ import "../styles/global.css";
                   <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Description</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-neutral-800">
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm font-medium">S+</td>
+              <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">S+</td>
                   <td class="px-4 py-3 text-sm text-gold font-medium">Legendary</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">95+</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Elite playmakers, consistent top performers across T1/T2 events</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">95+</td>
+                  <td class="px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">Elite playmakers, consistent top performers across T1/T2 events</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm font-medium">S</td>
-                  <td class="px-4 py-3 text-sm text-purple-400 font-medium">Elite</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">90-94</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Top-tier players, tournament winners, high consistency</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">S</td>
+                  <td class="px-4 py-3 text-sm text-purple-600 dark:text-purple-400 font-medium">Elite</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">90-94</td>
+                  <td class="px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">Top-tier players, tournament winners, high consistency</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm font-medium">A</td>
-                  <td class="px-4 py-3 text-sm text-blue-400 font-medium">All-Star</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">85-89</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Strong competitors, frequent high placements, solid impact</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">A</td>
+                  <td class="px-4 py-3 text-sm text-patriot-blue-600 dark:text-blue-400 font-medium">All-Star</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">85-89</td>
+                  <td class="px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">Strong competitors, frequent high placements, solid impact</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm font-medium">B</td>
-                  <td class="px-4 py-3 text-sm text-green-400 font-medium">Starter</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">80-84</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Solid players, reliable team contributors</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">B</td>
+                  <td class="px-4 py-3 text-sm text-green-600 dark:text-green-400 font-medium">Starter</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">80-84</td>
+                  <td class="px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">Solid players, reliable team contributors</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm font-medium">C</td>
-                  <td class="px-4 py-3 text-sm text-yellow-400 font-medium">Role Player</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">75-79</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Specialized skills, developing players, niche roles</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">C</td>
+                  <td class="px-4 py-3 text-sm text-yellow-600 dark:text-yellow-400 font-medium">Role Player</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">75-79</td>
+                  <td class="px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">Specialized skills, developing players, niche roles</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm font-medium">D</td>
-                  <td class="px-4 py-3 text-sm text-orange-400 font-medium">Bench</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">70-74</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">New or inconsistent performers, needs improvement</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">D</td>
+                  <td class="px-4 py-3 text-sm text-orange-600 dark:text-orange-400 font-medium">Bench</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">70-74</td>
+                  <td class="px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">New or inconsistent performers, needs improvement</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm font-medium">Unranked</td>
-                  <td class="px-4 py-3 text-sm text-neutral-500 font-medium">Unranked</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">&lt; 70</td>
-                  <td class="px-4 py-3 text-sm text-neutral-400">Insufficient games or very low performance</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Unranked</td>
+                  <td class="px-4 py-3 text-sm text-gray-500 dark:text-neutral-500 font-medium">Unranked</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">&lt; 70</td>
+                  <td class="px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">Insufficient games or very low performance</td>
                 </tr>
               </tbody>
             </table>
           </div>
           
-          <div class="bg-neutral-950 p-4 rounded-lg">
-            <h4 class="font-semibold mb-2 text-neutral-200">How Ratings are Calculated</h4>
-            <ul class="space-y-2 text-sm text-neutral-400">
-              <li>• <span class="text-neutral-300">Automatic Updates:</span> Ratings recalculate when new stats are verified</li>
-              <li>• <span class="text-neutral-300">Recent Performance:</span> Last 20 games weighted more heavily</li>
-              <li>• <span class="text-neutral-300">Event Tier Weighting:</span> T1 games have 1.5x multiplier vs T5 at 0.7x</li>
-              <li>• <span class="text-neutral-300">Context-Aware:</span> Performance compared to league averages for fair evaluation</li>
-              <li>• <span class="text-neutral-300">Daily Updates:</span> Decay penalties apply automatically each day</li>
+          <div class="bg-gray-100 dark:bg-neutral-950 p-4 rounded-lg border border-gray-300 dark:border-neutral-800">
+            <h4 class="font-semibold mb-2 text-gray-900 dark:text-neutral-200">How Ratings are Calculated</h4>
+            <ul class="space-y-2 text-sm text-gray-600 dark:text-neutral-400">
+              <li>• <span class="text-gray-900 dark:text-neutral-300">Automatic Updates:</span> Ratings recalculate when new stats are verified</li>
+              <li>• <span class="text-gray-900 dark:text-neutral-300">Recent Performance:</span> Last 20 games weighted more heavily</li>
+              <li>• <span class="text-gray-900 dark:text-neutral-300">Event Tier Weighting:</span> T1 games have 1.5x multiplier vs T5 at 0.7x</li>
+              <li>• <span class="text-gray-900 dark:text-neutral-300">Context-Aware:</span> Performance compared to league averages for fair evaluation</li>
+              <li>• <span class="text-gray-900 dark:text-neutral-300">Daily Updates:</span> Decay penalties apply automatically each day</li>
             </ul>
           </div>
         </div>
@@ -358,89 +358,89 @@ import "../styles/global.css";
 
       <!-- Match Data & Verification Section -->
       <section id="verification" class="mb-12">
-        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-white/20">Match Data & Verification</h2>
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-gray-300 dark:border-white/20 text-gray-900 dark:text-white">Match Data & Verification</h2>
         
-        <div class="bg-patriot-blue-900/50 p-6 rounded-xl border border-white/20 hover:border-patriot-red-500/50 transition mb-8">
-          <h3 class="text-xl font-medium mb-4">From OCR to Verified Stats</h3>
-          <p class="text-neutral-300 mb-6">
+        <div class="bg-gray-50 dark:bg-patriot-blue-900/50 p-6 rounded-xl border border-gray-200 dark:border-white/20 hover:border-patriot-red-500 dark:hover:border-patriot-red-500/50 transition mb-8">
+          <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">From OCR to Verified Stats</h3>
+          <p class="text-gray-700 dark:text-neutral-300 mb-6">
             Our system uses Optical Character Recognition (OCR) technology to automatically extract player and team statistics 
             from match boxscore screenshots. This automated process allows us to quickly capture and display match data for the community.
           </p>
 
           <div class="grid gap-4 mb-6">
             <!-- OCR Processing -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
               <div class="flex items-center gap-3 mb-3">
                 <span class="text-2xl">🤖</span>
-                <h4 class="font-semibold text-blue-400">1. OCR Processing</h4>
+                <h4 class="font-semibold text-patriot-blue-600 dark:text-blue-400">1. OCR Processing</h4>
               </div>
-              <p class="text-neutral-300 text-sm mb-2">
+              <p class="text-gray-700 dark:text-neutral-300 text-sm mb-2">
                 When a boxscore screenshot is uploaded, our OCR system automatically reads and extracts statistics from the image. 
                 This process happens instantly and makes the data immediately visible on the platform.
               </p>
-              <div class="flex items-start gap-2 mt-3 p-3 bg-yellow-900/10 border border-yellow-500/20 rounded">
-                <svg class="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <div class="flex items-start gap-2 mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-500/20 rounded">
+                <svg class="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                 </svg>
-                <p class="text-yellow-200 text-xs">
+                <p class="text-yellow-800 dark:text-yellow-200 text-xs">
                   <span class="font-semibold">Important:</span> OCR-derived stats may contain errors due to image quality, formatting variations, or recognition limitations.
                 </p>
               </div>
             </div>
 
             <!-- Under Review -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
               <div class="flex items-center gap-3 mb-3">
                 <span class="text-2xl">⏳</span>
-                <h4 class="font-semibold text-yellow-400">2. Under Review</h4>
+                <h4 class="font-semibold text-yellow-600 dark:text-yellow-400">2. Under Review</h4>
               </div>
-              <p class="text-neutral-300 text-sm">
+              <p class="text-gray-700 dark:text-neutral-300 text-sm">
                 After OCR processing, matches enter the "Under Review" state. During this phase, our team manually verifies the 
                 extracted data against the original screenshots to ensure accuracy. Matches with the 
-                <span class="px-2 py-0.5 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-xs font-medium">Under Review</span> 
+                <span class="px-2 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-500 dark:border-yellow-500/30 text-yellow-700 dark:text-yellow-300 text-xs font-medium">Under Review</span> 
                 badge are awaiting verification.
               </p>
             </div>
 
             <!-- Verified -->
-            <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-white/10">
+            <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
               <div class="flex items-center gap-3 mb-3">
                 <span class="text-2xl">✅</span>
-                <h4 class="font-semibold text-green-400">3. Verified</h4>
+                <h4 class="font-semibold text-green-600 dark:text-green-400">3. Verified</h4>
               </div>
-              <p class="text-neutral-300 text-sm mb-2">
+              <p class="text-gray-700 dark:text-neutral-300 text-sm mb-2">
                 Once our team confirms the accuracy of the OCR-extracted data, the match is marked as "Verified" with a 
-                <span class="px-2 py-0.5 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-xs font-medium">Verified</span> 
+                <span class="px-2 py-0.5 rounded bg-green-100 dark:bg-green-900/30 border border-green-500 dark:border-green-500/30 text-green-700 dark:text-green-300 text-xs font-medium">Verified</span> 
                 badge. Only at this stage are the statistics officially entered into our database tables.
               </p>
-              <div class="flex items-start gap-2 mt-3 p-3 bg-green-900/10 border border-green-500/20 rounded">
-                <svg class="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <div class="flex items-start gap-2 mt-3 p-3 bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-500/20 rounded">
+                <svg class="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
-                <p class="text-green-200 text-xs">
+                <p class="text-green-800 dark:text-green-200 text-xs">
                   <span class="font-semibold">Key Point:</span> Verified stats are the only ones that count toward player ratings, season statistics, and leaderboard standings.
                 </p>
               </div>
             </div>
           </div>
 
-          <div class="bg-patriot-blue-900/30 p-4 rounded-lg border border-patriot-red-500/20">
-            <h4 class="font-semibold mb-2 text-patriot-red-300">Why This Matters</h4>
-            <ul class="space-y-2 text-sm text-neutral-300">
-              <li>• <span class="text-neutral-200">Transparency:</span> You can see match data immediately, even before verification</li>
-              <li>• <span class="text-neutral-200">Accuracy:</span> Manual verification ensures only correct stats affect rankings and ratings</li>
-              <li>• <span class="text-neutral-200">Fair Competition:</span> Player ratings and team rankings are based solely on verified, error-free data</li>
-              <li>• <span class="text-neutral-200">Community Trust:</span> Clear badges help you understand which stats are official</li>
+          <div class="bg-gray-50 dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-red-200 dark:border-patriot-red-500/20">
+            <h4 class="font-semibold mb-2 text-red-700 dark:text-patriot-red-300">Why This Matters</h4>
+            <ul class="space-y-2 text-sm text-gray-700 dark:text-neutral-300">
+              <li>• <span class="text-gray-900 dark:text-neutral-200">Transparency:</span> You can see match data immediately, even before verification</li>
+              <li>• <span class="text-gray-900 dark:text-neutral-200">Accuracy:</span> Manual verification ensures only correct stats affect rankings and ratings</li>
+              <li>• <span class="text-gray-900 dark:text-neutral-200">Fair Competition:</span> Player ratings and team rankings are based solely on verified, error-free data</li>
+              <li>• <span class="text-gray-900 dark:text-neutral-200">Community Trust:</span> Clear badges help you understand which stats are official</li>
             </ul>
           </div>
         </div>
 
         <!-- RP Decay -->
-        <div class="bg-neutral-900 p-6 rounded-xl border border-neutral-800">
-          <h3 class="text-xl font-medium mb-4">RP Decay</h3>
-          <p class="text-neutral-300 mb-6">To maintain competitive integrity, RP will decay over time to ensure rankings reflect current performance levels.</p>
+        <div class="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-800">
+          <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">RP Decay</h3>
+          <p class="text-gray-700 dark:text-neutral-300 mb-6">To maintain competitive integrity, RP will decay over time to ensure rankings reflect current performance levels.</p>
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-neutral-800">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-800">
               <thead>
                 <tr>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">RP Source</th>
@@ -448,21 +448,21 @@ import "../styles/global.css";
                   <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Full Decay</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-neutral-800">
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm text-neutral-300">Event RP (League Participation, Open Championships, Regular Season Champions)</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">30 Days</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">90 Days</td>
+              <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">Event RP (League Participation, Open Championships, Regular Season Champions)</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">30 Days</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">90 Days</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm text-neutral-300">League Championships and Tournaments</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">60 Days</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">120 Days</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">League Championships and Tournaments</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">60 Days</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">120 Days</td>
                 </tr>
-                <tr class="hover:bg-neutral-950">
-                  <td class="px-4 py-3 text-sm text-neutral-300">Major Championships (Worlds, UPA Live Events)</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">90 Days</td>
-                  <td class="px-4 py-3 text-sm text-neutral-300">180 Days</td>
+                <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">Major Championships (Worlds, UPA Live Events)</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">90 Days</td>
+                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-neutral-300">180 Days</td>
                 </tr>
               </tbody>
             </table>

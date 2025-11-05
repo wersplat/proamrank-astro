@@ -141,11 +141,11 @@ const filtersActive = hasActiveFilters(
   description="View league standings, schedules, and results for NBA 2K Pro-Am competitions. Track season progress and match outcomes"
 >
   <Navigation />
-    <main class="mx-auto max-w-6xl p-6">
+    <main class="mx-auto max-w-6xl p-6 grade-pattern">
       <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
-          <h1 class="text-2xl font-bold">Leagues</h1>
-          <div class="text-sm text-neutral-400">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Leagues</h1>
+          <div class="text-sm text-gray-600 dark:text-neutral-400">
             Page {currentPage} of {totalPages} • {count || 0} total
           </div>
         </div>
@@ -153,22 +153,22 @@ const filtersActive = hasActiveFilters(
         <!-- Filters -->
         <div class="flex flex-wrap gap-3 mb-4">
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Search:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Search:</label>
             <input
               type="text"
               id="searchInput"
               placeholder="League name..."
               value={searchQuery}
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm w-48"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm w-48"
               onkeydown="if (event.key === 'Enter') window.location.href = updateFilter('search', this.value)"
             />
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Year:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Year:</label>
             <select 
               id="yearFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('year', this.value)"
             >
               <option value="all" selected={gameYearFilter === 'all'}>All Years</option>
@@ -179,10 +179,10 @@ const filtersActive = hasActiveFilters(
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Status:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Status:</label>
             <select 
               id="statusFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('status', this.value)"
             >
               <option value="all" selected={statusFilter === 'all'}>All</option>
@@ -194,7 +194,7 @@ const filtersActive = hasActiveFilters(
           {filtersActive && (
             <a 
               href="/leagues" 
-              class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+              class="px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
             >
               Clear Filters
             </a>
@@ -220,7 +220,7 @@ const filtersActive = hasActiveFilters(
         {leagues.map((league: any) => (
           <a 
             href={`/leagues/${league.season_id}`}
-            class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
+            class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
           >
             <div class="flex items-center gap-3 mb-3">
               {league.league_logo && (
@@ -232,9 +232,9 @@ const filtersActive = hasActiveFilters(
                 />
               )}
               <div class="flex-1 min-w-0">
-                <h2 class="font-bold text-lg truncate">{league.league_name}</h2>
+                <h2 class="font-bold text-lg truncate text-gray-900 dark:text-white">{league.league_name}</h2>
                 {league.is_active && (
-                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-900 text-green-300">Active</span>
+                  <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300">Active</span>
                 )}
                 {league.tier && (
                   <span class={`mt-1 inline-block px-2 py-0.5 rounded text-xs font-bold border ${tierColors[league.tier as string] || 'bg-gray-900 text-gray-300 border-gray-500'}`}>
@@ -246,17 +246,17 @@ const filtersActive = hasActiveFilters(
             
             <dl class="grid grid-cols-2 gap-2 text-sm mb-2">
               <div>
-                <dt class="text-neutral-400 text-xs">Season</dt>
-                <dd class="font-semibold">{league.season_number ?? '-'}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Season</dt>
+                <dd class="font-semibold text-gray-900 dark:text-white">{league.season_number ?? '-'}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">Year</dt>
-                <dd class="font-semibold">{league.game_year ?? '-'}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Year</dt>
+                <dd class="font-semibold text-gray-900 dark:text-white">{league.game_year ?? '-'}</dd>
               </div>
             </dl>
 
             {(league.start_date || league.end_date) && (
-              <div class="text-xs text-neutral-400 mt-2 pt-2 border-t border-neutral-800">
+              <div class="text-xs text-gray-600 dark:text-neutral-400 mt-2 pt-2 border-t border-gray-200 dark:border-neutral-800">
                 {league.start_date && (
                   <div>Start: {new Date(league.start_date).toLocaleDateString()}</div>
                 )}
@@ -270,7 +270,7 @@ const filtersActive = hasActiveFilters(
       </div>
 
       {leagues.length === 0 && (
-        <div class="text-center py-12 text-neutral-400">
+        <div class="text-center py-12 text-gray-600 dark:text-neutral-400">
           No leagues found.
         </div>
       )}
@@ -281,12 +281,12 @@ const filtersActive = hasActiveFilters(
           {currentPage > 1 ? (
             <a 
               href={`/leagues?page=${currentPage - 1}${filterQuery}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               ← Previous
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               ← Previous
             </span>
           )}
@@ -298,7 +298,7 @@ const filtersActive = hasActiveFilters(
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
-                    : 'bg-neutral-800 hover:bg-neutral-700'
+                    : 'bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white'
                 }`}
               >
                 {pageNum}
@@ -309,12 +309,12 @@ const filtersActive = hasActiveFilters(
           {currentPage < totalPages ? (
             <a 
               href={`/leagues?page=${currentPage + 1}${filterQuery}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               Next →
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               Next →
             </span>
           )}

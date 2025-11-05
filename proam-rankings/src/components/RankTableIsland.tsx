@@ -13,7 +13,7 @@ type Row = {
 };
 
 function getTierColor(tier: string | null): string {
-  if (!tier) return "bg-neutral-700 text-neutral-300";
+  if (!tier) return "bg-gray-300 dark:bg-neutral-700 text-gray-700 dark:text-neutral-300";
   const tierLower = tier.toLowerCase();
   if (tierLower.includes("prospect")) {
     return "bg-patriot-blue-500 text-white";
@@ -22,7 +22,7 @@ function getTierColor(tier: string | null): string {
   } else if (tierLower.includes("premier")) {
     return "bg-gradient-to-r from-patriot-red-500 to-patriot-red-600 text-white";
   }
-  return "bg-patriot-blue-800 text-white";
+  return "bg-patriot-blue-600 dark:bg-patriot-blue-800 text-white";
 }
 
 export default function RankTableIsland({ rows }: { rows: Row[] }) {
@@ -36,7 +36,7 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
 
   return (
     <table className="w-full text-sm hidden sm:table" id="rankings-table" aria-label="Team rankings table">
-      <thead className="text-neutral-200 sticky top-0 bg-patriot-blue-900/95 backdrop-blur-md z-10">
+      <thead className="text-gray-700 dark:text-neutral-200 sticky top-0 bg-white/95 dark:bg-patriot-blue-900/95 backdrop-blur-md z-10 border-b border-gray-200 dark:border-patriot-blue-800">
         <tr>
           <th scope="col" className="text-left py-3 px-2">Rank</th>
           <th scope="col" className="text-left py-3 px-2">Team</th>
@@ -44,14 +44,14 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
             <div className="flex items-center justify-end gap-1">
               <button 
                 type="button"
-                className="cursor-pointer hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1"
+                className="cursor-pointer hover:text-patriot-red-600 dark:hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1"
                 onClick={() => setSortKey("hybrid_score")}
                 aria-label="Sort by Score"
               >
                 Score
               </button>
               <Tooltip content="Hybrid Score combines ELO rating and win percentage to provide a comprehensive team ranking">
-                <svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-gray-500 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </Tooltip>
@@ -61,14 +61,14 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
             <div className="flex items-center justify-end gap-1">
               <button 
                 type="button"
-                className="cursor-pointer hover:text-patriot-blue-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 rounded px-1"
+                className="cursor-pointer hover:text-patriot-blue-600 dark:hover:text-patriot-blue-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 rounded px-1"
                 onClick={() => setSortKey("elo_rating")}
                 aria-label="Sort by Elo rating"
               >
                 Elo
               </button>
               <Tooltip content="ELO rating measures team skill level based on match results against other teams">
-                <svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-4 h-4 text-gray-500 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </Tooltip>
@@ -78,14 +78,14 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
             <div className="flex items-center justify-end gap-1">
               <button 
                 type="button"
-                className="cursor-pointer hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1"
+                className="cursor-pointer hover:text-patriot-red-600 dark:hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1"
                 onClick={() => setSortKey("current_rp")}
                 aria-label="Sort by Ranking Points"
               >
                 RP
               </button>
               <Tooltip content="Ranking Points (RP) represent tournament and league achievements">
-                <svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-4 h-4 text-gray-500 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </Tooltip>
@@ -98,18 +98,18 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
         {sorted.map((r, idx) => (
           <tr 
             key={r.team_id} 
-            className={`border-b border-patriot-blue-800/50 transition-all duration-200 hover:bg-patriot-blue-900/70 hover:shadow-md hover:neon-edge ${
-              idx % 2 === 0 ? 'bg-patriot-blue-900/40' : 'bg-patriot-blue-900/20'
+            className={`border-b border-gray-200 dark:border-patriot-blue-800/50 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-patriot-blue-900/70 hover:shadow-md hover:neon-edge ${
+              idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/40' : 'bg-gray-50/50 dark:bg-patriot-blue-900/20'
             } animate-slide-up`}
             style={{ animationDelay: `${idx * 0.03}s` }}
           >
             <td className="py-3 px-2">
-              <div className="text-neutral-300 font-semibold">#{idx + 1}</div>
+              <div className="text-gray-700 dark:text-neutral-300 font-semibold">#{idx + 1}</div>
             </td>
             <td className="py-3 px-2">
               <a 
                 href={`/teams/${r.team_id}`}
-                className="flex items-center gap-3 hover:text-patriot-red-400 transition group focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded"
+                className="flex items-center gap-3 hover:text-patriot-red-600 dark:hover:text-patriot-red-400 transition group focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded"
                 aria-label={`View ${r.team_name || 'team'} profile`}
               >
                 {r.logo_url ? (
@@ -120,7 +120,7 @@ export default function RankTableIsland({ rows }: { rows: Row[] }) {
                     loading="lazy" 
                   />
                 ) : (
-                  <div className="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition" aria-label={`${r.team_name || 'Team'} logo placeholder`}>
+                  <div className="h-8 w-8 rounded bg-gray-200 dark:bg-patriot-blue-800 flex items-center justify-center text-gray-700 dark:text-neutral-300 text-xs font-bold ring-2 ring-gray-300 dark:ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition" aria-label={`${r.team_name || 'Team'} logo placeholder`}>
                     {r.team_name?.substring(0, 2).toUpperCase() || '??'}
                   </div>
                 )}

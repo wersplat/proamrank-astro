@@ -356,7 +356,7 @@ export default function LeagueTabsIsland({
   const getVerificationBadge = (match: Match) => {
     if (match.verified === true) {
       return (
-        <span className="px-2 py-0.5 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-xs font-medium flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded bg-green-100 dark:bg-green-900/30 border border-green-500 dark:border-green-500/30 text-green-700 dark:text-green-300 text-xs font-medium flex items-center gap-1">
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
@@ -365,7 +365,7 @@ export default function LeagueTabsIsland({
       );
     } else if (match.status === 'processed' && match.verified === false) {
       return (
-        <span className="px-2 py-0.5 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-xs font-medium flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-500 dark:border-yellow-500/30 text-yellow-700 dark:text-yellow-300 text-xs font-medium flex items-center gap-1">
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
           </svg>
@@ -649,17 +649,17 @@ export default function LeagueTabsIsland({
   }, [regularSeasonChampionId, regularSeasonChampionName, openChampionId, openChampionName, playoffChampionId, playoffChampionName]);
 
   return (
-    <div className="rounded-lg border border-neutral-800 bg-neutral-900/50">
+    <div className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50">
       {/* Tabs Header */}
-      <div className="flex border-b border-neutral-800 overflow-x-auto">
+      <div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => handleTabChange(tab.id)}
             className={`px-6 py-3 text-sm font-medium border-b-2 transition whitespace-nowrap ${
               activeTab === tab.id
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-neutral-400 hover:text-white"
+                ? "border-patriot-blue-600 dark:border-blue-500 text-patriot-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-neutral-800"
+                : "border-transparent text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-neutral-800"
             }`}
           >
             {tab.label}
@@ -673,7 +673,7 @@ export default function LeagueTabsIsland({
         {activeTab === 0 && (
           <div className="space-y-8">
             {standings.length === 0 ? (
-              <div className="text-center py-8 text-neutral-400">
+              <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                 No standings available.
               </div>
             ) : (
@@ -706,7 +706,7 @@ export default function LeagueTabsIsland({
                       return (
                         <div key={division.id} className="mb-8">
                           {/* Division Header */}
-                          <div className="flex items-center gap-3 mb-4 pb-2 border-b-2 border-neutral-700">
+                          <div className="flex items-center gap-3 mb-4 pb-2 border-b-2 border-gray-300 dark:border-neutral-700">
                             {division.division_logo && (
                               <img
                                 src={division.division_logo}
@@ -714,22 +714,22 @@ export default function LeagueTabsIsland({
                                 className="h-8 w-8 rounded object-contain"
                               />
                             )}
-                            <h3 className="text-xl font-bold text-neutral-200">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-200">
                               {division.name} Standings
                               {division.abbr && (
-                                <span className="ml-2 text-sm text-neutral-400">({division.abbr})</span>
+                                <span className="ml-2 text-sm text-gray-600 dark:text-neutral-400">({division.abbr})</span>
                               )}
                             </h3>
                           </div>
 
                           {/* Overall Division Standings */}
                           <div className="mb-6">
-                            <h4 className="text-md font-semibold text-blue-300 mb-2">
+                            <h4 className="text-md font-semibold text-patriot-blue-600 dark:text-blue-300 mb-2">
                               {division.name} Overall
                             </h4>
                             <div className="overflow-x-auto">
                               <table className="w-full text-sm">
-                                <thead className="bg-neutral-950 text-neutral-300">
+                                <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                                   <tr>
                                     <th className="text-left py-2 px-4">Rank</th>
                                     <th className="text-left py-2 px-4">Team</th>
@@ -741,16 +741,16 @@ export default function LeagueTabsIsland({
                                     <th className="text-right py-2 px-4">ELO</th>
                                   </tr>
                                 </thead>
-                                <tbody className="divide-y divide-neutral-800">
+                                <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
                                   {divisionTeams.map((team, idx) => (
-                                    <tr key={team.team_id} className={`hover:bg-neutral-900 transition-colors ${
-                                      idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
+                                    <tr key={team.team_id} className={`hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors ${
+                                      idx % 2 === 0 ? 'bg-white dark:bg-neutral-900/30' : 'bg-gray-50 dark:bg-neutral-900/10'
                                     }`}>
-                                      <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                                      <td className="py-2 px-4 text-gray-600 dark:text-neutral-400">{idx + 1}</td>
                                       <td className="py-2 px-4">
                                         <a
                                           href={`/teams/${team.team_id}`}
-                                          className="hover:text-blue-400 flex items-center gap-2"
+                                          className="hover:text-patriot-blue-600 dark:hover:text-blue-400 flex items-center gap-2 text-gray-900 dark:text-white"
                                         >
                                           {team.logo_url ? (
                                             <img
@@ -759,27 +759,27 @@ export default function LeagueTabsIsland({
                                               className="h-6 w-6 rounded object-cover"
                                             />
                                           ) : (
-                                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                                            <div className="h-6 w-6 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[10px] font-bold">
                                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
                                             </div>
                                           )}
                                           {team.team_name}
                                         </a>
                                       </td>
-                                      <td className="py-2 px-4 text-right font-semibold">
+                                      <td className="py-2 px-4 text-right font-semibold text-gray-900 dark:text-white">
                                         {team.wins ?? 0}
                                       </td>
-                                      <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                                      <td className="py-2 px-4 text-right">
+                                      <td className="py-2 px-4 text-right text-gray-900 dark:text-white">{team.losses ?? 0}</td>
+                                      <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                                         {team.win_percentage?.toFixed(1) ?? "-"}%
                                       </td>
-                                      <td className="py-2 px-4 text-right">
+                                      <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                                         {team.points_for ?? 0}
                                       </td>
-                                      <td className="py-2 px-4 text-right">
+                                      <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                                         {team.points_against ?? 0}
                                       </td>
-                                      <td className="py-2 px-4 text-right text-neutral-400">
+                                      <td className="py-2 px-4 text-right text-gray-600 dark:text-neutral-400">
                                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
                                       </td>
                                     </tr>
@@ -814,16 +814,16 @@ export default function LeagueTabsIsland({
                                           className="h-6 w-6 rounded object-contain"
                                         />
                                       )}
-                                      <h5 className="text-sm font-semibold text-green-300">
+                                      <h5 className="text-sm font-semibold text-green-600 dark:text-green-300">
                                         {conference.name || "Conference"}
                                         {conference.abbr && (
-                                          <span className="ml-2 text-xs text-neutral-500">({conference.abbr})</span>
+                                          <span className="ml-2 text-xs text-gray-500 dark:text-neutral-500">({conference.abbr})</span>
                                         )}
                                       </h5>
                                     </div>
                                     <div className="overflow-x-auto">
                                       <table className="w-full text-sm">
-                                        <thead className="bg-neutral-950 text-neutral-300">
+                                        <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                                           <tr>
                                             <th className="text-left py-2 px-4">Rank</th>
                                             <th className="text-left py-2 px-4">Team</th>
@@ -835,16 +835,16 @@ export default function LeagueTabsIsland({
                                             <th className="text-right py-2 px-4">ELO</th>
                                           </tr>
                                         </thead>
-                                        <tbody className="divide-y divide-neutral-800">
+                                        <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
                                           {conferenceTeams.map((team, idx) => (
-                                            <tr key={team.team_id} className={`hover:bg-neutral-900 transition-colors ${
-                                              idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
+                                            <tr key={team.team_id} className={`hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors ${
+                                              idx % 2 === 0 ? 'bg-white dark:bg-neutral-900/30' : 'bg-gray-50 dark:bg-neutral-900/10'
                                             }`}>
-                                              <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                                              <td className="py-2 px-4 text-gray-600 dark:text-neutral-400">{idx + 1}</td>
                                               <td className="py-2 px-4">
                                                 <a
                                                   href={`/teams/${team.team_id}`}
-                                                  className="hover:text-blue-400 flex items-center gap-2"
+                                                  className="hover:text-patriot-blue-600 dark:hover:text-blue-400 flex items-center gap-2 text-gray-900 dark:text-white"
                                                 >
                                                   {team.logo_url ? (
                                                     <img
@@ -853,27 +853,27 @@ export default function LeagueTabsIsland({
                                                       className="h-6 w-6 rounded object-cover"
                                                     />
                                                   ) : (
-                                                    <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                                                    <div className="h-6 w-6 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[10px] font-bold">
                                                       {team.team_name?.substring(0, 2).toUpperCase() || '??'}
                                                     </div>
                                                   )}
                                                   {team.team_name}
                                                 </a>
                                               </td>
-                                              <td className="py-2 px-4 text-right font-semibold">
+                                              <td className="py-2 px-4 text-right font-semibold text-gray-900 dark:text-white">
                                                 {team.wins ?? 0}
                                               </td>
-                                              <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                                              <td className="py-2 px-4 text-right">
+                                              <td className="py-2 px-4 text-right text-gray-900 dark:text-white">{team.losses ?? 0}</td>
+                                              <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                                                 {team.win_percentage?.toFixed(1) ?? "-"}%
                                               </td>
-                                              <td className="py-2 px-4 text-right">
+                                              <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                                                 {team.points_for ?? 0}
                                               </td>
-                                              <td className="py-2 px-4 text-right">
+                                              <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                                                 {team.points_against ?? 0}
                                               </td>
-                                              <td className="py-2 px-4 text-right text-neutral-400">
+                                              <td className="py-2 px-4 text-right text-gray-600 dark:text-neutral-400">
                                                 {team.elo_rating ? Math.round(team.elo_rating) : "-"}
                                               </td>
                                             </tr>
@@ -894,7 +894,7 @@ export default function LeagueTabsIsland({
                   // No divisions - show all teams in single table
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                      <thead className="bg-neutral-950 text-neutral-300">
+                      <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                         <tr>
                           <th className="text-left py-2 px-4">Rank</th>
                           <th className="text-left py-2 px-4">Team</th>
@@ -906,16 +906,16 @@ export default function LeagueTabsIsland({
                           <th className="text-right py-2 px-4">ELO</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-neutral-800">
+                      <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
                         {standings.map((team, idx) => (
-                          <tr key={team.team_id} className={`hover:bg-neutral-900 transition-colors ${
-                            idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
+                          <tr key={team.team_id} className={`hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors ${
+                            idx % 2 === 0 ? 'bg-white dark:bg-neutral-900/30' : 'bg-gray-50 dark:bg-neutral-900/10'
                           }`}>
-                            <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
+                            <td className="py-2 px-4 text-gray-600 dark:text-neutral-400">{idx + 1}</td>
                             <td className="py-2 px-4">
                               <a
                                 href={`/teams/${team.team_id}`}
-                                className="hover:text-blue-400 flex items-center gap-2"
+                                className="hover:text-patriot-blue-600 dark:hover:text-blue-400 flex items-center gap-2 text-gray-900 dark:text-white"
                               >
                                 {team.logo_url ? (
                                   <img
@@ -924,27 +924,27 @@ export default function LeagueTabsIsland({
                                     className="h-6 w-6 rounded object-cover"
                                   />
                                 ) : (
-                                  <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                                  <div className="h-6 w-6 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[10px] font-bold">
                                     {team.team_name?.substring(0, 2).toUpperCase() || '??'}
                                   </div>
                                 )}
                                 {team.team_name}
                               </a>
                             </td>
-                            <td className="py-2 px-4 text-right font-semibold">
+                            <td className="py-2 px-4 text-right font-semibold text-gray-900 dark:text-white">
                               {team.wins ?? 0}
                             </td>
-                            <td className="py-2 px-4 text-right">{team.losses ?? 0}</td>
-                            <td className="py-2 px-4 text-right">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">{team.losses ?? 0}</td>
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                               {team.win_percentage?.toFixed(1) ?? "-"}%
                             </td>
-                            <td className="py-2 px-4 text-right">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                               {team.points_for ?? 0}
                             </td>
-                            <td className="py-2 px-4 text-right">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                               {team.points_against ?? 0}
                             </td>
-                            <td className="py-2 px-4 text-right text-neutral-400">
+                            <td className="py-2 px-4 text-right text-gray-600 dark:text-neutral-400">
                               {team.elo_rating ? Math.round(team.elo_rating) : "-"}
                             </td>
                           </tr>
@@ -962,12 +962,12 @@ export default function LeagueTabsIsland({
         {activeTab === 1 && (
           <div className="overflow-x-auto">
             {standings.length === 0 ? (
-              <div className="text-center py-8 text-neutral-400">
+              <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                 No teams available.
               </div>
             ) : (
               <table className="w-full text-sm">
-                <thead className="bg-neutral-950 text-neutral-300">
+                <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                   <tr>
                     <th className="text-left py-2 px-4">Team</th>
                     <th className="text-right py-2 px-4">Global Rank</th>
@@ -976,13 +976,15 @@ export default function LeagueTabsIsland({
                     <th className="text-right py-2 px-4">ELO</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-800">
-                  {standings.map((team) => (
-                    <tr key={team.team_id} className="hover:bg-neutral-900">
+                <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
+                  {standings.map((team, idx) => (
+                    <tr key={team.team_id} className={`hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors ${
+                      idx % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-gray-50 dark:bg-transparent'
+                    }`}>
                       <td className="py-2 px-4">
                         <a
                           href={`/teams/${team.team_id}`}
-                          className="hover:text-blue-400 flex items-center gap-2"
+                          className="hover:text-patriot-blue-600 dark:hover:text-blue-400 flex items-center gap-2 text-gray-900 dark:text-white"
                         >
                           {team.logo_url ? (
                             <img
@@ -991,23 +993,23 @@ export default function LeagueTabsIsland({
                               className="h-6 w-6 rounded object-cover"
                             />
                           ) : (
-                            <div className="h-6 w-6 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                            <div className="h-6 w-6 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[10px] font-bold">
                               {team.team_name?.substring(0, 2).toUpperCase() || '??'}
                             </div>
                           )}
                           {team.team_name}
                         </a>
                       </td>
-                      <td className="py-2 px-4 text-right text-neutral-400">
+                      <td className="py-2 px-4 text-right text-gray-600 dark:text-neutral-400">
                         #{team.teams?.global_rank ?? "-"}
                       </td>
                       <td className="py-2 px-4 text-right">
                         {team.teams?.hybrid_score ? (
-                          <span className="font-semibold text-blue-400">
+                          <span className="font-semibold text-patriot-blue-600 dark:text-blue-400">
                             {team.teams.hybrid_score.toFixed(0)}
                           </span>
                         ) : (
-                          "-"
+                          <span className="text-gray-900 dark:text-white">-</span>
                         )}
                       </td>
                       <td className="py-2 px-4 text-right">
@@ -1015,23 +1017,23 @@ export default function LeagueTabsIsland({
                           <span
                             className={`px-2 py-1 rounded text-xs font-bold ${
                               team.teams.leaderboard_tier === "S"
-                                ? "bg-red-900 text-red-300"
+                                ? "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300"
                                 : team.teams.leaderboard_tier === "A"
-                                ? "bg-orange-900 text-orange-300"
+                                ? "bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300"
                                 : team.teams.leaderboard_tier === "B"
-                                ? "bg-green-900 text-green-300"
+                                ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300"
                                 : team.teams.leaderboard_tier === "C"
-                                ? "bg-blue-900 text-blue-300"
-                                : "bg-neutral-800 text-neutral-300"
+                                ? "bg-patriot-blue-100 dark:bg-blue-900 text-patriot-blue-700 dark:text-blue-300"
+                                : "bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300"
                             }`}
                           >
                             {team.teams.leaderboard_tier}
                           </span>
                         ) : (
-                          "-"
+                          <span className="text-gray-900 dark:text-white">-</span>
                         )}
                       </td>
-                      <td className="py-2 px-4 text-right text-neutral-400">
+                      <td className="py-2 px-4 text-right text-gray-600 dark:text-neutral-400">
                         {team.elo_rating ? Math.round(team.elo_rating) : "-"}
                       </td>
                     </tr>
@@ -1050,18 +1052,18 @@ export default function LeagueTabsIsland({
               {/* Date Range Filters */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm text-neutral-400">Start Date</label>
+                  <label className="text-sm text-gray-600 dark:text-neutral-400">Start Date</label>
                   <div className="relative">
                     <input
                       type="date"
                       value={dateStartFilter || ''}
                       onChange={(e) => setDateStartFilter(e.target.value || null)}
-                      className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                      className="w-full px-4 py-2 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 rounded text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-neutral-500 focus:outline-none focus:border-patriot-blue-500 dark:focus:border-blue-500"
                     />
                     {dateStartFilter && (
                       <button
                         onClick={() => setDateStartFilter(null)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
                         aria-label="Clear start date"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1072,18 +1074,18 @@ export default function LeagueTabsIsland({
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm text-neutral-400">End Date</label>
+                  <label className="text-sm text-gray-600 dark:text-neutral-400">End Date</label>
                   <div className="relative">
                     <input
                       type="date"
                       value={dateEndFilter || ''}
                       onChange={(e) => setDateEndFilter(e.target.value || null)}
-                      className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                      className="w-full px-4 py-2 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 rounded text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-neutral-500 focus:outline-none focus:border-patriot-blue-500 dark:focus:border-blue-500"
                     />
                     {dateEndFilter && (
                       <button
                         onClick={() => setDateEndFilter(null)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
                         aria-label="Clear end date"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1097,7 +1099,7 @@ export default function LeagueTabsIsland({
 
               {/* Team Search Filter */}
               <div className="space-y-1">
-                <label className="text-sm text-neutral-400">Search by Team</label>
+                <label className="text-sm text-gray-600 dark:text-neutral-400">Search by Team</label>
                 <div className="relative">
                   <div className="relative">
                     <input
@@ -1113,10 +1115,10 @@ export default function LeagueTabsIsland({
                         setTimeout(() => setTeamSearchOpen(false), 200);
                       }}
                       placeholder="Search by team name..."
-                      className="w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                      className="w-full px-4 py-2 pl-10 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 rounded text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-neutral-500 focus:outline-none focus:border-patriot-blue-500 dark:focus:border-blue-500"
                     />
                     <svg
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-neutral-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1129,7 +1131,7 @@ export default function LeagueTabsIsland({
                           setTeamSearchFilter('');
                           setTeamSearchOpen(false);
                         }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
                         aria-label="Clear team search"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1140,7 +1142,7 @@ export default function LeagueTabsIsland({
                   </div>
                   {/* Autocomplete Dropdown */}
                   {teamSearchOpen && filteredTeamNames.length > 0 && (
-                    <div className="absolute z-50 w-full mt-1 bg-neutral-800 border border-neutral-700 rounded shadow-lg max-h-60 overflow-y-auto">
+                    <div className="absolute z-50 w-full mt-1 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 rounded shadow-lg max-h-60 overflow-y-auto">
                       {filteredTeamNames.map((teamName) => {
                         const lowerSearch = teamSearchFilter.toLowerCase().trim();
                         const lowerName = teamName.toLowerCase();
@@ -1154,12 +1156,12 @@ export default function LeagueTabsIsland({
                               setTeamSearchFilter(teamName);
                               setTeamSearchOpen(false);
                             }}
-                            className="w-full text-left px-4 py-2 hover:bg-neutral-700 text-white transition"
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-neutral-700 text-gray-900 dark:text-white transition"
                           >
                             {index !== -1 && lowerSearch ? (
                               <>
                                 {teamName.substring(0, index)}
-                                <span className="bg-blue-500/30 font-semibold">
+                                <span className="bg-patriot-blue-100 dark:bg-blue-500/30 font-semibold">
                                   {teamName.substring(index, index + teamSearchFilter.trim().length)}
                                 </span>
                                 {teamName.substring(index + teamSearchFilter.trim().length)}
@@ -1178,10 +1180,10 @@ export default function LeagueTabsIsland({
 
             {/* Matches count and page info */}
             {filteredMatches.length > 0 && (
-              <div className="mb-4 text-sm text-neutral-400">
+              <div className="mb-4 text-sm text-gray-600 dark:text-neutral-400">
                 Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, filteredMatches.length)} of {filteredMatches.length} matches
                 {(dateStartFilter || dateEndFilter || teamSearchFilter.trim()) && (
-                  <span className="ml-2 text-neutral-500">
+                  <span className="ml-2 text-gray-500 dark:text-neutral-500">
                     (filtered from {matches.length} total)
                   </span>
                 )}
@@ -1190,16 +1192,18 @@ export default function LeagueTabsIsland({
 
             <div className="space-y-2">
               {filteredMatches.length === 0 ? (
-                <div className="text-center py-8 text-neutral-400">
+                <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                   No matches found.
                 </div>
               ) : (
-                paginatedMatches.map((match) => (
+                paginatedMatches.map((match, idx) => (
                   <div
                     key={match.id}
                     onClick={() => handleMatchClick(match)}
-                    className={`rounded-lg border border-neutral-800 p-4 transition ${
-                      match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
+                    className={`rounded-lg border border-gray-200 dark:border-neutral-800 p-4 transition ${
+                      idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/20' : 'bg-gray-50 dark:bg-patriot-blue-900/10'
+                    } ${
+                      match.boxscore_url ? 'cursor-pointer hover:border-blue-500 dark:hover:border-blue-500' : ''
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -1211,17 +1215,17 @@ export default function LeagueTabsIsland({
                             className="h-8 w-8 rounded object-cover"
                           />
                         ) : (
-                          <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                          <div className="h-8 w-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-[10px] font-bold">
                             {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
                           </div>
                         )}
-                        <div className="text-sm">{match.team_a?.name || "Team A"}</div>
-                        <div className="text-lg font-bold">{match.score_a ?? 0}</div>
+                        <div className="text-sm text-gray-900 dark:text-white">{match.team_a?.name || "Team A"}</div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">{match.score_a ?? 0}</div>
                       </div>
-                      <div className="px-4 text-neutral-500">vs</div>
+                      <div className="px-4 text-gray-600 dark:text-neutral-500">vs</div>
                       <div className="flex items-center gap-3 flex-1 justify-end">
-                        <div className="text-lg font-bold">{match.score_b ?? 0}</div>
-                        <div className="text-sm">{match.team_b?.name || "Team B"}</div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">{match.score_b ?? 0}</div>
+                        <div className="text-sm text-gray-900 dark:text-white">{match.team_b?.name || "Team B"}</div>
                         {match.team_b?.logo_url ? (
                           <img
                             src={match.team_b.logo_url}
@@ -1229,18 +1233,18 @@ export default function LeagueTabsIsland({
                             className="h-8 w-8 rounded object-cover"
                           />
                         ) : (
-                          <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                          <div className="h-8 w-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-[10px] font-bold">
                             {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
                           </div>
                         )}
                       </div>
                     </div>
-                    <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
+                    <div className="flex items-center flex-wrap gap-2 text-xs text-gray-600 dark:text-neutral-500 mt-2">
                       <span>{new Date(match.played_at).toLocaleDateString()}</span>
                       {match.stage && <span>• {match.stage}</span>}
                       {getVerificationBadge(match)}
                       {match.boxscore_url && (
-                        <span className="ml-auto text-blue-400">
+                        <span className="ml-auto text-patriot-blue-600 dark:text-blue-400">
                           📊 View boxscore
                         </span>
                       )}
@@ -1258,8 +1262,8 @@ export default function LeagueTabsIsland({
                   disabled={matchesPage === 1}
                   className={`px-4 py-2 rounded transition ${
                     matchesPage === 1
-                      ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
-                      : "bg-neutral-800 hover:bg-neutral-700"
+                      ? "bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed"
+                      : "bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white"
                   }`}
                 >
                   ← Previous
@@ -1272,8 +1276,8 @@ export default function LeagueTabsIsland({
                       onClick={() => setMatchesPage(pageNum)}
                       className={`px-3 py-2 rounded transition ${
                         pageNum === matchesPage
-                          ? "bg-blue-600 text-white font-semibold"
-                          : "bg-neutral-800 hover:bg-neutral-700"
+                          ? "bg-patriot-blue-600 dark:bg-blue-600 text-white font-semibold"
+                          : "bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white"
                       }`}
                     >
                       {pageNum}
@@ -1286,8 +1290,8 @@ export default function LeagueTabsIsland({
                   disabled={matchesPage === totalMatchPages}
                   className={`px-4 py-2 rounded transition ${
                     matchesPage === totalMatchPages
-                      ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
-                      : "bg-neutral-800 hover:bg-neutral-700"
+                      ? "bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed"
+                      : "bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white"
                   }`}
                 >
                   Next →
@@ -1301,24 +1305,24 @@ export default function LeagueTabsIsland({
         {activeTab === 3 && (
           <div>
             {sortedPlayerStats.length === 0 ? (
-              <div className="text-center py-8 text-neutral-400">
+              <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                 No player statistics available.
               </div>
             ) : (
               <>
                 {/* Player Search Filter */}
                 <div className="mb-4">
-                  <label className="text-sm text-neutral-400 mb-2 block">Search by Player Name</label>
+                  <label className="text-sm text-gray-600 dark:text-neutral-400 mb-2 block">Search by Player Name</label>
                   <div className="relative">
                     <input
                       type="text"
                       value={playerSearchFilter}
                       onChange={(e) => setPlayerSearchFilter(e.target.value)}
                       placeholder="Search by player name..."
-                      className="w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
+                      className="w-full px-4 py-2 pl-10 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 rounded text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-neutral-500 focus:outline-none focus:border-patriot-blue-500 dark:focus:border-blue-500"
                     />
                     <svg
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-neutral-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1328,7 +1332,7 @@ export default function LeagueTabsIsland({
                     {playerSearchFilter && (
                       <button
                         onClick={() => setPlayerSearchFilter('')}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
                         aria-label="Clear player search"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1346,8 +1350,8 @@ export default function LeagueTabsIsland({
                       onClick={() => setStatsFilter('regular')}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                         statsFilter === 'regular'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                          ? 'bg-patriot-blue-600 dark:bg-blue-600 text-white'
+                          : 'bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-300 dark:hover:bg-neutral-700'
                       }`}
                     >
                       Regular Season
@@ -1358,8 +1362,8 @@ export default function LeagueTabsIsland({
                       onClick={() => setStatsFilter('open')}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                         statsFilter === 'open'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                          ? 'bg-patriot-blue-600 dark:bg-blue-600 text-white'
+                          : 'bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-300 dark:hover:bg-neutral-700'
                       }`}
                     >
                       Open Tournament
@@ -1370,8 +1374,8 @@ export default function LeagueTabsIsland({
                       onClick={() => setStatsFilter('playoff')}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                         statsFilter === 'playoff'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                          ? 'bg-patriot-blue-600 dark:bg-blue-600 text-white'
+                          : 'bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-300 dark:hover:bg-neutral-700'
                       }`}
                     >
                       Playoff Tournament
@@ -1385,8 +1389,8 @@ export default function LeagueTabsIsland({
                     onClick={() => setStatsView('perGame')}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                       statsView === 'perGame'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                        ? 'bg-patriot-blue-600 dark:bg-blue-600 text-white'
+                        : 'bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-300 dark:hover:bg-neutral-700'
                     }`}
                   >
                     Per Game
@@ -1395,165 +1399,165 @@ export default function LeagueTabsIsland({
                     onClick={() => setStatsView('totals')}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                       statsView === 'totals'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                        ? 'bg-patriot-blue-600 dark:bg-blue-600 text-white'
+                        : 'bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-300 dark:hover:bg-neutral-700'
                     }`}
                   >
                     Totals
                   </button>
                 </div>
                 
-                <div className="mb-4 text-sm text-neutral-400">
+                <div className="mb-4 text-sm text-gray-600 dark:text-neutral-400">
                   {sortedPlayerStats.length} player{sortedPlayerStats.length !== 1 ? 's' : ''} • Click column headers to sort
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
-                    <thead className="bg-neutral-950 text-neutral-300">
+                    <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                       <tr>
-                        <th className="text-left py-2 px-4 sticky left-0 bg-neutral-950 z-10">Player</th>
+                        <th className="text-left py-2 px-4 sticky left-0 bg-gray-100 dark:bg-neutral-950 z-10">Player</th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('games_played')}
                         >
                           GP {sortBy === 'games_played' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort(statsView === 'totals' ? 'points' : 'avg_points')}
                         >
                           {statsView === 'totals' ? 'PTS' : 'PPG'} {sortBy === (statsView === 'totals' ? 'points' : 'avg_points') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort(statsView === 'totals' ? 'rebounds' : 'avg_rebounds')}
                         >
                           {statsView === 'totals' ? 'REB' : 'RPG'} {sortBy === (statsView === 'totals' ? 'rebounds' : 'avg_rebounds') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort(statsView === 'totals' ? 'assists' : 'avg_assists')}
                         >
                           {statsView === 'totals' ? 'AST' : 'APG'} {sortBy === (statsView === 'totals' ? 'assists' : 'avg_assists') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort(statsView === 'totals' ? 'steals' : 'avg_steals')}
                         >
                           {statsView === 'totals' ? 'STL' : 'SPG'} {sortBy === (statsView === 'totals' ? 'steals' : 'avg_steals') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort(statsView === 'totals' ? 'blocks' : 'avg_blocks')}
                         >
                           {statsView === 'totals' ? 'BLK' : 'BPG'} {sortBy === (statsView === 'totals' ? 'blocks' : 'avg_blocks') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort(statsView === 'totals' ? 'turnovers' : 'avg_turnovers')}
                         >
                           {statsView === 'totals' ? 'TOV' : 'TOV'} {sortBy === (statsView === 'totals' ? 'turnovers' : 'avg_turnovers') && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('fga')}
                         >
                           FG% {sortBy === 'fga' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('three_points_attempted')}
                         >
                           3P% {sortBy === 'three_points_attempted' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('fta')}
                         >
                           FT% {sortBy === 'fta' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('plus_minus')}
                         >
                           +/- {sortBy === 'plus_minus' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('performance_score')}
                         >
                           PS {sortBy === 'performance_score' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-800">
-                      {sortedPlayerStats.map((player) => {
+                    <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
+                      {sortedPlayerStats.map((player, idx) => {
                         // Use pre-calculated percentages from the mart (now numbers)
                         const fgPercentage = player.fg_pct !== null ? player.fg_pct.toFixed(1) : '-';
                         const threePtPercentage = player.three_pt_pct !== null ? player.three_pt_pct.toFixed(1) : '-';
                         const ftPercentage = player.ft_pct !== null ? player.ft_pct.toFixed(1) : '-';
                         
                         return (
-                          <tr key={player.player_id} className="hover:bg-neutral-900">
-                            <td className="py-2 px-4 sticky left-0 bg-neutral-900 hover:bg-neutral-900">
+                          <tr key={player.player_id} className={`hover:bg-gray-50 dark:hover:bg-neutral-900 ${idx % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-gray-50 dark:bg-transparent'}`}>
+                            <td className={`py-2 px-4 sticky left-0 z-10 ${idx % 2 === 0 ? 'bg-white dark:bg-neutral-900' : 'bg-gray-50 dark:bg-neutral-900'} hover:bg-gray-100 dark:hover:bg-neutral-900`}>
                               <a
                                 href={`/players/${player.player_id}`}
-                                className="hover:text-blue-400 font-medium"
+                                className="text-gray-900 dark:text-white hover:text-patriot-blue-600 dark:hover:text-blue-400 font-medium"
                               >
                                 {player.player_gamertag}
                               </a>
                             </td>
-                            <td className="py-2 px-4 text-right">{player.games_played}</td>
-                            <td className="py-2 px-4 text-right font-semibold text-blue-400">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">{player.games_played}</td>
+                            <td className="py-2 px-4 text-right font-semibold text-patriot-blue-600 dark:text-blue-400">
                               {statsView === 'totals' 
                                 ? (player.points ?? 0).toLocaleString()
                                 : (player.avg_points?.toFixed(1) ?? '-')
                               }
                             </td>
-                            <td className="py-2 px-4 text-right">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                               {statsView === 'totals' 
                                 ? (player.rebounds ?? 0).toLocaleString()
                                 : (player.avg_rebounds?.toFixed(1) ?? '-')
                               }
                             </td>
-                            <td className="py-2 px-4 text-right text-green-400">
+                            <td className="py-2 px-4 text-right text-green-600 dark:text-green-400">
                               {statsView === 'totals' 
                                 ? (player.assists ?? 0).toLocaleString()
                                 : (player.avg_assists?.toFixed(1) ?? '-')
                               }
                             </td>
-                            <td className="py-2 px-4 text-right text-yellow-400">
+                            <td className="py-2 px-4 text-right text-yellow-600 dark:text-yellow-400">
                               {statsView === 'totals' 
                                 ? (player.steals ?? 0).toLocaleString()
                                 : (player.avg_steals?.toFixed(1) ?? '-')
                               }
                             </td>
-                            <td className="py-2 px-4 text-right text-red-400">
+                            <td className="py-2 px-4 text-right text-red-600 dark:text-red-400">
                               {statsView === 'totals' 
                                 ? (player.blocks ?? 0).toLocaleString()
                                 : (player.avg_blocks?.toFixed(1) ?? '-')
                               }
                             </td>
-                            <td className="py-2 px-4 text-right text-neutral-400">
+                            <td className="py-2 px-4 text-right text-gray-600 dark:text-neutral-400">
                               {statsView === 'totals' 
                                 ? (player.turnovers ?? 0).toLocaleString()
                                 : (player.avg_turnovers?.toFixed(1) ?? '-')
                               }
                             </td>
-                            <td className="py-2 px-4 text-right">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                               {fgPercentage}{fgPercentage !== '-' ? '%' : ''}
                             </td>
-                            <td className="py-2 px-4 text-right">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                               {threePtPercentage}{threePtPercentage !== '-' ? '%' : ''}
                             </td>
-                            <td className="py-2 px-4 text-right">
+                            <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                               {ftPercentage}{ftPercentage !== '-' ? '%' : ''}
                             </td>
                             <td className="py-2 px-4 text-right">
-                              <span className={player.plus_minus > 0 ? 'text-green-400' : player.plus_minus < 0 ? 'text-red-400' : ''}>
+                              <span className={player.plus_minus > 0 ? 'text-green-600 dark:text-green-400' : player.plus_minus < 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-neutral-400'}>
                                 {player.plus_minus > 0 ? '+' : ''}{player.plus_minus ?? 0}
                               </span>
                             </td>
-                            <td className="py-2 px-4 text-right font-semibold text-purple-400">
+                            <td className="py-2 px-4 text-right font-semibold text-purple-600 dark:text-purple-400">
                               {player.performance_score?.toFixed(1) ?? '-'}
                             </td>
                           </tr>
@@ -1571,8 +1575,8 @@ export default function LeagueTabsIsland({
         {activeTab === 4 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {topScorers.length > 0 && (
-              <div className="rounded-lg border border-neutral-800 p-4">
-                <h3 className="font-bold mb-3 text-sm text-neutral-400">
+              <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-4 bg-gray-50 dark:bg-neutral-900/30">
+                <h3 className="font-bold mb-3 text-sm text-gray-600 dark:text-neutral-400">
                   Points Per Game
                 </h3>
                 <div className="space-y-2">
@@ -1582,10 +1586,10 @@ export default function LeagueTabsIsland({
                       className="flex items-center justify-between text-sm"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-neutral-500 w-4">{idx + 1}.</span>
-                        <span>{player.player_name}</span>
+                        <span className="text-gray-500 dark:text-neutral-500 w-4">{idx + 1}.</span>
+                        <span className="text-gray-900 dark:text-white">{player.player_name}</span>
                       </div>
-                      <span className="font-bold text-blue-400">
+                      <span className="font-bold text-patriot-blue-600 dark:text-blue-400">
                         {player.points_per_game?.toFixed(1)}
                       </span>
                     </div>
@@ -1594,8 +1598,8 @@ export default function LeagueTabsIsland({
               </div>
             )}
             {topAssists.length > 0 && (
-              <div className="rounded-lg border border-neutral-800 p-4">
-                <h3 className="font-bold mb-3 text-sm text-neutral-400">
+              <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-4 bg-gray-50 dark:bg-neutral-900/30">
+                <h3 className="font-bold mb-3 text-sm text-gray-600 dark:text-neutral-400">
                   Assists Per Game
                 </h3>
                 <div className="space-y-2">
@@ -1605,10 +1609,10 @@ export default function LeagueTabsIsland({
                       className="flex items-center justify-between text-sm"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-neutral-500 w-4">{idx + 1}.</span>
-                        <span>{player.player_name}</span>
+                        <span className="text-gray-500 dark:text-neutral-500 w-4">{idx + 1}.</span>
+                        <span className="text-gray-900 dark:text-white">{player.player_name}</span>
                       </div>
-                      <span className="font-bold text-green-400">
+                      <span className="font-bold text-green-600 dark:text-green-400">
                         {player.assists_per_game?.toFixed(1)}
                       </span>
                     </div>
@@ -1617,8 +1621,8 @@ export default function LeagueTabsIsland({
               </div>
             )}
             {topRebounders.length > 0 && (
-              <div className="rounded-lg border border-neutral-800 p-4">
-                <h3 className="font-bold mb-3 text-sm text-neutral-400">
+              <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-4 bg-gray-50 dark:bg-neutral-900/30">
+                <h3 className="font-bold mb-3 text-sm text-gray-600 dark:text-neutral-400">
                   Rebounds Per Game
                 </h3>
                 <div className="space-y-2">
@@ -1628,10 +1632,10 @@ export default function LeagueTabsIsland({
                       className="flex items-center justify-between text-sm"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-neutral-500 w-4">{idx + 1}.</span>
-                        <span>{player.player_name}</span>
+                        <span className="text-gray-500 dark:text-neutral-500 w-4">{idx + 1}.</span>
+                        <span className="text-gray-900 dark:text-white">{player.player_name}</span>
                       </div>
-                      <span className="font-bold text-purple-400">
+                      <span className="font-bold text-purple-600 dark:text-purple-400">
                         {player.rebounds_per_game?.toFixed(1)}
                       </span>
                     </div>
@@ -1640,8 +1644,8 @@ export default function LeagueTabsIsland({
               </div>
             )}
             {topSteals.length > 0 && (
-              <div className="rounded-lg border border-neutral-800 p-4">
-                <h3 className="font-bold mb-3 text-sm text-neutral-400">
+              <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-4 bg-gray-50 dark:bg-neutral-900/30">
+                <h3 className="font-bold mb-3 text-sm text-gray-600 dark:text-neutral-400">
                   Steals Per Game
                 </h3>
                 <div className="space-y-2">
@@ -1651,10 +1655,10 @@ export default function LeagueTabsIsland({
                       className="flex items-center justify-between text-sm"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-neutral-500 w-4">{idx + 1}.</span>
-                        <span>{player.player_name}</span>
+                        <span className="text-gray-500 dark:text-neutral-500 w-4">{idx + 1}.</span>
+                        <span className="text-gray-900 dark:text-white">{player.player_name}</span>
                       </div>
-                      <span className="font-bold text-yellow-400">
+                      <span className="font-bold text-yellow-600 dark:text-yellow-400">
                         {player.steals_per_game?.toFixed(1)}
                       </span>
                     </div>
@@ -1663,8 +1667,8 @@ export default function LeagueTabsIsland({
               </div>
             )}
             {topBlocks.length > 0 && (
-              <div className="rounded-lg border border-neutral-800 p-4">
-                <h3 className="font-bold mb-3 text-sm text-neutral-400">
+              <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-4 bg-gray-50 dark:bg-neutral-900/30">
+                <h3 className="font-bold mb-3 text-sm text-gray-600 dark:text-neutral-400">
                   Blocks Per Game
                 </h3>
                 <div className="space-y-2">
@@ -1674,10 +1678,10 @@ export default function LeagueTabsIsland({
                       className="flex items-center justify-between text-sm"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-neutral-500 w-4">{idx + 1}.</span>
-                        <span>{player.player_name}</span>
+                        <span className="text-gray-500 dark:text-neutral-500 w-4">{idx + 1}.</span>
+                        <span className="text-gray-900 dark:text-white">{player.player_name}</span>
                       </div>
-                      <span className="font-bold text-red-400">
+                      <span className="font-bold text-red-600 dark:text-red-400">
                         {player.blocks_per_game?.toFixed(1)}
                       </span>
                     </div>
@@ -1690,7 +1694,7 @@ export default function LeagueTabsIsland({
               topRebounders.length === 0 &&
               topSteals.length === 0 &&
               topBlocks.length === 0 && (
-                <div className="col-span-full text-center py-8 text-neutral-400">
+                <div className="col-span-full text-center py-8 text-gray-600 dark:text-neutral-400">
                   No player statistics available.
                 </div>
               )}
@@ -1708,8 +1712,8 @@ export default function LeagueTabsIsland({
                     onClick={() => setSelectedTournamentType('open')}
                     className={`px-4 py-2 rounded transition ${
                       selectedTournamentType === 'open'
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+                        ? 'bg-patriot-blue-600 dark:bg-blue-600 text-white font-semibold'
+                        : 'bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-700 dark:text-neutral-300'
                     }`}
                   >
                     Open Tournament
@@ -1720,8 +1724,8 @@ export default function LeagueTabsIsland({
                     onClick={() => setSelectedTournamentType('playoff')}
                     className={`px-4 py-2 rounded transition ${
                       selectedTournamentType === 'playoff'
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+                        ? 'bg-patriot-blue-600 dark:bg-blue-600 text-white font-semibold'
+                        : 'bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-700 dark:text-neutral-300'
                     }`}
                   >
                     Playoff Tournament
@@ -1756,7 +1760,7 @@ export default function LeagueTabsIsland({
                 seriesFormat={playoffTournament.series_format}
               />
             ) : (
-              <div className="text-center py-12 text-neutral-400">
+              <div className="text-center py-12 text-gray-600 dark:text-neutral-400">
                 <p className="text-lg mb-2">No tournament brackets available yet.</p>
                 <p className="text-sm">
                   {selectedTournamentType === 'open' 
@@ -1776,19 +1780,19 @@ export default function LeagueTabsIsland({
               <>
                 {leagueInfo.tier && (
                   <div>
-                    <div className="text-sm text-neutral-400 mb-1">Tier</div>
+                    <div className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Tier</div>
                     {/* Match tournament styling */}
                     <span
                       className={`px-3 py-1 rounded text-sm font-bold border ${
                         leagueInfo.tier === 'T1'
-                          ? 'bg-purple-900 text-purple-300 border-purple-500'
+                          ? 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-500'
                           : leagueInfo.tier === 'T2'
-                          ? 'bg-blue-900 text-blue-300 border-blue-500'
+                          ? 'bg-patriot-blue-100 dark:bg-blue-900 text-patriot-blue-700 dark:text-blue-300 border-patriot-blue-300 dark:border-blue-500'
                           : leagueInfo.tier === 'T3'
-                          ? 'bg-green-900 text-green-300 border-green-500'
+                          ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-300 dark:border-green-500'
                           : leagueInfo.tier === 'T4'
-                          ? 'bg-yellow-900 text-yellow-300 border-yellow-500'
-                          : 'bg-gray-900 text-gray-300 border-gray-500'
+                          ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-500'
+                          : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-500'
                       }`}
                     >
                       {leagueInfo.tier}
@@ -1798,50 +1802,50 @@ export default function LeagueTabsIsland({
                 <div className="grid gap-4 sm:grid-cols-2">
                   {leagueInfo.season_number && (
                     <div>
-                      <div className="text-sm text-neutral-400 mb-1">Season</div>
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Season</div>
+                      <div className="text-lg font-semibold text-gray-900 dark:text-white">
                         {leagueInfo.season_number}
                       </div>
                     </div>
                   )}
                   {leagueInfo.game_year && (
                     <div>
-                      <div className="text-sm text-neutral-400 mb-1">Year</div>
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Year</div>
+                      <div className="text-lg font-semibold text-gray-900 dark:text-white">
                         {leagueInfo.game_year}
                       </div>
                     </div>
                   )}
                   {leagueInfo.entry_fee && (
                     <div>
-                      <div className="text-sm text-neutral-400 mb-1">Entry Fee</div>
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Entry Fee</div>
+                      <div className="text-lg font-semibold text-gray-900 dark:text-white">
                         ${leagueInfo.entry_fee}
                       </div>
                     </div>
                   )}
                   {leagueInfo.prize_pool && (
                     <div>
-                      <div className="text-sm text-neutral-400 mb-1">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mb-1">
                         Prize Pool
                       </div>
-                      <div className="text-lg font-semibold text-green-400">
+                      <div className="text-lg font-semibold text-green-600 dark:text-green-400">
                         ${leagueInfo.prize_pool}
                       </div>
                     </div>
                   )}
                   {leagueInfo.start_date && (
                     <div>
-                      <div className="text-sm text-neutral-400 mb-1">Start Date</div>
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Start Date</div>
+                      <div className="text-lg font-semibold text-gray-900 dark:text-white">
                         {new Date(leagueInfo.start_date).toLocaleDateString()}
                       </div>
                     </div>
                   )}
                   {leagueInfo.end_date && (
                     <div>
-                      <div className="text-sm text-neutral-400 mb-1">End Date</div>
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mb-1">End Date</div>
+                      <div className="text-lg font-semibold text-gray-900 dark:text-white">
                         {new Date(leagueInfo.end_date).toLocaleDateString()}
                       </div>
                     </div>
@@ -1850,24 +1854,24 @@ export default function LeagueTabsIsland({
 
                 {/* Champions Section */}
                 {(regularSeasonChampionName || openChampionName || playoffChampionName) && (
-                  <div className="pt-4 border-t border-neutral-800">
-                    <div className="text-sm text-neutral-400 mb-3">Season Champions</div>
+                  <div className="pt-4 border-t border-gray-200 dark:border-neutral-800">
+                    <div className="text-sm text-gray-600 dark:text-neutral-400 mb-3">Season Champions</div>
                     <div className="grid gap-4 sm:grid-cols-3">
                       <div>
-                        <div className="text-xs text-neutral-500 mb-1">Regular Season</div>
-                        <div className="text-lg font-semibold">
+                        <div className="text-xs text-gray-500 dark:text-neutral-500 mb-1">Regular Season</div>
+                        <div className="text-lg font-semibold text-gray-900 dark:text-white">
                           {regularSeasonChampionName || 'TBD'}
                         </div>
                       </div>
                       <div>
-                        <div className="text-xs text-neutral-500 mb-1">Open Tournament</div>
-                        <div className="text-lg font-semibold">
+                        <div className="text-xs text-gray-500 dark:text-neutral-500 mb-1">Open Tournament</div>
+                        <div className="text-lg font-semibold text-gray-900 dark:text-white">
                           {openChampionName || 'TBD'}
                         </div>
                       </div>
                       <div>
-                        <div className="text-xs text-neutral-500 mb-1">Playoff Tournament</div>
-                        <div className="text-lg font-semibold">
+                        <div className="text-xs text-gray-500 dark:text-neutral-500 mb-1">Playoff Tournament</div>
+                        <div className="text-lg font-semibold text-gray-900 dark:text-white">
                           {playoffChampionName || 'TBD'}
                         </div>
                       </div>
@@ -1877,23 +1881,23 @@ export default function LeagueTabsIsland({
 
                 {/* Triple Crown Progress */}
                 {tripleCrownData.length > 0 && (
-                  <div className="pt-4 border-t border-neutral-800">
-                    <div className="text-sm text-neutral-400 mb-3">Triple Crown Progress</div>
+                  <div className="pt-4 border-t border-gray-200 dark:border-neutral-800">
+                    <div className="text-sm text-gray-600 dark:text-neutral-400 mb-3">Triple Crown Progress</div>
                     <div className="space-y-3">
                       {tripleCrownData.map((team) => {
                         const isTripleCrown = team.count === 3;
                         
                         return (
                           <div key={team.teamId} className="flex items-center gap-3">
-                            <span className="text-sm font-medium flex-1">{team.teamName}</span>
+                            <span className="text-sm font-medium flex-1 text-gray-900 dark:text-white">{team.teamName}</span>
                             <div className="flex items-center gap-2">
                               {/* Regular Season Star */}
                               <div className="flex flex-col items-center gap-1" title="Regular Season">
                                 <svg
                                   className={`w-5 h-5 ${
                                     team.hasRegularSeason
-                                      ? 'text-yellow-400'
-                                      : 'text-neutral-600'
+                                      ? 'text-yellow-600 dark:text-yellow-400'
+                                      : 'text-gray-400 dark:text-neutral-600'
                                   }`}
                                   fill={team.hasRegularSeason ? 'currentColor' : 'none'}
                                   stroke="currentColor"
@@ -1906,7 +1910,7 @@ export default function LeagueTabsIsland({
                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                                   />
                                 </svg>
-                                <span className="text-[8px] text-neutral-500">RS</span>
+                                <span className="text-[8px] text-gray-500 dark:text-neutral-500">RS</span>
                               </div>
                               
                               {/* Open Tournament Star */}
@@ -1914,8 +1918,8 @@ export default function LeagueTabsIsland({
                                 <svg
                                   className={`w-5 h-5 ${
                                     team.hasOpen
-                                      ? 'text-blue-400'
-                                      : 'text-neutral-600'
+                                      ? 'text-patriot-blue-600 dark:text-blue-400'
+                                      : 'text-gray-400 dark:text-neutral-600'
                                   }`}
                                   fill={team.hasOpen ? 'currentColor' : 'none'}
                                   stroke="currentColor"
@@ -1928,7 +1932,7 @@ export default function LeagueTabsIsland({
                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                                   />
                                 </svg>
-                                <span className="text-[8px] text-neutral-500">Open</span>
+                                <span className="text-[8px] text-gray-500 dark:text-neutral-500">Open</span>
                               </div>
                               
                               {/* Playoff Tournament Star */}
@@ -1936,8 +1940,8 @@ export default function LeagueTabsIsland({
                                 <svg
                                   className={`w-5 h-5 ${
                                     team.hasPlayoff
-                                      ? 'text-purple-400'
-                                      : 'text-neutral-600'
+                                      ? 'text-purple-600 dark:text-purple-400'
+                                      : 'text-gray-400 dark:text-neutral-600'
                                   }`}
                                   fill={team.hasPlayoff ? 'currentColor' : 'none'}
                                   stroke="currentColor"
@@ -1950,11 +1954,11 @@ export default function LeagueTabsIsland({
                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                                   />
                                 </svg>
-                                <span className="text-[8px] text-neutral-500">Playoff</span>
+                                <span className="text-[8px] text-gray-500 dark:text-neutral-500">Playoff</span>
                               </div>
                             </div>
                             {isTripleCrown && (
-                              <span className="text-xs font-semibold text-yellow-400 ml-2">
+                              <span className="text-xs font-semibold text-yellow-600 dark:text-yellow-400 ml-2">
                                 🏆 Triple Crown!
                               </span>
                             )}
@@ -1969,15 +1973,15 @@ export default function LeagueTabsIsland({
                   leagueInfo.lg_discord ||
                   leagueInfo.twitch_url ||
                   leagueInfo.twitter_id) && (
-                  <div className="pt-4 border-t border-neutral-800">
-                    <div className="text-sm text-neutral-400 mb-3">Links</div>
+                  <div className="pt-4 border-t border-gray-200 dark:border-neutral-800">
+                    <div className="text-sm text-gray-600 dark:text-neutral-400 mb-3">Links</div>
                     <div className="flex flex-wrap gap-2">
                       {leagueInfo.lg_url && (
                         <a
                           href={leagueInfo.lg_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+                          className="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
                         >
                           🌐 Website
                         </a>
@@ -1987,7 +1991,7 @@ export default function LeagueTabsIsland({
                           href={leagueInfo.lg_discord}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 rounded bg-indigo-900 hover:bg-indigo-800 transition text-sm"
+                          className="px-4 py-2 rounded bg-indigo-100 dark:bg-indigo-900 hover:bg-indigo-200 dark:hover:bg-indigo-800 transition text-sm text-indigo-700 dark:text-indigo-300"
                         >
                           💬 Discord
                         </a>
@@ -1997,7 +2001,7 @@ export default function LeagueTabsIsland({
                           href={leagueInfo.twitch_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 rounded bg-purple-900 hover:bg-purple-800 transition text-sm"
+                          className="px-4 py-2 rounded bg-purple-100 dark:bg-purple-900 hover:bg-purple-200 dark:hover:bg-purple-800 transition text-sm text-purple-700 dark:text-purple-300"
                         >
                           📺 Twitch
                         </a>
@@ -2007,7 +2011,7 @@ export default function LeagueTabsIsland({
                           href={`https://twitter.com/${leagueInfo.twitter_id}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 rounded bg-sky-900 hover:bg-sky-800 transition text-sm"
+                          className="px-4 py-2 rounded bg-sky-100 dark:bg-sky-900 hover:bg-sky-200 dark:hover:bg-sky-800 transition text-sm text-sky-700 dark:text-sky-300"
                         >
                           🐦 Twitter
                         </a>
@@ -2017,7 +2021,7 @@ export default function LeagueTabsIsland({
                 )}
               </>
             ) : (
-              <div className="text-center py-8 text-neutral-400">
+              <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                 No league information available.
               </div>
             )}
@@ -2032,37 +2036,37 @@ export default function LeagueTabsIsland({
           onClick={closeModal}
         >
           <div
-            className="bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
+            className="bg-white dark:bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-3 sm:p-4 border-b border-neutral-800">
+            <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-neutral-800">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-base sm:text-lg md:text-xl font-bold break-words">
+                  <h2 className="text-base sm:text-lg md:text-xl font-bold break-words text-gray-900 dark:text-white">
                     {selectedMatch.team_a?.name} vs {selectedMatch.team_b?.name}
                   </h2>
-                  <span className="text-sm text-neutral-400">
+                  <span className="text-sm text-gray-600 dark:text-neutral-400">
                     {selectedMatch.score_a}-{selectedMatch.score_b}
                   </span>
                 </div>
-                <button onClick={closeModal} className="text-neutral-400 hover:text-white flex-shrink-0">
+                <button onClick={closeModal} className="text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white flex-shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              <div className="flex items-center gap-2 text-xs text-neutral-500">
+              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-neutral-500">
                 <span>{new Date(selectedMatch.played_at).toLocaleDateString()}</span>
                 {selectedMatch.stage && <span>• {selectedMatch.stage}</span>}
                 {getVerificationBadge(selectedMatch)}
               </div>
             </div>
 
-            <div className="flex border-b border-neutral-800 overflow-x-auto scrollbar-thin">
+            <div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scrollbar-thin">
               <button
                 onClick={() => setModalTab('screenshot')}
                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
-                  modalTab === 'screenshot' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+                  modalTab === 'screenshot' ? 'border-patriot-blue-600 dark:border-blue-500 text-patriot-blue-600 dark:text-blue-400' : 'border-transparent text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
                 Screenshot
@@ -2070,7 +2074,7 @@ export default function LeagueTabsIsland({
               <button
                 onClick={() => setModalTab('player-stats')}
                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
-                  modalTab === 'player-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+                  modalTab === 'player-stats' ? 'border-patriot-blue-600 dark:border-blue-500 text-patriot-blue-600 dark:text-blue-400' : 'border-transparent text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
                 Player Stats
@@ -2078,7 +2082,7 @@ export default function LeagueTabsIsland({
               <button
                 onClick={() => setModalTab('team-stats')}
                 className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition whitespace-nowrap ${
-                  modalTab === 'team-stats' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-400 hover:text-white'
+                  modalTab === 'team-stats' ? 'border-patriot-blue-600 dark:border-blue-500 text-patriot-blue-600 dark:text-blue-400' : 'border-transparent text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
                 Team Stats
@@ -2095,7 +2099,7 @@ export default function LeagueTabsIsland({
               {modalTab === 'player-stats' && (
                 <div className="overflow-x-auto">
                   {selectedMatch?.verified !== true && (
-                    <div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">
+                    <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-500/30 rounded text-yellow-800 dark:text-yellow-200 text-sm flex items-start gap-2">
                       <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                       </svg>
@@ -2103,12 +2107,12 @@ export default function LeagueTabsIsland({
                     </div>
                   )}
                   {error && (
-                    <div className="mb-4 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-300 text-sm">
+                    <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-500/30 rounded text-red-800 dark:text-red-300 text-sm">
                       {error}
                     </div>
                   )}
                   {loading ? (
-                    <div className="text-center py-8 text-neutral-400">Loading stats...</div>
+                    <div className="text-center py-8 text-gray-600 dark:text-neutral-400">Loading stats...</div>
                   ) : playerStats.length > 0 ? (
                     (() => {
                       // Sort by team_a_id first, then by slot_index
@@ -2122,7 +2126,7 @@ export default function LeagueTabsIsland({
 
                       return (
                         <table className="w-full text-sm">
-                          <thead className="bg-neutral-950 text-neutral-300">
+                          <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                             <tr>
                               <th className="text-left py-2 px-4">Player</th>
                               <th className="text-center py-2 px-4">GRD</th>
@@ -2139,31 +2143,31 @@ export default function LeagueTabsIsland({
                               <th className="text-right py-2 px-4">+/-</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-neutral-800">
+                          <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
                             {sortedStats.map((stat, idx) => {
                               const isTeamA = stat.team_id === selectedMatch?.team_a_id;
                               return (
-                                <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
-                                  <td className="py-2 px-4">{stat.player_name}</td>
+                                <tr key={idx} className={`hover:bg-gray-50 dark:hover:bg-neutral-950 ${isTeamA ? 'bg-blue-50 dark:bg-blue-950/20' : 'bg-red-50 dark:bg-red-950/20'}`}>
+                                  <td className="py-2 px-4 text-gray-900 dark:text-white">{stat.player_name}</td>
                                   <td className="text-center py-2 px-4">
-                                    <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                    <span className="px-2 py-0.5 rounded bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-white text-xs font-bold">
                                       {stat.grd || '-'}
                                     </span>
                                   </td>
-                                  <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
-                                  <td className="text-right py-2 px-4">{stat.rebounds}</td>
-                                  <td className="text-right py-2 px-4">{stat.assists}</td>
-                                  <td className="text-right py-2 px-4">{stat.steals}</td>
-                                  <td className="text-right py-2 px-4">{stat.blocks}</td>
-                                  <td className="text-right py-2 px-4">{stat.turnovers}</td>
-                                  <td className="text-right py-2 px-4">{stat.fouls}</td>
-                                  <td className="text-right py-2 px-4">{stat.fgm}/{stat.fga}</td>
-                                  <td className="text-right py-2 px-4">{stat.three_points_made}/{stat.three_points_attempted}</td>
-                                  <td className="text-right py-2 px-4">{stat.ftm}/{stat.fta}</td>
+                                  <td className="text-right py-2 px-4 font-semibold text-gray-900 dark:text-white">{stat.points}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.rebounds}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.assists}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.steals}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.blocks}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.turnovers}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.fouls}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.fgm}/{stat.fga}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.three_points_made}/{stat.three_points_attempted}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.ftm}/{stat.fta}</td>
                                   <td className={`text-right py-2 px-4 font-semibold ${
-                                    (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
-                                    (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
-                                    'text-neutral-400'
+                                    (stat.plus_minus ?? 0) > 0 ? 'text-green-600 dark:text-green-400' : 
+                                    (stat.plus_minus ?? 0) < 0 ? 'text-red-600 dark:text-red-400' : 
+                                    'text-gray-600 dark:text-neutral-400'
                                   }`}>
                                     {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
                                   </td>
@@ -2175,7 +2179,7 @@ export default function LeagueTabsIsland({
                       );
                     })()
                   ) : (
-                    <div className="text-center py-8 text-neutral-400">No player stats available.</div>
+                    <div className="text-center py-8 text-gray-600 dark:text-neutral-400">No player stats available.</div>
                   )}
                 </div>
               )}
@@ -2183,7 +2187,7 @@ export default function LeagueTabsIsland({
               {modalTab === 'team-stats' && (
                 <div className="overflow-x-auto">
                   {selectedMatch?.verified !== true && (
-                    <div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-200 text-sm flex items-start gap-2">
+                    <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-500/30 rounded text-yellow-800 dark:text-yellow-200 text-sm flex items-start gap-2">
                       <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                       </svg>
@@ -2191,10 +2195,10 @@ export default function LeagueTabsIsland({
                     </div>
                   )}
                   {loading ? (
-                    <div className="text-center py-8 text-neutral-400">Loading stats...</div>
+                    <div className="text-center py-8 text-gray-600 dark:text-neutral-400">Loading stats...</div>
                   ) : teamStats.length > 0 ? (
                     <table className="w-full text-sm">
-                      <thead className="bg-neutral-950 text-neutral-300">
+                      <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                         <tr>
                           <th className="text-left py-2 px-4">Team</th>
                           <th className="text-center py-2 px-4">GRD</th>
@@ -2211,7 +2215,7 @@ export default function LeagueTabsIsland({
                           <th className="text-right py-2 px-4">+/-</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-neutral-800">
+                      <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
                         {teamStats.map((stat, idx) => {
                           const fgPct = stat.field_goals_attempted > 0
                             ? ((stat.field_goals_made / stat.field_goals_attempted) * 100).toFixed(1)
@@ -2224,27 +2228,27 @@ export default function LeagueTabsIsland({
                             : '0.0';
 
                           return (
-                            <tr key={idx} className="hover:bg-neutral-950">
-                              <td className="py-2 px-4 font-semibold">{stat.teams?.name || 'Team'}</td>
+                            <tr key={idx} className={`hover:bg-gray-50 dark:hover:bg-neutral-950 ${idx % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-gray-50 dark:bg-transparent'}`}>
+                              <td className="py-2 px-4 font-semibold text-gray-900 dark:text-white">{stat.teams?.name || 'Team'}</td>
                               <td className="text-center py-2 px-4">
-                                <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                <span className="px-2 py-0.5 rounded bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-white text-xs font-bold">
                                   {stat.grd || '-'}
                                 </span>
                               </td>
-                              <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
-                              <td className="text-right py-2 px-4">{stat.rebounds}</td>
-                              <td className="text-right py-2 px-4">{stat.assists}</td>
-                              <td className="text-right py-2 px-4">{stat.steals}</td>
-                              <td className="text-right py-2 px-4">{stat.blocks}</td>
-                              <td className="text-right py-2 px-4">{stat.turnovers}</td>
-                              <td className="text-right py-2 px-4">{stat.fouls}</td>
-                              <td className="text-right py-2 px-4">{fgPct}%</td>
-                              <td className="text-right py-2 px-4">{threePct}%</td>
-                              <td className="text-right py-2 px-4">{ftPct}%</td>
+                              <td className="text-right py-2 px-4 font-semibold text-gray-900 dark:text-white">{stat.points}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.rebounds}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.assists}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.steals}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.blocks}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.turnovers}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.fouls}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{fgPct}%</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{threePct}%</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{ftPct}%</td>
                               <td className={`text-right py-2 px-4 font-semibold ${
-                                (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
-                                (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
-                                'text-neutral-400'
+                                (stat.plus_minus ?? 0) > 0 ? 'text-green-600 dark:text-green-400' : 
+                                (stat.plus_minus ?? 0) < 0 ? 'text-red-600 dark:text-red-400' : 
+                                'text-gray-600 dark:text-neutral-400'
                               }`}>
                                 {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
                               </td>
@@ -2254,7 +2258,7 @@ export default function LeagueTabsIsland({
                       </tbody>
                     </table>
                   ) : (
-                    <div className="text-center py-8 text-neutral-400">No team stats available.</div>
+                    <div className="text-center py-8 text-gray-600 dark:text-neutral-400">No team stats available.</div>
                   )}
                 </div>
               )}

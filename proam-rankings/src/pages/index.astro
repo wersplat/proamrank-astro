@@ -104,8 +104,8 @@ const hotTeams = [...rows]
   <main id="main-content" class="mx-auto max-w-6xl p-6 grade-pattern" role="main">
     <UpcomingSpotlightBanner />
     <div class="mb-6">
-      <h1 class="text-2xl font-bold mb-4">NBA 2K Pro-Am Global Team Rankings</h1>
-      <p class="text-neutral-400 mb-4">
+      <h1 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">NBA 2K Pro-Am Global Team Rankings</h1>
+      <p class="text-gray-600 dark:text-neutral-400 mb-4">
         Explore the comprehensive NBA 2K Pro-Am Global Team Rankings featuring top competitive teams, 
         real-time statistics, and performance analytics. Track team standings, ELO ratings, and ranking 
         points across all major leagues and tournaments.
@@ -117,36 +117,36 @@ const hotTeams = [...rows]
       <section class="mb-8">
         <div class="flex items-center gap-2 mb-4">
           <span class="text-2xl">🔥</span>
-          <h2 class="text-xl font-bold">Hot Teams Rising</h2>
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white">Hot Teams Rising</h2>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {hotTeams.map((team: typeof rows[0]) => (
             <a 
               href={`/teams/${team.team_id}`}
-              class="block p-3 rounded-lg border border-patriot-blue-800 bg-patriot-blue-900/30 hover:border-patriot-red-500 hover:bg-patriot-blue-900/50 transition-all duration-200 group"
+              class="block p-3 rounded-lg border border-gray-200 dark:border-patriot-blue-800 bg-white dark:bg-patriot-blue-900/30 hover:border-patriot-red-500 dark:hover:border-patriot-red-500 hover:bg-gray-50 dark:hover:bg-patriot-blue-900/50 transition-all duration-200 group"
             >
               <div class="flex flex-col items-center text-center">
                 {team.logo_url ? (
                   <img 
                     src={team.logo_url}
                     alt=""
-                    class="h-12 w-12 rounded object-cover mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition"
+                    class="h-12 w-12 rounded object-cover mb-2 ring-2 ring-gray-300 dark:ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition"
                     loading="lazy"
                     decoding="async"
                   />
                 ) : (
-                  <div class="h-12 w-12 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition">
+                  <div class="h-12 w-12 rounded bg-gray-200 dark:bg-patriot-blue-800 flex items-center justify-center text-gray-700 dark:text-neutral-300 text-xs font-bold mb-2 ring-2 ring-gray-300 dark:ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition">
                     {team.team_name?.substring(0, 2).toUpperCase() || '??'}
                   </div>
                 )}
-                <div class="font-semibold text-sm truncate w-full mb-1">{team.team_name}</div>
+                <div class="font-semibold text-sm truncate w-full mb-1 text-gray-900 dark:text-white">{team.team_name}</div>
                 {team.win_percentage !== null && (
-                  <div class="text-xs text-patriot-red-400 font-medium">
+                  <div class="text-xs text-patriot-red-600 dark:text-patriot-red-400 font-medium">
                     {team.win_percentage.toFixed(1)}% Win Rate
                   </div>
                 )}
                 {team.global_rank && (
-                  <div class="text-xs text-neutral-400 mt-1">Rank #{team.global_rank}</div>
+                  <div class="text-xs text-gray-600 dark:text-neutral-400 mt-1">Rank #{team.global_rank}</div>
                 )}
               </div>
             </a>
@@ -159,8 +159,8 @@ const hotTeams = [...rows]
     <div class="mb-6 p-4 rounded-lg bg-gradient-to-r from-patriot-red-600/20 via-patriot-blue-600/20 to-patriot-red-600/20 border border-patriot-red-500/30 hover:border-patriot-red-500/50 transition">
       <div class="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h3 class="font-semibold text-lg mb-1">Want to understand our ranking system?</h3>
-          <p class="text-sm text-neutral-300">Learn how teams are ranked using our Hybrid Score system</p>
+          <h3 class="font-semibold text-lg mb-1 text-gray-900 dark:text-white">Want to understand our ranking system?</h3>
+          <p class="text-sm text-gray-700 dark:text-neutral-300">Learn how teams are ranked using our Hybrid Score system</p>
         </div>
         <a 
           href="/ranking-system" 

@@ -115,11 +115,11 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
   description="Browse NBA 2K Pro-Am team rankings, rosters, and match history. Explore team statistics, ELO ratings, and performance metrics"
 >
   <Navigation />
-    <main class="mx-auto max-w-6xl p-6">
+    <main class="mx-auto max-w-6xl p-6 grade-pattern">
       <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
-          <h1 class="text-2xl font-bold">Teams</h1>
-          <div class="text-sm text-neutral-400">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Teams</h1>
+          <div class="text-sm text-gray-600 dark:text-neutral-400">
             Page {currentPage} of {totalPages} • {count || 0} total
           </div>
         </div>
@@ -132,16 +132,16 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
               id="searchInput"
               placeholder="Search teams..."
               value={searchQuery}
-              class="w-full px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="w-full px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm placeholder-gray-500 dark:placeholder-neutral-400"
               onkeydown="if(event.key==='Enter') handleSearch()"
             />
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Tier:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Tier:</label>
             <select 
               id="tierFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('tier', this.value)"
             >
               <option value="all" selected={tierFilter === 'all'}>All Tiers</option>
@@ -152,10 +152,10 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm text-neutral-400">Sort:</label>
+            <label class="text-sm text-gray-700 dark:text-neutral-400">Sort:</label>
             <select 
               id="sortFilter"
-              class="px-3 py-1 rounded bg-neutral-800 border border-neutral-700 text-sm"
+              class="px-3 py-1 rounded bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 text-gray-900 dark:text-white text-sm"
               onchange="window.location.href = updateFilter('sort', this.value)"
             >
               <option value="rank" selected={sortBy === 'rank'}>Global Rank</option>
@@ -167,7 +167,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
           <button
             onclick="handleSearch()"
-            class="px-4 py-1 rounded bg-blue-600 hover:bg-blue-700 transition text-sm font-medium"
+            class="px-4 py-1 rounded bg-blue-600 hover:bg-blue-700 transition text-sm font-medium text-white"
           >
             Search
           </button>
@@ -175,7 +175,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           {(tierFilter !== 'all' || sortBy !== 'rank' || searchQuery) && (
             <a 
               href="/teams" 
-              class="px-3 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition text-sm"
+              class="px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
             >
               Clear Filters
             </a>
@@ -215,7 +215,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
         {teams.map((team) => (
           <a 
             href={`/teams/${team.id}`}
-            class="block rounded-lg border border-neutral-800 p-4 hover:border-blue-500 transition"
+            class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
           >
             <div class="flex items-center gap-3 mb-3">
               {team.logo_url ? (
@@ -226,30 +226,30 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
                   loading="lazy"
                 />
               ) : (
-                <div class="h-12 w-12 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-xs font-bold">
+                <div class="h-12 w-12 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-xs font-bold">
                   {team.name?.substring(0, 2).toUpperCase() || '??'}
                 </div>
               )}
               <div class="flex-1 min-w-0">
-                <h2 class="font-bold text-lg truncate">{team.name}</h2>
+                <h2 class="font-bold text-lg truncate text-gray-900 dark:text-white">{team.name}</h2>
                 {team.leaderboard_tier && (
-                  <span class="text-xs font-bold text-neutral-400">{team.leaderboard_tier} Tier</span>
+                  <span class="text-xs font-bold text-gray-600 dark:text-neutral-400">{team.leaderboard_tier} Tier</span>
                 )}
               </div>
             </div>
             
             <dl class="grid grid-cols-3 gap-2 text-sm">
               <div>
-                <dt class="text-neutral-400 text-xs">Rank</dt>
-                <dd class="font-semibold">#{team.global_rank ?? '-'}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Rank</dt>
+                <dd class="font-semibold text-gray-900 dark:text-white">#{team.global_rank ?? '-'}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">Score</dt>
-                <dd class="font-semibold">{Math.round(team.hybrid_score ?? 0)}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Score</dt>
+                <dd class="font-semibold text-gray-900 dark:text-white">{Math.round(team.hybrid_score ?? 0)}</dd>
               </div>
               <div>
-                <dt class="text-neutral-400 text-xs">RP</dt>
-                <dd class="font-semibold">{team.current_rp ?? 0}</dd>
+                <dt class="text-gray-600 dark:text-neutral-400 text-xs">RP</dt>
+                <dd class="font-semibold text-gray-900 dark:text-white">{team.current_rp ?? 0}</dd>
               </div>
             </dl>
           </a>
@@ -257,7 +257,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
       </div>
 
       {teams.length === 0 && (
-        <div class="text-center py-12 text-neutral-400">
+        <div class="text-center py-12 text-gray-600 dark:text-neutral-400">
           No teams found.
         </div>
       )}
@@ -268,12 +268,12 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           {currentPage > 1 ? (
             <a 
               href={`/teams?page=${currentPage - 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               ← Previous
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               ← Previous
             </span>
           )}
@@ -285,7 +285,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
-                    : 'bg-neutral-800 hover:bg-neutral-700'
+                    : 'bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white'
                 }`}
               >
                 {pageNum}
@@ -296,12 +296,12 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           {currentPage < totalPages ? (
             <a 
               href={`/teams?page=${currentPage + 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
-              class="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 transition"
+              class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               Next →
             </a>
           ) : (
-            <span class="px-4 py-2 rounded bg-neutral-900 text-neutral-600 cursor-not-allowed">
+            <span class="px-4 py-2 rounded bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed">
               Next →
             </span>
           )}

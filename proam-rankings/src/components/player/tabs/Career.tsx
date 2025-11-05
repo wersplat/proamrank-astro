@@ -92,9 +92,9 @@ export default function Career({ player, playerId }: CareerProps) {
   if (error) {
     return (
       <div>
-        <h2 className="text-xl font-bold mb-6 text-white">Career Statistics</h2>
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-red-400">Error loading career statistics: {error}</p>
+        <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Career Statistics</h2>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-red-600 dark:text-red-400">Error loading career statistics: {error}</p>
         </div>
       </div>
     );
@@ -102,39 +102,39 @@ export default function Career({ player, playerId }: CareerProps) {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-6 text-white">Career Statistics</h2>
+      <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Career Statistics</h2>
       
       {loading ? (
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-neutral-400">Loading career statistics...</p>
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400">Loading career statistics...</p>
         </div>
       ) : careerStats && careerStats.totalGames > 0 ? (
         <div className="space-y-6">
           {/* Career Totals */}
-          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-            <h3 className="text-lg font-semibold mb-4 text-white">Career Totals</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-gray-50 dark:bg-neutral-900">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Career Totals</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Games Played</div>
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Games Played</div>
+                <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">
                   {careerStats.totalGames}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Total Points</div>
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Total Points</div>
+                <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">
                   {careerStats.totalPoints.toLocaleString()}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Total Assists</div>
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Total Assists</div>
+                <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">
                   {careerStats.totalAssists.toLocaleString()}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Total Rebounds</div>
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Total Rebounds</div>
+                <div className="text-2xl font-bold text-patriot-blue-600 dark:text-blue-400">
                   {careerStats.totalRebounds.toLocaleString()}
                 </div>
               </div>
@@ -142,42 +142,42 @@ export default function Career({ player, playerId }: CareerProps) {
           </div>
 
           {/* Career Averages */}
-          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-            <h3 className="text-lg font-semibold mb-4 text-white">Career Averages</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-gray-50 dark:bg-neutral-900">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Career Averages</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Points</div>
-                <div className="text-xl font-bold text-green-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Points</div>
+                <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   {careerStats.avgPoints.toFixed(1)}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Assists</div>
-                <div className="text-xl font-bold text-green-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Assists</div>
+                <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   {careerStats.avgAssists.toFixed(1)}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Rebounds</div>
-                <div className="text-xl font-bold text-green-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Rebounds</div>
+                <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   {careerStats.avgRebounds.toFixed(1)}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Steals</div>
-                <div className="text-xl font-bold text-green-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Steals</div>
+                <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   {careerStats.avgSteals.toFixed(1)}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Blocks</div>
-                <div className="text-xl font-bold text-green-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Blocks</div>
+                <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   {careerStats.avgBlocks.toFixed(1)}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Turnovers</div>
-                <div className="text-xl font-bold text-green-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Turnovers</div>
+                <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   {careerStats.avgTurnovers.toFixed(1)}
                 </div>
               </div>
@@ -185,36 +185,36 @@ export default function Career({ player, playerId }: CareerProps) {
           </div>
 
           {/* Career Highs */}
-          <div className="rounded-lg border border-neutral-800 p-6 bg-neutral-900">
-            <h3 className="text-lg font-semibold mb-4 text-white">Career Highs</h3>
+          <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 bg-gray-50 dark:bg-neutral-900">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Career Highs</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Points</div>
-                <div className="text-xl font-bold text-purple-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Points</div>
+                <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                   {careerStats.careerHighPoints}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Assists</div>
-                <div className="text-xl font-bold text-purple-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Assists</div>
+                <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                   {careerStats.careerHighAssists}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Rebounds</div>
-                <div className="text-xl font-bold text-purple-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Rebounds</div>
+                <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                   {careerStats.careerHighRebounds}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Steals</div>
-                <div className="text-xl font-bold text-purple-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Steals</div>
+                <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                   {careerStats.careerHighSteals}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-neutral-400 text-sm mb-1">Blocks</div>
-                <div className="text-xl font-bold text-purple-400">
+                <div className="text-gray-600 dark:text-neutral-400 text-sm mb-1">Blocks</div>
+                <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                   {careerStats.careerHighBlocks}
                 </div>
               </div>
@@ -222,8 +222,8 @@ export default function Career({ player, playerId }: CareerProps) {
           </div>
         </div>
       ) : (
-        <div className="rounded-lg border border-neutral-800 p-8 text-center bg-neutral-900">
-          <p className="text-neutral-400 text-lg">
+        <div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400 text-lg">
             No career statistics available
           </p>
         </div>

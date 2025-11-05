@@ -209,7 +209,7 @@ export default function TournamentTabsIsland({
   const getVerificationBadge = (match: Match) => {
     if (match.verified === true) {
       return (
-        <span className="px-2 py-0.5 rounded bg-green-900/30 border border-green-500/30 text-green-300 text-xs font-medium flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded bg-green-100 dark:bg-green-900/30 border border-green-500 dark:border-green-500/30 text-green-700 dark:text-green-300 text-xs font-medium flex items-center gap-1">
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
@@ -218,7 +218,7 @@ export default function TournamentTabsIsland({
       );
     } else if (match.status === 'processed' && match.verified === false) {
       return (
-        <span className="px-2 py-0.5 rounded bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-xs font-medium flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-500 dark:border-yellow-500/30 text-yellow-700 dark:text-yellow-300 text-xs font-medium flex items-center gap-1">
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
           </svg>
@@ -565,23 +565,25 @@ export default function TournamentTabsIsland({
           <div>
             {/* Matches count and page info */}
             {matches.length > 0 && (
-              <div className="mb-4 text-sm text-neutral-400">
+              <div className="mb-4 text-sm text-gray-600 dark:text-neutral-400">
                 Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, matches.length)} of {matches.length} matches
               </div>
             )}
 
             <div className="space-y-2">
               {matches.length === 0 ? (
-                <div className="text-center py-8 text-neutral-400">
+                <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                   No matches found.
                 </div>
               ) : (
-                paginatedMatches.map((match) => (
+                paginatedMatches.map((match, idx) => (
                   <div
                     key={match.id}
                     onClick={() => handleMatchClick(match)}
-                    className={`rounded-lg border border-neutral-800 p-4 transition ${
-                      match.boxscore_url ? 'cursor-pointer hover:border-blue-500' : ''
+                    className={`rounded-lg border border-gray-200 dark:border-neutral-800 p-4 transition ${
+                      idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/20' : 'bg-gray-50 dark:bg-patriot-blue-900/10'
+                    } ${
+                      match.boxscore_url ? 'cursor-pointer hover:border-blue-500 dark:hover:border-blue-500' : ''
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -593,17 +595,17 @@ export default function TournamentTabsIsland({
                             className="h-8 w-8 rounded object-cover"
                           />
                         ) : (
-                          <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                          <div className="h-8 w-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-[10px] font-bold">
                             {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
                           </div>
                         )}
-                        <div className="text-sm">{match.team_a?.name || "Team A"}</div>
-                        <div className="text-lg font-bold">{match.score_a ?? 0}</div>
+                        <div className="text-sm text-gray-900 dark:text-white">{match.team_a?.name || "Team A"}</div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">{match.score_a ?? 0}</div>
                       </div>
-                      <div className="px-4 text-neutral-500">vs</div>
+                      <div className="px-4 text-gray-600 dark:text-neutral-500">vs</div>
                       <div className="flex items-center gap-3 flex-1 justify-end">
-                        <div className="text-lg font-bold">{match.score_b ?? 0}</div>
-                        <div className="text-sm">{match.team_b?.name || "Team B"}</div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">{match.score_b ?? 0}</div>
+                        <div className="text-sm text-gray-900 dark:text-white">{match.team_b?.name || "Team B"}</div>
                         {match.team_b?.logo_url ? (
                           <img
                             src={match.team_b.logo_url}
@@ -611,18 +613,18 @@ export default function TournamentTabsIsland({
                             className="h-8 w-8 rounded object-cover"
                           />
                         ) : (
-                          <div className="h-8 w-8 rounded bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] font-bold">
+                          <div className="h-8 w-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-[10px] font-bold">
                             {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
                           </div>
                         )}
                       </div>
                     </div>
-                    <div className="flex items-center flex-wrap gap-2 text-xs text-neutral-500 mt-2">
+                    <div className="flex items-center flex-wrap gap-2 text-xs text-gray-600 dark:text-neutral-500 mt-2">
                       <span>{new Date(match.played_at).toLocaleDateString()}</span>
                       {match.stage && <span>• {match.stage}</span>}
                       {getVerificationBadge(match)}
                       {match.boxscore_url && (
-                        <span className="ml-auto text-blue-400">
+                        <span className="ml-auto text-patriot-blue-600 dark:text-blue-400">
                           📊 View boxscore
                         </span>
                       )}
@@ -640,8 +642,8 @@ export default function TournamentTabsIsland({
                   disabled={matchesPage === 1}
                   className={`px-4 py-2 rounded transition ${
                     matchesPage === 1
-                      ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
-                      : "bg-neutral-800 hover:bg-neutral-700"
+                      ? "bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed"
+                      : "bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white"
                   }`}
                 >
                   ← Previous
@@ -655,7 +657,7 @@ export default function TournamentTabsIsland({
                       className={`px-3 py-2 rounded transition ${
                         pageNum === matchesPage
                           ? "bg-blue-600 text-white font-semibold"
-                          : "bg-neutral-800 hover:bg-neutral-700"
+                          : "bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white"
                       }`}
                     >
                       {pageNum}
@@ -668,8 +670,8 @@ export default function TournamentTabsIsland({
                   disabled={matchesPage === totalMatchPages}
                   className={`px-4 py-2 rounded transition ${
                     matchesPage === totalMatchPages
-                      ? "bg-neutral-900 text-neutral-600 cursor-not-allowed"
-                      : "bg-neutral-800 hover:bg-neutral-700"
+                      ? "bg-gray-100 dark:bg-neutral-900 text-gray-400 dark:text-neutral-600 cursor-not-allowed"
+                      : "bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 text-gray-900 dark:text-white"
                   }`}
                 >
                   Next →
@@ -683,96 +685,96 @@ export default function TournamentTabsIsland({
         {activeTab === 3 && (
           <div>
             {sortedPlayerStats.length === 0 ? (
-              <div className="text-center py-8 text-neutral-400">
+              <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                 No player statistics available.
               </div>
             ) : (
               <>
-                <div className="mb-4 text-sm text-neutral-400">
+                <div className="mb-4 text-sm text-gray-600 dark:text-neutral-400">
                   {sortedPlayerStats.length} player{sortedPlayerStats.length !== 1 ? 's' : ''} • Click column headers to sort
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
-                    <thead className="bg-neutral-950 text-neutral-300">
+                    <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                       <tr>
-                        <th className="text-left py-2 px-4 sticky left-0 bg-neutral-950 z-10">Player</th>
+                        <th className="text-left py-2 px-4 sticky left-0 bg-gray-100 dark:bg-neutral-950 z-10">Player</th>
                         <th className="text-left py-2 px-4">Team</th>
                         <th className="text-left py-2 px-4">Pos</th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('games_played')}
                         >
                           GP {sortBy === 'games_played' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('avg_points')}
                         >
                           PPG {sortBy === 'avg_points' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('avg_rebounds')}
                         >
                           RPG {sortBy === 'avg_rebounds' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('avg_assists')}
                         >
                           APG {sortBy === 'avg_assists' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('avg_steals')}
                         >
                           SPG {sortBy === 'avg_steals' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('avg_blocks')}
                         >
                           BPG {sortBy === 'avg_blocks' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('avg_turnovers')}
                         >
                           TOV {sortBy === 'avg_turnovers' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('fg_percentage')}
                         >
                           FG% {sortBy === 'fg_percentage' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('three_pt_percentage')}
                         >
                           3P% {sortBy === 'three_pt_percentage' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('ft_percentage')}
                         >
                           FT% {sortBy === 'ft_percentage' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                         <th 
-                          className="text-right py-2 px-4 cursor-pointer hover:text-white"
+                          className="text-right py-2 px-4 cursor-pointer hover:text-gray-900 dark:hover:text-white"
                           onClick={() => handleSort('avg_performance_score')}
                         >
                           PS {sortBy === 'avg_performance_score' && (sortDirection === 'asc' ? '↑' : '↓')}
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-800">
-                      {sortedPlayerStats.map((player) => (
-                        <tr key={player.player_id} className="hover:bg-neutral-900">
-                          <td className="py-2 px-4 sticky left-0 bg-neutral-900 hover:bg-neutral-900">
+                    <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
+                      {sortedPlayerStats.map((player, idx) => (
+                        <tr key={player.player_id} className={`hover:bg-gray-50 dark:hover:bg-neutral-900 ${idx % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-gray-50 dark:bg-transparent'}`}>
+                          <td className={`py-2 px-4 sticky left-0 z-10 ${idx % 2 === 0 ? 'bg-white dark:bg-neutral-900' : 'bg-gray-50 dark:bg-neutral-900'} hover:bg-gray-100 dark:hover:bg-neutral-900`}>
                             <a
                               href={`/players/${player.player_id}`}
-                              className="hover:text-blue-400 font-medium"
+                              className="text-gray-900 dark:text-white hover:text-patriot-blue-600 dark:hover:text-blue-400 font-medium"
                             >
                               {player.gamertag}
                             </a>
@@ -780,43 +782,43 @@ export default function TournamentTabsIsland({
                           <td className="py-2 px-4">
                             <a
                               href={`/teams/${player.team_id}`}
-                              className="hover:text-blue-400 text-neutral-400"
+                              className="text-gray-700 dark:text-neutral-400 hover:text-patriot-blue-600 dark:hover:text-blue-400"
                             >
                               {player.team_name}
                             </a>
                           </td>
-                          <td className="py-2 px-4 text-neutral-400 text-xs">
+                          <td className="py-2 px-4 text-gray-600 dark:text-neutral-400 text-xs">
                             {player.position || '-'}
                           </td>
-                          <td className="py-2 px-4 text-right">{player.games_played}</td>
-                          <td className="py-2 px-4 text-right font-semibold text-blue-400">
+                          <td className="py-2 px-4 text-right text-gray-900 dark:text-white">{player.games_played}</td>
+                          <td className="py-2 px-4 text-right font-semibold text-patriot-blue-600 dark:text-blue-400">
                             {player.avg_points?.toFixed(1) ?? '-'}
                           </td>
-                          <td className="py-2 px-4 text-right">
+                          <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                             {player.avg_rebounds?.toFixed(1) ?? '-'}
                           </td>
-                          <td className="py-2 px-4 text-right text-green-400">
+                          <td className="py-2 px-4 text-right text-green-600 dark:text-green-400">
                             {player.avg_assists?.toFixed(1) ?? '-'}
                           </td>
-                          <td className="py-2 px-4 text-right text-yellow-400">
+                          <td className="py-2 px-4 text-right text-yellow-600 dark:text-yellow-400">
                             {player.avg_steals?.toFixed(1) ?? '-'}
                           </td>
-                          <td className="py-2 px-4 text-right text-red-400">
+                          <td className="py-2 px-4 text-right text-red-600 dark:text-red-400">
                             {player.avg_blocks?.toFixed(1) ?? '-'}
                           </td>
-                          <td className="py-2 px-4 text-right text-neutral-400">
+                          <td className="py-2 px-4 text-right text-gray-600 dark:text-neutral-400">
                             {player.avg_turnovers?.toFixed(1) ?? '-'}
                           </td>
-                          <td className="py-2 px-4 text-right">
+                          <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                             {player.fg_percentage ? `${player.fg_percentage.toFixed(1)}%` : '-'}
                           </td>
-                          <td className="py-2 px-4 text-right">
+                          <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                             {player.three_pt_percentage ? `${player.three_pt_percentage.toFixed(1)}%` : '-'}
                           </td>
-                          <td className="py-2 px-4 text-right">
+                          <td className="py-2 px-4 text-right text-gray-900 dark:text-white">
                             {player.ft_percentage ? `${player.ft_percentage.toFixed(1)}%` : '0.0%'}
                           </td>
-                          <td className="py-2 px-4 text-right font-semibold text-purple-400">
+                          <td className="py-2 px-4 text-right font-semibold text-purple-600 dark:text-purple-400">
                             {player.avg_performance_score?.toFixed(1) ?? '-'}
                           </td>
                         </tr>
@@ -1209,7 +1211,7 @@ export default function TournamentTabsIsland({
 
                       return (
                         <table className="w-full text-sm">
-                          <thead className="bg-neutral-950 text-neutral-300">
+                          <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                             <tr>
                               <th className="text-left py-2 px-4">Player</th>
                               <th className="text-center py-2 px-4">GRD</th>
@@ -1226,31 +1228,31 @@ export default function TournamentTabsIsland({
                               <th className="text-right py-2 px-4">+/-</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-neutral-800">
+                          <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
                             {sortedStats.map((stat, idx) => {
                               const isTeamA = stat.team_id === selectedMatch?.team_a_id;
                               return (
-                                <tr key={idx} className={`hover:bg-neutral-950 ${isTeamA ? 'bg-blue-950/20' : 'bg-red-950/20'}`}>
-                                  <td className="py-2 px-4">{stat.player_name}</td>
+                                <tr key={idx} className={`hover:bg-gray-50 dark:hover:bg-neutral-950 ${isTeamA ? 'bg-blue-50 dark:bg-blue-950/20' : 'bg-red-50 dark:bg-red-950/20'}`}>
+                                  <td className="py-2 px-4 text-gray-900 dark:text-white">{stat.player_name}</td>
                                   <td className="text-center py-2 px-4">
-                                    <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                    <span className="px-2 py-0.5 rounded bg-gray-200 dark:bg-neutral-800 text-gray-700 dark:text-white text-xs font-bold">
                                       {stat.grd || '-'}
                                     </span>
                                   </td>
-                                  <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
-                                  <td className="text-right py-2 px-4">{stat.rebounds}</td>
-                                  <td className="text-right py-2 px-4">{stat.assists}</td>
-                                  <td className="text-right py-2 px-4">{stat.steals}</td>
-                                  <td className="text-right py-2 px-4">{stat.blocks}</td>
-                                  <td className="text-right py-2 px-4">{stat.turnovers}</td>
-                                  <td className="text-right py-2 px-4">{stat.fouls}</td>
-                                  <td className="text-right py-2 px-4">{stat.fgm}/{stat.fga}</td>
-                                  <td className="text-right py-2 px-4">{stat.three_points_made}/{stat.three_points_attempted}</td>
-                                  <td className="text-right py-2 px-4">{stat.ftm}/{stat.fta}</td>
+                                  <td className="text-right py-2 px-4 font-semibold text-gray-900 dark:text-white">{stat.points}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.rebounds}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.assists}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.steals}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.blocks}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.turnovers}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.fouls}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.fgm}/{stat.fga}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.three_points_made}/{stat.three_points_attempted}</td>
+                                  <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.ftm}/{stat.fta}</td>
                                   <td className={`text-right py-2 px-4 font-semibold ${
-                                    (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
-                                    (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
-                                    'text-neutral-400'
+                                    (stat.plus_minus ?? 0) > 0 ? 'text-green-600 dark:text-green-400' : 
+                                    (stat.plus_minus ?? 0) < 0 ? 'text-red-600 dark:text-red-400' : 
+                                    'text-gray-600 dark:text-neutral-400'
                                   }`}>
                                     {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
                                   </td>
@@ -1262,7 +1264,7 @@ export default function TournamentTabsIsland({
                       );
                     })()
                   ) : (
-                    <div className="text-center py-8 text-neutral-400">No player stats available.</div>
+                    <div className="text-center py-8 text-gray-600 dark:text-neutral-400">No player stats available.</div>
                   )}
                 </div>
               )}
@@ -1278,10 +1280,10 @@ export default function TournamentTabsIsland({
                     </div>
                   )}
                   {loading ? (
-                    <div className="text-center py-8 text-neutral-400">Loading stats...</div>
+                    <div className="text-center py-8 text-gray-600 dark:text-neutral-400">Loading stats...</div>
                   ) : teamStats.length > 0 ? (
                     <table className="w-full text-sm">
-                      <thead className="bg-neutral-950 text-neutral-300">
+                      <thead className="bg-gray-100 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300">
                         <tr>
                           <th className="text-left py-2 px-4">Team</th>
                           <th className="text-center py-2 px-4">GRD</th>
@@ -1298,7 +1300,7 @@ export default function TournamentTabsIsland({
                           <th className="text-right py-2 px-4">+/-</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-neutral-800">
+                      <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
                         {teamStats.map((stat, idx) => {
                           const fgPct = stat.field_goals_attempted > 0
                             ? ((stat.field_goals_made / stat.field_goals_attempted) * 100).toFixed(1)
@@ -1311,27 +1313,27 @@ export default function TournamentTabsIsland({
                             : '0.0';
 
                           return (
-                            <tr key={idx} className="hover:bg-neutral-950">
-                              <td className="py-2 px-4 font-semibold">{stat.teams?.name || 'Team'}</td>
+                            <tr key={idx} className={`hover:bg-gray-50 dark:hover:bg-neutral-950 ${idx % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-gray-50 dark:bg-transparent'}`}>
+                              <td className="py-2 px-4 font-semibold text-gray-900 dark:text-white">{stat.teams?.name || 'Team'}</td>
                               <td className="text-center py-2 px-4">
-                                <span className="px-2 py-0.5 rounded bg-neutral-800 text-xs font-bold">
+                                <span className="px-2 py-0.5 rounded bg-patriot-blue-100 dark:bg-patriot-blue-800 text-patriot-blue-700 dark:text-white text-xs font-bold">
                                   {stat.grd || '-'}
                                 </span>
                               </td>
-                              <td className="text-right py-2 px-4 font-semibold">{stat.points}</td>
-                              <td className="text-right py-2 px-4">{stat.rebounds}</td>
-                              <td className="text-right py-2 px-4">{stat.assists}</td>
-                              <td className="text-right py-2 px-4">{stat.steals}</td>
-                              <td className="text-right py-2 px-4">{stat.blocks}</td>
-                              <td className="text-right py-2 px-4">{stat.turnovers}</td>
-                              <td className="text-right py-2 px-4">{stat.fouls}</td>
-                              <td className="text-right py-2 px-4">{fgPct}%</td>
-                              <td className="text-right py-2 px-4">{threePct}%</td>
-                              <td className="text-right py-2 px-4">{ftPct}%</td>
+                              <td className="text-right py-2 px-4 font-semibold text-gray-900 dark:text-white">{stat.points}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.rebounds}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.assists}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.steals}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.blocks}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.turnovers}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{stat.fouls}</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{fgPct}%</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{threePct}%</td>
+                              <td className="text-right py-2 px-4 text-gray-900 dark:text-white">{ftPct}%</td>
                               <td className={`text-right py-2 px-4 font-semibold ${
-                                (stat.plus_minus ?? 0) > 0 ? 'text-green-400' : 
-                                (stat.plus_minus ?? 0) < 0 ? 'text-red-400' : 
-                                'text-neutral-400'
+                                (stat.plus_minus ?? 0) > 0 ? 'text-green-600 dark:text-green-400' : 
+                                (stat.plus_minus ?? 0) < 0 ? 'text-red-600 dark:text-red-400' : 
+                                'text-gray-600 dark:text-neutral-400'
                               }`}>
                                 {stat.plus_minus !== null ? (stat.plus_minus > 0 ? `+${stat.plus_minus}` : stat.plus_minus) : '-'}
                               </td>
@@ -1341,7 +1343,7 @@ export default function TournamentTabsIsland({
                       </tbody>
                     </table>
                   ) : (
-                    <div className="text-center py-8 text-neutral-400">No team stats available.</div>
+                    <div className="text-center py-8 text-gray-600 dark:text-neutral-400">No team stats available.</div>
                   )}
                 </div>
               )}

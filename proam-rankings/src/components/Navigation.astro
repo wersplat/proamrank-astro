@@ -1,25 +1,27 @@
 ---
 // Simple navigation bar for the Astro app
 const currentPath = Astro.url.pathname;
+import ThemeToggle from './ThemeToggle';
 ---
 
-<nav class="bg-patriot-blue-900/95 backdrop-blur-md border-b border-patriot-blue-800 sticky top-0 z-50 shadow-lg">
+<nav class="bg-white/95 dark:bg-patriot-blue-900/95 backdrop-blur-md border-b border-gray-200 dark:border-patriot-blue-800 sticky top-0 z-50 shadow-lg">
   <div class="mx-auto max-w-6xl px-6 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo/Title -->
       <a href="/" class="flex items-center gap-2" aria-label="Global Rankings Analytics Engine Home">
         <img src="/GR.svg" alt="G.R.A.D.E." class="h-8 w-auto" loading="eager" decoding="async" />
-        <span class="text-xl font-bold bg-gradient-to-r from-patriot-red-600 via-white to-patriot-blue-600 bg-clip-text text-transparent">
+        <span class="text-xl font-bold bg-gradient-to-r from-patriot-red-600 via-gray-900 dark:via-white to-patriot-blue-600 dark:to-patriot-blue-400 bg-clip-text text-transparent">
           G.R.A.D.E.
         </span>
       </a>
       
       <!-- Desktop Navigation -->
-      <ul class="hidden lg:flex items-center gap-4 text-sm" role="list">
+      <div class="hidden lg:flex items-center gap-4">
+      <ul class="flex items-center gap-4 text-sm" role="list">
         <li role="none">
           <a 
             href="/" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/' ? 'text-patriot-red-600 dark:text-patriot-red-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-red-600 dark:hover:text-patriot-red-400'}`}
             aria-current={currentPath === '/' ? 'page' : undefined}
           >
             Home
@@ -29,7 +31,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/teams" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/teams') ? 'text-patriot-blue-600 dark:text-patriot-blue-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-blue-600 dark:hover:text-patriot-blue-400'}`}
             aria-current={currentPath.startsWith('/teams') ? 'page' : undefined}
           >
             Teams
@@ -39,7 +41,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/players" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/players') ? 'text-patriot-red-600 dark:text-patriot-red-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-red-600 dark:hover:text-patriot-red-400'}`}
             aria-current={currentPath.startsWith('/players') ? 'page' : undefined}
           >
             Players
@@ -49,7 +51,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/leagues" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-600 dark:text-patriot-blue-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-blue-600 dark:hover:text-patriot-blue-400'}`}
             aria-current={currentPath.startsWith('/leagues') ? 'page' : undefined}
           >
             Leagues
@@ -59,7 +61,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/tournaments" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-600 dark:text-patriot-red-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-red-600 dark:hover:text-patriot-red-400'}`}
             aria-current={currentPath.startsWith('/tournaments') ? 'page' : undefined}
           >
             Tournaments
@@ -69,7 +71,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/matches" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/matches') ? 'text-patriot-blue-600 dark:text-patriot-blue-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-blue-600 dark:hover:text-patriot-blue-400'}`}
             aria-current={currentPath.startsWith('/matches') ? 'page' : undefined}
           >
             Matches
@@ -79,7 +81,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/achievements" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/achievements') ? 'text-patriot-red-600 dark:text-patriot-red-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-red-600 dark:hover:text-patriot-red-400'}`}
             aria-current={currentPath.startsWith('/achievements') ? 'page' : undefined}
           >
             Achievements
@@ -89,7 +91,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/ranking-system" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/ranking-system' ? 'text-patriot-blue-600 dark:text-patriot-blue-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-blue-600 dark:hover:text-patriot-blue-400'}`}
             aria-current={currentPath === '/ranking-system' ? 'page' : undefined}
           >
             Ranking System
@@ -99,7 +101,7 @@ const currentPath = Astro.url.pathname;
         <li role="none">
           <a 
             href="/about" 
-            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/about' ? 'text-patriot-red-600 dark:text-patriot-red-400 font-semibold' : 'text-gray-700 dark:text-neutral-200 hover:text-patriot-red-600 dark:hover:text-patriot-red-400'}`}
             aria-current={currentPath === '/about' ? 'page' : undefined}
           >
             About
@@ -107,19 +109,24 @@ const currentPath = Astro.url.pathname;
           </a>
         </li>
       </ul>
+      <ThemeToggle client:load />
+      </div>
 
-      <!-- Mobile Menu Button -->
-      <button 
-        id="mobile-menu-button"
-        class="lg:hidden text-neutral-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded p-1"
-        aria-label="Toggle menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-      >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+      <!-- Mobile Menu Button and Theme Toggle -->
+      <div class="lg:hidden flex items-center gap-2">
+        <ThemeToggle client:load />
+        <button 
+          id="mobile-menu-button"
+          class="text-gray-700 dark:text-neutral-200 hover:text-gray-900 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 rounded p-1"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Navigation (hidden by default) -->
@@ -129,7 +136,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/" 
             aria-label="Navigate to Home page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath === '/' ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-red-600 dark:text-patriot-red-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath === '/' ? 'page' : undefined}
             role="menuitem"
           >
@@ -140,7 +147,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/teams" 
             aria-label="Navigate to Teams page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/teams') ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-blue-600 dark:text-patriot-blue-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath.startsWith('/teams') ? 'page' : undefined}
             role="menuitem"
           >
@@ -151,7 +158,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/players" 
             aria-label="Navigate to Players page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/players') ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-red-600 dark:text-patriot-red-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath.startsWith('/players') ? 'page' : undefined}
             role="menuitem"
           >
@@ -162,7 +169,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/leagues" 
             aria-label="Navigate to Leagues page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/leagues') ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-blue-600 dark:text-patriot-blue-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath.startsWith('/leagues') ? 'page' : undefined}
             role="menuitem"
           >
@@ -173,7 +180,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/tournaments" 
             aria-label="Navigate to Tournaments page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/tournaments') ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-red-600 dark:text-patriot-red-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath.startsWith('/tournaments') ? 'page' : undefined}
             role="menuitem"
           >
@@ -184,7 +191,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/matches" 
             aria-label="Navigate to Matches page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/matches') ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-blue-600 dark:text-patriot-blue-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath.startsWith('/matches') ? 'page' : undefined}
             role="menuitem"
           >
@@ -195,7 +202,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/achievements" 
             aria-label="Navigate to Achievements page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/achievements') ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-red-600 dark:text-patriot-red-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath.startsWith('/achievements') ? 'page' : undefined}
             role="menuitem"
           >
@@ -206,7 +213,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/ranking-system" 
             aria-label="Navigate to Ranking System page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath === '/ranking-system' ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-blue-600 dark:text-patriot-blue-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath === '/ranking-system' ? 'page' : undefined}
             role="menuitem"
           >
@@ -217,7 +224,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/about" 
             aria-label="Navigate to About page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-patriot-blue-900 ${currentPath === '/about' ? 'bg-gray-100 dark:bg-patriot-blue-800 text-patriot-red-600 dark:text-patriot-red-400' : 'text-gray-700 dark:text-neutral-200'}`}
             aria-current={currentPath === '/about' ? 'page' : undefined}
             role="menuitem"
           >
