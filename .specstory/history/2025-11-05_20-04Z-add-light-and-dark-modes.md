@@ -20591,7 +20591,6 @@ _**Agent (model composer-1, mode Agent)**_
 
 ---
 
-
 Checking the current checkerboard pattern CSS and adding a dark mode variant:
 
 
@@ -20608,7 +20607,6 @@ Checking the current checkerboard pattern CSS and adding a dark mode variant:
 
 
 ---
-
 
 Updating the dark mode pattern to be more visible on dark backgrounds:
 
@@ -20669,14 +20667,11 @@ Lint results
 
 
 
-
-
 ---
 
 
 
 ---
-
 
 Updated the dark mode checkerboard pattern for better visibility on dark backgrounds:
 
@@ -20691,6 +20686,408 @@ The pattern now uses:
 - Dark mode: brighter red/blue gradients at 8% opacity
 
 The checkerboard pattern is now visible and consistent across both themes. No linting errors found.
+
+---
+
+_**User (2025-11-05 21:20Z)**_
+
+teams page is showing the wrong hybrid score in the team cards
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+
+---
+
+
+Investigating the teams page hybrid score issue. Checking the teams page and team card components:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="search" data-tool-name="codebase_search">
+<details>
+                <summary>Tool use: **codebase_search** • Searched codebase "team cards hybrid score display" • **5** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | L165-2270 |
+| `proam-rankings/src/components/LeagueTabsIsland.tsx` | L198-2270 |
+| `proam-rankings/src/pages/teams/index.astro` | L214-269 |
+| `proam-rankings/src/components/TournamentTabsIsland.tsx` | L150-1355 |
+| `proam-rankings/src/components/RankTableIsland.tsx` | L12-154 |
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Checking how hybrid_score is calculated elsewhere in the codebase to verify the correct formula:
+
+
+---
+
+<tool-use data-tool-type="grep" data-tool-name="grep">
+<details>
+<summary>Tool use: **grep** • Grep for "hybrid_score" • 46 matches</summary>
+
+Output mode: content
+
+
+| File | Content | Line |
+|------|------|------|
+| `./proam-rankings/src/pages/leagues/[id].astro` | `.select("id, global_rank, hybrid_score, leaderboard_tier, lg_conf")` | L113 |
+| `./proam-rankings/src/pages/tournaments/[id].astro` | `.select("id, name, logo_url, global_rank, hybrid_score, leaderboard_tier")` | L92 |
+| `./proam-rankings/src/pages/tournaments/[id].astro` | `hybrid_score: teamData.hybrid_score,` | L122 |
+| `./proam-rankings/src/pages/teams/[id].astro` | `.select("global_rank, hybrid_score, color_primary, color_secondary, color_accent")` | L131 |
+| `./proam-rankings/src/pages/teams/[id].astro` | `hybridScore = rankData?.hybrid_score;` | L136 |
+| `./proam-rankings/src/pages/teams/[id].astro` | `hybrid_score: hybridScore,` | L157 |
+| `./proam-rankings/src/pages/teams/[id].astro` | `<span class="ml-2 font-semibold">\{Math.round(team.hybrid_score ?? 0)\}</span>` | L260 |
+| `./proam-rankings/src/pages/teams/index.astro` | `hybrid_score: Math.round((team.win_percentage \|\| 0) * 10 + (team.elo_rating \|\| 1500) / 10),` | L84 |
+| `./proam-rankings/src/pages/teams/index.astro` | `<dd class="font-semibold text-gray-900 dark:text-white">\{Math.round(team.hybrid_score ?? 0)\}</dd>` | L248 |
+| `./proam-rankings/src/components/LeagueTabsIsland.tsx` | `hybrid_score?: number;` | L79 |
+| `./proam-rankings/src/components/LeagueTabsIsland.tsx` | `\{team.teams?.hybrid_score ? (` | L1007 |
+| `./proam-rankings/src/components/LeagueTabsIsland.tsx` | `\{team.teams.hybrid_score.toFixed(0)\}` | L1009 |
+| `./proam-rankings/src/pages/index.astro` | `hybrid_score` | L46 |
+| `./proam-rankings/src/pages/index.astro` | `.order("hybrid_score", \{ ascending: false \})` | L49 |
+| `./proam-rankings/src/pages/index.astro` | `hybrid_score: team.hybrid_score \|\| Math.round((team.win_percentage \|\| 0) * 10 + (team.elo_rating \|\| 1500) / 10),` | L70 |
+| `./proam-rankings/src/pages/index.astro` | `return (b.hybrid_score ?? 0) - (a.hybrid_score ?? 0);` | L92 |
+| `./proam-rankings/src/components/RankTableIsland.tsx` | `hybrid_score: number \| null;` | L12 |
+| `./proam-rankings/src/components/RankTableIsland.tsx` | `const [sortKey, setSortKey] = useState<keyof Row>("hybrid_score");` | L29 |
+| `./proam-rankings/src/components/RankTableIsland.tsx` | `onClick=\{() => setSortKey("hybrid_score")\}` | L48 |
+| `./proam-rankings/src/components/RankTableIsland.tsx` | `<div className="font-semibold text-lg">\{Math.round(r.hybrid_score ?? 0)\}</div>` | L132 |
+| `./proam-rankings/src/components/TournamentTabsIsland.tsx` | `hybrid_score?: number;` | L60 |
+| `./proam-rankings/src/components/TournamentTabsIsland.tsx` | `\{team.teams?.hybrid_score ? (` | L515 |
+| `./proam-rankings/src/components/TournamentTabsIsland.tsx` | `\{team.teams.hybrid_score.toFixed(0)\}` | L517 |
+| `./proam-rankings/src/components/MobileRankCard.tsx` | `hybrid_score: number \| null;` | L11 |
+| `./proam-rankings/src/components/MobileRankCard.tsx` | `<dd className="font-bold text-lg text-patriot-red-600 dark:text-patriot-red-400">\{Math.round(row.hybrid_score ?? 0)\}</dd>` | L79 |
+| `./proam-rankings/src/lib/db.types1.ts` | `hybrid_score: number \| null` | L13381 |
+| `./proam-rankings/src/lib/db.types1.ts` | `hybrid_score?: number \| null` | L13402 |
+| `./proam-rankings/src/lib/db.types1.ts` | `hybrid_score?: number \| null` | L13423 |
+| `./proam-rankings/src/lib/db.types1.ts` | `hybrid_score: number \| null` | L19912 |
+| `./proam-rankings/src/lib/db.types1.ts` | `calculate_hybrid_score: \{` | L23860 |
+| `./proam-rankings/src/lib/db.types.ts` | `hybrid_score: number \| null` | L13381 |
+| `./proam-rankings/src/lib/db.types.ts` | `hybrid_score?: number \| null` | L13402 |
+| `./proam-rankings/src/lib/db.types.ts` | `hybrid_score?: number \| null` | L13423 |
+| `./proam-rankings/src/lib/db.types.ts` | `hybrid_score: number \| null` | L19912 |
+| `./proam-rankings/src/lib/db.types.ts` | `calculate_hybrid_score: \{` | L23860 |
+| `./proam-rankings/lg_divisions_complete.sql` | `t.hybrid_score,` | L404 |
+| `./proam-rankings/marts/Team Analytics Data Mart.sql` | `t.hybrid_score,` | L73 |
+| `./proam-rankings/documentation/MART_IMPLEMENTATION_FIXES.md` | `- Added a separate query to fetch `global_rank` and `hybrid_score` from the `teams` table` | L30 |
+| `./proam-rankings/documentation/MART_IMPLEMENTATION_FIXES.md` | `.select("global_rank, hybrid_score")` | L38 |
+| `./proam-rankings/documentation/MART_IMPLEMENTATION_FIXES.md` | `- Computed differently (like `global_rank`, `hybrid_score`)` | L151 |
+| `./proam-rankings/documentation/MART_IMPLEMENTATION_FIXES.md` | `**Missing**: `global_rank`, `hybrid_score`` | L166 |
+| `./proam-rankings/event_strength_metrics_mv.sql` | `tm.hybrid_score,` | L83 |
+| `./proam-rankings/event_strength_metrics_mv.sql` | `tsi.hybrid_score::double precision,` | L119 |
+| `./proam-rankings/event_strength_metrics_mv.sql` | `tsi.hybrid_score,` | L123 |
+| `./proam-rankings/event_strength_metrics_mv.sql` | `ps.hybrid_score,` | L145 |
+| `./proam-rankings/event_strength_metrics_mv.sql` | `avg(rf.hybrid_score) as avg_hybrid_strength,` | L177 |
+
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="search" data-tool-name="codebase_search">
+<details>
+                <summary>Tool use: **codebase_search** • Searched codebase "hybrid score calculation formula win percentage elo rating" • **7** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `proam-rankings/src/pages/ranking-system.astro` | L22-56 |
+| `proam-rankings/UPDATE_STATS_VIEWS.sql` | L123-178 |
+| `proam-rankings/UPDATE_STATS_VIEWS.sql` | L123-182 |
+| `proam-rankings/ratingSystemSql/player_global_rating_implementation.sql` | L89-142 |
+| `proam-rankings/ratingSystemSql/player_global_rating_implementation.sql` | L224-277 |
+| `proam-rankings/ratingSystemSql/adjust_scaling.sql` | L52-131 |
+| `proam-rankings/event_strength_metrics_mv.sql` | L445-500 |
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Checking the Team Analytics Data Mart to see if hybrid_score is included:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/marts/Team Analytics Data Mart.sql</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+The `team_analytics_mart` includes `hybrid_score` (line 73), but the teams page query doesn't select it. Updating the query to include `hybrid_score` and use it directly:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Updating the query to include `hybrid_score` and use it directly:
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
+
+**Chunk 1**
+Lines added: 2, lines removed: 1
+
+```diff
+@@ -46,5 +46,6 @@
+      losses,
+      win_percentage,
+-     games_played
++     games_played,
++     hybrid_score
+    &#96;)
+    .gte(&quot;games_played&quot;, 1);
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -63,5 +63,5 @@
+    dataQuery = dataQuery.order(&quot;win_percentage&quot;, { ascending: false }).order(&quot;elo_rating&quot;, { ascending: false });
+  } else if (sortBy === &#39;score&#39;) {
+-   dataQuery = dataQuery.order(&quot;win_percentage&quot;, { ascending: false });
++   dataQuery = dataQuery.order(&quot;hybrid_score&quot;, { ascending: false });
+  } else if (sortBy === &#39;rp&#39;) {
+    dataQuery = dataQuery.order(&quot;current_rp&quot;, { ascending: false });
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -83,5 +83,5 @@
+    global_rank: null, // Not in mart, but not critical for listing
+    leaderboard_tier: team.rp_tier,
+-   hybrid_score: Math.round((team.win_percentage || 0) * 10 + (team.elo_rating || 1500) / 10),
++   hybrid_score: team.hybrid_score || null,
+  }));
+  
+```
+
+</details>
+
+</tool-use>
+
+---
+
+
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="read_lints">
+<details>
+          <summary>Tool use: **read_lints** • Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+</tool-use>
+
+---
+
+
+
+
+
+---
+
+
+
+---
+
+
+Fixed the hybrid score issue on the teams page.
+
+**The Problem:**
+- The query didn't select `hybrid_score` from `team_analytics_mart` (it's available there)
+- The code calculated it with an incorrect formula: `Math.round((team.win_percentage || 0) * 10 + (team.elo_rating || 1500) / 10)`
+- Sorting by "score" used `win_percentage` instead of `hybrid_score`
+
+**The Fix:**
+1. Added `hybrid_score` to the SELECT query (line 49)
+2. Updated the mapping to use `team.hybrid_score` directly from the database (line 85)
+3. Fixed sorting by "score" to use `hybrid_score` instead of `win_percentage` (line 65)
+
+Team cards now display the correct hybrid score from the database instead of a manual calculation. No linting errors found.
+
+---
+
+_**User (2025-11-05 21:20Z)**_
+
+we should be using same table as we use for the home page rankings table
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+Checking which table the home page rankings table uses:
+
+
+---
+
+<tool-use data-tool-type="unknown" data-tool-name="read_file">
+<details>
+<summary>Tool use: **read_file**</summary>
+
+Status: **loading**
+
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Updating the teams page to use the same data source as the home page, with the same fallback logic:
+
+
+---
+
+<tool-use data-tool-type="unknown" data-tool-name="read_file">
+<details>
+<summary>Tool use: **read_file**</summary>
+
+Status: **loading**
+
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+
+---
+
+<tool-use data-tool-type="unknown" data-tool-name="search_replace">
+<details>
+<summary>Tool use: **search_replace**</summary>
+
+Status: **loading**
+
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
 
 ---
 

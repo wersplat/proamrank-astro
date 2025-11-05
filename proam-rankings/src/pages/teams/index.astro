@@ -13,18 +13,18 @@ const tierFilter = Astro.url.searchParams.get('tier') || 'all';
 const sortBy = Astro.url.searchParams.get('sort') || 'rank';
 const searchQuery = Astro.url.searchParams.get('search') || '';
 
-// Build query with filters - use team_analytics_mart for optimized performance
+// Build query with filters - use teams table (same as home page)
 let countQuery = supa((Astro.locals as any).runtime)
-  .from("team_analytics_mart")
+  .from("teams")
   .select("*", { count: 'exact', head: true })
-  .gte("games_played", 1);
+  .eq("is_active", true);
 
 if (tierFilter !== 'all') {
-  countQuery = countQuery.eq("rp_tier", tierFilter as any);
+  countQuery = countQuery.eq("leaderboard_tier", tierFilter as any);
 }
 
 if (searchQuery) {
-  countQuery = countQuery.ilike("team_name", `%${searchQuery}%`);
+  countQuery = countQuery.ilike("name", `%${searchQuery}%`);
 }
 
 // Get total count
@@ -32,36 +32,34 @@ const { count } = await countQuery;
 
 const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
-// Fetch teams with pagination and filters from team_analytics_mart
+// Fetch teams with pagination and filters from teams table (same as home page)
 let dataQuery = supa((Astro.locals as any).runtime)
-  .from("team_analytics_mart")
+  .from("teams")
   .select(`
-    team_id,
-    team_name,
+    id,
+    name,
     logo_url,
     elo_rating,
     current_rp,
-    rp_tier,
-    wins,
-    losses,
-    win_percentage,
-    games_played
+    global_rank,
+    leaderboard_tier,
+    hybrid_score
   `)
-  .gte("games_played", 1);
+  .eq("is_active", true);
 
 if (tierFilter !== 'all') {
-  dataQuery = dataQuery.eq("rp_tier", tierFilter as any);
+  dataQuery = dataQuery.eq("leaderboard_tier", tierFilter as any);
 }
 
 if (searchQuery) {
-  dataQuery = dataQuery.ilike("team_name", `%${searchQuery}%`);
+  dataQuery = dataQuery.ilike("name", `%${searchQuery}%`);
 }
 
 // Apply sorting
 if (sortBy === 'rank') {
-  dataQuery = dataQuery.order("win_percentage", { ascending: false }).order("elo_rating", { ascending: false });
+  dataQuery = dataQuery.order("global_rank", { ascending: true });
 } else if (sortBy === 'score') {
-  dataQuery = dataQuery.order("win_percentage", { ascending: false });
+  dataQuery = dataQuery.order("hybrid_score", { ascending: false });
 } else if (sortBy === 'rp') {
   dataQuery = dataQuery.order("current_rp", { ascending: false });
 } else if (sortBy === 'elo') {
@@ -74,23 +72,24 @@ if (error) console.error(error);
 
 // Map to expected format (maintaining compatibility with existing template)
 const teams = (data ?? []).map(team => ({
-  id: team.team_id,
-  name: team.team_name,
+  id: team.id,
+  name: team.name,
   logo_url: team.logo_url,
   elo_rating: team.elo_rating,
   current_rp: team.current_rp,
-  global_rank: null, // Not in mart, but not critical for listing
-  leaderboard_tier: team.rp_tier,
-  hybrid_score: Math.round((team.win_percentage || 0) * 10 + (team.elo_rating || 1500) / 10),
+  global_rank: team.global_rank,
+  leaderboard_tier: team.leaderboard_tier,
+  hybrid_score: team.hybrid_score || null,
 }));
 
 // Get unique tiers for filter
 const { data: tiersData } = await supa((Astro.locals as any).runtime)
-  .from("team_analytics_mart")
-  .select("rp_tier")
-  .not("rp_tier", "is", null);
+  .from("teams")
+  .select("leaderboard_tier")
+  .eq("is_active", true)
+  .not("leaderboard_tier", "is", null);
 
-const uniqueTiers = [...new Set((tiersData ?? []).map((t: any) => t.rp_tier))].filter(Boolean).sort();
+const uniqueTiers = [...new Set((tiersData ?? []).map((t: any) => t.leaderboard_tier))].filter(Boolean).sort();
 
 // Generate page numbers
 function getPageNumbers(current: number, total: number): number[] {
