@@ -489,8 +489,10 @@ export default function TournamentTabsIsland({
                           const rankB = b.teams?.global_rank ?? 9999;
                           return rankA - rankB;
                         })
-                        .map((team) => (
-                          <tr key={team.team_id} className="hover:bg-neutral-900">
+                        .map((team, idx) => (
+                          <tr key={team.team_id} className={`hover:bg-neutral-900 transition-colors ${
+                            idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
+                          }`}>
                             <td className="py-2 px-4">
                               <a
                                 href={`/teams/${team.team_id}`}

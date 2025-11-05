@@ -743,7 +743,9 @@ export default function LeagueTabsIsland({
                                 </thead>
                                 <tbody className="divide-y divide-neutral-800">
                                   {divisionTeams.map((team, idx) => (
-                                    <tr key={team.team_id} className="hover:bg-neutral-900">
+                                    <tr key={team.team_id} className={`hover:bg-neutral-900 transition-colors ${
+                                      idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
+                                    }`}>
                                       <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
                                       <td className="py-2 px-4">
                                         <a
@@ -835,7 +837,9 @@ export default function LeagueTabsIsland({
                                         </thead>
                                         <tbody className="divide-y divide-neutral-800">
                                           {conferenceTeams.map((team, idx) => (
-                                            <tr key={team.team_id} className="hover:bg-neutral-900">
+                                            <tr key={team.team_id} className={`hover:bg-neutral-900 transition-colors ${
+                                              idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
+                                            }`}>
                                               <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
                                               <td className="py-2 px-4">
                                                 <a
@@ -904,7 +908,9 @@ export default function LeagueTabsIsland({
                       </thead>
                       <tbody className="divide-y divide-neutral-800">
                         {standings.map((team, idx) => (
-                          <tr key={team.team_id} className="hover:bg-neutral-900">
+                          <tr key={team.team_id} className={`hover:bg-neutral-900 transition-colors ${
+                            idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
+                          }`}>
                             <td className="py-2 px-4 text-neutral-400">{idx + 1}</td>
                             <td className="py-2 px-4">
                               <a

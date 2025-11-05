@@ -3,7 +3,7 @@
 const currentPath = Astro.url.pathname;
 ---
 
-<nav class="bg-patriot-blue-900 border-b border-patriot-blue-800 sticky top-0 z-50">
+<nav class="bg-patriot-blue-900/95 backdrop-blur-md border-b border-patriot-blue-800 sticky top-0 z-50 shadow-lg">
   <div class="mx-auto max-w-6xl px-6 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo/Title -->
@@ -15,77 +15,95 @@ const currentPath = Astro.url.pathname;
       </a>
       
       <!-- Desktop Navigation -->
-      <ul class="hidden lg:flex items-center gap-4 text-sm">
-        <li>
+      <ul class="hidden lg:flex items-center gap-4 text-sm" role="list">
+        <li role="none">
           <a 
             href="/" 
-            class={`hover:text-patriot-red-400 transition ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            aria-current={currentPath === '/' ? 'page' : undefined}
           >
             Home
+            {currentPath === '/' && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/teams" 
-            class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            aria-current={currentPath.startsWith('/teams') ? 'page' : undefined}
           >
             Teams
+            {currentPath.startsWith('/teams') && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/players" 
-            class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            aria-current={currentPath.startsWith('/players') ? 'page' : undefined}
           >
             Players
+            {currentPath.startsWith('/players') && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/leagues" 
-            class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            aria-current={currentPath.startsWith('/leagues') ? 'page' : undefined}
           >
             Leagues
+            {currentPath.startsWith('/leagues') && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/tournaments" 
-            class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            aria-current={currentPath.startsWith('/tournaments') ? 'page' : undefined}
           >
             Tournaments
+            {currentPath.startsWith('/tournaments') && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/matches" 
-            class={`hover:text-patriot-blue-400 transition ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            aria-current={currentPath.startsWith('/matches') ? 'page' : undefined}
           >
             Matches
+            {currentPath.startsWith('/matches') && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/achievements" 
-            class={`hover:text-patriot-red-400 transition ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            aria-current={currentPath.startsWith('/achievements') ? 'page' : undefined}
           >
             Achievements
+            {currentPath.startsWith('/achievements') && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/ranking-system" 
-            class={`hover:text-patriot-blue-400 transition ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}`}
+            aria-current={currentPath === '/ranking-system' ? 'page' : undefined}
           >
-            System
+            Ranking System
+            {currentPath === '/ranking-system' && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"></span>}
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/about" 
-            class={`hover:text-patriot-red-400 transition ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}`}
+            class={`relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}`}
+            aria-current={currentPath === '/about' ? 'page' : undefined}
           >
             About
+            {currentPath === '/about' && <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"></span>}
           </a>
         </li>
       </ul>
@@ -93,95 +111,115 @@ const currentPath = Astro.url.pathname;
       <!-- Mobile Menu Button -->
       <button 
         id="mobile-menu-button"
-        class="lg:hidden text-neutral-200 hover:text-white"
+        class="lg:hidden text-neutral-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded p-1"
         aria-label="Toggle menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
 
     <!-- Mobile Navigation (hidden by default) -->
-    <div id="mobile-menu" class="hidden lg:hidden mt-4 pb-2">
-      <ul class="space-y-1">
-        <li>
+    <div id="mobile-menu" class="hidden lg:hidden mt-4 pb-2" role="menu">
+      <ul class="space-y-1" role="list">
+        <li role="none">
           <a 
             href="/" 
             aria-label="Navigate to Home page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            aria-current={currentPath === '/' ? 'page' : undefined}
+            role="menuitem"
           >
             Home
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/teams" 
             aria-label="Navigate to Teams page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            aria-current={currentPath.startsWith('/teams') ? 'page' : undefined}
+            role="menuitem"
           >
             Teams
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/players" 
             aria-label="Navigate to Players page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            aria-current={currentPath.startsWith('/players') ? 'page' : undefined}
+            role="menuitem"
           >
             Players
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/leagues" 
             aria-label="Navigate to Leagues page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            aria-current={currentPath.startsWith('/leagues') ? 'page' : undefined}
+            role="menuitem"
           >
             Leagues
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/tournaments" 
             aria-label="Navigate to Tournaments page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            aria-current={currentPath.startsWith('/tournaments') ? 'page' : undefined}
+            role="menuitem"
           >
             Tournaments
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/matches" 
             aria-label="Navigate to Matches page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            aria-current={currentPath.startsWith('/matches') ? 'page' : undefined}
+            role="menuitem"
           >
             Matches
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/achievements" 
             aria-label="Navigate to Achievements page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            aria-current={currentPath.startsWith('/achievements') ? 'page' : undefined}
+            role="menuitem"
           >
             Achievements
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/ranking-system" 
             aria-label="Navigate to Ranking System page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}`}
+            aria-current={currentPath === '/ranking-system' ? 'page' : undefined}
+            role="menuitem"
           >
             Ranking System
           </a>
         </li>
-        <li>
+        <li role="none">
           <a 
             href="/about" 
             aria-label="Navigate to About page"
-            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            class={`block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}`}
+            aria-current={currentPath === '/about' ? 'page' : undefined}
+            role="menuitem"
           >
             About
           </a>
@@ -192,12 +230,23 @@ const currentPath = Astro.url.pathname;
 </nav>
 
 <script>
-  // Mobile menu toggle
+  // Mobile menu toggle with accessibility
   const button = document.getElementById('mobile-menu-button');
   const menu = document.getElementById('mobile-menu');
   
   button?.addEventListener('click', () => {
+    const isHidden = menu?.classList.contains('hidden');
     menu?.classList.toggle('hidden');
+    button?.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+  });
+
+  // Close mobile menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu && !menu.classList.contains('hidden')) {
+      menu.classList.add('hidden');
+      button?.setAttribute('aria-expanded', 'false');
+      button?.focus();
+    }
   });
 </script>
 

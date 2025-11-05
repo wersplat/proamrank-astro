@@ -2137,36 +2137,601 @@ Implementing Open Graph meta tags, starting with BaseLayout, then updating all p
 
 ---
 
-<tool-use data-tool-type="unknown" data-tool-name="search_replace">
-<details>
-<summary>Tool use: **search_replace**</summary>
+<tool-use data-tool-type="write" data-tool-name="search_replace">
 
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/BaseLayout.astro</summary>
 
-Parameters:
+**Chunk 1**
+Lines added: 12, lines removed: 1
 
-```json
-{
-  &quot;relativeWorkspacePath&quot;: &quot;/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/BaseLayout.astro&quot;
-}
+```diff
+@@ -3,10 +3,21 @@
+    title: string;
+    description: string;
++   ogImage?: string;
++   ogType?: string;
++   ogUrl?: string;
++   twitterCard?: &quot;summary&quot; | &quot;summary_large_image&quot;;
+  }
+  
+- const { title, description } = Astro.props;
++ const { title, description, ogImage, ogType = &quot;website&quot;, ogUrl, twitterCard = &quot;summary_large_image&quot; } = Astro.props;
+  const fullTitle = title.includes(&quot;Global Rank Analytics Data Engine&quot;) 
+    ? title 
+    : &#96;${title} - Global Rank Analytics Data Engine (G.R.A.D.E)&#96;;
++ 
++ // Construct absolute URLs
++ const siteUrl = Astro.url.origin;
++ const canonicalUrl = ogUrl || Astro.url.href;
++ const defaultImage = &#96;${siteUrl}/GR.svg&#96;;
++ const ogImageUrl = ogImage ? (ogImage.startsWith(&#39;http&#39;) ? ogImage : &#96;${siteUrl}${ogImage}&#96;) : defaultImage;
++ const siteName = &quot;Global Rank Analytics Data Engine (G.R.A.D.E.)&quot;;
+  ---
+  
 ```
-Additional data:
 
-```json
-{
-  &quot;codeblockId&quot;: &quot;7a3a199c-e0f1-4ac0-b125-b3e7b90db661&quot;
-}
+**Chunk 2**
+Lines added: 18, lines removed: undefined
+
+```diff
+@@ -17,4 +28,22 @@
+      &lt;title&gt;{fullTitle}&lt;/title&gt;
+      &lt;meta name=&quot;description&quot; content={description} /&gt;
++     
++     &lt;!-- Open Graph / Facebook --&gt;
++     &lt;meta property=&quot;og:type&quot; content={ogType} /&gt;
++     &lt;meta property=&quot;og:url&quot; content={canonicalUrl} /&gt;
++     &lt;meta property=&quot;og:title&quot; content={fullTitle} /&gt;
++     &lt;meta property=&quot;og:description&quot; content={description} /&gt;
++     &lt;meta property=&quot;og:image&quot; content={ogImageUrl} /&gt;
++     &lt;meta property=&quot;og:site_name&quot; content={siteName} /&gt;
++     
++     &lt;!-- Twitter Card --&gt;
++     &lt;meta name=&quot;twitter:card&quot; content={twitterCard} /&gt;
++     &lt;meta name=&quot;twitter:title&quot; content={fullTitle} /&gt;
++     &lt;meta name=&quot;twitter:description&quot; content={description} /&gt;
++     &lt;meta name=&quot;twitter:image&quot; content={ogImageUrl} /&gt;
++     
++     &lt;!-- Canonical URL --&gt;
++     &lt;link rel=&quot;canonical&quot; href={canonicalUrl} /&gt;
++     
+      &lt;link rel=&quot;icon&quot; type=&quot;image/svg+xml&quot; href=&quot;/favicon.svg&quot; /&gt;
+      &lt;link rel=&quot;apple-touch-icon&quot; sizes=&quot;180x180&quot; href=&quot;/apple-touch-icon.png&quot; /&gt;
 ```
-User decision: **accepted**
 
-Status: **loading**
+</details>
 
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="todo_write">
+<details><summary>Tool use: **todo_write** • Todo List</summary>
+
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] undefined
+- [-] undefined
 
 </details>
 </tool-use>
 
 ---
 
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
 
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 1
+
+```diff
+@@ -71,5 +71,7 @@
+    title=&quot;Home&quot;
+    description=&quot;Comprehensive global rankings and analytics for NBA 2K Pro-Am competitive teams and players&quot;
+- &gt;
++   ogImage=&quot;/GR.svg&quot;
++   ogType=&quot;website&quot;
++ /&gt;
+    &lt;Navigation /&gt;
+    &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="todo_write">
+<details><summary>Tool use: **todo_write** • Todo List</summary>
+
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] undefined
+- [x] undefined
+- [-] undefined
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 8, lines removed: 1
+
+```diff
+@@ -170,10 +170,17 @@
+  
+  const teamDescription = &#96;View ${team.name}&#39;s profile, roster, match history, and statistics. Track team performance, rankings, and achievements in NBA 2K Pro-Am competitions.&#96;;
++ 
++ // Construct Open Graph image URL
++ const ogImage = team.logo_url || &quot;/GR.svg&quot;;
++ const ogUrl = Astro.url.href;
+  ---
+  
+  &lt;BaseLayout 
+    title={team.name}
+    description={teamDescription}
+- &gt;
++   ogImage={ogImage}
++   ogType=&quot;website&quot;
++   ogUrl={ogUrl}
++ /&gt;
+    &lt;Navigation /&gt;
+      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="todo_write">
+<details><summary>Tool use: **todo_write** • Todo List</summary>
+
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [-] undefined
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 8, lines removed: 1
+
+```diff
+@@ -185,10 +185,17 @@
+  
+  const playerDescription = &#96;View ${player.gamertag}&#39;s profile, statistics, game logs, and achievements. Track player performance, ratings, and career progress in NBA 2K Pro-Am competitions.&#96;;
++ 
++ // Construct Open Graph image URL (use default for now, could add player avatars later)
++ const ogImage = &quot;/GR.svg&quot;;
++ const ogUrl = Astro.url.href;
+  ---
+  
+  &lt;BaseLayout 
+    title={player.gamertag}
+    description={playerDescription}
+- &gt;
++   ogImage={ogImage}
++   ogType=&quot;profile&quot;
++   ogUrl={ogUrl}
++ /&gt;
+    &lt;Navigation /&gt;
+    &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="todo_write">
+<details><summary>Tool use: **todo_write** • Todo List</summary>
+
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [-] undefined
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 8, lines removed: 1
+
+```diff
+@@ -586,10 +586,17 @@
+  
+  const leagueDescription = &#96;View ${league.league_name} standings, schedules, match results, and statistics. Track season progress and team performance in this NBA 2K Pro-Am league.&#96;;
++ 
++ // Construct Open Graph image URL
++ const ogImage = league.league_logo || &quot;/GR.svg&quot;;
++ const ogUrl = Astro.url.href;
+  ---
+  
+  &lt;BaseLayout 
+    title={league.league_name}
+    description={leagueDescription}
+- &gt;
++   ogImage={ogImage}
++   ogType=&quot;website&quot;
++   ogUrl={ogUrl}
++ /&gt;
+    &lt;Navigation /&gt;
+      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="todo_write">
+<details><summary>Tool use: **todo_write** • Todo List</summary>
+
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [-] undefined
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 8, lines removed: 1
+
+```diff
+@@ -255,10 +255,17 @@
+  
+  const tournamentDescription = &#96;View ${tournament.name} bracket, results, matches, and prize information. Track tournament progress and team performance in this NBA 2K Pro-Am competition.&#96;;
++ 
++ // Construct Open Graph image URL (prefer banner, fallback to default)
++ const ogImage = tournament.banner_url || &quot;/GR.svg&quot;;
++ const ogUrl = Astro.url.href;
+  ---
+  
+  &lt;BaseLayout 
+    title={tournament.name}
+    description={tournamentDescription}
+- &gt;
++   ogImage={ogImage}
++   ogType=&quot;website&quot;
++   ogUrl={ogUrl}
++ /&gt;
+    &lt;Navigation /&gt;
+      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="todo_write">
+<details><summary>Tool use: **todo_write** • Todo List</summary>
+
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [-] undefined
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matchups/[id].astro</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matchups/[id].astro</summary>
+
+**Chunk 1**
+Lines added: 8, lines removed: 1
+
+```diff
+@@ -414,10 +414,17 @@
+  
+  const matchupDescription = &#96;View ${spotlightMatch.team_a.name} vs ${spotlightMatch.team_b.name} matchup details, statistics, and head-to-head history in NBA 2K Pro-Am competitions.&#96;;
++ 
++ // Construct Open Graph image URL (use team logos if available, fallback to default)
++ const ogImage = spotlightMatch.team_a.logo_url || spotlightMatch.team_b.logo_url || &quot;/GR.svg&quot;;
++ const ogUrl = Astro.url.href;
+  ---
+  
+  &lt;BaseLayout 
+    title={&#96;${spotlightMatch.team_a.name} vs ${spotlightMatch.team_b.name}&#96;}
+    description={matchupDescription}
+- &gt;
++   ogImage={ogImage}
++   ogType=&quot;website&quot;
++   ogUrl={ogUrl}
++ /&gt;
+    &lt;Navigation /&gt;
+    &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="todo_write">
+<details><summary>Tool use: **todo_write** • Todo List</summary>
+
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] Audit existing internal links across all components and pages to identify gaps
+- [x] Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)
+- [x] Add team links to home page mobile cards and verify desktop table links
+- [x] Add team links in tournament standings/results and organizer links
+- [x] Verify and add team links in league standings and top performers
+- [x] Add league/tournament links in team match history and related sections
+- [x] Add team/league/tournament links in player game logs
+- [x] Create breadcrumb component and add to detail pages
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+- [x] undefined
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="read_lints">
+<details>
+          <summary>Tool use: **read_lints** • Read lints for 2 files</summary>
+      
+Lint paths:
+
+- `proam-rankings/src/components/BaseLayout.astro`
+- `proam-rankings/src/pages`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+Implemented Open Graph meta tags across the site. Summary:
+
+## Implementation Summary
+
+### 1. Enhanced BaseLayout Component
+- Added optional props: `ogImage`, `ogType`, `ogUrl`, `twitterCard`
+- Implemented Open Graph tags (og:title, og:description, og:image, og:url, og:type, og:site_name)
+- Implemented Twitter Card tags (twitter:card, twitter:title, twitter:description, twitter:image)
+- Added canonical URL support
+- Converts relative image URLs to absolute URLs
+- Defaults to `/GR.svg` if no image is provided
+
+### 2. Home Page
+- Added Open Graph tags with site logo (`/GR.svg`)
+- Set og:type to "website"
+
+### 3. Team Detail Pages
+- Uses team logo as og:image (falls back to default)
+- Includes canonical URL
+- Set og:type to "website"
+
+### 4. Player Detail Pages
+- Uses default image (ready for player avatars)
+- Set og:type to "profile"
+- Includes canonical URL
+
+### 5. League Detail Pages
+- Uses league logo as og:image
+- Set og:type to "website"
+- Includes canonical URL
+
+### 6. Tournament Detail Pages
+- Uses tournament banner_url as og:image (falls back to default)
+- Set og:type to "website"
+- Includes canonical URL
+
+### 7. Matchup/Spotlight Pages
+- Uses team logo as og:image (first available team logo)
+- Set og:type to "website"
+- Includes canonical URL
+
+All pages now include:
+- Open Graph tags for Facebook, LinkedIn, etc.
+- Twitter Card tags (using "summary_large_image" format)
+- Canonical URLs for SEO
+- Absolute URLs for images and links
+
+When links are shared on social platforms, they will display rich previews with appropriate images, titles, and descriptions.
 
 ---
 

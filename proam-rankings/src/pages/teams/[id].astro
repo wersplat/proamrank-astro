@@ -173,6 +173,50 @@ const teamDescription = `View ${team.name}'s profile, roster, match history, and
 // Construct Open Graph image URL
 const ogImage = team.logo_url || "/GR.svg";
 const ogUrl = Astro.url.href;
+
+// Structured data for team
+const teamStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "SportsTeam",
+  "name": team.name,
+  "description": teamDescription,
+  "url": ogUrl,
+  "logo": team.logo_url ? (team.logo_url.startsWith('http') ? team.logo_url : `${Astro.url.origin}${team.logo_url}`) : `${Astro.url.origin}/GR.svg`,
+  "sport": "Basketball",
+  "identifier": team.id,
+  ...(team.global_rank && {
+    "ranking": {
+      "@type": "ItemList",
+      "position": team.global_rank
+    }
+  })
+};
+
+// Breadcrumb structured data
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": Astro.url.origin
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Teams",
+      "item": `${Astro.url.origin}/teams`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": team.name,
+      "item": ogUrl
+    }
+  ]
+};
 ---
 
 <BaseLayout 
@@ -182,6 +226,8 @@ const ogUrl = Astro.url.href;
   ogType="website"
   ogUrl={ogUrl}
 />
+  <script type="application/ld+json" set:html={JSON.stringify(teamStructuredData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
   <Navigation />
     <main class="mx-auto max-w-6xl p-6">
       <Breadcrumbs items={[
