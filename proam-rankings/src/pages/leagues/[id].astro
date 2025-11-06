@@ -393,13 +393,15 @@ const playoffPlayerStats = (playoffStatsRaw ?? []).map((p: any) => ({
 
 // Fetch Open Tournament data
 let openTournament = null;
+let openBannerUrl: string | null = null;
 const { data: openTournamentData } = await supa((Astro.locals as any).runtime)
   .from("league_open")
-  .select("open_champion, open_prize, status, start_date, finals_date, tournament_type, series_format")
+  .select("open_champion, open_prize, status, start_date, finals_date, tournament_type, series_format, winner_banner_url")
   .eq("season_id", seasonId)
   .maybeSingle();
 
 if (openTournamentData) {
+  openBannerUrl = openTournamentData.winner_banner_url || null;
   // Fetch open tournament matches
   const { data: openMatchesData } = await supa((Astro.locals as any).runtime)
     .from("league_open_matches")
@@ -475,13 +477,15 @@ if (openTournamentData) {
 
 // Fetch Playoff Tournament data
 let playoffTournament = null;
+let playoffBannerUrl: string | null = null;
 const { data: playoffTournamentData } = await supa((Astro.locals as any).runtime)
   .from("league_playoff")
-  .select("playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type, series_format")
+  .select("playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type, series_format, playoff_champion_url")
   .eq("season_id", seasonId)
   .maybeSingle();
 
 if (playoffTournamentData) {
+  playoffBannerUrl = playoffTournamentData.playoff_champion_url || null;
   // Fetch playoff tournament matches
   const { data: playoffMatchesData } = await supa((Astro.locals as any).runtime)
     .from("league_playoff_matches")
@@ -582,6 +586,10 @@ const leagueInfoForTabs = {
   regular_season_champion: league.best_record_team || null,
   open_champion: league.open_champion || null,
   playoff_champion: league.playoff_champion || null,
+  // Banner URLs from respective tables
+  open_banner_url: openBannerUrl,
+  regular_season_banner_url: null, // Placeholder for future regular season banner URL field
+  playoff_banner_url: playoffBannerUrl,
 };
 
 const leagueDescription = `View ${league.league_name} standings, schedules, match results, and statistics. Track season progress and team performance in this NBA 2K Pro-Am league.`;

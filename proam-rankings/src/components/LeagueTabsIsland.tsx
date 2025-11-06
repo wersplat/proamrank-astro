@@ -137,6 +137,9 @@ type LeagueInfo = {
   regular_season_champion?: string | null;
   open_champion?: string | null;
   playoff_champion?: string | null;
+  open_banner_url?: string | null;
+  regular_season_banner_url?: string | null;
+  playoff_banner_url?: string | null;
 };
 
 type BracketMatch = {
@@ -1879,6 +1882,51 @@ export default function LeagueTabsIsland({
                   </div>
                 )}
 
+                {/* Champion Banners */}
+                {(leagueInfo?.open_banner_url || leagueInfo?.regular_season_banner_url || leagueInfo?.playoff_banner_url) && (
+                  <div className="pt-4 border-t border-gray-200 dark:border-neutral-800">
+                    <div className="text-sm text-gray-600 dark:text-neutral-400 mb-3">Champion Banners</div>
+                    <div className="grid gap-4">
+                      {leagueInfo?.open_banner_url && (
+                        <div>
+                          <div className="text-xs text-gray-500 dark:text-neutral-500 mb-2">Open Tournament</div>
+                          <div className="w-full">
+                            <img
+                              src={leagueInfo.open_banner_url}
+                              alt="Open Tournament Winner Banner"
+                              className="w-full h-auto rounded-lg object-contain max-h-96"
+                            />
+                          </div>
+                        </div>
+                      )}
+                      {leagueInfo?.regular_season_banner_url && (
+                        <div>
+                          <div className="text-xs text-gray-500 dark:text-neutral-500 mb-2">Regular Season</div>
+                          <div className="w-full">
+                            <img
+                              src={leagueInfo.regular_season_banner_url}
+                              alt="Regular Season Winner Banner"
+                              className="w-full h-auto rounded-lg object-contain max-h-96"
+                            />
+                          </div>
+                        </div>
+                      )}
+                      {leagueInfo?.playoff_banner_url && (
+                        <div>
+                          <div className="text-xs text-gray-500 dark:text-neutral-500 mb-2">Playoff Tournament</div>
+                          <div className="w-full">
+                            <img
+                              src={leagueInfo.playoff_banner_url}
+                              alt="Playoff Tournament Winner Banner"
+                              className="w-full h-auto rounded-lg object-contain max-h-96"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Triple Crown Progress */}
                 {tripleCrownData.length > 0 && (
                   <div className="pt-4 border-t border-gray-200 dark:border-neutral-800">
@@ -1891,69 +1939,60 @@ export default function LeagueTabsIsland({
                           <div key={team.teamId} className="flex items-center gap-3">
                             <span className="text-sm font-medium flex-1 text-gray-900 dark:text-white">{team.teamName}</span>
                             <div className="flex items-center gap-2">
-                              {/* Regular Season Star */}
+                              {/* Regular Season Crown */}
                               <div className="flex flex-col items-center gap-1" title="Regular Season">
-                                <svg
-                                  className={`w-5 h-5 ${
+                                <img
+                                  src="/crown512.svg"
+                                  alt="Regular Season Crown"
+                                  className={`w-7 h-7 ${
                                     team.hasRegularSeason
-                                      ? 'text-yellow-600 dark:text-yellow-400'
-                                      : 'text-gray-400 dark:text-neutral-600'
+                                      ? 'opacity-100'
+                                      : 'opacity-30 grayscale'
                                   }`}
-                                  fill={team.hasRegularSeason ? 'currentColor' : 'none'}
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={team.hasRegularSeason ? 0 : 1.5}
-                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                                  />
-                                </svg>
+                                  style={{
+                                    filter: team.hasRegularSeason 
+                                      ? 'brightness(1.2) saturate(1.5)' 
+                                      : 'none'
+                                  }}
+                                />
                                 <span className="text-[8px] text-gray-500 dark:text-neutral-500">RS</span>
                               </div>
                               
-                              {/* Open Tournament Star */}
+                              {/* Open Tournament Crown */}
                               <div className="flex flex-col items-center gap-1" title="Open Tournament">
-                                <svg
-                                  className={`w-5 h-5 ${
+                                <img
+                                  src="/crown512.svg"
+                                  alt="Open Tournament Crown"
+                                  className={`w-7 h-7 ${
                                     team.hasOpen
-                                      ? 'text-patriot-blue-600 dark:text-blue-400'
-                                      : 'text-gray-400 dark:text-neutral-600'
+                                      ? 'opacity-100'
+                                      : 'opacity-30 grayscale'
                                   }`}
-                                  fill={team.hasOpen ? 'currentColor' : 'none'}
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={team.hasOpen ? 0 : 1.5}
-                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                                  />
-                                </svg>
+                                  style={{
+                                    filter: team.hasOpen 
+                                      ? 'brightness(1.1) saturate(1.8) hue-rotate(200deg)' 
+                                      : 'none'
+                                  }}
+                                />
                                 <span className="text-[8px] text-gray-500 dark:text-neutral-500">Open</span>
                               </div>
                               
-                              {/* Playoff Tournament Star */}
+                              {/* Playoff Tournament Crown */}
                               <div className="flex flex-col items-center gap-1" title="Playoff Tournament">
-                                <svg
-                                  className={`w-5 h-5 ${
+                                <img
+                                  src="/crown512.svg"
+                                  alt="Playoff Tournament Crown"
+                                  className={`w-7 h-7 ${
                                     team.hasPlayoff
-                                      ? 'text-purple-600 dark:text-purple-400'
-                                      : 'text-gray-400 dark:text-neutral-600'
+                                      ? 'opacity-100'
+                                      : 'opacity-30 grayscale'
                                   }`}
-                                  fill={team.hasPlayoff ? 'currentColor' : 'none'}
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={team.hasPlayoff ? 0 : 1.5}
-                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                                  />
-                                </svg>
+                                  style={{
+                                    filter: team.hasPlayoff 
+                                      ? 'brightness(1.1) saturate(1.8) hue-rotate(270deg)' 
+                                      : 'none'
+                                  }}
+                                />
                                 <span className="text-[8px] text-gray-500 dark:text-neutral-500">Playoff</span>
                               </div>
                             </div>

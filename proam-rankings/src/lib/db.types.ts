@@ -2068,6 +2068,7 @@ export type Database = {
           tournament_type:
             | Database["public"]["Enums"]["tournament_format"]
             | null
+          winner_banner_url: string | null
         }
         Insert: {
           created_at?: string
@@ -2086,6 +2087,7 @@ export type Database = {
           tournament_type?:
             | Database["public"]["Enums"]["tournament_format"]
             | null
+          winner_banner_url?: string | null
         }
         Update: {
           created_at?: string
@@ -2104,6 +2106,7 @@ export type Database = {
           tournament_type?:
             | Database["public"]["Enums"]["tournament_format"]
             | null
+          winner_banner_url?: string | null
         }
         Relationships: [
           {
@@ -2556,6 +2559,7 @@ export type Database = {
           hr_per_rd: number | null
           id: string
           playoff_champion: string | null
+          playoff_champion_url: string | null
           playoff_prize: number | null
           rp_value: number | null
           season_id: string
@@ -2574,6 +2578,7 @@ export type Database = {
           hr_per_rd?: number | null
           id?: string
           playoff_champion?: string | null
+          playoff_champion_url?: string | null
           playoff_prize?: number | null
           rp_value?: number | null
           season_id: string
@@ -2592,6 +2597,7 @@ export type Database = {
           hr_per_rd?: number | null
           id?: string
           playoff_champion?: string | null
+          playoff_champion_url?: string | null
           playoff_prize?: number | null
           rp_value?: number | null
           season_id?: string
