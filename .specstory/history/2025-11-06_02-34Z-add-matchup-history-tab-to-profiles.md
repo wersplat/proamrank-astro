@@ -753,3 +753,342 @@ All linter errors are resolved. The feature is ready to use.
 
 ---
 
+_**User (2025-11-05 21:20Z)**_
+
+adjust the mobile version 
+
+---
+
+_**Agent (model composer-1, mode Agent)**_
+
+
+
+---
+
+
+Reviewing the matchup history tab layout and optimizing for mobile:
+
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Optimizing the matchup history tab for mobile: improving layout, spacing, and responsiveness.
+
+
+---
+
+<tool-use data-tool-type="write" data-tool-name="search_replace">
+
+<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: 3
+
+```diff
+@@ -657,11 +657,11 @@
+          {activeTab === 4 &amp;&amp; (
+            &lt;div&gt;
+-             &lt;h3 className=&quot;text-lg font-bold mb-4 text-gray-900 dark:text-white&quot;&gt;Matchup History&lt;/h3&gt;
++             &lt;h3 className=&quot;text-base sm:text-lg font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white&quot;&gt;Matchup History&lt;/h3&gt;
+              {matchups.length === 0 ? (
+-               &lt;div className=&quot;text-center py-8 text-gray-600 dark:text-neutral-400&quot;&gt;
++               &lt;div className=&quot;text-center py-8 text-gray-600 dark:text-neutral-400 text-sm&quot;&gt;
+                  No matchup history available.
+                &lt;/div&gt;
+              ) : (
+-               &lt;div className=&quot;space-y-4&quot;&gt;
++               &lt;div className=&quot;space-y-3 sm:space-y-4&quot;&gt;
+                  {matchups.map((matchup) =&gt; {
+                    // Determine which team is the current team and which is the opponent
+```
+
+**Chunk 2**
+Lines added: 31, lines removed: 17
+
+```diff
+@@ -688,24 +688,38 @@
+                      &lt;div 
+                        key={&#96;${matchup.team_1_id}-${matchup.team_2_id}&#96;}
+-                       className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
++                       className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-3 sm:p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
+                      &gt;
+-                       &lt;div className=&quot;flex items-start gap-4&quot;&gt;
++                       &lt;div className=&quot;flex flex-col sm:flex-row items-start gap-3 sm:gap-4&quot;&gt;
+                          {/* Opponent Logo */}
+-                         {opponentLogo ? (
+-                           &lt;img 
+-                             src={opponentLogo} 
+-                             alt={opponentName} 
+-                             className=&quot;h-16 w-16 rounded-lg object-cover flex-shrink-0&quot;
+-                           /&gt;
+-                         ) : (
+-                           &lt;div className=&quot;h-16 w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-lg font-bold flex-shrink-0&quot;&gt;
+-                             {opponentName?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                           &lt;/div&gt;
+-                         )}
+-                         
++                         &lt;div className=&quot;flex-shrink-0 w-full sm:w-auto flex sm:block items-center gap-3 sm:gap-0&quot;&gt;
++                           {opponentLogo ? (
++                             &lt;img 
++                               src={opponentLogo} 
++                               alt={opponentName} 
++                               className=&quot;h-12 w-12 sm:h-16 sm:w-16 rounded-lg object-cover&quot;
++                             /&gt;
++                           ) : (
++                             &lt;div className=&quot;h-12 w-12 sm:h-16 sm:w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-sm sm:text-lg font-bold&quot;&gt;
++                               {opponentName?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                             &lt;/div&gt;
++                           )}
++                           
++                           {/* Record badge on mobile - show next to logo */}
++                           &lt;div className={&#96;sm:hidden text-xs font-semibold px-2 py-1 rounded whitespace-nowrap ${
++                             isWinningRecord 
++                               ? &#39;bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300&#39;
++                               : isLosingRecord
++                               ? &#39;bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300&#39;
++                               : &#39;bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300&#39;
++                           }&#96;}&gt;
++                             {teamWins}-{opponentWins}
++                           &lt;/div&gt;
++                         &lt;/div&gt;
++                         
+                          {/* Matchup Info */}
+-                         &lt;div className=&quot;flex-1 min-w-0&quot;&gt;
+-                           &lt;div className=&quot;flex items-center justify-between mb-2&quot;&gt;
+-                             &lt;h4 className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
++                         &lt;div className=&quot;flex-1 min-w-0 w-full&quot;&gt;
++                           {/* Header - Stack on mobile, horizontal on larger screens */}
++                           &lt;div className=&quot;flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2 sm:mb-2&quot;&gt;
++                             &lt;h4 className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white truncate&quot;&gt;
+                                &lt;a 
+                                  href={&#96;/teams/${opponentId}&#96;}
+```
+
+**Chunk 3**
+Lines added: 2, lines removed: 1
+
+```diff
+@@ -715,5 +729,6 @@
+                                &lt;/a&gt;
+                              &lt;/h4&gt;
+-                             &lt;div className={&#96;text-sm font-semibold px-2 py-1 rounded ${
++                             {/* Record badge - hidden on mobile (shown above), visible on larger screens */}
++                             &lt;div className={&#96;hidden sm:block text-sm font-semibold px-2 py-1 rounded whitespace-nowrap ${
+                                isWinningRecord 
+                                  ? &#39;bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300&#39;
+```
+
+**Chunk 4**
+Lines added: 14, lines removed: 13
+
+```diff
+@@ -726,25 +741,26 @@
+                            &lt;/div&gt;
+                            
+-                           &lt;div className=&quot;grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm&quot;&gt;
+-                             &lt;div&gt;
+-                               &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Total Meetings:&lt;/span&gt;
+-                               &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{matchup.total_meetings}&lt;/span&gt;
++                           {/* Stats Grid - More compact on mobile */}
++                           &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm&quot;&gt;
++                             &lt;div className=&quot;break-words&quot;&gt;
++                               &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Meetings:&lt;/span&gt;
++                               &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{matchup.total_meetings}&lt;/span&gt;
+                              &lt;/div&gt;
+-                             &lt;div&gt;
++                             &lt;div className=&quot;break-words&quot;&gt;
+                                &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Win %:&lt;/span&gt;
+-                               &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{winPercentage}%&lt;/span&gt;
++                               &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{winPercentage}%&lt;/span&gt;
+                              &lt;/div&gt;
+                              {matchup.last_meeting &amp;&amp; (
+-                               &lt;div&gt;
+-                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Last Meeting:&lt;/span&gt;
+-                                 &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
+-                                   {new Date(matchup.last_meeting).toLocaleDateString()}
++                               &lt;div className=&quot;break-words&quot;&gt;
++                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Last:&lt;/span&gt;
++                                 &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white text-[10px] sm:text-sm&quot;&gt;
++                                   {new Date(matchup.last_meeting).toLocaleDateString(&#39;en-US&#39;, { month: &#39;short&#39;, day: &#39;numeric&#39;, year: &#39;numeric&#39; })}
+                                  &lt;/span&gt;
+                                &lt;/div&gt;
+                              )}
+                              {matchup.days_since_last_meeting !== null &amp;&amp; (
+-                               &lt;div&gt;
+-                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Days Ago:&lt;/span&gt;
+-                                 &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
++                               &lt;div className=&quot;break-words&quot;&gt;
++                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Days:&lt;/span&gt;
++                                 &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
+                                    {matchup.days_since_last_meeting}
+                                  &lt;/span&gt;
+```
+
+**Chunk 5**
+Lines added: 5, lines removed: 5
+
+```diff
+@@ -755,12 +771,12 @@
+                            {/* Average Scores */}
+                            {(teamAvgScore !== null || opponentAvgScore !== null) &amp;&amp; (
+-                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
+-                               &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Average Scores:&lt;/div&gt;
+-                               &lt;div className=&quot;flex items-center gap-2&quot;&gt;
+-                                 &lt;span className=&quot;text-sm font-semibold text-gray-900 dark:text-white&quot;&gt;
++                             &lt;div className=&quot;mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
++                               &lt;div className=&quot;text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Average Scores:&lt;/div&gt;
++                               &lt;div className=&quot;flex items-center gap-2 text-xs sm:text-sm&quot;&gt;
++                                 &lt;span className=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;
+                                    {teamAvgScore ? teamAvgScore.toFixed(1) : &#39;-&#39;}
+                                  &lt;/span&gt;
+                                  &lt;span className=&quot;text-gray-400&quot;&gt;vs&lt;/span&gt;
+-                                 &lt;span className=&quot;text-sm font-semibold text-gray-900 dark:text-white&quot;&gt;
++                                 &lt;span className=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;
+                                    {opponentAvgScore ? opponentAvgScore.toFixed(1) : &#39;-&#39;}
+                                  &lt;/span&gt;
+```
+
+**Chunk 6**
+Lines added: 4, lines removed: 4
+
+```diff
+@@ -771,8 +787,8 @@
+                            {/* Recent Form (Last 5 Games) */}
+                            {(teamLast5Wins &gt; 0 || opponentLast5Wins &gt; 0) &amp;&amp; (
+-                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
+-                               &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Last 5 Games:&lt;/div&gt;
+-                               &lt;div className=&quot;flex items-center gap-2&quot;&gt;
+-                                 &lt;span className={&#96;text-sm font-semibold ${
++                             &lt;div className=&quot;mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
++                               &lt;div className=&quot;text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Last 5 Games:&lt;/div&gt;
++                               &lt;div className=&quot;flex items-center gap-2 text-xs sm:text-sm&quot;&gt;
++                                 &lt;span className={&#96;font-semibold ${
+                                    teamLast5Wins &gt; opponentLast5Wins
+                                      ? &#39;text-green-600 dark:text-green-400&#39;
+```
+
+**Chunk 7**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -783,5 +799,5 @@
+                                    {teamLast5Wins}-{opponentLast5Wins}
+                                  &lt;/span&gt;
+-                                 &lt;span className=&quot;text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
++                                 &lt;span className=&quot;text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
+                                    ({teamLast5Wins + opponentLast5Wins} meetings)
+                                  &lt;/span&gt;
+```
+
+**Chunk 8**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -792,6 +808,6 @@
+                            {/* Context Breakdown */}
+                            {(matchup.league_meetings &gt; 0 || matchup.tournament_meetings &gt; 0) &amp;&amp; (
+-                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
+-                               &lt;div className=&quot;flex items-center gap-4 text-xs&quot;&gt;
++                             &lt;div className=&quot;mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
++                               &lt;div className=&quot;flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs flex-wrap&quot;&gt;
+                                  {matchup.league_meetings &gt; 0 &amp;&amp; (
+                                    &lt;div&gt;
+```
+
+**Chunk 9**
+Lines added: 2, lines removed: 2
+
+```diff
+@@ -812,6 +828,6 @@
+                            {/* First Meeting */}
+                            {matchup.first_meeting &amp;&amp; (
+-                             &lt;div className=&quot;mt-2 text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
+-                               First meeting: {new Date(matchup.first_meeting).toLocaleDateString()}
++                             &lt;div className=&quot;mt-2 text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
++                               First meeting: {new Date(matchup.first_meeting).toLocaleDateString(&#39;en-US&#39;, { month: &#39;short&#39;, day: &#39;numeric&#39;, year: &#39;numeric&#39; })}
+                              &lt;/div&gt;
+                            )}
+```
+
+</details>
+
+</tool-use>
+
+---
+
+<tool-use data-tool-type="generic" data-tool-name="read_lints">
+<details>
+          <summary>Tool use: **read_lints** • Read lints for 1 file</summary>
+      
+Lint paths:
+
+- `proam-rankings/src/components/TeamTabsIsland.tsx`
+
+Lint results
+
+
+**No lint errors found**
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+## Mobile Optimizations:
+
+1. **Smaller logo and spacing**
+   - Logo: `h-12 w-12` on mobile → `h-16 w-16` on larger screens
+   - Padding: `p-3` on mobile → `p-4` on larger screens
+   - Gap spacing: `gap-2` on mobile → `gap-3` on larger screens
+
+2. **Responsive header layout**
+   - Mobile: Logo and record badge displayed side-by-side, then opponent name below
+   - Desktop: Logo on left, name and record badge on the same row
+
+3. **Compact stats grid**
+   - Mobile: 2-column grid with shorter labels ("Meetings" vs "Total Meetings", "Last" vs "Last Meeting", "Days" vs "Days Ago")
+   - Desktop: 4-column grid with full labels
+
+4. **Smaller text sizes**
+   - Headings: `text-base sm:text-lg`
+   - Stats: `text-xs sm:text-sm`
+   - Labels: `text-[10px] sm:text-xs`
+   - Dates formatted more compactly
+
+5. **Better spacing**
+   - Reduced margins and padding on mobile (`mt-2 sm:mt-3`, `pt-2 sm:pt-3`)
+   - Tighter gaps between sections (`space-y-3 sm:space-y-4`)
+
+6. **Text handling**
+   - Opponent name truncates to prevent overflow
+   - Added `break-words` for long text
+   - Used `flex-wrap` for context breakdown
+
+The tab is now optimized for mobile while maintaining the desktop layout.
+
+---
+

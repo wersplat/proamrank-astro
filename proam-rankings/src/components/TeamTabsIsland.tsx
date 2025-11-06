@@ -656,13 +656,13 @@ export default function TeamTabsIsland({
         {/* Matchup History Tab */}
         {activeTab === 4 && (
           <div>
-            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Matchup History</h3>
+            <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white">Matchup History</h3>
             {matchups.length === 0 ? (
-              <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
+              <div className="text-center py-8 text-gray-600 dark:text-neutral-400 text-sm">
                 No matchup history available.
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {matchups.map((matchup) => {
                   // Determine which team is the current team and which is the opponent
                   const isTeam1 = matchup.team_1_id === teamId;
@@ -687,26 +687,40 @@ export default function TeamTabsIsland({
                   return (
                     <div 
                       key={`${matchup.team_1_id}-${matchup.team_2_id}`}
-                      className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
+                      className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-3 sm:p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
                     >
-                      <div className="flex items-start gap-4">
+                      <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                         {/* Opponent Logo */}
-                        {opponentLogo ? (
-                          <img 
-                            src={opponentLogo} 
-                            alt={opponentName} 
-                            className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
-                          />
-                        ) : (
-                          <div className="h-16 w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-lg font-bold flex-shrink-0">
-                            {opponentName?.substring(0, 2).toUpperCase() || '??'}
+                        <div className="flex-shrink-0 w-full sm:w-auto flex sm:block items-center gap-3 sm:gap-0">
+                          {opponentLogo ? (
+                            <img 
+                              src={opponentLogo} 
+                              alt={opponentName} 
+                              className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg object-cover"
+                            />
+                          ) : (
+                            <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-sm sm:text-lg font-bold">
+                              {opponentName?.substring(0, 2).toUpperCase() || '??'}
+                            </div>
+                          )}
+                          
+                          {/* Record badge on mobile - show next to logo */}
+                          <div className={`sm:hidden text-xs font-semibold px-2 py-1 rounded whitespace-nowrap ${
+                            isWinningRecord 
+                              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                              : isLosingRecord
+                              ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                          }`}>
+                            {teamWins}-{opponentWins}
                           </div>
-                        )}
+                        </div>
                         
                         {/* Matchup Info */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="text-lg font-bold text-gray-900 dark:text-white">
+                        <div className="flex-1 min-w-0 w-full">
+                          {/* Header - Stack on mobile, horizontal on larger screens */}
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2 sm:mb-2">
+                            <h4 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white truncate">
                               <a 
                                 href={`/teams/${opponentId}`}
                                 className="hover:text-patriot-blue-600 dark:hover:text-blue-400 transition"
@@ -714,7 +728,8 @@ export default function TeamTabsIsland({
                                 {opponentName}
                               </a>
                             </h4>
-                            <div className={`text-sm font-semibold px-2 py-1 rounded ${
+                            {/* Record badge - hidden on mobile (shown above), visible on larger screens */}
+                            <div className={`hidden sm:block text-sm font-semibold px-2 py-1 rounded whitespace-nowrap ${
                               isWinningRecord 
                                 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
                                 : isLosingRecord
@@ -725,27 +740,28 @@ export default function TeamTabsIsland({
                             </div>
                           </div>
                           
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
-                            <div>
-                              <span className="text-gray-600 dark:text-neutral-400">Total Meetings:</span>
-                              <span className="ml-2 font-semibold text-gray-900 dark:text-white">{matchup.total_meetings}</span>
+                          {/* Stats Grid - More compact on mobile */}
+                          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm">
+                            <div className="break-words">
+                              <span className="text-gray-600 dark:text-neutral-400">Meetings:</span>
+                              <span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white">{matchup.total_meetings}</span>
                             </div>
-                            <div>
+                            <div className="break-words">
                               <span className="text-gray-600 dark:text-neutral-400">Win %:</span>
-                              <span className="ml-2 font-semibold text-gray-900 dark:text-white">{winPercentage}%</span>
+                              <span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white">{winPercentage}%</span>
                             </div>
                             {matchup.last_meeting && (
-                              <div>
-                                <span className="text-gray-600 dark:text-neutral-400">Last Meeting:</span>
-                                <span className="ml-2 font-semibold text-gray-900 dark:text-white">
-                                  {new Date(matchup.last_meeting).toLocaleDateString()}
+                              <div className="break-words">
+                                <span className="text-gray-600 dark:text-neutral-400">Last:</span>
+                                <span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white text-[10px] sm:text-sm">
+                                  {new Date(matchup.last_meeting).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                 </span>
                               </div>
                             )}
                             {matchup.days_since_last_meeting !== null && (
-                              <div>
-                                <span className="text-gray-600 dark:text-neutral-400">Days Ago:</span>
-                                <span className="ml-2 font-semibold text-gray-900 dark:text-white">
+                              <div className="break-words">
+                                <span className="text-gray-600 dark:text-neutral-400">Days:</span>
+                                <span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white">
                                   {matchup.days_since_last_meeting}
                                 </span>
                               </div>
@@ -754,14 +770,14 @@ export default function TeamTabsIsland({
                           
                           {/* Average Scores */}
                           {(teamAvgScore !== null || opponentAvgScore !== null) && (
-                            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700">
-                              <div className="text-xs text-gray-600 dark:text-neutral-400 mb-1">Average Scores:</div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700">
+                              <div className="text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1">Average Scores:</div>
+                              <div className="flex items-center gap-2 text-xs sm:text-sm">
+                                <span className="font-semibold text-gray-900 dark:text-white">
                                   {teamAvgScore ? teamAvgScore.toFixed(1) : '-'}
                                 </span>
                                 <span className="text-gray-400">vs</span>
-                                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                                <span className="font-semibold text-gray-900 dark:text-white">
                                   {opponentAvgScore ? opponentAvgScore.toFixed(1) : '-'}
                                 </span>
                               </div>
@@ -770,10 +786,10 @@ export default function TeamTabsIsland({
                           
                           {/* Recent Form (Last 5 Games) */}
                           {(teamLast5Wins > 0 || opponentLast5Wins > 0) && (
-                            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700">
-                              <div className="text-xs text-gray-600 dark:text-neutral-400 mb-1">Last 5 Games:</div>
-                              <div className="flex items-center gap-2">
-                                <span className={`text-sm font-semibold ${
+                            <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700">
+                              <div className="text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1">Last 5 Games:</div>
+                              <div className="flex items-center gap-2 text-xs sm:text-sm">
+                                <span className={`font-semibold ${
                                   teamLast5Wins > opponentLast5Wins
                                     ? 'text-green-600 dark:text-green-400'
                                     : teamLast5Wins < opponentLast5Wins
@@ -782,7 +798,7 @@ export default function TeamTabsIsland({
                                 }`}>
                                   {teamLast5Wins}-{opponentLast5Wins}
                                 </span>
-                                <span className="text-xs text-gray-500 dark:text-neutral-500">
+                                <span className="text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500">
                                   ({teamLast5Wins + opponentLast5Wins} meetings)
                                 </span>
                               </div>
@@ -791,8 +807,8 @@ export default function TeamTabsIsland({
                           
                           {/* Context Breakdown */}
                           {(matchup.league_meetings > 0 || matchup.tournament_meetings > 0) && (
-                            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700">
-                              <div className="flex items-center gap-4 text-xs">
+                            <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700">
+                              <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs flex-wrap">
                                 {matchup.league_meetings > 0 && (
                                   <div>
                                     <span className="text-gray-600 dark:text-neutral-400">League:</span>
@@ -811,8 +827,8 @@ export default function TeamTabsIsland({
                           
                           {/* First Meeting */}
                           {matchup.first_meeting && (
-                            <div className="mt-2 text-xs text-gray-500 dark:text-neutral-500">
-                              First meeting: {new Date(matchup.first_meeting).toLocaleDateString()}
+                            <div className="mt-2 text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500">
+                              First meeting: {new Date(matchup.first_meeting).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                             </div>
                           )}
                         </div>

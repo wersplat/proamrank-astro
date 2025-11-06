@@ -31,12 +31,12 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
   return (
     <div className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
       {/* Tab Navigation */}
-      <div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto">
+      <div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
+            className={`px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap min-w-fit ${
               activeTab === tab.id
                 ? 'text-patriot-blue-600 dark:text-blue-400 border-b-2 border-patriot-blue-600 dark:border-blue-400 bg-gray-50 dark:bg-neutral-800'
                 : 'text-gray-700 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-neutral-800'
@@ -48,7 +48,7 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
       </div>
 
       {/* Tab Content */}
-      <div className="p-6">
+      <div className="p-3 sm:p-4 md:p-6">
         {activeTab === 'overview' && (
           <Overview player={player} team={team} performance={performance} globalRating={globalRating} />
         )}
