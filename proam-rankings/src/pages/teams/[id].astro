@@ -94,8 +94,8 @@ const matchTournamentMap = new Map((matchTournamentsData ?? []).map((t: any) => 
 
 const matches = (matchesData ?? []).map((m: any) => ({
   ...m,
-  team_a: m.team_a_id === id ? { name: teamData?.name, logo_url: teamData?.logo_url } : matchTeamMap.get(m.team_a_id),
-  team_b: m.team_b_id === id ? { name: teamData?.name, logo_url: teamData?.logo_url } : matchTeamMap.get(m.team_b_id),
+  team_a: m.team_a_id === id ? { name: teamData?.team_name ?? null, logo_url: teamData?.logo_url ?? null } : matchTeamMap.get(m.team_a_id),
+  team_b: m.team_b_id === id ? { name: teamData?.team_name ?? null, logo_url: teamData?.logo_url ?? null } : matchTeamMap.get(m.team_b_id),
   league: matchLeagueMap.get(m.season_id),
   tournament: matchTournamentMap.get(m.tournament_id),
 }));
@@ -120,6 +120,13 @@ const { data: yearStats } = await supa((Astro.locals as any).runtime)
   .select("*")
   .eq("team_id", id)
   .order("game_year", { ascending: false });
+
+// Get head-to-head matchup data
+const { data: matchupData } = await supa((Astro.locals as any).runtime)
+  .from("head_to_head_matchup_mart")
+  .select("*")
+  .or(`team_1_id.eq.${id},team_2_id.eq.${id}`)
+  .order("total_meetings", { ascending: false });
 
 // Fetch global_rank and theme colors from teams table since it's not in the mart
 let globalRank = null;
@@ -220,7 +227,7 @@ const breadcrumbStructuredData = {
 ---
 
 <BaseLayout 
-  title={team.name}
+  title={team.name ?? 'Team'}
   description={teamDescription}
   ogImage={ogImage}
   ogType="website"
@@ -233,7 +240,7 @@ const breadcrumbStructuredData = {
       <Breadcrumbs items={[
         { label: "Home", href: "/" },
         { label: "Teams", href: "/teams" },
-        { label: team.name, href: `/teams/${team.id}` }
+        { label: team.name ?? 'Team', href: `/teams/${team.id}` }
       ]} />
       <!-- Team Header -->
       <div class="mb-8 flex items-start gap-6">
@@ -320,6 +327,7 @@ const breadcrumbStructuredData = {
           teamHistory={teamHistory ?? [] as any}
           championships={championships ?? [] as any}
           yearStats={yearStats ?? [] as any}
+          matchups={matchupData ?? [] as any}
         />
       </section>
     </main>

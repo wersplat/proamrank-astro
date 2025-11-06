@@ -50,6 +50,14 @@ const { data: ratingData } = await supa(Astro.locals)
   .eq("player_id", id!)
   .maybeSingle();
 
+// Get player season stats from player_league_season_stats_mart
+const { data: seasonStatsData } = await supa(Astro.locals)
+  .from("player_league_season_stats_mart")
+  .select("*")
+  .eq("player_id", id!)
+  .order("game_year", { ascending: false })
+  .order("season_number", { ascending: false });
+
 // ALWAYS use player_performance_mart.global_rating as the primary source (never player_performance_view)
 // Use v_player_global_rating view only for detailed breakdown components if available
 const globalRatingData = perfData ? {
@@ -178,6 +186,7 @@ const recentGames = games;
 const globalRating = globalRatingData;
 const careerTracking = trackingData; // From player_stats_tracking_mart
 const formStreak = streakData; // From player_hot_streak_mart
+const seasonStats = seasonStatsData; // From player_league_season_stats_mart
 
 if (!player) {
   return Astro.redirect("/players");
@@ -236,6 +245,7 @@ const ogUrl = Astro.url.href;
         playerId={id!}
         performance={performance}
         globalRating={globalRating}
+        seasonStats={seasonStats}
       />
     </main>
 </BaseLayout>

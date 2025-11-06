@@ -111,6 +111,32 @@ type TeamStat = {
   teams?: { name: string; logo_url: string | null };
 };
 
+type MatchupData = {
+  team_1_id: string;
+  team_1_name: string;
+  team_1_logo: string | null;
+  team_2_id: string;
+  team_2_name: string;
+  team_2_logo: string | null;
+  total_meetings: number;
+  team_1_wins: number;
+  team_2_wins: number;
+  team_1_avg_score: number | null;
+  team_2_avg_score: number | null;
+  avg_score_differential: number | null;
+  league_meetings: number;
+  tournament_meetings: number;
+  team_1_last_5_wins: number;
+  team_2_last_5_wins: number;
+  first_meeting: string | null;
+  last_meeting: string | null;
+  days_since_last_meeting: number | null;
+  current_winner: string | null;
+  league_ids: string[] | null;
+  tournament_ids: string[] | null;
+  game_years: string[] | null;
+};
+
 type TeamTabsIslandProps = {
   teamId: string;
   players: Player[];
@@ -118,6 +144,7 @@ type TeamTabsIslandProps = {
   teamHistory: TeamHistoryEntry[];
   championships: Championship[];
   yearStats: YearStats[];
+  matchups: MatchupData[];
 };
 
 export default function TeamTabsIsland({
@@ -127,6 +154,7 @@ export default function TeamTabsIsland({
   teamHistory,
   championships,
   yearStats,
+  matchups,
 }: TeamTabsIslandProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [matchesPage, setMatchesPage] = useState(1);
@@ -142,6 +170,7 @@ export default function TeamTabsIsland({
     { id: 1, label: "Match History" },
     { id: 2, label: "Team History" },
     { id: 3, label: "Past Players" },
+    { id: 4, label: "Matchup History" },
   ];
 
   // Pagination for matches
@@ -621,6 +650,178 @@ export default function TeamTabsIsland({
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Matchup History Tab */}
+        {activeTab === 4 && (
+          <div>
+            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Matchup History</h3>
+            {matchups.length === 0 ? (
+              <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
+                No matchup history available.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {matchups.map((matchup) => {
+                  // Determine which team is the current team and which is the opponent
+                  const isTeam1 = matchup.team_1_id === teamId;
+                  const opponentId = isTeam1 ? matchup.team_2_id : matchup.team_1_id;
+                  const opponentName = isTeam1 ? matchup.team_2_name : matchup.team_1_name;
+                  const opponentLogo = isTeam1 ? matchup.team_2_logo : matchup.team_1_logo;
+                  
+                  const teamWins = isTeam1 ? matchup.team_1_wins : matchup.team_2_wins;
+                  const opponentWins = isTeam1 ? matchup.team_2_wins : matchup.team_1_wins;
+                  const teamAvgScore = isTeam1 ? matchup.team_1_avg_score : matchup.team_2_avg_score;
+                  const opponentAvgScore = isTeam1 ? matchup.team_2_avg_score : matchup.team_1_avg_score;
+                  const teamLast5Wins = isTeam1 ? matchup.team_1_last_5_wins : matchup.team_2_last_5_wins;
+                  const opponentLast5Wins = isTeam1 ? matchup.team_2_last_5_wins : matchup.team_1_last_5_wins;
+                  
+                  const winPercentage = matchup.total_meetings > 0 
+                    ? ((teamWins / matchup.total_meetings) * 100).toFixed(1) 
+                    : '0.0';
+                  
+                  const isWinningRecord = teamWins > opponentWins;
+                  const isLosingRecord = teamWins < opponentWins;
+                  
+                  return (
+                    <div 
+                      key={`${matchup.team_1_id}-${matchup.team_2_id}`}
+                      className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
+                    >
+                      <div className="flex items-start gap-4">
+                        {/* Opponent Logo */}
+                        {opponentLogo ? (
+                          <img 
+                            src={opponentLogo} 
+                            alt={opponentName} 
+                            className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="h-16 w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-lg font-bold flex-shrink-0">
+                            {opponentName?.substring(0, 2).toUpperCase() || '??'}
+                          </div>
+                        )}
+                        
+                        {/* Matchup Info */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-lg font-bold text-gray-900 dark:text-white">
+                              <a 
+                                href={`/teams/${opponentId}`}
+                                className="hover:text-patriot-blue-600 dark:hover:text-blue-400 transition"
+                              >
+                                {opponentName}
+                              </a>
+                            </h4>
+                            <div className={`text-sm font-semibold px-2 py-1 rounded ${
+                              isWinningRecord 
+                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                                : isLosingRecord
+                                ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                            }`}>
+                              {teamWins}-{opponentWins}
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+                            <div>
+                              <span className="text-gray-600 dark:text-neutral-400">Total Meetings:</span>
+                              <span className="ml-2 font-semibold text-gray-900 dark:text-white">{matchup.total_meetings}</span>
+                            </div>
+                            <div>
+                              <span className="text-gray-600 dark:text-neutral-400">Win %:</span>
+                              <span className="ml-2 font-semibold text-gray-900 dark:text-white">{winPercentage}%</span>
+                            </div>
+                            {matchup.last_meeting && (
+                              <div>
+                                <span className="text-gray-600 dark:text-neutral-400">Last Meeting:</span>
+                                <span className="ml-2 font-semibold text-gray-900 dark:text-white">
+                                  {new Date(matchup.last_meeting).toLocaleDateString()}
+                                </span>
+                              </div>
+                            )}
+                            {matchup.days_since_last_meeting !== null && (
+                              <div>
+                                <span className="text-gray-600 dark:text-neutral-400">Days Ago:</span>
+                                <span className="ml-2 font-semibold text-gray-900 dark:text-white">
+                                  {matchup.days_since_last_meeting}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Average Scores */}
+                          {(teamAvgScore !== null || opponentAvgScore !== null) && (
+                            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700">
+                              <div className="text-xs text-gray-600 dark:text-neutral-400 mb-1">Average Scores:</div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                                  {teamAvgScore ? teamAvgScore.toFixed(1) : '-'}
+                                </span>
+                                <span className="text-gray-400">vs</span>
+                                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                                  {opponentAvgScore ? opponentAvgScore.toFixed(1) : '-'}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Recent Form (Last 5 Games) */}
+                          {(teamLast5Wins > 0 || opponentLast5Wins > 0) && (
+                            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700">
+                              <div className="text-xs text-gray-600 dark:text-neutral-400 mb-1">Last 5 Games:</div>
+                              <div className="flex items-center gap-2">
+                                <span className={`text-sm font-semibold ${
+                                  teamLast5Wins > opponentLast5Wins
+                                    ? 'text-green-600 dark:text-green-400'
+                                    : teamLast5Wins < opponentLast5Wins
+                                    ? 'text-red-600 dark:text-red-400'
+                                    : 'text-gray-900 dark:text-white'
+                                }`}>
+                                  {teamLast5Wins}-{opponentLast5Wins}
+                                </span>
+                                <span className="text-xs text-gray-500 dark:text-neutral-500">
+                                  ({teamLast5Wins + opponentLast5Wins} meetings)
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Context Breakdown */}
+                          {(matchup.league_meetings > 0 || matchup.tournament_meetings > 0) && (
+                            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700">
+                              <div className="flex items-center gap-4 text-xs">
+                                {matchup.league_meetings > 0 && (
+                                  <div>
+                                    <span className="text-gray-600 dark:text-neutral-400">League:</span>
+                                    <span className="ml-1 font-semibold text-gray-900 dark:text-white">{matchup.league_meetings}</span>
+                                  </div>
+                                )}
+                                {matchup.tournament_meetings > 0 && (
+                                  <div>
+                                    <span className="text-gray-600 dark:text-neutral-400">Tournament:</span>
+                                    <span className="ml-1 font-semibold text-gray-900 dark:text-white">{matchup.tournament_meetings}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* First Meeting */}
+                          {matchup.first_meeting && (
+                            <div className="mt-2 text-xs text-gray-500 dark:text-neutral-500">
+                              First meeting: {new Date(matchup.first_meeting).toLocaleDateString()}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 

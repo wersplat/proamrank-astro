@@ -4,6 +4,7 @@ import Games from './tabs/Games';
 import Career from './tabs/Career';
 import Badges from './tabs/Badges';
 import Media from './tabs/Media';
+import StatsBySeason from './tabs/StatsBySeason';
 
 type TabsProps = {
   player: any;
@@ -12,15 +13,17 @@ type TabsProps = {
   playerId: string;
   performance: any;
   globalRating?: any;
+  seasonStats?: any[] | null;
 };
 
-export default function PlayerTabs({ player, team, recentGames, playerId, performance, globalRating }: TabsProps) {
+export default function PlayerTabs({ player, team, recentGames, playerId, performance, globalRating, seasonStats }: TabsProps) {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
     { id: 'overview', label: 'Overview' },
     { id: 'games', label: 'Games' },
     { id: 'career', label: 'Career' },
+    { id: 'stats-by-season', label: 'Stats by Season' },
     { id: 'badges', label: 'Badges' },
     { id: 'media', label: 'Media' }
   ];
@@ -54,6 +57,9 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
         )}
         {activeTab === 'career' && (
           <Career player={player} playerId={playerId} />
+        )}
+        {activeTab === 'stats-by-season' && (
+          <StatsBySeason player={player} seasonStats={seasonStats} />
         )}
         {activeTab === 'badges' && (
           <Badges player={player} playerId={playerId} />
