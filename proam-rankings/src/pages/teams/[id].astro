@@ -128,19 +128,21 @@ const { data: matchupData } = await supa((Astro.locals as any).runtime)
   .or(`team_1_id.eq.${id},team_2_id.eq.${id}`)
   .order("total_meetings", { ascending: false });
 
-// Fetch global_rank and theme colors from teams table since it's not in the mart
+// Fetch global_rank, theme colors, and social media from teams table since it's not in the mart
 let globalRank = null;
 let hybridScore = null;
+let teamTwitter = null;
 let teamThemeColors: any = null;
 if (teamData) {
   const { data: rankData } = await supa((Astro.locals as any).runtime)
     .from("teams")
-    .select("global_rank, hybrid_score, color_primary, color_secondary, color_accent")
+    .select("global_rank, hybrid_score, color_primary, color_secondary, color_accent, team_twitter")
     .eq("id", id)
     .maybeSingle();
   
   globalRank = rankData?.global_rank;
   hybridScore = rankData?.hybrid_score;
+  teamTwitter = rankData?.team_twitter;
   if (rankData) {
     teamThemeColors = {
       color_primary: rankData.color_primary,
@@ -163,6 +165,7 @@ const team = teamData ? {
   elo_rating: teamData.elo_rating,
   hybrid_score: hybridScore,
   leaderboard_tier: teamData.rp_tier,
+  team_twitter: teamTwitter,
 } : null;
 
 const performance = perfData;
@@ -271,6 +274,27 @@ const breadcrumbStructuredData = {
               <span class="ml-2 font-semibold">{team.leaderboard_tier || '-'}</span>
             </div>
           </div>
+          {team.team_twitter && (
+            <div class="mt-4">
+              <div class="flex items-center gap-2">
+                <a
+                  href={`https://twitter.com/${team.team_twitter}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 text-neutral-300 hover:text-blue-400 transition-colors"
+                >
+                  <svg 
+                    class="w-5 h-5" 
+                    viewBox="0 0 24 24" 
+                    fill="currentColor"
+                  >
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                  <span class="text-sm font-medium">@{team.team_twitter}</span>
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
