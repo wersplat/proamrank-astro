@@ -530,7 +530,13 @@ Verifying the complete social media section:
 4. **Displayed social media links** (lines 277-295): Added a conditional social media section in the team header that:
    - Only displays when `team.team_twitter` is available
    - Uses the same Twitter icon SVG as player profiles
-   - Links to `https://twitter.com/{t
+   - Links to `https://twitter.com/{team.team_twitter}`
+   - Includes accessibility attributes (`target="_blank"`, `rel="noopener noreferrer"`)
+   - Uses consistent styling with hover effects
+
+The implementation follows the same pattern as player profiles for consistency. The Twitter link appears below the team stats (Global Rank, Hybrid Score, Tier) in the header section when available.
+
+No linting errors were found, and all todos are completed.
 
 ---
 
