@@ -79,7 +79,7 @@ const globalRatingData = perfData ? {
   peak_performance: ratingData ? parseFloat(String(ratingData.peak_performance || '0')) : 0,
 } : null;
 
-// Get current team info if player has one - use team_analytics_mart
+// Get current team info if player has one - use team_analytics_mart for most data, teams table for rank
 let currentTeam = null;
 let teamThemeColors: any = null;
 if (playerData?.current_team_id) {
@@ -90,19 +90,20 @@ if (playerData?.current_team_id) {
     .maybeSingle();
   
   if (teamData) {
+    // Fetch global_rank and theme colors from teams table (rank not in mart)
+    const { data: teamThemeData } = await supa(Astro.locals)
+      .from("teams")
+      .select("global_rank, current_rp, color_primary, color_secondary, color_accent")
+      .eq("id", playerData.current_team_id)
+      .maybeSingle();
+    
     currentTeam = {
       id: teamData.team_id,
       name: teamData.team_name,
       logo_url: teamData.logo_url,
-      global_rank: null, // Not in mart but not critical for display
+      global_rank: teamThemeData?.global_rank || null,
+      current_rp: teamThemeData?.current_rp || teamData.current_rp || 0,
     };
-    
-    // Fetch theme colors from teams table
-    const { data: teamThemeData } = await supa(Astro.locals)
-      .from("teams")
-      .select("color_primary, color_secondary, color_accent")
-      .eq("id", playerData.current_team_id)
-      .maybeSingle();
     
     if (teamThemeData) {
       teamThemeColors = {

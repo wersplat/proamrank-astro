@@ -1,4 +1,5 @@
 # Whitepaper: Data Pipeline Architecture
+
 ## How listener-bot and Scooper-Bot Power proam-rankings
 
 ---
@@ -87,6 +88,7 @@ The proam-rankings platform is powered by an automated data pipeline that transf
 **Purpose**: listener-bot acts as a bridge between multiple Discord channels, forwarding messages and attachments from source channels to designated destination channels where they can be processed.
 
 **Key Capabilities**:
+
 - **Multi-Channel Support**: Configured to monitor multiple source channels simultaneously
 - **Message Forwarding**: Relays text content and image attachments from source to destination channels
 - **Metadata Preservation**: Includes source information (user, channel, server) with forwarded messages
@@ -103,6 +105,7 @@ The proam-rankings platform is powered by an automated data pipeline that transf
 **Purpose**: Scooper-Bot monitors designated Discord channels, detects match result images, processes them, and creates structured database records that power the rankings website.
 
 **Key Capabilities**:
+
 - **Image Detection**: Automatically identifies images in Discord messages, including attachments, embeds, and forwarded message content
 - **Image Processing**: Converts images to optimized WebP format and standardizes dimensions for consistent display
 - **Automatic Categorization**: Can be configured to automatically assign league, season, or tournament context to images from specific channels
@@ -122,6 +125,7 @@ The proam-rankings platform is powered by an automated data pipeline that transf
 **Purpose**: proam-rankings is a web application that displays competitive gaming rankings, statistics, and match history to players, fans, and community members.
 
 **Key Capabilities**:
+
 - **Global Rankings**: Displays team rankings across all leagues and tournaments
 - **Team Profiles**: Shows team statistics, rosters, and match history
 - **Player Statistics**: Tracks individual player performance across matches
@@ -141,7 +145,9 @@ The proam-rankings platform is powered by an automated data pipeline that transf
 The journey from a Discord message to a displayed match result on the website follows these stages:
 
 ### Stage 1: Message Creation
+
 A user posts a match result image (boxscore screenshot) in a Discord channel. This could be:
+
 - A direct image attachment
 - An image embedded in a forwarded message
 - An image shared via a link
@@ -151,9 +157,11 @@ A user posts a match result image (boxscore screenshot) in a Discord channel. Th
 ---
 
 ### Stage 2: Message Relay
+
 listener-bot detects the message in a configured source channel and forwards it to a corresponding destination channel.
 
-**What Happens**: 
+**What Happens**:
+
 - listener-bot reads the message content and attachments
 - Forwards text content to the destination channel
 - Forwards each image attachment URL individually
@@ -164,9 +172,11 @@ listener-bot detects the message in a configured source channel and forwards it 
 ---
 
 ### Stage 3: Image Detection
+
 Scooper-Bot monitors the destination channel and detects the forwarded message contains images.
 
 **What Happens**:
+
 - Scooper-Bot scans messages in monitored channels
 - Identifies images from attachments, embeds, or forwarded message snapshots
 - Checks if the channel is configured for automatic categorization
@@ -177,14 +187,17 @@ Scooper-Bot monitors the destination channel and detects the forwarded message c
 ---
 
 ### Stage 4: Categorization
+
 Scooper-Bot determines the league, season, or tournament context for the match.
 
 **Automatic Categorization** (for configured channels):
+
 - Channel is pre-configured with league/season/tournament IDs
 - Message is automatically categorized with this context
 - System waits for team names and scores before processing
 
 **Manual Categorization** (for other channels):
+
 - Admin user replies with categorization command
 - Or uses web dashboard to assign league/season/tournament context
 - Message remains pending until categorized
@@ -194,9 +207,11 @@ Scooper-Bot determines the league, season, or tournament context for the match.
 ---
 
 ### Stage 5: Team and Score Extraction
+
 Scooper-Bot attempts to extract team names and scores from the message text.
 
 **What Happens**:
+
 - Analyzes message text for patterns like "Team A: 90 - Team B: 89"
 - Validates team names against the database
 - Extracts numeric scores
@@ -207,9 +222,11 @@ Scooper-Bot attempts to extract team names and scores from the message text.
 ---
 
 ### Stage 6: Image Processing
+
 Scooper-Bot downloads, processes, and optimizes the image.
 
 **What Happens**:
+
 - Downloads image from Discord
 - Converts to WebP format for efficient storage and delivery
 - Resizes to standard dimensions (1920x1080) while maintaining aspect ratio
@@ -220,9 +237,11 @@ Scooper-Bot downloads, processes, and optimizes the image.
 ---
 
 ### Stage 7: Storage Upload
+
 Processed image is uploaded to Cloudflare R2 storage.
 
 **What Happens**:
+
 - Determines storage folder path based on league/season configuration
 - Uploads processed image to R2 bucket
 - Receives public URL for the stored image
@@ -232,9 +251,11 @@ Processed image is uploaded to Cloudflare R2 storage.
 ---
 
 ### Stage 8: Database Record Creation
+
 Scooper-Bot creates structured database records.
 
 **What Happens**:
+
 - Creates record in `match_submissions` table with:
   - Match ID (UUID)
   - Image URL
@@ -253,9 +274,11 @@ Scooper-Bot creates structured database records.
 ---
 
 ### Stage 9: Website Display
+
 proam-rankings queries the database and displays match data.
 
 **What Happens**:
+
 - Website queries Supabase database for matches
 - Retrieves match records with team names, scores, dates, and image URLs
 - Displays matches in paginated lists, team pages, player pages, and league standings
@@ -270,6 +293,7 @@ proam-rankings queries the database and displays match data.
 ### Discord as the Communication Layer
 
 All three systems use Discord as their communication medium:
+
 - **listener-bot** reads from source channels and writes to destination channels
 - **Scooper-Bot** reads from destination channels and reacts to messages
 - Users interact with the system by posting messages in Discord
@@ -281,11 +305,13 @@ All three systems use Discord as their communication medium:
 ### Supabase as the Data Layer
 
 Scooper-Bot and proam-rankings share Supabase as their database:
+
 - **Scooper-Bot** writes match data to Supabase tables
 - **proam-rankings** reads match data from Supabase tables
 - Both systems use the same database schema, ensuring data consistency
 
 **Key Tables**:
+
 - `match_submissions`: Initial submission records with image URLs
 - `matches`: Processed match records with team IDs, scores, and metadata
 - `match_contexts`: Links matches to leagues, seasons, and tournaments
@@ -299,6 +325,7 @@ Scooper-Bot and proam-rankings share Supabase as their database:
 ### Cloudflare R2 as the Storage Layer
 
 Scooper-Bot uploads processed images to Cloudflare R2:
+
 - Images are stored in organized folder structures by league/season
 - Public URLs enable direct image access from the website
 - Global CDN ensures fast image delivery worldwide
@@ -392,6 +419,7 @@ Scooper-Bot uploads processed images to Cloudflare R2:
 The integration of listener-bot, Scooper-Bot, and proam-rankings creates a seamless data pipeline that transforms Discord messages into a rich, public-facing rankings website. This architecture demonstrates how modern automation can eliminate manual work while improving data quality and user experience.
 
 **Key Success Factors**:
+
 - **Automation**: Reduces manual work while ensuring consistency
 - **Integration**: Seamless data flow between systems
 - **Flexibility**: Supports both automatic and manual processing workflows
@@ -418,4 +446,3 @@ All systems are designed for reliability, scalability, and maintainability, ensu
 
 *Document Version: 1.0*  
 *Last Updated: 2025*
-

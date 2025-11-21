@@ -844,7 +844,7 @@ export default function TeamTabsIsland({
         {/* Past Players Tab */}
         {activeTab === 3 && (
           <div>
-            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Roster History</h3>
+            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Past Players</h3>
             {teamHistory.length === 0 ? (
               <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
                 No team history available.
@@ -852,8 +852,19 @@ export default function TeamTabsIsland({
             ) : (
               <div className="space-y-6">
                 {(() => {
-                  // Group by tournament or league/season
-                  const grouped = teamHistory.reduce((acc, entry) => {
+                  // Filter for past players only (those who have left)
+                  const pastPlayers = teamHistory.filter(entry => entry.left_at);
+                  
+                  if (pastPlayers.length === 0) {
+                    return (
+                      <div className="text-center py-8 text-gray-600 dark:text-neutral-400">
+                        No past players found.
+                      </div>
+                    );
+                  }
+
+                  // Group by tournament or league AND season (both required for league entries)
+                  const grouped = pastPlayers.reduce((acc, entry) => {
                     let key: string;
                     let groupName: string;
                     let groupType: 'tournament' | 'season';
@@ -864,9 +875,16 @@ export default function TeamTabsIsland({
                       groupName = entry.tournament_name;
                       groupType = 'tournament';
                     } else {
-                      // Group by league and season
-                      key = `season_${entry.league_name || 'Unknown League'}_${entry.season_number || 0}`;
-                      groupName = `${entry.league_name || 'Unknown League'}${entry.season_number ? ` • Season ${entry.season_number}` : ''}`;
+                      // Group by league AND season - both are required
+                      // Use a more explicit key that includes both league and season
+                      const leagueKey = entry.league_name || 'Unknown League';
+                      const seasonKey = entry.season_number !== null && entry.season_number !== undefined 
+                        ? entry.season_number 
+                        : 'Unknown';
+                      key = `season_${leagueKey}_${seasonKey}`;
+                      groupName = entry.season_number !== null && entry.season_number !== undefined
+                        ? `${leagueKey} • Season ${entry.season_number}`
+                        : `${leagueKey} (Season Unknown)`;
                       groupType = 'season';
                     }
                     
@@ -875,7 +893,7 @@ export default function TeamTabsIsland({
                         groupName,
                         groupType,
                         league_name: entry.league_name || 'Unknown League',
-                        season_number: entry.season_number || 0,
+                        season_number: entry.season_number ?? null,
                         tournament_name: entry.tournament_name,
                         entries: []
                       };
@@ -886,21 +904,27 @@ export default function TeamTabsIsland({
                     groupName: string; 
                     groupType: 'tournament' | 'season';
                     league_name: string; 
-                    season_number: number; 
+                    season_number: number | null; 
                     tournament_name: string | null;
                     entries: TeamHistoryEntry[] 
                   }>);
 
-                  // Sort groups: tournaments first, then by season (most recent)
+                  // Sort groups: tournaments first, then by league name, then by season (most recent)
                   const sortedGroups = Object.values(grouped).sort((a, b) => {
                     if (a.groupType !== b.groupType) {
                       return a.groupType === 'tournament' ? -1 : 1;
                     }
                     if (a.groupType === 'season' && b.groupType === 'season') {
-                      if (b.season_number !== a.season_number) {
-                        return b.season_number - a.season_number;
+                      // First sort by league name
+                      const leagueCompare = a.league_name.localeCompare(b.league_name);
+                      if (leagueCompare !== 0) {
+                        return leagueCompare;
                       }
-                      return a.league_name.localeCompare(b.league_name);
+                      // Then by season number (most recent first, nulls last)
+                      if (a.season_number === null && b.season_number === null) return 0;
+                      if (a.season_number === null) return 1;
+                      if (b.season_number === null) return -1;
+                      return b.season_number - a.season_number;
                     }
                     return a.groupName.localeCompare(b.groupName);
                   });
@@ -914,7 +938,19 @@ export default function TeamTabsIsland({
                             <span className="text-xs text-gray-600 dark:text-neutral-500">(Tournament)</span>
                           </>
                         ) : (
-                          <span>{group.groupName}</span>
+                          <>
+                            <span>{group.league_name}</span>
+                            {group.season_number !== null && (
+                              <span className="text-sm font-normal text-gray-600 dark:text-neutral-400">
+                                • Season {group.season_number}
+                              </span>
+                            )}
+                            {group.season_number === null && (
+                              <span className="text-xs text-gray-500 dark:text-neutral-500 italic">
+                                (Season Unknown)
+                              </span>
+                            )}
+                          </>
                         )}
                         <span className="ml-auto text-xs text-gray-600 dark:text-neutral-500">
                           ({group.entries.length} player{group.entries.length !== 1 ? 's' : ''})
