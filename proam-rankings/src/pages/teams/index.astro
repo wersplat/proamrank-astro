@@ -12,6 +12,7 @@ const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 const tierFilter = Astro.url.searchParams.get('tier') || 'all';
 const sortBy = Astro.url.searchParams.get('sort') || 'rank';
 const searchQuery = Astro.url.searchParams.get('search') || '';
+const view = Astro.url.searchParams.get('view') || 'grid';
 
 // Build query with filters - use teams table (same as home page)
 let countQuery = supa((Astro.locals as any).runtime)
@@ -173,24 +174,45 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
           {(tierFilter !== 'all' || sortBy !== 'rank' || searchQuery) && (
             <a 
-              href="/teams" 
+              href={`/teams${view !== 'grid' ? `?view=${view}` : ''}`}
               class="px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
             >
               Clear Filters
             </a>
           )}
+
+          <div class="flex items-center gap-1 ml-auto">
+            <button
+              onclick={`window.location.href = updateFilter('view', 'grid')`}
+              class={`p-1.5 rounded transition ${view === 'grid' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800'}`}
+              title="Grid View"
+              aria-label="Grid View"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </button>
+            <button
+              onclick={`window.location.href = updateFilter('view', 'list')`}
+              class={`p-1.5 rounded transition ${view === 'list' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800'}`}
+              title="List View"
+              aria-label="List View"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            </button>
+          </div>
         </div>
       </div>
 
       <script is:inline>
         function updateFilter(param, value) {
           const url = new URL(window.location.href);
-          if (value === 'all' || (param === 'sort' && value === 'rank')) {
+          if (value === 'all' || (param === 'sort' && value === 'rank') || (param === 'view' && value === 'grid')) {
             url.searchParams.delete(param);
           } else {
             url.searchParams.set(param, value);
           }
-          url.searchParams.delete('page'); // Reset to page 1 when filtering
+          if (param !== 'view') {
+            url.searchParams.delete('page'); // Reset to page 1 when filtering
+          }
           return url.toString();
         }
 
@@ -209,51 +231,116 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
         }
       </script>
 
-      <!-- Teams Grid -->
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {teams.map((team) => (
-          <a 
-            href={`/teams/${team.id}`}
-            class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
-          >
-            <div class="flex items-center gap-3 mb-3">
-              {team.logo_url ? (
-                <img 
-                  src={team.logo_url}
-                  alt={team.name || "Team"}
-                  class="h-12 w-12 rounded object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                <div class="h-12 w-12 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-xs font-bold">
-                  {team.name?.substring(0, 2).toUpperCase() || '??'}
-                </div>
-              )}
-              <div class="flex-1 min-w-0">
-                <h2 class="font-bold text-lg truncate text-gray-900 dark:text-white">{team.name}</h2>
-                {team.leaderboard_tier && (
-                  <span class="text-xs font-bold text-gray-600 dark:text-neutral-400">{team.leaderboard_tier} Tier</span>
+      <!-- Teams List/Grid -->
+      {view === 'grid' ? (
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {teams.map((team) => (
+            <a 
+              href={`/teams/${team.id}`}
+              class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
+            >
+              <div class="flex items-center gap-3 mb-3">
+                {team.logo_url ? (
+                  <img 
+                    src={team.logo_url}
+                    alt={team.name || "Team"}
+                    class="h-12 w-12 rounded object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="h-12 w-12 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-xs font-bold">
+                    {team.name?.substring(0, 2).toUpperCase() || '??'}
+                  </div>
                 )}
+                <div class="flex-1 min-w-0">
+                  <h2 class="font-bold text-lg truncate text-gray-900 dark:text-white">{team.name}</h2>
+                  {team.leaderboard_tier && (
+                    <span class="text-xs font-bold text-gray-600 dark:text-neutral-400">{team.leaderboard_tier} Tier</span>
+                  )}
+                </div>
               </div>
-            </div>
-            
-            <dl class="grid grid-cols-3 gap-2 text-sm">
-              <div>
-                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Rank</dt>
-                <dd class="font-semibold text-gray-900 dark:text-white">#{team.global_rank ?? '-'}</dd>
-              </div>
-              <div>
-                <dt class="text-gray-600 dark:text-neutral-400 text-xs">Score</dt>
-                <dd class="font-semibold text-gray-900 dark:text-white">{Math.round(team.hybrid_score ?? 0)}</dd>
-              </div>
-              <div>
-                <dt class="text-gray-600 dark:text-neutral-400 text-xs">RP</dt>
-                <dd class="font-semibold text-gray-900 dark:text-white">{team.current_rp ?? 0}</dd>
-              </div>
-            </dl>
-          </a>
-        ))}
-      </div>
+              
+              <dl class="grid grid-cols-3 gap-2 text-sm">
+                <div>
+                  <dt class="text-gray-600 dark:text-neutral-400 text-xs">Rank</dt>
+                  <dd class="font-semibold text-gray-900 dark:text-white">#{team.global_rank ?? '-'}</dd>
+                </div>
+                <div>
+                  <dt class="text-gray-600 dark:text-neutral-400 text-xs">Score</dt>
+                  <dd class="font-semibold text-gray-900 dark:text-white">{Math.round(team.hybrid_score ?? 0)}</dd>
+                </div>
+                <div>
+                  <dt class="text-gray-600 dark:text-neutral-400 text-xs">RP</dt>
+                  <dd class="font-semibold text-gray-900 dark:text-white">{team.current_rp ?? 0}</dd>
+                </div>
+              </dl>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-gray-50 dark:bg-neutral-800/50 text-gray-600 dark:text-neutral-400 font-medium border-b border-gray-200 dark:border-neutral-800">
+              <tr>
+                <th class="px-4 py-3">Team</th>
+                <th class="px-4 py-3 text-right">Rank</th>
+                <th class="px-4 py-3 text-right">Score</th>
+                <th class="px-4 py-3 text-right">RP</th>
+                <th class="px-4 py-3 text-right">Elo</th>
+                <th class="px-4 py-3 text-right">Link</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+              {teams.map((team) => (
+                <tr class="hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      {team.logo_url ? (
+                        <img 
+                          src={team.logo_url}
+                          alt={team.name || "Team"}
+                          class="h-8 w-8 rounded object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div class="h-8 w-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-[10px] font-bold">
+                          {team.name?.substring(0, 2).toUpperCase() || '??'}
+                        </div>
+                      )}
+                      <div class="flex flex-col">
+                        <span class="font-medium text-gray-900 dark:text-white">{team.name}</span>
+                        {team.leaderboard_tier && (
+                          <span class="text-xs text-gray-600 dark:text-neutral-400">{team.leaderboard_tier} Tier</span>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-right font-semibold text-gray-900 dark:text-white">
+                    #{team.global_rank ?? '-'}
+                  </td>
+                  <td class="px-4 py-3 text-right text-gray-900 dark:text-white">
+                    {Math.round(team.hybrid_score ?? 0)}
+                  </td>
+                  <td class="px-4 py-3 text-right text-gray-900 dark:text-white">
+                    {team.current_rp ?? 0}
+                  </td>
+                  <td class="px-4 py-3 text-right text-gray-900 dark:text-white">
+                    {team.elo_rating ?? '-'}
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <a 
+                      href={`/teams/${team.id}`}
+                      class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      View
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {teams.length === 0 && (
         <div class="text-center py-12 text-gray-600 dark:text-neutral-400">
@@ -266,7 +353,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
         <div class="mt-8 flex items-center justify-center gap-2">
           {currentPage > 1 ? (
             <a 
-              href={`/teams?page=${currentPage - 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
+              href={`/teams?page=${currentPage - 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${view !== 'grid' ? `&view=${view}` : ''}`}
               class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               ← Previous
@@ -280,7 +367,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
           <div class="flex gap-1">
             {pageNumbers.map((pageNum: number) => (
               <a
-                href={`/teams?page=${pageNum}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
+                href={`/teams?page=${pageNum}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${view !== 'grid' ? `&view=${view}` : ''}`}
                 class={`px-3 py-2 rounded transition ${
                   pageNum === currentPage
                     ? 'bg-blue-600 text-white font-semibold'
@@ -294,7 +381,7 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
 
           {currentPage < totalPages ? (
             <a 
-              href={`/teams?page=${currentPage + 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`}
+              href={`/teams?page=${currentPage + 1}${tierFilter !== 'all' ? `&tier=${tierFilter}` : ''}${sortBy !== 'rank' ? `&sort=${sortBy}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}${view !== 'grid' ? `&view=${view}` : ''}`}
               class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
             >
               Next →
