@@ -44,6 +44,10 @@ npm run dev
 - SENTRY_DSN
 - SENTRY_AUTH_TOKEN (for build-time sourcemaps)
 - PUBLIC_ASSETS_BASE (optional, e.g., https://cdn.proamrank.gg)
+- **PUBLIC_CLERK_PUBLISHABLE_KEY** (required for Clerk authentication - must be set in Cloudflare Pages dashboard for build-time access)
+- **CLERK_SECRET_KEY** (required for Clerk authentication - must be set in Cloudflare Pages dashboard for build-time access)
+
+**Note**: Clerk environment variables MUST be set in Cloudflare Pages dashboard (Settings → Environment Variables) for production builds, not just in `wrangler.toml`. The `wrangler.toml` vars are runtime-only, but Clerk Astro integration needs them at build time.
 
 ## API Routes
 
