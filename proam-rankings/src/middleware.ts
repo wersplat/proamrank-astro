@@ -4,16 +4,11 @@ import { defineMiddleware, sequence } from "astro:middleware";
 // Clerk middleware for authentication
 // Note: No routes are protected - Clerk middleware authenticates users but doesn't restrict access
 // Clerk middleware reads from import.meta.env which Astro populates from Cloudflare Pages env vars
-let clerk: ReturnType<typeof clerkMiddleware>;
-try {
-  clerk = clerkMiddleware();
-} catch (error) {
-  // If Clerk middleware fails to initialize, use no-op middleware
-  console.error("Clerk middleware initialization error:", error);
-  clerk = defineMiddleware(async (context, next) => {
-    return next();
-  }) as any;
-}
+const clerk = clerkMiddleware((auth, context) => {
+  // No route protection - just authenticate users without restricting access
+  // The auth() function is called to ensure authentication state is available
+  auth();
+});
 
 // Middleware to expose Cloudflare environment to Astro.locals and set Clerk env vars
 // Note: Sentry middleware is automatically injected by the @sentry/astro integration
