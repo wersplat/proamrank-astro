@@ -2,6 +2,12 @@ import { clerkMiddleware } from "@clerk/astro/server";
 import { defineMiddleware, sequence } from "astro:middleware";
 
 // Clerk middleware for authentication
+// IMPORTANT: Clerk environment variables MUST be set in Cloudflare Pages dashboard
+// (Settings → Environment Variables) for production builds, not just in wrangler.toml
+// Required variables:
+// - PUBLIC_CLERK_PUBLISHABLE_KEY (build-time + runtime)
+// - CLERK_SECRET_KEY (build-time + runtime)
+// wrangler.toml vars are runtime-only, but Clerk Astro integration needs them at build time
 const clerk = clerkMiddleware();
 
 // Middleware to expose Cloudflare environment to Astro.locals
