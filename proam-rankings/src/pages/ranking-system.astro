@@ -9,7 +9,7 @@ import "../styles/global.css";
   description="Understand how teams and players are ranked in the G.R.A.D.E. system, including ELO ratings, ranking points, and player tier classifications"
 >
   <Navigation />
-    <main class="mx-auto max-w-5xl p-6 logo-underlay" style={`--logo-url: url('/GR.svg')`}>
+    <main id="main-content" class="mx-auto max-w-5xl p-6 logo-underlay" style={`--logo-url: url('/GR.svg')`}>
       <div class="mb-8 text-center">
         <h1 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Ranking System</h1>
         <p class="text-gray-600 dark:text-neutral-400">Learn how teams and players are ranked in the NBA 2K Pro Am Global Rankings</p>
@@ -26,7 +26,7 @@ import "../styles/global.css";
           <div class="grid md:grid-cols-2 gap-6 mb-6">
             <div class="bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-gray-200 dark:border-white/20">
               <div class="flex items-center mb-2">
-                <span class="text-2xl mr-2">🧩</span>
+                <span class="text-2xl mr-2" aria-hidden="true">🧩</span>
                 <h4 class="text-lg font-semibold text-gold">Ranking Points (RP)</h4>
                 <span class="ml-auto bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 text-xs px-2 py-1 rounded">70% Weight</span>
               </div>
@@ -35,7 +35,7 @@ import "../styles/global.css";
             
             <div class="bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-patriot-red-200 dark:border-patriot-red-500/20">
               <div class="flex items-center mb-2">
-                <span class="text-2xl mr-2">📈</span>
+                <span class="text-2xl mr-2" aria-hidden="true">📈</span>
                 <h4 class="text-lg font-semibold text-gold">ELO Rating</h4>
                 <span class="ml-auto bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded">30% Weight</span>
               </div>
@@ -45,7 +45,7 @@ import "../styles/global.css";
           
           <div class="bg-gray-100 dark:bg-neutral-950 p-4 rounded-lg border border-gray-300 dark:border-neutral-800">
             <div class="flex items-center justify-center">
-              <span class="text-gold mr-2">⚖️</span>
+              <span class="text-gold mr-2" aria-hidden="true">⚖️</span>
               <code class="text-sm text-gray-900 dark:text-white">Final Score = (RP Score × 0.70) + (ELO Normalized × 0.30)</code>
             </div>
           </div>
@@ -58,16 +58,16 @@ import "../styles/global.css";
             <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-800">
               <thead>
                 <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Description</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Max RP</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Description</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Max RP</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
                 <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
-                      <span>💎</span>
+                      <span aria-hidden="true">💎</span>
                       <span class="font-medium text-gray-900 dark:text-white">T1</span>
                     </span>
                   </td>
@@ -77,7 +77,7 @@ import "../styles/global.css";
                 <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
-                      <span>🏆</span>
+                      <span aria-hidden="true">🏆</span>
                       <span class="font-medium text-gray-900 dark:text-white">T2</span>
                     </span>
                   </td>
@@ -87,7 +87,7 @@ import "../styles/global.css";
                 <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
-                      <span>🥇</span>
+                      <span aria-hidden="true">🥇</span>
                       <span class="font-medium text-gray-900 dark:text-white">T3</span>
                     </span>
                   </td>
@@ -97,7 +97,7 @@ import "../styles/global.css";
                 <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
-                      <span>🥈</span>
+                      <span aria-hidden="true">🥈</span>
                       <span class="font-medium text-gray-900 dark:text-white">T4</span>
                     </span>
                   </td>
@@ -107,7 +107,7 @@ import "../styles/global.css";
                 <tr class="hover:bg-gray-100 dark:hover:bg-neutral-950">
                   <td class="px-4 py-3">
                     <span class="inline-flex items-center gap-2">
-                      <span>🥉</span>
+                      <span aria-hidden="true">🥉</span>
                       <span class="font-medium text-gray-900 dark:text-white">T5</span>
                     </span>
                   </td>
@@ -121,7 +121,7 @@ import "../styles/global.css";
           <!-- Dynamic Tier Calculation -->
           <div class="mt-6 bg-red-50 dark:bg-patriot-red-900/20 border border-red-200 dark:border-patriot-red-500/30 p-5 rounded-lg">
             <div class="flex items-start gap-3">
-              <span class="text-2xl">⚡</span>
+              <span class="text-2xl" aria-hidden="true">⚡</span>
               <div>
                 <h4 class="text-lg font-semibold text-red-700 dark:text-patriot-red-300 mb-2">Dynamic Tier Calculation</h4>
                 <p class="text-sm text-gray-700 dark:text-neutral-300 mb-3">
@@ -140,30 +140,30 @@ import "../styles/global.css";
           <h3 class="text-xl font-medium mb-4 text-gray-900 dark:text-white">Leaderboard Tiers</h3>
           <p class="text-gray-700 dark:text-neutral-300 mb-6">Teams are grouped into five performance tiers based on their hybrid score:</p>
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-            <div class="bg-purple-500/10 p-4 rounded-lg text-center border border-purple-500/20">
-              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 mb-2">S-Tier</div>
-              <p class="text-sm">Top 4 Teams</p>
-              <p class="text-xs text-purple-300/60 mt-1">Elite Competitors</p>
+            <div class="bg-purple-50 dark:bg-purple-500/10 p-4 rounded-lg text-center border border-purple-200 dark:border-purple-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 mb-2">S-Tier</div>
+              <p class="text-sm text-gray-900 dark:text-white">Top 4 Teams</p>
+              <p class="text-xs text-purple-700 dark:text-purple-300/60 mt-1">Elite Competitors</p>
             </div>
-            <div class="bg-blue-500/10 p-4 rounded-lg text-center border border-blue-500/20">
-              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 mb-2">A-Tier</div>
-              <p class="text-sm">Rank 5-12</p>
-              <p class="text-xs text-blue-300/60 mt-1">Championship Contenders</p>
+            <div class="bg-blue-50 dark:bg-blue-500/10 p-4 rounded-lg text-center border border-blue-200 dark:border-blue-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 mb-2">A-Tier</div>
+              <p class="text-sm text-gray-900 dark:text-white">Rank 5-12</p>
+              <p class="text-xs text-blue-700 dark:text-blue-300/60 mt-1">Championship Contenders</p>
             </div>
-            <div class="bg-green-500/10 p-4 rounded-lg text-center border border-green-500/20">
-              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/20 text-green-300 mb-2">B-Tier</div>
-              <p class="text-sm">Rank 13-30</p>
-              <p class="text-xs text-green-300/60 mt-1">Playoff Hopefuls</p>
+            <div class="bg-green-50 dark:bg-green-500/10 p-4 rounded-lg text-center border border-green-200 dark:border-green-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 mb-2">B-Tier</div>
+              <p class="text-sm text-gray-900 dark:text-white">Rank 13-30</p>
+              <p class="text-xs text-green-700 dark:text-green-300/60 mt-1">Playoff Hopefuls</p>
             </div>
-            <div class="bg-yellow-500/10 p-4 rounded-lg text-center border border-yellow-500/20">
-              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300 mb-2">C-Tier</div>
-              <p class="text-sm">Rank 31-100</p>
-              <p class="text-xs text-yellow-300/60 mt-1">Developing Teams</p>
+            <div class="bg-yellow-50 dark:bg-yellow-500/10 p-4 rounded-lg text-center border border-yellow-200 dark:border-yellow-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-300 mb-2">C-Tier</div>
+              <p class="text-sm text-gray-900 dark:text-white">Rank 31-100</p>
+              <p class="text-xs text-yellow-800 dark:text-yellow-300/60 mt-1">Developing Teams</p>
             </div>
-            <div class="bg-gray-500/10 p-4 rounded-lg text-center border border-gray-500/20">
-              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 mb-2">Unranked</div>
-              <p class="text-sm">100+</p>
-              <p class="text-xs text-gray-300/60 mt-1">New/Inactive</p>
+            <div class="bg-gray-100 dark:bg-gray-500/10 p-4 rounded-lg text-center border border-gray-200 dark:border-gray-500/20">
+              <div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-500/20 text-gray-700 dark:text-gray-300 mb-2">Unranked</div>
+              <p class="text-sm text-gray-900 dark:text-white">100+</p>
+              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">New/Inactive</p>
             </div>
           </div>
         </div>
@@ -290,10 +290,10 @@ import "../styles/global.css";
             <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-800">
               <thead>
                 <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Label</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Rating Range</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Description</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Tier</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Label</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Rating Range</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Description</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
@@ -371,7 +371,7 @@ import "../styles/global.css";
             <!-- OCR Processing -->
             <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
               <div class="flex items-center gap-3 mb-3">
-                <span class="text-2xl">🤖</span>
+                <span class="text-2xl" aria-hidden="true">🤖</span>
                 <h4 class="font-semibold text-patriot-blue-600 dark:text-blue-400">1. OCR Processing</h4>
               </div>
               <p class="text-gray-700 dark:text-neutral-300 text-sm mb-2">
@@ -391,7 +391,7 @@ import "../styles/global.css";
             <!-- Under Review -->
             <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
               <div class="flex items-center gap-3 mb-3">
-                <span class="text-2xl">⏳</span>
+                <span class="text-2xl" aria-hidden="true">⏳</span>
                 <h4 class="font-semibold text-yellow-600 dark:text-yellow-400">2. Under Review</h4>
               </div>
               <p class="text-gray-700 dark:text-neutral-300 text-sm">
@@ -405,7 +405,7 @@ import "../styles/global.css";
             <!-- Verified -->
             <div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10">
               <div class="flex items-center gap-3 mb-3">
-                <span class="text-2xl">✅</span>
+                <span class="text-2xl" aria-hidden="true">✅</span>
                 <h4 class="font-semibold text-green-600 dark:text-green-400">3. Verified</h4>
               </div>
               <p class="text-gray-700 dark:text-neutral-300 text-sm mb-2">
@@ -443,9 +443,9 @@ import "../styles/global.css";
             <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-800">
               <thead>
                 <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">RP Source</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Decay Starts</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Full Decay</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">RP Source</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Decay Starts</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase">Full Decay</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
@@ -474,7 +474,10 @@ import "../styles/global.css";
 
 <style>
   .text-gold {
-    color: #fbbf24;
+    color: #b45309; /* amber-700 - Accessible on white (Contrast ~5.1:1) */
+  }
+  :global(.dark) .text-gold {
+    color: #fbbf24; /* amber-400 - Accessible on dark (Contrast ~11.5:1) */
   }
 </style>
 

@@ -462,6 +462,14 @@ export default function TeamTabsIsland({
                     <div
                       key={match.id}
                       onClick={() => handleMatchClick(match)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleMatchClick(match);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
                       className={`rounded-lg border border-gray-200 dark:border-neutral-800 p-4 transition ${
                         idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/20' : 'bg-gray-50 dark:bg-patriot-blue-900/10'
                       } ${
@@ -471,7 +479,7 @@ export default function TeamTabsIsland({
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 flex-1">
                           {opponent?.logo_url && (
-                            <img src={opponent.logo_url} alt="" className="h-8 w-8 rounded" />
+                            <img src={opponent.logo_url} alt={`${opponent.name} logo`} className="h-8 w-8 rounded" />
                           )}
                           <div className="flex-1">
                             <div className="text-sm font-semibold text-gray-900 dark:text-white">vs {opponent?.name || "Unknown"}</div>
@@ -1004,10 +1012,18 @@ export default function TeamTabsIsland({
         <div
           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={closeModal}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') closeModal();
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Close modal"
         >
           <div
             className="bg-white dark:bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-neutral-800">
               <div className="flex items-start justify-between gap-2 mb-2">

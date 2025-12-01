@@ -191,6 +191,14 @@ export default function AchievementsIsland({
             <div
               key={achievement.id}
               onClick={() => setSelectedAchievement(achievement)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedAchievement(achievement);
+                }
+              }}
+              role="button"
+              tabIndex={0}
               className="rounded-lg border border-gray-200 dark:border-white/20 bg-white dark:bg-patriot-blue-900/50 p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-patriot-red-500 dark:hover:border-patriot-red-500"
             >
               <div className="text-center">
@@ -235,6 +243,14 @@ export default function AchievementsIsland({
             <div
               key={achievement.id}
               onClick={() => setSelectedAchievement(achievement)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedAchievement(achievement);
+                }
+              }}
+              role="button"
+              tabIndex={0}
               className={`p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-patriot-blue-900 transition-colors ${
                 index !== filteredAchievements.length - 1 ? 'border-b border-gray-200 dark:border-white/20' : ''
               }`}
@@ -273,10 +289,18 @@ export default function AchievementsIsland({
         <div 
           className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedAchievement(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setSelectedAchievement(null);
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Close modal"
         >
           <div 
             className="bg-white dark:bg-patriot-blue-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-white/20"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             <div className="p-6">
               <div className="text-center">

@@ -217,12 +217,20 @@ export default function BracketDisplay({
                       key={seriesData.seriesKey}
                       className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer"
                       onClick={() => setSelectedSeries(seriesData)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedSeries(seriesData);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
                     >
                       <div className={`text-sm mb-1 ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamA?.id || '')}`}>
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 flex-1 min-w-0">
                             {seriesData.teamA?.logo_url ? (
-                              <img src={seriesData.teamA.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                              <img src={seriesData.teamA.logo_url} alt={`${seriesData.teamA.name || 'Team A'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                             ) : (
                               <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                 {seriesData.teamA?.name?.substring(0, 2).toUpperCase() || 'A'}
@@ -237,7 +245,7 @@ export default function BracketDisplay({
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 flex-1 min-w-0">
                             {seriesData.teamB?.logo_url ? (
-                              <img src={seriesData.teamB.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                              <img src={seriesData.teamB.logo_url} alt={`${seriesData.teamB.name || 'Team B'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                             ) : (
                               <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                 {seriesData.teamB?.name?.substring(0, 2).toUpperCase() || 'B'}
@@ -312,12 +320,20 @@ export default function BracketDisplay({
                         key={match.id}
                         className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer"
                         onClick={() => setSelectedMatch(match)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setSelectedMatch(match);
+                          }
+                        }}
+                        role="button"
+                        tabIndex={0}
                       >
                         <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
                           <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-1 min-w-0">
                               {match.team_a?.logo_url ? (
-                                <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                                <img src={match.team_a.logo_url} alt={`${match.team_a.name || 'Team A'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                               ) : (
                                 <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                   {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
@@ -332,7 +348,7 @@ export default function BracketDisplay({
                           <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-1 min-w-0">
                               {match.team_b?.logo_url ? (
-                                <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                                <img src={match.team_b.logo_url} alt={`${match.team_b.name || 'Team B'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                               ) : (
                                 <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                   {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
@@ -388,12 +404,20 @@ export default function BracketDisplay({
                           key={match.id}
                           className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-red-500 dark:hover:border-red-500 transition cursor-pointer"
                           onClick={() => setSelectedMatch(match)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setSelectedMatch(match);
+                            }
+                          }}
+                          role="button"
+                          tabIndex={0}
                         >
                           <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
                             <div className="flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2 flex-1 min-w-0">
                                 {match.team_a?.logo_url ? (
-                                  <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                                  <img src={match.team_a.logo_url} alt={`${match.team_a.name || 'Team A'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                                 ) : (
                                   <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                     {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
@@ -408,7 +432,7 @@ export default function BracketDisplay({
                             <div className="flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2 flex-1 min-w-0">
                                 {match.team_b?.logo_url ? (
-                                  <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                                  <img src={match.team_b.logo_url} alt={`${match.team_b.name || 'Team B'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                                 ) : (
                                   <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                                     {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
@@ -467,12 +491,20 @@ export default function BracketDisplay({
                   key={match.id}
                   className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-green-500 dark:hover:border-green-500 transition cursor-pointer"
                   onClick={() => setSelectedMatch(match)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedMatch(match);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         {match.team_a?.logo_url ? (
-                          <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                          <img src={match.team_a.logo_url} alt={`${match.team_a.name || 'Team A'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                         ) : (
                           <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                             {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
@@ -487,7 +519,7 @@ export default function BracketDisplay({
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         {match.team_b?.logo_url ? (
-                          <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                          <img src={match.team_b.logo_url} alt={`${match.team_b.name || 'Team B'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                         ) : (
                           <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                             {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
@@ -538,12 +570,20 @@ export default function BracketDisplay({
             key={match.id}
             className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-yellow-500 dark:hover:border-yellow-500 transition cursor-pointer"
             onClick={() => setSelectedMatch(match)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedMatch(match);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             <div className={`text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}`}>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   {match.team_a?.logo_url ? (
-                    <img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                    <img src={match.team_a.logo_url} alt={`${match.team_a.name || 'Team A'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                   ) : (
                     <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                       {match.team_a?.name?.substring(0, 2).toUpperCase() || 'A'}
@@ -558,7 +598,7 @@ export default function BracketDisplay({
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   {match.team_b?.logo_url ? (
-                    <img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                    <img src={match.team_b.logo_url} alt={`${match.team_b.name || 'Team B'} logo`} className="w-5 h-5 rounded object-cover flex-shrink-0" />
                   ) : (
                     <div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0">
                       {match.team_b?.name?.substring(0, 2).toUpperCase() || 'B'}
@@ -665,10 +705,18 @@ export default function BracketDisplay({
         <div
           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedMatch(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setSelectedMatch(null);
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Close modal"
         >
           <div
             className="bg-white dark:bg-neutral-900 rounded-lg max-w-md w-full border border-gray-200 dark:border-neutral-700"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             <div className="p-4 border-b border-gray-200 dark:border-neutral-800">
               <div className="flex items-start justify-between gap-2">
@@ -756,10 +804,18 @@ export default function BracketDisplay({
         <div
           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedSeries(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setSelectedSeries(null);
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Close modal"
         >
           <div
             className="bg-white dark:bg-neutral-900 rounded-lg max-w-2xl w-full border border-gray-200 dark:border-neutral-700"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             <div className="p-4 border-b border-gray-200 dark:border-neutral-800">
               <div className="flex items-start justify-between gap-2">
@@ -822,6 +878,15 @@ export default function BracketDisplay({
                         setSelectedSeries(null);
                         setSelectedMatch(match);
                       }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedSeries(null);
+                          setSelectedMatch(match);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">

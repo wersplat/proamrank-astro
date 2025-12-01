@@ -152,6 +152,14 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
           <div
             key={match.id}
             onClick={() => handleMatchClick(match)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleMatchClick(match);
+              }
+            }}
+            role="button"
+            tabIndex={0}
             className={`rounded-lg border border-gray-200 dark:border-white/20 p-3 sm:p-4 transition ${
               idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/20' : 'bg-gray-50 dark:bg-patriot-blue-900/10'
             } ${
@@ -273,10 +281,18 @@ export default function MatchesListIsland({ matches }: { matches: Match[] }) {
         <div
           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
           onClick={closeModal}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') closeModal();
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Close modal"
         >
           <div
             className="bg-white dark:bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             {/* Modal Header */}
             <div className="p-4 border-b border-gray-200 dark:border-patriot-blue-800">

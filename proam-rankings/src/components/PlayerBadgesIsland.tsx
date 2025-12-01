@@ -310,6 +310,14 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
           <div 
             key={badge.id}
             onClick={() => isClickable && setSelectedBadge(badge)}
+            onKeyDown={(e) => {
+              if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                setSelectedBadge(badge);
+              }
+            }}
+            role={isClickable ? "button" : undefined}
+            tabIndex={isClickable ? 0 : undefined}
             className={`rounded-lg border p-6 transition-all duration-200 ${
               badge.unlocked 
                 ? 'border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800' 
@@ -410,10 +418,18 @@ export default function PlayerBadgesIsland({ player, playerId }: PlayerBadgesPro
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedBadge(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setSelectedBadge(null);
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Close modal"
         >
           <div 
             className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
