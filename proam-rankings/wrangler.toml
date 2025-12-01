@@ -12,8 +12,6 @@ PUBLIC_ASSETS_BASE = "https://773fabe537380d65f5647dcbd32cd292.r2.cloudflarestor
 SENTRY_AUTH_TOKEN = "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"
 SUPABASE_ANON_KEY = "sb_publishable_JVDv-ShshgDyUKXq0_PT_w_b2x8-PWZ"
 SUPABASE_URL = "https://qwpxsufrgigpjcxtnery.supabase.co"
-PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_live_Y2xlcmsucHJvYW1yYW5rLmdnJA"
-CLERK_SECRET_KEY = "sk_live_PkcRjUAiqVYO4kv2zkkpAPBi7zsqHBKQ7HyKbICmp9"
 
 [[env.production.r2_buckets]]
 bucket_name = "badges"
