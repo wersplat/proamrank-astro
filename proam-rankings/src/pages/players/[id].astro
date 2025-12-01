@@ -118,6 +118,13 @@ if (playerData?.current_team_id) {
 // Generate CSS variables for team theme (player profiles themed by current team)
 const teamThemeCSS = generateThemeCSSVars(teamThemeColors, 'team');
 
+// Get student profile if player has one
+const { data: studentProfile } = await supa(Astro.locals)
+  .from("college_students")
+  .select("id")
+  .eq("player_id", id!)
+  .maybeSingle();
+
 // Get recent games (limited for initial display)
 const { data: statsData } = await supa(Astro.locals)
   .from("player_stats")
@@ -216,7 +223,17 @@ const ogUrl = Astro.url.href;
     ]} />
       <!-- Player Header -->
       <div class="mb-8">
-        <h1 class="text-3xl font-bold mb-2">{player.gamertag}</h1>
+        <div class="flex items-start justify-between flex-wrap gap-4 mb-2">
+          <h1 class="text-3xl font-bold">{player.gamertag}</h1>
+          {studentProfile && (
+            <a 
+              href={`https://college.proamrank.gg/recruitment/students/${studentProfile.id}`}
+              class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition whitespace-nowrap"
+            >
+              View Student Profile →
+            </a>
+          )}
+        </div>
         <div class="flex flex-wrap gap-4 text-sm mb-4">
           <div>
             <span class="text-neutral-400">Position:</span>
