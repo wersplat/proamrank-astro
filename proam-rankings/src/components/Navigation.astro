@@ -2,7 +2,6 @@
 // Simple navigation bar for the Astro app
 const currentPath = Astro.url.pathname;
 import ThemeToggle from './ThemeToggle';
-import AuthButtons from './AuthButtons';
 ---
 
 <nav class="bg-white/95 dark:bg-patriot-blue-900/95 backdrop-blur-md border-b border-gray-200 dark:border-patriot-blue-800 sticky top-0 z-50 shadow-lg">
@@ -111,7 +110,6 @@ import AuthButtons from './AuthButtons';
         </li>
       </ul>
       <ThemeToggle client:load />
-      <AuthButtons client:load />
       </div>
 
       <!-- Mobile Menu Button and Theme Toggle -->
@@ -232,11 +230,6 @@ import AuthButtons from './AuthButtons';
           >
             About
           </a>
-        </li>
-        <li role="none" class="pt-2 border-t border-gray-200 dark:border-patriot-blue-800 mt-2">
-          <div class="px-3 py-2">
-            <AuthButtons client:load />
-          </div>
         </li>
       </ul>
     </div>

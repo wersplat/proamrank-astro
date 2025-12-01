@@ -12,7 +12,6 @@
     "@astrojs/cloudflare": "^12.6.11",
     "@astrojs/react": "^4.4.2",
     "@astrojs/tailwind": "^6.0.2",
-    "@clerk/astro": "^2.16.3",
     "@sentry/astro": "^10.19.0",
     "@sentry/cloudflare": "^10.19.0",
     "@supabase/supabase-js": "^2.47.0",
