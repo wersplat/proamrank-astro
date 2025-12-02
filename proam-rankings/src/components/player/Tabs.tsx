@@ -5,6 +5,7 @@ import Career from './tabs/Career';
 import Badges from './tabs/Badges';
 import Media from './tabs/Media';
 import StatsBySeason from './tabs/StatsBySeason';
+import ScoutingReport from './tabs/ScoutingReport';
 
 type TabsProps = {
   player: any;
@@ -24,6 +25,7 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
     { id: 'games', label: 'Games' },
     { id: 'career', label: 'Career' },
     { id: 'stats-by-season', label: 'Stats by Season' },
+    { id: 'scouting-report', label: 'Scouting Report' },
     { id: 'badges', label: 'Badges' },
     { id: 'media', label: 'Media' }
   ];
@@ -60,6 +62,9 @@ export default function PlayerTabs({ player, team, recentGames, playerId, perfor
         )}
         {activeTab === 'stats-by-season' && (
           <StatsBySeason player={player} seasonStats={seasonStats} />
+        )}
+        {activeTab === 'scouting-report' && (
+          <ScoutingReport player={player} performance={performance} recentGames={recentGames} />
         )}
         {activeTab === 'badges' && (
           <Badges player={player} playerId={playerId} />
