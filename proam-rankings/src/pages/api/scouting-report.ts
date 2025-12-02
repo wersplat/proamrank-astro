@@ -1,50 +1,46 @@
-// Cloudflare Pages function to generate AI scouting reports for players
+import type { APIRoute } from 'astro';
 import OpenAI from 'openai';
-import * as Sentry from '@sentry/cloudflare';
+import type { Database } from '../../lib/db.types';
 
 interface Env {
   OPENAI_API_KEY: string;
 }
 
+type PlayerPerformanceMart = Database['public']['Views']['player_performance_mart']['Row'];
+type PlayerStats = Database['public']['Tables']['player_stats']['Row'];
+
 interface ScoutingReportRequest {
   player: {
     gamertag: string;
     position: string | null;
-    performance: {
-      games_played: number;
-      avg_points: number | null;
-      avg_assists: number | null;
-      avg_rebounds: number | null;
-      avg_steals: number | null;
-      avg_blocks: number | null;
-      avg_turnovers: number | null;
-      avg_fg_pct: number | null;
-      avg_three_pct: number | null;
-      avg_ft_pct: number | null;
-    };
-    recentGames?: Array<{
-      points: number | null;
-      assists: number | null;
-      rebounds: number | null;
-      steals: number | null;
-      blocks: number | null;
-      turnovers: number | null;
-      fgm: number | null;
-      fga: number | null;
-      three_points_made: number | null;
-      three_points_attempted: number | null;
-    }>;
+    performance: Pick<PlayerPerformanceMart, 
+      'games_played' | 
+      'avg_points' | 
+      'avg_assists' | 
+      'avg_rebounds' | 
+      'avg_steals' | 
+      'avg_blocks' | 
+      'avg_turnovers' | 
+      'avg_fg_pct' | 
+      'avg_three_pct' | 
+      'avg_ft_pct'
+    >;
+    recentGames?: Array<Pick<PlayerStats,
+      'points' |
+      'assists' |
+      'rebounds' |
+      'steals' |
+      'blocks' |
+      'turnovers' |
+      'fgm' |
+      'fga' |
+      'three_points_made' |
+      'three_points_attempted'
+    >>;
   };
 }
 
-// Initialize Sentry
-Sentry.init({
-  dsn: "https://15ecc8d420bd1ac21d6ca88698ca4566@o4509330775277568.ingest.us.sentry.io/4510164326023168",
-  environment: "production",
-  tracesSampleRate: 1.0,
-});
-
-export async function onRequest(context: { request: Request; env: Env }) {
+export const POST: APIRoute = async ({ request, locals }) => {
   // Set CORS headers
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -53,19 +49,10 @@ export async function onRequest(context: { request: Request; env: Env }) {
     'Content-Type': 'application/json'
   };
 
-  // Handle OPTIONS request for CORS
-  if (context.request.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  // Get API key from Cloudflare runtime env or local env
+  const apiKey = locals?.runtime?.env?.OPENAI_API_KEY || import.meta.env.OPENAI_API_KEY;
 
-  if (context.request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: corsHeaders
-    });
-  }
-
-  if (!context.env.OPENAI_API_KEY) {
+  if (!apiKey) {
     return new Response(JSON.stringify({ error: 'OPENAI_API_KEY is not configured' }), {
       status: 500,
       headers: corsHeaders
@@ -73,7 +60,7 @@ export async function onRequest(context: { request: Request; env: Env }) {
   }
 
   try {
-    const body: ScoutingReportRequest = await context.request.json();
+    const body: ScoutingReportRequest = await request.json();
     const { player } = body;
 
     if (!player || !player.performance) {
@@ -87,17 +74,23 @@ export async function onRequest(context: { request: Request; env: Env }) {
     
     // Determine primary position
     const primaryPosition = player.position || 'Not specified';
+    const isPositionUnknown = primaryPosition === 'Not specified';
     
     // Position-specific context and expectations
     const positionContext: Record<string, string> = {
       'PG': 'Point Guard - Focus on playmaking, assists, ball handling, court vision, and facilitating offense. Strengths should emphasize distribution and decision-making. Areas for improvement should focus on scoring efficiency, turnovers, and defensive positioning.',
+      'Point Guard': 'Point Guard - Focus on playmaking, assists, ball handling, court vision, and facilitating offense. Strengths should emphasize distribution and decision-making. Areas for improvement should focus on scoring efficiency, turnovers, and defensive positioning.',
       'SG': 'Shooting Guard - Focus on scoring, shooting efficiency, perimeter defense, and offensive versatility. Strengths should emphasize scoring ability and shooting percentages. Areas for improvement should focus on playmaking, ball handling, and defensive consistency.',
-      'SF': 'Small Forward - Focus on versatility, two-way play, scoring from multiple levels, and defensive versatility. Strengths should emphasize all-around game and versatility. Areas for improvement should focus on consistency, shooting efficiency, and playmaking.',
+      'Shooting Guard': 'Shooting Guard - Focus on scoring, shooting efficiency, perimeter defense, and offensive versatility. Strengths should emphasize scoring ability and shooting percentages. Areas for improvement should focus on playmaking, ball handling, and defensive consistency.',
+      'Lock': 'Lock - Focus on defense, steals, versatility, and defensive impact. Strengths should emphasize defensive statistics and versatility. Areas for improvement should focus on offensive consistency, shooting, and playmaking.',
       'PF': 'Power Forward - Focus on rebounding, interior play, mid-range shooting, and physical presence. Strengths should emphasize rebounding and interior statistics. Areas for improvement should focus on perimeter skills, free throw shooting, and defensive positioning.',
+      'Power Forward': 'Power Forward - Focus on rebounding, interior play, mid-range shooting, and physical presence. Strengths should emphasize rebounding and interior statistics. Areas for improvement should focus on perimeter skills, free throw shooting, and defensive positioning.',
       'C': 'Center - Focus on rebounding, blocks, interior defense, post play, and rim protection. Strengths should emphasize rebounding, blocks, and interior presence. Areas for improvement should focus on free throw shooting, perimeter defense, and offensive versatility.',
+      'Center': 'Center - Focus on rebounding, blocks, interior defense, post play, and rim protection. Strengths should emphasize rebounding, blocks, and interior presence. Areas for improvement should focus on free throw shooting, perimeter defense, and offensive versatility.',
     };
     
-    const positionGuidance = positionContext[primaryPosition] || 'Analyze based on overall statistical profile and playstyle.';
+    const positionGuidance = positionContext[primaryPosition] || 
+      'The player\'s position is not specified. You must analyze the statistics (Assists, Rebounds, 3P%, etc.) to infer their likely playstyle and role. For example, high assists suggesting a Guard/Playmaker, high rebounds suggesting a Big/Forward, high 3P% suggesting a Shooter.';
     
     // Build recent games summary
     const recentGamesSummary = player.recentGames && player.recentGames.length > 0
@@ -130,8 +123,8 @@ Recent Games Performance:
 ${recentGamesSummary}
 
 Please generate a scouting report with the following structure:
-1. Strengths: List 3-5 specific strengths based on their statistical performance, scoped to their primary position (${primaryPosition}). Be specific about what the numbers show and how they relate to position expectations.
-2. Areas for Improvement: List 3-5 areas where the player could improve, scoped to their primary position (${primaryPosition}). Again, base this on the statistics and position-specific needs.
+1. Strengths: List 3-5 specific strengths based on their statistical performance, ${isPositionUnknown ? 'considering their inferred likely role based on stats' : `scoped to their primary position (${primaryPosition})`}. Be specific about what the numbers show and how they relate to ${isPositionUnknown ? 'that role' : 'position expectations'}.
+2. Areas for Improvement: List 3-5 areas where the player could improve, ${isPositionUnknown ? 'considering their inferred likely role' : `scoped to their primary position (${primaryPosition})`}. Again, base this on the statistics and ${isPositionUnknown ? 'inferred role needs' : 'position-specific needs'}.
 3. Scouting Summary: A 2-3 sentence summary paragraph that provides an overall assessment of the player's potential and playstyle.
 4. NBA Comparison: Provide a comparison to a current or past NBA player whose playstyle and statistical profile is similar. Consider position, stat distribution, strengths, and weaknesses. Format as: "Player Name (era/team context) - brief 1-2 sentence reasoning for the comparison."
 
@@ -146,7 +139,7 @@ Return your response as a JSON object with this exact structure:
 Be specific, data-driven, and professional. Focus on what the statistics reveal about the player's skills and potential, with particular attention to position-specific expectations.`;
 
     const openai = new OpenAI({
-      apiKey: context.env.OPENAI_API_KEY,
+      apiKey: apiKey,
     });
 
     const completion = await openai.chat.completions.create({
@@ -181,7 +174,6 @@ Be specific, data-driven, and professional. Focus on what the statistics reveal 
       headers: corsHeaders
     });
   } catch (error: any) {
-    Sentry.captureException(error);
     console.error('Error generating scouting report:', error);
     
     // Provide more specific error messages
@@ -203,4 +195,15 @@ Be specific, data-driven, and professional. Focus on what the statistics reveal 
     });
   }
 }
+
+// OPTIONS handler for CORS
+export const OPTIONS: APIRoute = async () => {
+  return new Response(null, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    }
+  });
+};
 
