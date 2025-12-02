@@ -32,4 +32,3 @@ binding = "matches"
 [[env.production.r2_buckets]]
 bucket_name = "team-logos"
 binding = "team-logos"
-
