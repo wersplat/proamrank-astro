@@ -290,7 +290,12 @@ const filtersActive = hasActiveFilters(
                 <tr class="hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition">
                   <td class="px-4 py-3">
                     <div class="flex items-center gap-2">
-                      <span class="font-medium text-gray-900 dark:text-white">{player.gamertag}</span>
+                      <a 
+                        href={`/players/${player.player_id}`}
+                        class="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition"
+                      >
+                        {player.gamertag}
+                      </a>
                       {player.rating_tier && (
                         <span class={`px-1.5 py-0.5 rounded text-[10px] font-bold border ${getRatingTierColor(player.rating_tier)}`}>
                           {player.rating_tier}

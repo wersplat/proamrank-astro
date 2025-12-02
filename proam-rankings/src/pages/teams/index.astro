@@ -308,7 +308,12 @@ const pageNumbers = getPageNumbers(currentPage, totalPages);
                         </div>
                       )}
                       <div class="flex flex-col">
-                        <span class="font-medium text-gray-900 dark:text-white">{team.name}</span>
+                        <a 
+                          href={`/teams/${team.id}`}
+                          class="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition"
+                        >
+                          {team.name}
+                        </a>
                         {team.leaderboard_tier && (
                           <span class="text-xs text-gray-600 dark:text-neutral-400">{team.leaderboard_tier} Tier</span>
                         )}
