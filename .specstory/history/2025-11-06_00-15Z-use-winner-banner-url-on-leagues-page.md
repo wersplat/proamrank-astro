@@ -556,7 +556,7 @@ Implementing: fetching `winner_banner_url` from `league_open`, passing it to the
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
@@ -578,7 +578,7 @@ Lines added: 1, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 6, lines removed: 1
@@ -589,10 +589,10 @@ Lines added: 6, lines removed: 1
   let openTournament = null;
 + let winnerBannerUrl: string | null = null;
   const { data: openTournamentData } = await supa((Astro.locals as any).runtime)
-    .from(&quot;league_open&quot;)
--   .select(&quot;open_champion, open_prize, status, start_date, finals_date, tournament_type, series_format&quot;)
-+   .select(&quot;open_champion, open_prize, status, start_date, finals_date, tournament_type, series_format, winner_banner_url&quot;)
-    .eq(&quot;season_id&quot;, seasonId)
+    .from("league_open")
+-   .select("open_champion, open_prize, status, start_date, finals_date, tournament_type, series_format")
++   .select("open_champion, open_prize, status, start_date, finals_date, tournament_type, series_format, winner_banner_url")
+    .eq("season_id", seasonId)
     .maybeSingle();
   
 + if (openTournamentData) {
@@ -611,7 +611,7 @@ Lines added: 6, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: undefined
@@ -692,7 +692,7 @@ Adding the winner banner display to the Information tab, right after the Champio
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 14, lines removed: undefined
@@ -704,13 +704,13 @@ Lines added: 14, lines removed: undefined
 + 
 +                 {/* Winner Banner */}
 +                 {leagueInfo?.winner_banner_url &amp;&amp; (
-+                   &lt;div className=&quot;pt-4 border-t border-gray-200 dark:border-neutral-800&quot;&gt;
-+                     &lt;div className=&quot;text-sm text-gray-600 dark:text-neutral-400 mb-3&quot;&gt;Winner Banner&lt;/div&gt;
-+                     &lt;div className=&quot;w-full&quot;&gt;
++                   &lt;div className="pt-4 border-t border-gray-200 dark:border-neutral-800"&gt;
++                     &lt;div className="text-sm text-gray-600 dark:text-neutral-400 mb-3"&gt;Winner Banner&lt;/div&gt;
++                     &lt;div className="w-full"&gt;
 +                       &lt;img
 +                         src={leagueInfo.winner_banner_url}
-+                         alt=&quot;Winner Banner&quot;
-+                         className=&quot;w-full h-auto rounded-lg object-contain max-h-96&quot;
++                         alt="Winner Banner"
++                         className="w-full h-auto rounded-lg object-contain max-h-96"
 +                       /&gt;
 +                     &lt;/div&gt;
 +                   &lt;/div&gt;
@@ -773,7 +773,7 @@ Merging the duplicate `if` blocks:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: undefined, lines removed: 3
@@ -1202,7 +1202,7 @@ Implementing support for all three banner types, updating types and fetching log
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
@@ -1227,7 +1227,7 @@ Lines added: 3, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -1239,7 +1239,7 @@ Lines added: 1, lines removed: 1
 - let winnerBannerUrl: string | null = null;
 + let openBannerUrl: string | null = null;
   const { data: openTournamentData } = await supa((Astro.locals as any).runtime)
-    .from(&quot;league_open&quot;)
+    .from("league_open")
 ```
 
 **Chunk 2**
@@ -1263,7 +1263,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
@@ -1274,10 +1274,10 @@ Lines added: 3, lines removed: 1
   let playoffTournament = null;
 + let playoffBannerUrl: string | null = null;
   const { data: playoffTournamentData } = await supa((Astro.locals as any).runtime)
-    .from(&quot;league_playoff&quot;)
--   .select(&quot;playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type, series_format&quot;)
-+   .select(&quot;playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type, series_format, playoff_champion_url&quot;)
-    .eq(&quot;season_id&quot;, seasonId)
+    .from("league_playoff")
+-   .select("playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type, series_format")
++   .select("playoff_champion, playoff_prize, status, start_date, finals_date, tournament_type, series_format, playoff_champion_url")
+    .eq("season_id", seasonId)
     .maybeSingle();
   
   if (playoffTournamentData) {
@@ -1294,7 +1294,7 @@ Lines added: 3, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 2
@@ -1339,7 +1339,7 @@ Updating the display to show all three banners separately:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 40, lines removed: 9
@@ -1352,48 +1352,48 @@ Lines added: 40, lines removed: 9
 -                 {leagueInfo?.winner_banner_url &amp;&amp; (
 +                 {/* Champion Banners */}
 +                 {(leagueInfo?.open_banner_url || leagueInfo?.regular_season_banner_url || leagueInfo?.playoff_banner_url) &amp;&amp; (
-                    &lt;div className=&quot;pt-4 border-t border-gray-200 dark:border-neutral-800&quot;&gt;
--                     &lt;div className=&quot;text-sm text-gray-600 dark:text-neutral-400 mb-3&quot;&gt;Winner Banner&lt;/div&gt;
--                     &lt;div className=&quot;w-full&quot;&gt;
+                    &lt;div className="pt-4 border-t border-gray-200 dark:border-neutral-800"&gt;
+-                     &lt;div className="text-sm text-gray-600 dark:text-neutral-400 mb-3"&gt;Winner Banner&lt;/div&gt;
+-                     &lt;div className="w-full"&gt;
 -                       &lt;img
 -                         src={leagueInfo.winner_banner_url}
--                         alt=&quot;Winner Banner&quot;
--                         className=&quot;w-full h-auto rounded-lg object-contain max-h-96&quot;
+-                         alt="Winner Banner"
+-                         className="w-full h-auto rounded-lg object-contain max-h-96"
 -                       /&gt;
-+                     &lt;div className=&quot;text-sm text-gray-600 dark:text-neutral-400 mb-3&quot;&gt;Champion Banners&lt;/div&gt;
-+                     &lt;div className=&quot;grid gap-4&quot;&gt;
++                     &lt;div className="text-sm text-gray-600 dark:text-neutral-400 mb-3"&gt;Champion Banners&lt;/div&gt;
++                     &lt;div className="grid gap-4"&gt;
 +                       {leagueInfo?.open_banner_url &amp;&amp; (
 +                         &lt;div&gt;
-+                           &lt;div className=&quot;text-xs text-gray-500 dark:text-neutral-500 mb-2&quot;&gt;Open Tournament&lt;/div&gt;
-+                           &lt;div className=&quot;w-full&quot;&gt;
++                           &lt;div className="text-xs text-gray-500 dark:text-neutral-500 mb-2"&gt;Open Tournament&lt;/div&gt;
++                           &lt;div className="w-full"&gt;
 +                             &lt;img
 +                               src={leagueInfo.open_banner_url}
-+                               alt=&quot;Open Tournament Winner Banner&quot;
-+                               className=&quot;w-full h-auto rounded-lg object-contain max-h-96&quot;
++                               alt="Open Tournament Winner Banner"
++                               className="w-full h-auto rounded-lg object-contain max-h-96"
 +                             /&gt;
 +                           &lt;/div&gt;
 +                         &lt;/div&gt;
 +                       )}
 +                       {leagueInfo?.regular_season_banner_url &amp;&amp; (
 +                         &lt;div&gt;
-+                           &lt;div className=&quot;text-xs text-gray-500 dark:text-neutral-500 mb-2&quot;&gt;Regular Season&lt;/div&gt;
-+                           &lt;div className=&quot;w-full&quot;&gt;
++                           &lt;div className="text-xs text-gray-500 dark:text-neutral-500 mb-2"&gt;Regular Season&lt;/div&gt;
++                           &lt;div className="w-full"&gt;
 +                             &lt;img
 +                               src={leagueInfo.regular_season_banner_url}
-+                               alt=&quot;Regular Season Winner Banner&quot;
-+                               className=&quot;w-full h-auto rounded-lg object-contain max-h-96&quot;
++                               alt="Regular Season Winner Banner"
++                               className="w-full h-auto rounded-lg object-contain max-h-96"
 +                             /&gt;
 +                           &lt;/div&gt;
 +                         &lt;/div&gt;
 +                       )}
 +                       {leagueInfo?.playoff_banner_url &amp;&amp; (
 +                         &lt;div&gt;
-+                           &lt;div className=&quot;text-xs text-gray-500 dark:text-neutral-500 mb-2&quot;&gt;Playoff Tournament&lt;/div&gt;
-+                           &lt;div className=&quot;w-full&quot;&gt;
++                           &lt;div className="text-xs text-gray-500 dark:text-neutral-500 mb-2"&gt;Playoff Tournament&lt;/div&gt;
++                           &lt;div className="w-full"&gt;
 +                             &lt;img
 +                               src={leagueInfo.playoff_banner_url}
-+                               alt=&quot;Playoff Tournament Winner Banner&quot;
-+                               className=&quot;w-full h-auto rounded-lg object-contain max-h-96&quot;
++                               alt="Playoff Tournament Winner Banner"
++                               className="w-full h-auto rounded-lg object-contain max-h-96"
 +                             /&gt;
 +                           &lt;/div&gt;
 +                         &lt;/div&gt;
@@ -1535,18 +1535,18 @@ Replacing all three star icons with crown icons:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -1940,5 +1940,5 @@
-                              &lt;span className=&quot;text-sm font-medium flex-1 text-gray-900 dark:text-white&quot;&gt;{team.teamName}&lt;/span&gt;
-                              &lt;div className=&quot;flex items-center gap-2&quot;&gt;
+                              &lt;span className="text-sm font-medium flex-1 text-gray-900 dark:text-white"&gt;{team.teamName}&lt;/span&gt;
+                              &lt;div className="flex items-center gap-2"&gt;
 -                               {/* Regular Season Star */}
 +                               {/* Regular Season Crown */}
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Regular Season&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Regular Season"&gt;
                                   &lt;svg
 ```
 
@@ -1555,18 +1555,18 @@ Lines added: 2, lines removed: 2
 
 ```diff
 @@ -1956,11 +1956,11 @@
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinejoin="round"
                                       strokeWidth={team.hasRegularSeason ? 0 : 1.5}
--                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
-+                                     d=&quot;M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2&quot;
+-                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
++                                     d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2"
                                     /&gt;
                                   &lt;/svg&gt;
-                                  &lt;span className=&quot;text-[8px] text-gray-500 dark:text-neutral-500&quot;&gt;RS&lt;/span&gt;
+                                  &lt;span className="text-[8px] text-gray-500 dark:text-neutral-500"&gt;RS&lt;/span&gt;
                                 &lt;/div&gt;
                                 
 -                               {/* Open Tournament Star */}
 +                               {/* Open Tournament Crown */}
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Open Tournament&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Open Tournament"&gt;
                                   &lt;svg
 ```
 
@@ -1575,18 +1575,18 @@ Lines added: 2, lines removed: 2
 
 ```diff
 @@ -1978,11 +1978,11 @@
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinejoin="round"
                                       strokeWidth={team.hasOpen ? 0 : 1.5}
--                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
-+                                     d=&quot;M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2&quot;
+-                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
++                                     d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2"
                                     /&gt;
                                   &lt;/svg&gt;
-                                  &lt;span className=&quot;text-[8px] text-gray-500 dark:text-neutral-500&quot;&gt;Open&lt;/span&gt;
+                                  &lt;span className="text-[8px] text-gray-500 dark:text-neutral-500"&gt;Open&lt;/span&gt;
                                 &lt;/div&gt;
                                 
 -                               {/* Playoff Tournament Star */}
 +                               {/* Playoff Tournament Crown */}
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Playoff Tournament&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Playoff Tournament"&gt;
                                   &lt;svg
 ```
 
@@ -1595,10 +1595,10 @@ Lines added: 1, lines removed: 1
 
 ```diff
 @@ -2000,5 +2000,5 @@
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinejoin="round"
                                       strokeWidth={team.hasPlayoff ? 0 : 1.5}
--                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
-+                                     d=&quot;M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2&quot;
+-                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
++                                     d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1621,23 +1621,23 @@ Using a simpler crown icon design:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
 
 ```diff
 @@ -1951,10 +1951,10 @@
-                                    stroke=&quot;currentColor&quot;
-                                    viewBox=&quot;0 0 24 24&quot;
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
 +                                   strokeWidth={team.hasRegularSeason ? 0 : 1.5}
                                   &gt;
                                     &lt;path
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
 -                                     strokeWidth={team.hasRegularSeason ? 0 : 1.5}
--                                     d=&quot;M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2&quot;
-+                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
+-                                     d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2"
++                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1647,16 +1647,16 @@ Lines added: 2, lines removed: 2
 
 ```diff
 @@ -1973,10 +1973,10 @@
-                                    stroke=&quot;currentColor&quot;
-                                    viewBox=&quot;0 0 24 24&quot;
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
 +                                   strokeWidth={team.hasOpen ? 0 : 1.5}
                                   &gt;
                                     &lt;path
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
 -                                     strokeWidth={team.hasOpen ? 0 : 1.5}
--                                     d=&quot;M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2&quot;
-+                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
+-                                     d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2"
++                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1666,16 +1666,16 @@ Lines added: 2, lines removed: 2
 
 ```diff
 @@ -1995,10 +1995,10 @@
-                                    stroke=&quot;currentColor&quot;
-                                    viewBox=&quot;0 0 24 24&quot;
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
 +                                   strokeWidth={team.hasPlayoff ? 0 : 1.5}
                                   &gt;
                                     &lt;path
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
 -                                     strokeWidth={team.hasPlayoff ? 0 : 1.5}
--                                     d=&quot;M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2&quot;
-+                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
+-                                     d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm2 0h10M7 16v4a1 1 0 001 1h8a1 1 0 001-1v-4M7 16H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-2"
++                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1698,22 +1698,22 @@ The icon looks like a badge, not a crown. Using a proper crown SVG path:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 6, lines removed: 1
 
 ```diff
 @@ -1956,5 +1956,10 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
-+                                     d=&quot;M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
++                                     d="M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z"
 +                                   /&gt;
 +                                   &lt;path
-+                                     strokeLinecap=&quot;round&quot;
-+                                     strokeLinejoin=&quot;round&quot;
-+                                     d=&quot;M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z&quot;
++                                     strokeLinecap="round"
++                                     strokeLinejoin="round"
++                                     d="M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1723,15 +1723,15 @@ Lines added: 6, lines removed: 1
 
 ```diff
 @@ -1978,5 +1983,10 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
-+                                     d=&quot;M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
++                                     d="M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z"
 +                                   /&gt;
 +                                   &lt;path
-+                                     strokeLinecap=&quot;round&quot;
-+                                     strokeLinejoin=&quot;round&quot;
-+                                     d=&quot;M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z&quot;
++                                     strokeLinecap="round"
++                                     strokeLinejoin="round"
++                                     d="M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1741,15 +1741,15 @@ Lines added: 6, lines removed: 1
 
 ```diff
 @@ -2000,5 +2010,10 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
-+                                     d=&quot;M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
++                                     d="M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z"
 +                                   /&gt;
 +                                   &lt;path
-+                                     strokeLinecap=&quot;round&quot;
-+                                     strokeLinejoin=&quot;round&quot;
-+                                     d=&quot;M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z&quot;
++                                     strokeLinecap="round"
++                                     strokeLinejoin="round"
++                                     d="M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1824,22 +1824,22 @@ Replacing the crown icons with a simplified version based on the golden crown SV
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 6
 
 ```diff
 @@ -1956,10 +1956,5 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z"
 -                                   /&gt;
 -                                   &lt;path
--                                     strokeLinecap=&quot;round&quot;
--                                     strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z&quot;
-+                                     d=&quot;M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16&quot;
+-                                     strokeLinecap="round"
+-                                     strokeLinejoin="round"
+-                                     d="M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z"
++                                     d="M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1849,15 +1849,15 @@ Lines added: 1, lines removed: 6
 
 ```diff
 @@ -1983,10 +1978,5 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z"
 -                                   /&gt;
 -                                   &lt;path
--                                     strokeLinecap=&quot;round&quot;
--                                     strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z&quot;
-+                                     d=&quot;M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16&quot;
+-                                     strokeLinecap="round"
+-                                     strokeLinejoin="round"
+-                                     d="M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z"
++                                     d="M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1867,15 +1867,15 @@ Lines added: 1, lines removed: 6
 
 ```diff
 @@ -2010,10 +2000,5 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M5 3l4 4-1.5 1.5L12 2l4.5 6.5L15 9l4 4H5V3z"
 -                                   /&gt;
 -                                   &lt;path
--                                     strokeLinecap=&quot;round&quot;
--                                     strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z&quot;
-+                                     d=&quot;M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16&quot;
+-                                     strokeLinecap="round"
+-                                     strokeLinejoin="round"
+-                                     d="M5 13h14v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z"
++                                     d="M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1898,17 +1898,17 @@ Refining the crown shape for better clarity at small sizes:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -1956,5 +1956,5 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16&quot;
-+                                     d=&quot;M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16"
++                                     d="M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1918,10 +1918,10 @@ Lines added: 1, lines removed: 1
 
 ```diff
 @@ -1978,5 +1978,5 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16&quot;
-+                                     d=&quot;M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16"
++                                     d="M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -1931,10 +1931,10 @@ Lines added: 1, lines removed: 1
 
 ```diff
 @@ -2000,5 +2000,5 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16&quot;
-+                                     d=&quot;M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+-                                     d="M5 16h14l-2-7-2.5 2-2.5-2L9 16m-4 0l-1-8 2.5 2L9 4l2.5 6 2.5-6L16 10l2.5-2L20 16"
++                                     d="M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -2003,19 +2003,19 @@ Increasing the crown icon size from `w-5 h-5` to `w-6 h-6`.
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -1943,5 +1943,5 @@
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Regular Season&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Regular Season"&gt;
                                   &lt;svg
 -                                   className={&#96;w-5 h-5 ${
 +                                   className={&#96;w-7 h-7 ${
                                       team.hasRegularSeason
-                                        ? &#39;text-yellow-600 dark:text-yellow-400&#39;
+                                        ? 'text-yellow-600 dark:text-yellow-400'
 ```
 
 </details>
@@ -2026,19 +2026,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -1965,5 +1965,5 @@
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Open Tournament&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Open Tournament"&gt;
                                   &lt;svg
 -                                   className={&#96;w-5 h-5 ${
 +                                   className={&#96;w-7 h-7 ${
                                       team.hasOpen
-                                        ? &#39;text-patriot-blue-600 dark:text-blue-400&#39;
+                                        ? 'text-patriot-blue-600 dark:text-blue-400'
 ```
 
 </details>
@@ -2049,19 +2049,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -1987,5 +1987,5 @@
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Playoff Tournament&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Playoff Tournament"&gt;
                                   &lt;svg
 -                                   className={&#96;w-5 h-5 ${
 +                                   className={&#96;w-7 h-7 ${
                                       team.hasPlayoff
-                                        ? &#39;text-purple-600 dark:text-purple-400&#39;
+                                        ? 'text-purple-600 dark:text-purple-400'
 ```
 
 </details>
@@ -2123,7 +2123,7 @@ Replacing the inline crown SVG paths with the crown SVG file. Updating the compo
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 33, lines removed: 42
@@ -2131,102 +2131,102 @@ Lines added: 33, lines removed: 42
 ```diff
 @@ -1942,65 +1942,56 @@
                                 {/* Regular Season Crown */}
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Regular Season&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Regular Season"&gt;
 -                                 &lt;svg
 +                                 &lt;img
-+                                   src=&quot;/crown512.svg&quot;
-+                                   alt=&quot;Regular Season Crown&quot;
++                                   src="/crown512.svg"
++                                   alt="Regular Season Crown"
                                     className={&#96;w-7 h-7 ${
                                       team.hasRegularSeason
--                                       ? &#39;text-yellow-600 dark:text-yellow-400&#39;
--                                       : &#39;text-gray-400 dark:text-neutral-600&#39;
-+                                       ? &#39;opacity-100&#39;
-+                                       : &#39;opacity-30 grayscale&#39;
+-                                       ? 'text-yellow-600 dark:text-yellow-400'
+-                                       : 'text-gray-400 dark:text-neutral-600'
++                                       ? 'opacity-100'
++                                       : 'opacity-30 grayscale'
                                     }&#96;}
--                                   fill={team.hasRegularSeason ? &#39;currentColor&#39; : &#39;none&#39;}
--                                   stroke=&quot;currentColor&quot;
--                                   viewBox=&quot;0 0 24 24&quot;
+-                                   fill={team.hasRegularSeason ? 'currentColor' : 'none'}
+-                                   stroke="currentColor"
+-                                   viewBox="0 0 24 24"
 -                                   strokeWidth={team.hasRegularSeason ? 0 : 1.5}
 -                                 &gt;
 -                                   &lt;path
--                                     strokeLinecap=&quot;round&quot;
--                                     strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z&quot;
+-                                     strokeLinecap="round"
+-                                     strokeLinejoin="round"
+-                                     d="M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z"
 -                                   /&gt;
 -                                 &lt;/svg&gt;
 +                                   style={{
 +                                     filter: team.hasRegularSeason 
-+                                       ? &#39;brightness(1.2) saturate(1.5)&#39; 
-+                                       : &#39;none&#39;
++                                       ? 'brightness(1.2) saturate(1.5)' 
++                                       : 'none'
 +                                   }}
 +                                 /&gt;
-                                  &lt;span className=&quot;text-[8px] text-gray-500 dark:text-neutral-500&quot;&gt;RS&lt;/span&gt;
+                                  &lt;span className="text-[8px] text-gray-500 dark:text-neutral-500"&gt;RS&lt;/span&gt;
                                 &lt;/div&gt;
                                 
                                 {/* Open Tournament Crown */}
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Open Tournament&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Open Tournament"&gt;
 -                                 &lt;svg
 +                                 &lt;img
-+                                   src=&quot;/crown512.svg&quot;
-+                                   alt=&quot;Open Tournament Crown&quot;
++                                   src="/crown512.svg"
++                                   alt="Open Tournament Crown"
                                     className={&#96;w-7 h-7 ${
                                       team.hasOpen
--                                       ? &#39;text-patriot-blue-600 dark:text-blue-400&#39;
--                                       : &#39;text-gray-400 dark:text-neutral-600&#39;
-+                                       ? &#39;opacity-100&#39;
-+                                       : &#39;opacity-30 grayscale&#39;
+-                                       ? 'text-patriot-blue-600 dark:text-blue-400'
+-                                       : 'text-gray-400 dark:text-neutral-600'
++                                       ? 'opacity-100'
++                                       : 'opacity-30 grayscale'
                                     }&#96;}
--                                   fill={team.hasOpen ? &#39;currentColor&#39; : &#39;none&#39;}
--                                   stroke=&quot;currentColor&quot;
--                                   viewBox=&quot;0 0 24 24&quot;
+-                                   fill={team.hasOpen ? 'currentColor' : 'none'}
+-                                   stroke="currentColor"
+-                                   viewBox="0 0 24 24"
 -                                   strokeWidth={team.hasOpen ? 0 : 1.5}
 -                                 &gt;
 -                                   &lt;path
--                                     strokeLinecap=&quot;round&quot;
--                                     strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z&quot;
+-                                     strokeLinecap="round"
+-                                     strokeLinejoin="round"
+-                                     d="M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z"
 -                                   /&gt;
 -                                 &lt;/svg&gt;
 +                                   style={{
 +                                     filter: team.hasOpen 
-+                                       ? &#39;brightness(1.1) saturate(1.8) hue-rotate(200deg)&#39; 
-+                                       : &#39;none&#39;
++                                       ? 'brightness(1.1) saturate(1.8) hue-rotate(200deg)' 
++                                       : 'none'
 +                                   }}
 +                                 /&gt;
-                                  &lt;span className=&quot;text-[8px] text-gray-500 dark:text-neutral-500&quot;&gt;Open&lt;/span&gt;
+                                  &lt;span className="text-[8px] text-gray-500 dark:text-neutral-500"&gt;Open&lt;/span&gt;
                                 &lt;/div&gt;
                                 
                                 {/* Playoff Tournament Crown */}
-                                &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Playoff Tournament&quot;&gt;
+                                &lt;div className="flex flex-col items-center gap-1" title="Playoff Tournament"&gt;
 -                                 &lt;svg
 +                                 &lt;img
-+                                   src=&quot;/crown512.svg&quot;
-+                                   alt=&quot;Playoff Tournament Crown&quot;
++                                   src="/crown512.svg"
++                                   alt="Playoff Tournament Crown"
                                     className={&#96;w-7 h-7 ${
                                       team.hasPlayoff
--                                       ? &#39;text-purple-600 dark:text-purple-400&#39;
--                                       : &#39;text-gray-400 dark:text-neutral-600&#39;
-+                                       ? &#39;opacity-100&#39;
-+                                       : &#39;opacity-30 grayscale&#39;
+-                                       ? 'text-purple-600 dark:text-purple-400'
+-                                       : 'text-gray-400 dark:text-neutral-600'
++                                       ? 'opacity-100'
++                                       : 'opacity-30 grayscale'
                                     }&#96;}
--                                   fill={team.hasPlayoff ? &#39;currentColor&#39; : &#39;none&#39;}
--                                   stroke=&quot;currentColor&quot;
--                                   viewBox=&quot;0 0 24 24&quot;
+-                                   fill={team.hasPlayoff ? 'currentColor' : 'none'}
+-                                   stroke="currentColor"
+-                                   viewBox="0 0 24 24"
 -                                   strokeWidth={team.hasPlayoff ? 0 : 1.5}
 -                                 &gt;
 -                                   &lt;path
--                                     strokeLinecap=&quot;round&quot;
--                                     strokeLinejoin=&quot;round&quot;
--                                     d=&quot;M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z&quot;
+-                                     strokeLinecap="round"
+-                                     strokeLinejoin="round"
+-                                     d="M5 3l3.5 4-1 3L12 4l4.5 6-1-3L19 3v11H5V3zm0 11h14v4a1 1 0 01-1 1H6a1 1 0 01-1-1v-4z"
 -                                   /&gt;
 -                                 &lt;/svg&gt;
 +                                   style={{
 +                                     filter: team.hasPlayoff 
-+                                       ? &#39;brightness(1.1) saturate(1.8) hue-rotate(270deg)&#39; 
-+                                       : &#39;none&#39;
++                                       ? 'brightness(1.1) saturate(1.8) hue-rotate(270deg)' 
++                                       : 'none'
 +                                   }}
 +                                 /&gt;
-                                  &lt;span className=&quot;text-[8px] text-gray-500 dark:text-neutral-500&quot;&gt;Playoff&lt;/span&gt;
+                                  &lt;span className="text-[8px] text-gray-500 dark:text-neutral-500"&gt;Playoff&lt;/span&gt;
                                 &lt;/div&gt;
 ```
 

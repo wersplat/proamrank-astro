@@ -165,56 +165,56 @@ Parameters:
 
 ```json
 {
-  &quot;plan&quot;: &quot;# Add Matchup History and Stats by Season Tabs\n\n## Overview\nAdd two new tabs: \&quot;Matchup History\&quot; to team profiles and \&quot;Stats by Season\&quot; to player profiles, using the respective marts for data.\n\n## Implementation Plan\n\n### 1. Team Profile - Matchup History Tab\n\n#### Files to modify:\n- &#96;proam-rankings/src/pages/teams/[id].astro&#96; - Add query for matchup data and pass to component\n- &#96;proam-rankings/src/components/TeamTabsIsland.tsx&#96; - Add new tab and create matchup history component\n\n#### Steps:\n1. Query &#96;head_to_head_matchup_mart&#96; in team profile page:\n   - Filter where &#96;team_1_id = teamId OR team_2_id = teamId&#96;\n   - Order by &#96;last_meeting&#96; DESC\n   - Pass matchup data as prop to &#96;TeamTabsIsland&#96;\n\n2. Update &#96;TeamTabsIsland&#96;:\n   - Add \&quot;Matchup History\&quot; tab to tabs array (insert between \&quot;Match History\&quot; and \&quot;Team History\&quot;)\n   - Create new tab content component showing:\n     - Table/list of opponents with:\n       - Opponent team name and logo\n       - Overall record (wins-losses) indicating which team won\n       - Total meetings count\n       - Average scores (team avg vs opponent avg)\n       - Last meeting date\n       - Recent form (last 5 games: W-L record)\n     - Link each opponent to their team profile\n     - Handle cases where team is team_1 or team_2 in the mart\n\n### 2. Player Profile - Stats by Season Tab\n\n#### Files to modify:\n- &#96;proam-rankings/src/pages/players/[id].astro&#96; - Add query for season stats and pass to component\n- &#96;proam-rankings/src/components/player/Tabs.tsx&#96; - Add new tab\n- Create new component: &#96;proam-rankings/src/components/player/tabs/StatsBySeason.tsx&#96;\n\n#### Steps:\n1. Query &#96;player_league_season_stats_mart&#96; in player profile page:\n   - Filter where &#96;player_id = playerId&#96;\n   - Order by &#96;game_year DESC, season_number DESC&#96;\n   - Pass season stats data as prop to &#96;PlayerTabs&#96;\n\n2. Update &#96;PlayerTabs&#96;:\n   - Add \&quot;Stats by Season\&quot; tab to tabs array (insert after \&quot;Career\&quot; tab)\n   - Import and render new &#96;StatsBySeason&#96; component\n\n3. Create &#96;StatsBySeason.tsx&#96; component:\n   - Display table with columns:\n     - Season (League Name + Season #)\n     - Year\n     - Team (if applicable, with link)\n     - Games Played\n     - Per Game Stats: PPG, APG, RPG, SPG, BPG, TPG\n     - Shooting: FG%, 3PT%, FT%\n     - Totals: Points, Assists, Rebounds\n     - Season Highs: Points, Assists, Rebounds\n     - Season Rankings: Points Rank, Assists Rank, Rebounds Rank, Performance Rank\n   - Sort by year/season descending\n   - Show empty state if no season data\n\n## Data Handling\n\n### Matchup History:\n- When displaying record, determine if current team is team_1 or team_2\n- Calculate win-loss from perspective of current team\n- Format dates and handle null values appropriately\n\n### Stats by Season:\n- Display all available stats from the mart\n- Format percentages and decimals appropriately\n- Link team names to team profiles where applicable\n- Handle missing/null values gracefully\n\n## UI Styling\n- Follow existing tab component patterns\n- Use consistent table styling with other tabs\n- Match dark mode support\n- Ensure responsive design for mobile devices&quot;,
-  &quot;name&quot;: &quot;Add matchup history and stats by season tabs&quot;,
-  &quot;todos&quot;: [
+  "plan": "# Add Matchup History and Stats by Season Tabs\n\n## Overview\nAdd two new tabs: \"Matchup History\" to team profiles and \"Stats by Season\" to player profiles, using the respective marts for data.\n\n## Implementation Plan\n\n### 1. Team Profile - Matchup History Tab\n\n#### Files to modify:\n- &#96;proam-rankings/src/pages/teams/[id].astro&#96; - Add query for matchup data and pass to component\n- &#96;proam-rankings/src/components/TeamTabsIsland.tsx&#96; - Add new tab and create matchup history component\n\n#### Steps:\n1. Query &#96;head_to_head_matchup_mart&#96; in team profile page:\n   - Filter where &#96;team_1_id = teamId OR team_2_id = teamId&#96;\n   - Order by &#96;last_meeting&#96; DESC\n   - Pass matchup data as prop to &#96;TeamTabsIsland&#96;\n\n2. Update &#96;TeamTabsIsland&#96;:\n   - Add \"Matchup History\" tab to tabs array (insert between \"Match History\" and \"Team History\")\n   - Create new tab content component showing:\n     - Table/list of opponents with:\n       - Opponent team name and logo\n       - Overall record (wins-losses) indicating which team won\n       - Total meetings count\n       - Average scores (team avg vs opponent avg)\n       - Last meeting date\n       - Recent form (last 5 games: W-L record)\n     - Link each opponent to their team profile\n     - Handle cases where team is team_1 or team_2 in the mart\n\n### 2. Player Profile - Stats by Season Tab\n\n#### Files to modify:\n- &#96;proam-rankings/src/pages/players/[id].astro&#96; - Add query for season stats and pass to component\n- &#96;proam-rankings/src/components/player/Tabs.tsx&#96; - Add new tab\n- Create new component: &#96;proam-rankings/src/components/player/tabs/StatsBySeason.tsx&#96;\n\n#### Steps:\n1. Query &#96;player_league_season_stats_mart&#96; in player profile page:\n   - Filter where &#96;player_id = playerId&#96;\n   - Order by &#96;game_year DESC, season_number DESC&#96;\n   - Pass season stats data as prop to &#96;PlayerTabs&#96;\n\n2. Update &#96;PlayerTabs&#96;:\n   - Add \"Stats by Season\" tab to tabs array (insert after \"Career\" tab)\n   - Import and render new &#96;StatsBySeason&#96; component\n\n3. Create &#96;StatsBySeason.tsx&#96; component:\n   - Display table with columns:\n     - Season (League Name + Season #)\n     - Year\n     - Team (if applicable, with link)\n     - Games Played\n     - Per Game Stats: PPG, APG, RPG, SPG, BPG, TPG\n     - Shooting: FG%, 3PT%, FT%\n     - Totals: Points, Assists, Rebounds\n     - Season Highs: Points, Assists, Rebounds\n     - Season Rankings: Points Rank, Assists Rank, Rebounds Rank, Performance Rank\n   - Sort by year/season descending\n   - Show empty state if no season data\n\n## Data Handling\n\n### Matchup History:\n- When displaying record, determine if current team is team_1 or team_2\n- Calculate win-loss from perspective of current team\n- Format dates and handle null values appropriately\n\n### Stats by Season:\n- Display all available stats from the mart\n- Format percentages and decimals appropriately\n- Link team names to team profiles where applicable\n- Handle missing/null values gracefully\n\n## UI Styling\n- Follow existing tab component patterns\n- Use consistent table styling with other tabs\n- Match dark mode support\n- Ensure responsive design for mobile devices",
+  "name": "Add matchup history and stats by season tabs",
+  "todos": [
     {
-      &quot;content&quot;: &quot;Add query for head_to_head_matchup_mart in teams/[id].astro and pass data to TeamTabsIsland&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;query-team-matchups&quot;
+      "content": "Add query for head_to_head_matchup_mart in teams/[id].astro and pass data to TeamTabsIsland",
+      "status": "pending",
+      "id": "query-team-matchups"
     },
     {
-      &quot;content&quot;: &quot;Add &#39;Matchup History&#39; tab to TeamTabsIsland tabs array and create tab content rendering matchup data&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;add-matchup-tab&quot;,
-      &quot;dependencies&quot;: [
-        &quot;query-team-matchups&quot;
+      "content": "Add 'Matchup History' tab to TeamTabsIsland tabs array and create tab content rendering matchup data",
+      "status": "pending",
+      "id": "add-matchup-tab",
+      "dependencies": [
+        "query-team-matchups"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add query for player_league_season_stats_mart in players/[id].astro and pass data to PlayerTabs&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;query-player-seasons&quot;
+      "content": "Add query for player_league_season_stats_mart in players/[id].astro and pass data to PlayerTabs",
+      "status": "pending",
+      "id": "query-player-seasons"
     },
     {
-      &quot;content&quot;: &quot;Add &#39;Stats by Season&#39; tab to PlayerTabs tabs array&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;add-season-tab&quot;,
-      &quot;dependencies&quot;: [
-        &quot;query-player-seasons&quot;
+      "content": "Add 'Stats by Season' tab to PlayerTabs tabs array",
+      "status": "pending",
+      "id": "add-season-tab",
+      "dependencies": [
+        "query-player-seasons"
       ]
     },
     {
-      &quot;content&quot;: &quot;Create StatsBySeason.tsx component to display season-by-season statistics table&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;create-season-component&quot;,
-      &quot;dependencies&quot;: [
-        &quot;add-season-tab&quot;
+      "content": "Create StatsBySeason.tsx component to display season-by-season statistics table",
+      "status": "pending",
+      "id": "create-season-component",
+      "dependencies": [
+        "add-season-tab"
       ]
     }
   ],
-  &quot;overview&quot;: &quot;Add a \&quot;Matchup History\&quot; tab to team profiles using head_to_head_matchup_mart, and a \&quot;Stats by Season\&quot; tab to player profiles using player_league_season_stats_mart.&quot;
+  "overview": "Add a \"Matchup History\" tab to team profiles using head_to_head_matchup_mart, and a \"Stats by Season\" tab to player profiles using player_league_season_stats_mart."
 }
 ```
 Additional data:
 
 ```json
 {
-  &quot;status&quot;: &quot;pending&quot;,
-  &quot;reviewData&quot;: {
-    &quot;status&quot;: &quot;Requested&quot;,
-    &quot;selectedOption&quot;: &quot;none&quot;,
-    &quot;isShowingInput&quot;: false
+  "status": "pending",
+  "reviewData": {
+    "status": "Requested",
+    "selectedOption": "none",
+    "isShowingInput": false
   }
 }
 ```
@@ -222,7 +222,7 @@ Result:
 
 ```json
 {
-  &quot;rejected&quot;: {}
+  "rejected": {}
 }
 ```
 Status: **completed**

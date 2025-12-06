@@ -31,7 +31,7 @@ I'm zeroing in on the file locations. After a quick scan of the code structure, 
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -115,16 +115,16 @@ I'm now diving into the players page implementation. I'm focusing on the `src/pa
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -16,4 +16,5 @@
-  const sortBy = Astro.url.searchParams.get(&#39;sort&#39;) || &#39;rating&#39;;
-  const searchQuery = Astro.url.searchParams.get(&#39;search&#39;) || &#39;&#39;;
-+ const view = Astro.url.searchParams.get(&#39;view&#39;) || &#39;grid&#39;;
+  const sortBy = Astro.url.searchParams.get('sort') || 'rating';
+  const searchQuery = Astro.url.searchParams.get('search') || '';
++ const view = Astro.url.searchParams.get('view') || 'grid';
   
   // Build query with filters - use player_performance_mart for optimized performance
 ```
@@ -167,7 +167,7 @@ I've updated the `buildFilterQuery` call to include the `view` parameter, but I'
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 1
@@ -206,7 +206,7 @@ I'm now focused on adding the view toggle buttons. Placing them at the end of th
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
 
 **Chunk 1**
 Lines added: 19, lines removed: undefined
@@ -216,22 +216,22 @@ Lines added: 19, lines removed: undefined
               &lt;/a&gt;
             )}
 + 
-+           &lt;div class=&quot;flex items-center gap-1 ml-auto&quot;&gt;
++           &lt;div class="flex items-center gap-1 ml-auto"&gt;
 +             &lt;button
-+               onclick={&#96;window.location.href = updateFilter(&#39;view&#39;, &#39;grid&#39;)&#96;}
-+               class={&#96;p-1.5 rounded transition ${view === &#39;grid&#39; ? &#39;bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400&#39; : &#39;text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800&#39;}&#96;}
-+               title=&quot;Grid View&quot;
-+               aria-label=&quot;Grid View&quot;
++               onclick={&#96;window.location.href = updateFilter('view', 'grid')&#96;}
++               class={&#96;p-1.5 rounded transition ${view === 'grid' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800'}&#96;}
++               title="Grid View"
++               aria-label="Grid View"
 +             &gt;
-+               &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;rect x=&quot;3&quot; y=&quot;3&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;rect x=&quot;14&quot; y=&quot;3&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;rect x=&quot;14&quot; y=&quot;14&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;rect x=&quot;3&quot; y=&quot;14&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;/svg&gt;
++               &lt;svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;rect x="3" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="3" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;/svg&gt;
 +             &lt;/button&gt;
 +             &lt;button
-+               onclick={&#96;window.location.href = updateFilter(&#39;view&#39;, &#39;list&#39;)&#96;}
-+               class={&#96;p-1.5 rounded transition ${view === &#39;list&#39; ? &#39;bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400&#39; : &#39;text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800&#39;}&#96;}
-+               title=&quot;List View&quot;
-+               aria-label=&quot;List View&quot;
++               onclick={&#96;window.location.href = updateFilter('view', 'list')&#96;}
++               class={&#96;p-1.5 rounded transition ${view === 'list' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800'}&#96;}
++               title="List View"
++               aria-label="List View"
 +             &gt;
-+               &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;line x1=&quot;8&quot; y1=&quot;6&quot; x2=&quot;21&quot; y2=&quot;6&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;8&quot; y1=&quot;12&quot; x2=&quot;21&quot; y2=&quot;12&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;8&quot; y1=&quot;18&quot; x2=&quot;21&quot; y2=&quot;18&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;3&quot; y1=&quot;6&quot; x2=&quot;3.01&quot; y2=&quot;6&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;3&quot; y1=&quot;12&quot; x2=&quot;3.01&quot; y2=&quot;12&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;3&quot; y1=&quot;18&quot; x2=&quot;3.01&quot; y2=&quot;18&quot;&gt;&lt;/line&gt;&lt;/svg&gt;
++               &lt;svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;line x1="8" y1="6" x2="21" y2="6"&gt;&lt;/line&gt;&lt;line x1="8" y1="12" x2="21" y2="12"&gt;&lt;/line&gt;&lt;line x1="8" y1="18" x2="21" y2="18"&gt;&lt;/line&gt;&lt;line x1="3" y1="6" x2="3.01" y2="6"&gt;&lt;/line&gt;&lt;line x1="3" y1="12" x2="3.01" y2="12"&gt;&lt;/line&gt;&lt;line x1="3" y1="18" x2="3.01" y2="18"&gt;&lt;/line&gt;&lt;/svg&gt;
 +             &lt;/button&gt;
 +           &lt;/div&gt;
           &lt;/div&gt;
@@ -256,7 +256,7 @@ I've decided to abandon the grid approach and shift to conditional rendering. Th
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
 
 **Chunk 1**
 Lines added: 89, lines removed: 36
@@ -266,97 +266,97 @@ Lines added: 89, lines removed: 36
         &lt;/script&gt;
   
 -       &lt;!-- Players Grid --&gt;
--       &lt;div class=&quot;grid gap-4 sm:grid-cols-2 lg:grid-cols-3&quot;&gt;
+-       &lt;div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"&gt;
 -         {players.map((player) =&gt; (
 -           &lt;a 
 -             href={&#96;/players/${player.player_id}&#96;}
--             class=&quot;block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
+-             class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
 -           &gt;
--             &lt;div class=&quot;mb-3&quot;&gt;
--               &lt;div class=&quot;flex items-start justify-between gap-2 mb-1&quot;&gt;
--                 &lt;h2 class=&quot;font-bold text-lg flex-1 text-gray-900 dark:text-white&quot;&gt;{player.gamertag}&lt;/h2&gt;
+-             &lt;div class="mb-3"&gt;
+-               &lt;div class="flex items-start justify-between gap-2 mb-1"&gt;
+-                 &lt;h2 class="font-bold text-lg flex-1 text-gray-900 dark:text-white"&gt;{player.gamertag}&lt;/h2&gt;
 -                 {player.rating_tier &amp;&amp; (
 -                   &lt;span class={&#96;px-2 py-0.5 rounded text-xs font-bold border ${getRatingTierColor(player.rating_tier)}&#96;}&gt;
 -                     {player.rating_tier}
 -                   &lt;/span&gt;
 -                 )}
 -               &lt;/div&gt;
--               &lt;p class=&quot;text-sm text-gray-600 dark:text-neutral-400&quot;&gt;{player.position || &#39;Unknown&#39;}&lt;/p&gt;
+-               &lt;p class="text-sm text-gray-600 dark:text-neutral-400"&gt;{player.position || 'Unknown'}&lt;/p&gt;
 -             &lt;/div&gt;
 -             
--             &lt;dl class=&quot;grid grid-cols-3 gap-2 text-sm mb-3&quot;&gt;
+-             &lt;dl class="grid grid-cols-3 gap-2 text-sm mb-3"&gt;
 -               &lt;div&gt;
--                 &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Rating&lt;/dt&gt;
--                 &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;{player.global_rating?.toFixed(1) ?? &#39;-&#39;}&lt;/dd&gt;
+-                 &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Rating&lt;/dt&gt;
+-                 &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;{player.global_rating?.toFixed(1) ?? '-'}&lt;/dd&gt;
 -               &lt;/div&gt;
 -               &lt;div&gt;
--                 &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Games&lt;/dt&gt;
--                 &lt;dd class=&quot;font-semibold text-patriot-blue-600 dark:text-blue-400&quot;&gt;{player.games_played ?? 0}&lt;/dd&gt;
+-                 &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Games&lt;/dt&gt;
+-                 &lt;dd class="font-semibold text-patriot-blue-600 dark:text-blue-400"&gt;{player.games_played ?? 0}&lt;/dd&gt;
 -               &lt;/div&gt;
 -               &lt;div&gt;
--                 &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;PPG&lt;/dt&gt;
--                 &lt;dd class=&quot;font-semibold text-green-600 dark:text-green-400&quot;&gt;{player.avg_points?.toFixed(1) ?? &#39;-&#39;}&lt;/dd&gt;
+-                 &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;PPG&lt;/dt&gt;
+-                 &lt;dd class="font-semibold text-green-600 dark:text-green-400"&gt;{player.avg_points?.toFixed(1) ?? '-'}&lt;/dd&gt;
 -               &lt;/div&gt;
 -             &lt;/dl&gt;
 -           &lt;/a&gt;
 -         ))}
 -       &lt;/div&gt;
 +       &lt;!-- Players List/Grid --&gt;
-+       {view === &#39;grid&#39; ? (
-+         &lt;div class=&quot;grid gap-4 sm:grid-cols-2 lg:grid-cols-3&quot;&gt;
++       {view === 'grid' ? (
++         &lt;div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"&gt;
 +           {players.map((player) =&gt; (
 +             &lt;a 
 +               href={&#96;/players/${player.player_id}&#96;}
-+               class=&quot;block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
++               class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
 +             &gt;
-+               &lt;div class=&quot;mb-3&quot;&gt;
-+                 &lt;div class=&quot;flex items-start justify-between gap-2 mb-1&quot;&gt;
-+                   &lt;h2 class=&quot;font-bold text-lg flex-1 text-gray-900 dark:text-white&quot;&gt;{player.gamertag}&lt;/h2&gt;
++               &lt;div class="mb-3"&gt;
++                 &lt;div class="flex items-start justify-between gap-2 mb-1"&gt;
++                   &lt;h2 class="font-bold text-lg flex-1 text-gray-900 dark:text-white"&gt;{player.gamertag}&lt;/h2&gt;
 +                   {player.rating_tier &amp;&amp; (
 +                     &lt;span class={&#96;px-2 py-0.5 rounded text-xs font-bold border ${getRatingTierColor(player.rating_tier)}&#96;}&gt;
 +                       {player.rating_tier}
 +                     &lt;/span&gt;
 +                   )}
 +                 &lt;/div&gt;
-+                 &lt;p class=&quot;text-sm text-gray-600 dark:text-neutral-400&quot;&gt;{player.position || &#39;Unknown&#39;}&lt;/p&gt;
++                 &lt;p class="text-sm text-gray-600 dark:text-neutral-400"&gt;{player.position || 'Unknown'}&lt;/p&gt;
 +               &lt;/div&gt;
 +               
-+               &lt;dl class=&quot;grid grid-cols-3 gap-2 text-sm mb-3&quot;&gt;
++               &lt;dl class="grid grid-cols-3 gap-2 text-sm mb-3"&gt;
 +                 &lt;div&gt;
-+                   &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Rating&lt;/dt&gt;
-+                   &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;{player.global_rating?.toFixed(1) ?? &#39;-&#39;}&lt;/dd&gt;
++                   &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Rating&lt;/dt&gt;
++                   &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;{player.global_rating?.toFixed(1) ?? '-'}&lt;/dd&gt;
 +                 &lt;/div&gt;
 +                 &lt;div&gt;
-+                   &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Games&lt;/dt&gt;
-+                   &lt;dd class=&quot;font-semibold text-patriot-blue-600 dark:text-blue-400&quot;&gt;{player.games_played ?? 0}&lt;/dd&gt;
++                   &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Games&lt;/dt&gt;
++                   &lt;dd class="font-semibold text-patriot-blue-600 dark:text-blue-400"&gt;{player.games_played ?? 0}&lt;/dd&gt;
 +                 &lt;/div&gt;
 +                 &lt;div&gt;
-+                   &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;PPG&lt;/dt&gt;
-+                   &lt;dd class=&quot;font-semibold text-green-600 dark:text-green-400&quot;&gt;{player.avg_points?.toFixed(1) ?? &#39;-&#39;}&lt;/dd&gt;
++                   &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;PPG&lt;/dt&gt;
++                   &lt;dd class="font-semibold text-green-600 dark:text-green-400"&gt;{player.avg_points?.toFixed(1) ?? '-'}&lt;/dd&gt;
 +                 &lt;/div&gt;
 +               &lt;/dl&gt;
 +             &lt;/a&gt;
 +           ))}
 +         &lt;/div&gt;
 +       ) : (
-+         &lt;div class=&quot;overflow-x-auto rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900&quot;&gt;
-+           &lt;table class=&quot;w-full text-sm text-left&quot;&gt;
-+             &lt;thead class=&quot;bg-gray-50 dark:bg-neutral-800/50 text-gray-600 dark:text-neutral-400 font-medium border-b border-gray-200 dark:border-neutral-800&quot;&gt;
++         &lt;div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900"&gt;
++           &lt;table class="w-full text-sm text-left"&gt;
++             &lt;thead class="bg-gray-50 dark:bg-neutral-800/50 text-gray-600 dark:text-neutral-400 font-medium border-b border-gray-200 dark:border-neutral-800"&gt;
 +               &lt;tr&gt;
-+                 &lt;th class=&quot;px-4 py-3&quot;&gt;Player&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3&quot;&gt;Position&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;Rating&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;Games&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;PPG&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;Link&lt;/th&gt;
++                 &lt;th class="px-4 py-3"&gt;Player&lt;/th&gt;
++                 &lt;th class="px-4 py-3"&gt;Position&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;Rating&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;Games&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;PPG&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;Link&lt;/th&gt;
 +               &lt;/tr&gt;
 +             &lt;/thead&gt;
-+             &lt;tbody class=&quot;divide-y divide-gray-200 dark:divide-neutral-800&quot;&gt;
++             &lt;tbody class="divide-y divide-gray-200 dark:divide-neutral-800"&gt;
 +               {players.map((player) =&gt; (
-+                 &lt;tr class=&quot;hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition&quot;&gt;
-+                   &lt;td class=&quot;px-4 py-3&quot;&gt;
-+                     &lt;div class=&quot;flex items-center gap-2&quot;&gt;
-+                       &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;{player.gamertag}&lt;/span&gt;
++                 &lt;tr class="hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition"&gt;
++                   &lt;td class="px-4 py-3"&gt;
++                     &lt;div class="flex items-center gap-2"&gt;
++                       &lt;span class="font-medium text-gray-900 dark:text-white"&gt;{player.gamertag}&lt;/span&gt;
 +                       {player.rating_tier &amp;&amp; (
 +                         &lt;span class={&#96;px-1.5 py-0.5 rounded text-[10px] font-bold border ${getRatingTierColor(player.rating_tier)}&#96;}&gt;
 +                           {player.rating_tier}
@@ -364,22 +364,22 @@ Lines added: 89, lines removed: 36
 +                       )}
 +                     &lt;/div&gt;
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-gray-600 dark:text-neutral-400&quot;&gt;
-+                     {player.position || &#39;-&#39;}
++                   &lt;td class="px-4 py-3 text-gray-600 dark:text-neutral-400"&gt;
++                     {player.position || '-'}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                     {player.global_rating?.toFixed(1) ?? &#39;-&#39;}
++                   &lt;td class="px-4 py-3 text-right font-semibold text-gray-900 dark:text-white"&gt;
++                     {player.global_rating?.toFixed(1) ?? '-'}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right font-semibold text-patriot-blue-600 dark:text-blue-400&quot;&gt;
++                   &lt;td class="px-4 py-3 text-right font-semibold text-patriot-blue-600 dark:text-blue-400"&gt;
 +                     {player.games_played ?? 0}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right font-semibold text-green-600 dark:text-green-400&quot;&gt;
-+                     {player.avg_points?.toFixed(1) ?? &#39;-&#39;}
++                   &lt;td class="px-4 py-3 text-right font-semibold text-green-600 dark:text-green-400"&gt;
++                     {player.avg_points?.toFixed(1) ?? '-'}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right&quot;&gt;
++                   &lt;td class="px-4 py-3 text-right"&gt;
 +                     &lt;a 
 +                       href={&#96;/players/${player.player_id}&#96;}
-+                       class=&quot;text-blue-600 dark:text-blue-400 hover:underline&quot;
++                       class="text-blue-600 dark:text-blue-400 hover:underline"
 +                     &gt;
 +                       View
 +                     &lt;/a&gt;
@@ -422,7 +422,7 @@ I've determined that the `view` parameter is handled correctly. I'm now verifyin
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 2
@@ -431,15 +431,15 @@ Lines added: 4, lines removed: 2
 @@ -224,10 +224,12 @@
           function updateFilter(param, value) {
             const url = new URL(window.location.href);
--           if (value === &#39;all&#39; || (param === &#39;sort&#39; &amp;&amp; value === &#39;rating&#39;) || (param === &#39;search&#39; &amp;&amp; value === &#39;&#39;)) {
-+           if (value === &#39;all&#39; || (param === &#39;sort&#39; &amp;&amp; value === &#39;rating&#39;) || (param === &#39;search&#39; &amp;&amp; value === &#39;&#39;) || (param === &#39;view&#39; &amp;&amp; value === &#39;grid&#39;)) {
+-           if (value === 'all' || (param === 'sort' &amp;&amp; value === 'rating') || (param === 'search' &amp;&amp; value === '')) {
++           if (value === 'all' || (param === 'sort' &amp;&amp; value === 'rating') || (param === 'search' &amp;&amp; value === '') || (param === 'view' &amp;&amp; value === 'grid')) {
               url.searchParams.delete(param);
             } else {
               url.searchParams.set(param, value);
             }
--           url.searchParams.delete(&#39;page&#39;); // Reset to page 1 when filtering
-+           if (param !== &#39;view&#39;) {
-+              url.searchParams.delete(&#39;page&#39;); // Reset to page 1 when filtering, but not when switching view
+-           url.searchParams.delete('page'); // Reset to page 1 when filtering
++           if (param !== 'view') {
++              url.searchParams.delete('page'); // Reset to page 1 when filtering, but not when switching view
 +           }
             return url.toString();
           }
@@ -468,16 +468,16 @@ I'm now focused on how the 'view' parameter is retrieved from the URL within `sr
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -13,4 +13,5 @@
-  const sortBy = Astro.url.searchParams.get(&#39;sort&#39;) || &#39;rank&#39;;
-  const searchQuery = Astro.url.searchParams.get(&#39;search&#39;) || &#39;&#39;;
-+ const view = Astro.url.searchParams.get(&#39;view&#39;) || &#39;grid&#39;;
+  const sortBy = Astro.url.searchParams.get('sort') || 'rank';
+  const searchQuery = Astro.url.searchParams.get('search') || '';
++ const view = Astro.url.searchParams.get('view') || 'grid';
   
   // Build query with filters - use teams table (same as home page)
 ```
@@ -537,39 +537,39 @@ I'm now focusing on integrating the view toggle buttons within the `src/pages/te
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
 
 **Chunk 1**
 Lines added: 20, lines removed: 1
 
 ```diff
 @@ -175,10 +175,29 @@
-            {(tierFilter !== &#39;all&#39; || sortBy !== &#39;rank&#39; || searchQuery) &amp;&amp; (
+            {(tierFilter !== 'all' || sortBy !== 'rank' || searchQuery) &amp;&amp; (
               &lt;a 
--               href=&quot;/teams&quot; 
-+               href={&#96;/teams${view !== &#39;grid&#39; ? &#96;?view=${view}&#96; : &#39;&#39;}&#96;}
-                class=&quot;px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white&quot;
+-               href="/teams" 
++               href={&#96;/teams${view !== 'grid' ? &#96;?view=${view}&#96; : ''}&#96;}
+                class="px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
               &gt;
                 Clear Filters
               &lt;/a&gt;
             )}
 + 
-+           &lt;div class=&quot;flex items-center gap-1 ml-auto&quot;&gt;
++           &lt;div class="flex items-center gap-1 ml-auto"&gt;
 +             &lt;button
-+               onclick={&#96;window.location.href = updateFilter(&#39;view&#39;, &#39;grid&#39;)&#96;}
-+               class={&#96;p-1.5 rounded transition ${view === &#39;grid&#39; ? &#39;bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400&#39; : &#39;text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800&#39;}&#96;}
-+               title=&quot;Grid View&quot;
-+               aria-label=&quot;Grid View&quot;
++               onclick={&#96;window.location.href = updateFilter('view', 'grid')&#96;}
++               class={&#96;p-1.5 rounded transition ${view === 'grid' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800'}&#96;}
++               title="Grid View"
++               aria-label="Grid View"
 +             &gt;
-+               &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;rect x=&quot;3&quot; y=&quot;3&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;rect x=&quot;14&quot; y=&quot;3&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;rect x=&quot;14&quot; y=&quot;14&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;rect x=&quot;3&quot; y=&quot;14&quot; width=&quot;7&quot; height=&quot;7&quot;&gt;&lt;/rect&gt;&lt;/svg&gt;
++               &lt;svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;rect x="3" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="3" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;/svg&gt;
 +             &lt;/button&gt;
 +             &lt;button
-+               onclick={&#96;window.location.href = updateFilter(&#39;view&#39;, &#39;list&#39;)&#96;}
-+               class={&#96;p-1.5 rounded transition ${view === &#39;list&#39; ? &#39;bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400&#39; : &#39;text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800&#39;}&#96;}
-+               title=&quot;List View&quot;
-+               aria-label=&quot;List View&quot;
++               onclick={&#96;window.location.href = updateFilter('view', 'list')&#96;}
++               class={&#96;p-1.5 rounded transition ${view === 'list' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-500 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800'}&#96;}
++               title="List View"
++               aria-label="List View"
 +             &gt;
-+               &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;line x1=&quot;8&quot; y1=&quot;6&quot; x2=&quot;21&quot; y2=&quot;6&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;8&quot; y1=&quot;12&quot; x2=&quot;21&quot; y2=&quot;12&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;8&quot; y1=&quot;18&quot; x2=&quot;21&quot; y2=&quot;18&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;3&quot; y1=&quot;6&quot; x2=&quot;3.01&quot; y2=&quot;6&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;3&quot; y1=&quot;12&quot; x2=&quot;3.01&quot; y2=&quot;12&quot;&gt;&lt;/line&gt;&lt;line x1=&quot;3&quot; y1=&quot;18&quot; x2=&quot;3.01&quot; y2=&quot;18&quot;&gt;&lt;/line&gt;&lt;/svg&gt;
++               &lt;svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;line x1="8" y1="6" x2="21" y2="6"&gt;&lt;/line&gt;&lt;line x1="8" y1="12" x2="21" y2="12"&gt;&lt;/line&gt;&lt;line x1="8" y1="18" x2="21" y2="18"&gt;&lt;/line&gt;&lt;line x1="3" y1="6" x2="3.01" y2="6"&gt;&lt;/line&gt;&lt;line x1="3" y1="12" x2="3.01" y2="12"&gt;&lt;/line&gt;&lt;line x1="3" y1="18" x2="3.01" y2="18"&gt;&lt;/line&gt;&lt;/svg&gt;
 +             &lt;/button&gt;
 +           &lt;/div&gt;
           &lt;/div&gt;
@@ -604,7 +604,7 @@ I'm implementing the updated `updateFilter` function now. I've modified it to ac
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 2
@@ -613,15 +613,15 @@ Lines added: 4, lines removed: 2
 @@ -206,10 +206,12 @@
           function updateFilter(param, value) {
             const url = new URL(window.location.href);
--           if (value === &#39;all&#39; || (param === &#39;sort&#39; &amp;&amp; value === &#39;rank&#39;)) {
-+           if (value === &#39;all&#39; || (param === &#39;sort&#39; &amp;&amp; value === &#39;rank&#39;) || (param === &#39;view&#39; &amp;&amp; value === &#39;grid&#39;)) {
+-           if (value === 'all' || (param === 'sort' &amp;&amp; value === 'rank')) {
++           if (value === 'all' || (param === 'sort' &amp;&amp; value === 'rank') || (param === 'view' &amp;&amp; value === 'grid')) {
               url.searchParams.delete(param);
             } else {
               url.searchParams.set(param, value);
             }
--           url.searchParams.delete(&#39;page&#39;); // Reset to page 1 when filtering
-+           if (param !== &#39;view&#39;) {
-+             url.searchParams.delete(&#39;page&#39;); // Reset to page 1 when filtering
+-           url.searchParams.delete('page'); // Reset to page 1 when filtering
++           if (param !== 'view') {
++             url.searchParams.delete('page'); // Reset to page 1 when filtering
 +           }
             return url.toString();
           }
@@ -650,7 +650,7 @@ I've just added the `view` parameter to the pagination link generation in `src/p
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -659,9 +659,9 @@ Lines added: 1, lines removed: 1
 @@ -289,5 +289,5 @@
             {currentPage &gt; 1 ? (
               &lt;a 
--               href={&#96;/teams?page=${currentPage - 1}${tierFilter !== &#39;all&#39; ? &#96;&amp;tier=${tierFilter}&#96; : &#39;&#39;}${sortBy !== &#39;rank&#39; ? &#96;&amp;sort=${sortBy}&#96; : &#39;&#39;}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : &#39;&#39;}&#96;}
-+               href={&#96;/teams?page=${currentPage - 1}${tierFilter !== &#39;all&#39; ? &#96;&amp;tier=${tierFilter}&#96; : &#39;&#39;}${sortBy !== &#39;rank&#39; ? &#96;&amp;sort=${sortBy}&#96; : &#39;&#39;}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : &#39;&#39;}${view !== &#39;grid&#39; ? &#96;&amp;view=${view}&#96; : &#39;&#39;}&#96;}
-                class=&quot;px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white&quot;
+-               href={&#96;/teams?page=${currentPage - 1}${tierFilter !== 'all' ? &#96;&amp;tier=${tierFilter}&#96; : ''}${sortBy !== 'rank' ? &#96;&amp;sort=${sortBy}&#96; : ''}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : ''}&#96;}
++               href={&#96;/teams?page=${currentPage - 1}${tierFilter !== 'all' ? &#96;&amp;tier=${tierFilter}&#96; : ''}${sortBy !== 'rank' ? &#96;&amp;sort=${sortBy}&#96; : ''}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : ''}${view !== 'grid' ? &#96;&amp;view=${view}&#96; : ''}&#96;}
+                class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
               &gt;
 ```
 
@@ -672,8 +672,8 @@ Lines added: 1, lines removed: 1
 @@ -303,5 +303,5 @@
               {pageNumbers.map((pageNum: number) =&gt; (
                 &lt;a
--                 href={&#96;/teams?page=${pageNum}${tierFilter !== &#39;all&#39; ? &#96;&amp;tier=${tierFilter}&#96; : &#39;&#39;}${sortBy !== &#39;rank&#39; ? &#96;&amp;sort=${sortBy}&#96; : &#39;&#39;}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : &#39;&#39;}&#96;}
-+                 href={&#96;/teams?page=${pageNum}${tierFilter !== &#39;all&#39; ? &#96;&amp;tier=${tierFilter}&#96; : &#39;&#39;}${sortBy !== &#39;rank&#39; ? &#96;&amp;sort=${sortBy}&#96; : &#39;&#39;}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : &#39;&#39;}${view !== &#39;grid&#39; ? &#96;&amp;view=${view}&#96; : &#39;&#39;}&#96;}
+-                 href={&#96;/teams?page=${pageNum}${tierFilter !== 'all' ? &#96;&amp;tier=${tierFilter}&#96; : ''}${sortBy !== 'rank' ? &#96;&amp;sort=${sortBy}&#96; : ''}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : ''}&#96;}
++                 href={&#96;/teams?page=${pageNum}${tierFilter !== 'all' ? &#96;&amp;tier=${tierFilter}&#96; : ''}${sortBy !== 'rank' ? &#96;&amp;sort=${sortBy}&#96; : ''}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : ''}${view !== 'grid' ? &#96;&amp;view=${view}&#96; : ''}&#96;}
                   class={&#96;px-3 py-2 rounded transition ${
                     pageNum === currentPage
 ```
@@ -685,9 +685,9 @@ Lines added: 1, lines removed: 1
 @@ -317,5 +317,5 @@
             {currentPage &lt; totalPages ? (
               &lt;a 
--               href={&#96;/teams?page=${currentPage + 1}${tierFilter !== &#39;all&#39; ? &#96;&amp;tier=${tierFilter}&#96; : &#39;&#39;}${sortBy !== &#39;rank&#39; ? &#96;&amp;sort=${sortBy}&#96; : &#39;&#39;}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : &#39;&#39;}&#96;}
-+               href={&#96;/teams?page=${currentPage + 1}${tierFilter !== &#39;all&#39; ? &#96;&amp;tier=${tierFilter}&#96; : &#39;&#39;}${sortBy !== &#39;rank&#39; ? &#96;&amp;sort=${sortBy}&#96; : &#39;&#39;}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : &#39;&#39;}${view !== &#39;grid&#39; ? &#96;&amp;view=${view}&#96; : &#39;&#39;}&#96;}
-                class=&quot;px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white&quot;
+-               href={&#96;/teams?page=${currentPage + 1}${tierFilter !== 'all' ? &#96;&amp;tier=${tierFilter}&#96; : ''}${sortBy !== 'rank' ? &#96;&amp;sort=${sortBy}&#96; : ''}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : ''}&#96;}
++               href={&#96;/teams?page=${currentPage + 1}${tierFilter !== 'all' ? &#96;&amp;tier=${tierFilter}&#96; : ''}${sortBy !== 'rank' ? &#96;&amp;sort=${sortBy}&#96; : ''}${searchQuery ? &#96;&amp;search=${encodeURIComponent(searchQuery)}&#96; : ''}${view !== 'grid' ? &#96;&amp;view=${view}&#96; : ''}&#96;}
+                class="px-4 py-2 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-gray-900 dark:text-white"
               &gt;
 ```
 
@@ -729,7 +729,7 @@ I'm finalizing the list view implementation, by integrating the provided table s
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/index.astro</summary>
 
 **Chunk 1**
 Lines added: 110, lines removed: 45
@@ -739,150 +739,150 @@ Lines added: 110, lines removed: 45
         &lt;/script&gt;
   
 -       &lt;!-- Teams Grid --&gt;
--       &lt;div class=&quot;grid gap-4 sm:grid-cols-2 lg:grid-cols-3&quot;&gt;
+-       &lt;div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"&gt;
 -         {teams.map((team) =&gt; (
 -           &lt;a 
 -             href={&#96;/teams/${team.id}&#96;}
--             class=&quot;block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
+-             class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
 -           &gt;
--             &lt;div class=&quot;flex items-center gap-3 mb-3&quot;&gt;
+-             &lt;div class="flex items-center gap-3 mb-3"&gt;
 -               {team.logo_url ? (
 -                 &lt;img 
 -                   src={team.logo_url}
--                   alt={team.name || &quot;Team&quot;}
--                   class=&quot;h-12 w-12 rounded object-cover&quot;
--                   loading=&quot;lazy&quot;
+-                   alt={team.name || "Team"}
+-                   class="h-12 w-12 rounded object-cover"
+-                   loading="lazy"
 -                 /&gt;
 -               ) : (
--                 &lt;div class=&quot;h-12 w-12 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-xs font-bold&quot;&gt;
--                   {team.name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                 &lt;div class="h-12 w-12 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-xs font-bold"&gt;
+-                   {team.name?.substring(0, 2).toUpperCase() || '??'}
 -                 &lt;/div&gt;
 -               )}
--               &lt;div class=&quot;flex-1 min-w-0&quot;&gt;
--                 &lt;h2 class=&quot;font-bold text-lg truncate text-gray-900 dark:text-white&quot;&gt;{team.name}&lt;/h2&gt;
+-               &lt;div class="flex-1 min-w-0"&gt;
+-                 &lt;h2 class="font-bold text-lg truncate text-gray-900 dark:text-white"&gt;{team.name}&lt;/h2&gt;
 -                 {team.leaderboard_tier &amp;&amp; (
--                   &lt;span class=&quot;text-xs font-bold text-gray-600 dark:text-neutral-400&quot;&gt;{team.leaderboard_tier} Tier&lt;/span&gt;
+-                   &lt;span class="text-xs font-bold text-gray-600 dark:text-neutral-400"&gt;{team.leaderboard_tier} Tier&lt;/span&gt;
 -                 )}
 -               &lt;/div&gt;
 -             &lt;/div&gt;
 -             
--             &lt;dl class=&quot;grid grid-cols-3 gap-2 text-sm&quot;&gt;
+-             &lt;dl class="grid grid-cols-3 gap-2 text-sm"&gt;
 -               &lt;div&gt;
--                 &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Rank&lt;/dt&gt;
--                 &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;#{team.global_rank ?? &#39;-&#39;}&lt;/dd&gt;
+-                 &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Rank&lt;/dt&gt;
+-                 &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;#{team.global_rank ?? '-'}&lt;/dd&gt;
 -               &lt;/div&gt;
 -               &lt;div&gt;
--                 &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Score&lt;/dt&gt;
--                 &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;{Math.round(team.hybrid_score ?? 0)}&lt;/dd&gt;
+-                 &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Score&lt;/dt&gt;
+-                 &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;{Math.round(team.hybrid_score ?? 0)}&lt;/dd&gt;
 -               &lt;/div&gt;
 -               &lt;div&gt;
--                 &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;RP&lt;/dt&gt;
--                 &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;{team.current_rp ?? 0}&lt;/dd&gt;
+-                 &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;RP&lt;/dt&gt;
+-                 &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;{team.current_rp ?? 0}&lt;/dd&gt;
 -               &lt;/div&gt;
 -             &lt;/dl&gt;
 -           &lt;/a&gt;
 -         ))}
 -       &lt;/div&gt;
 +       &lt;!-- Teams List/Grid --&gt;
-+       {view === &#39;grid&#39; ? (
-+         &lt;div class=&quot;grid gap-4 sm:grid-cols-2 lg:grid-cols-3&quot;&gt;
++       {view === 'grid' ? (
++         &lt;div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"&gt;
 +           {teams.map((team) =&gt; (
 +             &lt;a 
 +               href={&#96;/teams/${team.id}&#96;}
-+               class=&quot;block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
++               class="block rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
 +             &gt;
-+               &lt;div class=&quot;flex items-center gap-3 mb-3&quot;&gt;
++               &lt;div class="flex items-center gap-3 mb-3"&gt;
 +                 {team.logo_url ? (
 +                   &lt;img 
 +                     src={team.logo_url}
-+                     alt={team.name || &quot;Team&quot;}
-+                     class=&quot;h-12 w-12 rounded object-cover&quot;
-+                     loading=&quot;lazy&quot;
++                     alt={team.name || "Team"}
++                     class="h-12 w-12 rounded object-cover"
++                     loading="lazy"
 +                   /&gt;
 +                 ) : (
-+                   &lt;div class=&quot;h-12 w-12 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-xs font-bold&quot;&gt;
-+                     {team.name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                   &lt;div class="h-12 w-12 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-xs font-bold"&gt;
++                     {team.name?.substring(0, 2).toUpperCase() || '??'}
 +                   &lt;/div&gt;
 +                 )}
-+                 &lt;div class=&quot;flex-1 min-w-0&quot;&gt;
-+                   &lt;h2 class=&quot;font-bold text-lg truncate text-gray-900 dark:text-white&quot;&gt;{team.name}&lt;/h2&gt;
++                 &lt;div class="flex-1 min-w-0"&gt;
++                   &lt;h2 class="font-bold text-lg truncate text-gray-900 dark:text-white"&gt;{team.name}&lt;/h2&gt;
 +                   {team.leaderboard_tier &amp;&amp; (
-+                     &lt;span class=&quot;text-xs font-bold text-gray-600 dark:text-neutral-400&quot;&gt;{team.leaderboard_tier} Tier&lt;/span&gt;
++                     &lt;span class="text-xs font-bold text-gray-600 dark:text-neutral-400"&gt;{team.leaderboard_tier} Tier&lt;/span&gt;
 +                   )}
 +                 &lt;/div&gt;
 +               &lt;/div&gt;
 +               
-+               &lt;dl class=&quot;grid grid-cols-3 gap-2 text-sm&quot;&gt;
++               &lt;dl class="grid grid-cols-3 gap-2 text-sm"&gt;
 +                 &lt;div&gt;
-+                   &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Rank&lt;/dt&gt;
-+                   &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;#{team.global_rank ?? &#39;-&#39;}&lt;/dd&gt;
++                   &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Rank&lt;/dt&gt;
++                   &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;#{team.global_rank ?? '-'}&lt;/dd&gt;
 +                 &lt;/div&gt;
 +                 &lt;div&gt;
-+                   &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;Score&lt;/dt&gt;
-+                   &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;{Math.round(team.hybrid_score ?? 0)}&lt;/dd&gt;
++                   &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;Score&lt;/dt&gt;
++                   &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;{Math.round(team.hybrid_score ?? 0)}&lt;/dd&gt;
 +                 &lt;/div&gt;
 +                 &lt;div&gt;
-+                   &lt;dt class=&quot;text-gray-600 dark:text-neutral-400 text-xs&quot;&gt;RP&lt;/dt&gt;
-+                   &lt;dd class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;{team.current_rp ?? 0}&lt;/dd&gt;
++                   &lt;dt class="text-gray-600 dark:text-neutral-400 text-xs"&gt;RP&lt;/dt&gt;
++                   &lt;dd class="font-semibold text-gray-900 dark:text-white"&gt;{team.current_rp ?? 0}&lt;/dd&gt;
 +                 &lt;/div&gt;
 +               &lt;/dl&gt;
 +             &lt;/a&gt;
 +           ))}
 +         &lt;/div&gt;
 +       ) : (
-+         &lt;div class=&quot;overflow-x-auto rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900&quot;&gt;
-+           &lt;table class=&quot;w-full text-sm text-left&quot;&gt;
-+             &lt;thead class=&quot;bg-gray-50 dark:bg-neutral-800/50 text-gray-600 dark:text-neutral-400 font-medium border-b border-gray-200 dark:border-neutral-800&quot;&gt;
++         &lt;div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900"&gt;
++           &lt;table class="w-full text-sm text-left"&gt;
++             &lt;thead class="bg-gray-50 dark:bg-neutral-800/50 text-gray-600 dark:text-neutral-400 font-medium border-b border-gray-200 dark:border-neutral-800"&gt;
 +               &lt;tr&gt;
-+                 &lt;th class=&quot;px-4 py-3&quot;&gt;Team&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;Rank&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;Score&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;RP&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;Elo&lt;/th&gt;
-+                 &lt;th class=&quot;px-4 py-3 text-right&quot;&gt;Link&lt;/th&gt;
++                 &lt;th class="px-4 py-3"&gt;Team&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;Rank&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;Score&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;RP&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;Elo&lt;/th&gt;
++                 &lt;th class="px-4 py-3 text-right"&gt;Link&lt;/th&gt;
 +               &lt;/tr&gt;
 +             &lt;/thead&gt;
-+             &lt;tbody class=&quot;divide-y divide-gray-200 dark:divide-neutral-800&quot;&gt;
++             &lt;tbody class="divide-y divide-gray-200 dark:divide-neutral-800"&gt;
 +               {teams.map((team) =&gt; (
-+                 &lt;tr class=&quot;hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition&quot;&gt;
-+                   &lt;td class=&quot;px-4 py-3&quot;&gt;
-+                     &lt;div class=&quot;flex items-center gap-3&quot;&gt;
++                 &lt;tr class="hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition"&gt;
++                   &lt;td class="px-4 py-3"&gt;
++                     &lt;div class="flex items-center gap-3"&gt;
 +                       {team.logo_url ? (
 +                         &lt;img 
 +                           src={team.logo_url}
-+                           alt={team.name || &quot;Team&quot;}
-+                           class=&quot;h-8 w-8 rounded object-cover&quot;
-+                           loading=&quot;lazy&quot;
++                           alt={team.name || "Team"}
++                           class="h-8 w-8 rounded object-cover"
++                           loading="lazy"
 +                         /&gt;
 +                       ) : (
-+                         &lt;div class=&quot;h-8 w-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-[10px] font-bold&quot;&gt;
-+                           {team.name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                         &lt;div class="h-8 w-8 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-700 dark:text-neutral-500 text-[10px] font-bold"&gt;
++                           {team.name?.substring(0, 2).toUpperCase() || '??'}
 +                         &lt;/div&gt;
 +                       )}
-+                       &lt;div class=&quot;flex flex-col&quot;&gt;
-+                         &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;{team.name}&lt;/span&gt;
++                       &lt;div class="flex flex-col"&gt;
++                         &lt;span class="font-medium text-gray-900 dark:text-white"&gt;{team.name}&lt;/span&gt;
 +                         {team.leaderboard_tier &amp;&amp; (
-+                           &lt;span class=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;{team.leaderboard_tier} Tier&lt;/span&gt;
++                           &lt;span class="text-xs text-gray-600 dark:text-neutral-400"&gt;{team.leaderboard_tier} Tier&lt;/span&gt;
 +                         )}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                     #{team.global_rank ?? &#39;-&#39;}
++                   &lt;td class="px-4 py-3 text-right font-semibold text-gray-900 dark:text-white"&gt;
++                     #{team.global_rank ?? '-'}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right text-gray-900 dark:text-white&quot;&gt;
++                   &lt;td class="px-4 py-3 text-right text-gray-900 dark:text-white"&gt;
 +                     {Math.round(team.hybrid_score ?? 0)}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right text-gray-900 dark:text-white&quot;&gt;
++                   &lt;td class="px-4 py-3 text-right text-gray-900 dark:text-white"&gt;
 +                     {team.current_rp ?? 0}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right text-gray-900 dark:text-white&quot;&gt;
-+                     {team.elo_rating ?? &#39;-&#39;}
++                   &lt;td class="px-4 py-3 text-right text-gray-900 dark:text-white"&gt;
++                     {team.elo_rating ?? '-'}
 +                   &lt;/td&gt;
-+                   &lt;td class=&quot;px-4 py-3 text-right&quot;&gt;
++                   &lt;td class="px-4 py-3 text-right"&gt;
 +                     &lt;a 
 +                       href={&#96;/teams/${team.id}&#96;}
-+                       class=&quot;text-blue-600 dark:text-blue-400 hover:underline&quot;
++                       class="text-blue-600 dark:text-blue-400 hover:underline"
 +                     &gt;
 +                       View
 +                     &lt;/a&gt;
@@ -958,7 +958,7 @@ I've re-examined the code in `proam-rankings/src/pages/players/index.astro`, spe
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -967,9 +967,9 @@ Lines added: 1, lines removed: 1
 @@ -193,5 +193,5 @@
             {filtersActive &amp;&amp; (
               &lt;a 
--               href=&quot;/players&quot; 
-+               href={view !== &#39;grid&#39; ? &#96;/players?view=${view}&#96; : &#39;/players&#39;}
-                class=&quot;px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white&quot;
+-               href="/players" 
++               href={view !== 'grid' ? &#96;/players?view=${view}&#96; : '/players'}
+                class="px-3 py-1 rounded bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition text-sm text-gray-900 dark:text-white"
               &gt;
 ```
 

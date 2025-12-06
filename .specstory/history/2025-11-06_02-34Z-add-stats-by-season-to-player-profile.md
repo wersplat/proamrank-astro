@@ -123,7 +123,7 @@ Reviewing the player profile page and existing tabs:
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -161,7 +161,7 @@ Creating the "Stats by Season" tab. Adding `StatsBySeason.tsx` and updating `Tab
 
 <tool-use data-tool-type="write" data-tool-name="write">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
+<details><summary>Tool use: **write** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
 
 **Chunk 1**
 Lines added: 321, lines removed: 1
@@ -236,21 +236,21 @@ Lines added: 321, lines removed: 1
 +     : [];
 + 
 +   const formatPercentage = (value: number | null) =&gt; {
-+     if (value === null || value === undefined) return &#39;-&#39;;
++     if (value === null || value === undefined) return '-';
 +     return &#96;${value.toFixed(1)}%&#96;;
 +   };
 + 
 +   const formatDate = (dateString: string | null) =&gt; {
-+     if (!dateString) return &#39;-&#39;;
++     if (!dateString) return '-';
 +     return new Date(dateString).toLocaleDateString();
 +   };
 + 
 +   if (loading) {
 +     return (
 +       &lt;div&gt;
-+         &lt;h2 className=&quot;text-xl font-bold mb-6 text-gray-900 dark:text-white&quot;&gt;Stats by Season&lt;/h2&gt;
-+         &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900&quot;&gt;
-+           &lt;p className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Loading season statistics...&lt;/p&gt;
++         &lt;h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white"&gt;Stats by Season&lt;/h2&gt;
++         &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900"&gt;
++           &lt;p className="text-gray-600 dark:text-neutral-400"&gt;Loading season statistics...&lt;/p&gt;
 +         &lt;/div&gt;
 +       &lt;/div&gt;
 +     );
@@ -258,57 +258,57 @@ Lines added: 321, lines removed: 1
 + 
 +   return (
 +     &lt;div&gt;
-+       &lt;h2 className=&quot;text-xl font-bold mb-6 text-gray-900 dark:text-white&quot;&gt;Stats by Season&lt;/h2&gt;
++       &lt;h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white"&gt;Stats by Season&lt;/h2&gt;
 +       
 +       {sortedStats.length === 0 ? (
-+         &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900&quot;&gt;
-+           &lt;p className=&quot;text-gray-600 dark:text-neutral-400 text-lg&quot;&gt;
++         &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900"&gt;
++           &lt;p className="text-gray-600 dark:text-neutral-400 text-lg"&gt;
 +             No season statistics available
 +           &lt;/p&gt;
 +         &lt;/div&gt;
 +       ) : (
-+         &lt;div className=&quot;space-y-6&quot;&gt;
++         &lt;div className="space-y-6"&gt;
 +           {sortedStats.map((stat, index) =&gt; (
 +             &lt;div
 +               key={stat.season_id || index}
-+               className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 p-6&quot;
++               className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 p-6"
 +             &gt;
 +               {/* Season Header */}
-+               &lt;div className=&quot;mb-4 pb-4 border-b border-gray-200 dark:border-neutral-800&quot;&gt;
-+                 &lt;div className=&quot;flex flex-wrap items-center gap-3 mb-2&quot;&gt;
-+                   &lt;h3 className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                     {stat.league_name || &#39;Unknown League&#39;}
++               &lt;div className="mb-4 pb-4 border-b border-gray-200 dark:border-neutral-800"&gt;
++                 &lt;div className="flex flex-wrap items-center gap-3 mb-2"&gt;
++                   &lt;h3 className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
++                     {stat.league_name || 'Unknown League'}
 +                     {stat.season_number !== null &amp;&amp; &#96; • Season ${stat.season_number}&#96;}
 +                   &lt;/h3&gt;
 +                   {stat.game_year &amp;&amp; (
-+                     &lt;span className=&quot;px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium&quot;&gt;
++                     &lt;span className="px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium"&gt;
 +                       {stat.game_year}
 +                     &lt;/span&gt;
 +                   )}
 +                   {stat.potential_season_award &amp;&amp; (
-+                     &lt;span className=&quot;px-2 py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium&quot;&gt;
++                     &lt;span className="px-2 py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium"&gt;
 +                       🏆 {stat.potential_season_award}
 +                     &lt;/span&gt;
 +                   )}
 +                 &lt;/div&gt;
-+                 &lt;div className=&quot;flex flex-wrap gap-4 text-sm text-gray-600 dark:text-neutral-400&quot;&gt;
++                 &lt;div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-neutral-400"&gt;
 +                   {stat.season_team_name &amp;&amp; (
 +                     &lt;span&gt;
-+                       &lt;span className=&quot;font-medium&quot;&gt;Team:&lt;/span&gt; {stat.season_team_name}
++                       &lt;span className="font-medium"&gt;Team:&lt;/span&gt; {stat.season_team_name}
 +                     &lt;/span&gt;
 +                   )}
 +                   {stat.division_name &amp;&amp; (
 +                     &lt;span&gt;
-+                       &lt;span className=&quot;font-medium&quot;&gt;Division:&lt;/span&gt; {stat.division_name}
++                       &lt;span className="font-medium"&gt;Division:&lt;/span&gt; {stat.division_name}
 +                       {stat.division_abbr &amp;&amp; &#96; (${stat.division_abbr})&#96;}
 +                     &lt;/span&gt;
 +                   )}
 +                   &lt;span&gt;
-+                     &lt;span className=&quot;font-medium&quot;&gt;Games:&lt;/span&gt; {stat.games_played}
++                     &lt;span className="font-medium"&gt;Games:&lt;/span&gt; {stat.games_played}
 +                   &lt;/span&gt;
 +                   {(stat.season_start_date || stat.season_last_game) &amp;&amp; (
 +                     &lt;span&gt;
-+                       &lt;span className=&quot;font-medium&quot;&gt;Season:&lt;/span&gt;{&#39; &#39;}
++                       &lt;span className="font-medium"&gt;Season:&lt;/span&gt;{' '}
 +                       {formatDate(stat.season_start_date)} - {formatDate(stat.season_last_game)}
 +                     &lt;/span&gt;
 +                   )}
@@ -316,45 +316,45 @@ Lines added: 321, lines removed: 1
 +               &lt;/div&gt;
 + 
 +               {/* Stats Grid */}
-+               &lt;div className=&quot;grid gap-6 lg:grid-cols-2&quot;&gt;
++               &lt;div className="grid gap-6 lg:grid-cols-2"&gt;
 +                 {/* Per Game Averages */}
 +                 &lt;div&gt;
-+                   &lt;h4 className=&quot;text-md font-semibold mb-3 text-gray-900 dark:text-white&quot;&gt;Per Game Averages&lt;/h4&gt;
-+                   &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-3 gap-3&quot;&gt;
++                   &lt;h4 className="text-md font-semibold mb-3 text-gray-900 dark:text-white"&gt;Per Game Averages&lt;/h4&gt;
++                   &lt;div className="grid grid-cols-2 sm:grid-cols-3 gap-3"&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;PPG&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                         {stat.ppg !== null ? stat.ppg.toFixed(1) : &#39;-&#39;}
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;PPG&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                         {stat.ppg !== null ? stat.ppg.toFixed(1) : '-'}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;APG&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                         {stat.apg !== null ? stat.apg.toFixed(1) : &#39;-&#39;}
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;APG&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                         {stat.apg !== null ? stat.apg.toFixed(1) : '-'}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;RPG&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                         {stat.rpg !== null ? stat.rpg.toFixed(1) : &#39;-&#39;}
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;RPG&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                         {stat.rpg !== null ? stat.rpg.toFixed(1) : '-'}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;SPG&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                         {stat.spg !== null ? stat.spg.toFixed(1) : &#39;-&#39;}
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;SPG&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                         {stat.spg !== null ? stat.spg.toFixed(1) : '-'}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;BPG&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                         {stat.bpg !== null ? stat.bpg.toFixed(1) : &#39;-&#39;}
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;BPG&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                         {stat.bpg !== null ? stat.bpg.toFixed(1) : '-'}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;TPG&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                         {stat.tpg !== null ? stat.tpg.toFixed(1) : &#39;-&#39;}
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;TPG&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                         {stat.tpg !== null ? stat.tpg.toFixed(1) : '-'}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                   &lt;/div&gt;
@@ -362,54 +362,54 @@ Lines added: 321, lines removed: 1
 + 
 +                 {/* Shooting Percentages &amp; Rankings */}
 +                 &lt;div&gt;
-+                   &lt;h4 className=&quot;text-md font-semibold mb-3 text-gray-900 dark:text-white&quot;&gt;Shooting &amp; Rankings&lt;/h4&gt;
-+                   &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-3 gap-3&quot;&gt;
++                   &lt;h4 className="text-md font-semibold mb-3 text-gray-900 dark:text-white"&gt;Shooting &amp; Rankings&lt;/h4&gt;
++                   &lt;div className="grid grid-cols-2 sm:grid-cols-3 gap-3"&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;FG%&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;FG%&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
 +                         {formatPercentage(stat.fg_pct)}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;3PT%&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;3PT%&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
 +                         {formatPercentage(stat.three_pt_pct)}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;FT%&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;FT%&lt;/div&gt;
++                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
 +                         {formatPercentage(stat.ft_pct)}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
 +                     {stat.season_points_rank &amp;&amp; (
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Points Rank&lt;/div&gt;
-+                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
++                         &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Points Rank&lt;/div&gt;
++                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
 +                           #{stat.season_points_rank}
 +                         &lt;/div&gt;
 +                       &lt;/div&gt;
 +                     )}
 +                     {stat.season_assists_rank &amp;&amp; (
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Assists Rank&lt;/div&gt;
-+                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
++                         &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Assists Rank&lt;/div&gt;
++                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
 +                           #{stat.season_assists_rank}
 +                         &lt;/div&gt;
 +                       &lt;/div&gt;
 +                     )}
 +                     {stat.season_rebounds_rank &amp;&amp; (
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Rebounds Rank&lt;/div&gt;
-+                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
++                         &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Rebounds Rank&lt;/div&gt;
++                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
 +                           #{stat.season_rebounds_rank}
 +                         &lt;/div&gt;
 +                       &lt;/div&gt;
 +                     )}
 +                     {stat.season_performance_rank &amp;&amp; (
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Performance Rank&lt;/div&gt;
-+                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
++                         &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Performance Rank&lt;/div&gt;
++                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
 +                           #{stat.season_performance_rank}
 +                         &lt;/div&gt;
 +                       &lt;/div&gt;
@@ -419,30 +419,30 @@ Lines added: 321, lines removed: 1
 +               &lt;/div&gt;
 + 
 +               {/* Season Totals &amp; Highs */}
-+               &lt;div className=&quot;mt-4 pt-4 border-t border-gray-200 dark:border-neutral-800&quot;&gt;
-+                 &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-4 gap-4&quot;&gt;
++               &lt;div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-800"&gt;
++                 &lt;div className="grid grid-cols-2 sm:grid-cols-4 gap-4"&gt;
 +                   &lt;div&gt;
-+                     &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Total Points&lt;/div&gt;
-+                     &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
++                     &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Total Points&lt;/div&gt;
++                     &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
 +                       {stat.total_points.toLocaleString()}
 +                     &lt;/div&gt;
 +                   &lt;/div&gt;
 +                   &lt;div&gt;
-+                     &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Total Assists&lt;/div&gt;
-+                     &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
++                     &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Total Assists&lt;/div&gt;
++                     &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
 +                       {stat.total_assists.toLocaleString()}
 +                     &lt;/div&gt;
 +                   &lt;/div&gt;
 +                   &lt;div&gt;
-+                     &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Total Rebounds&lt;/div&gt;
-+                     &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
++                     &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Total Rebounds&lt;/div&gt;
++                     &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
 +                       {stat.total_rebounds.toLocaleString()}
 +                     &lt;/div&gt;
 +                   &lt;/div&gt;
 +                   {stat.avg_performance_score !== null &amp;&amp; (
 +                     &lt;div&gt;
-+                       &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Avg Performance&lt;/div&gt;
-+                       &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
++                       &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Avg Performance&lt;/div&gt;
++                       &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
 +                         {stat.avg_performance_score.toFixed(1)}
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
@@ -451,29 +451,29 @@ Lines added: 321, lines removed: 1
 + 
 +                 {/* Season Highs */}
 +                 {(stat.season_high_points || stat.season_high_assists || stat.season_high_rebounds) &amp;&amp; (
-+                   &lt;div className=&quot;mt-4 pt-4 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                     &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-2&quot;&gt;Season Highs&lt;/div&gt;
-+                     &lt;div className=&quot;grid grid-cols-3 gap-4&quot;&gt;
++                   &lt;div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-700"&gt;
++                     &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-2"&gt;Season Highs&lt;/div&gt;
++                     &lt;div className="grid grid-cols-3 gap-4"&gt;
 +                       {stat.season_high_points !== null &amp;&amp; (
 +                         &lt;div&gt;
-+                           &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Points&lt;/div&gt;
-+                           &lt;div className=&quot;text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
++                           &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Points&lt;/div&gt;
++                           &lt;div className="text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
 +                             {stat.season_high_points}
 +                           &lt;/div&gt;
 +                         &lt;/div&gt;
 +                       )}
 +                       {stat.season_high_assists !== null &amp;&amp; (
 +                         &lt;div&gt;
-+                           &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Assists&lt;/div&gt;
-+                           &lt;div className=&quot;text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
++                           &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Assists&lt;/div&gt;
++                           &lt;div className="text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
 +                             {stat.season_high_assists}
 +                           &lt;/div&gt;
 +                         &lt;/div&gt;
 +                       )}
 +                       {stat.season_high_rebounds !== null &amp;&amp; (
 +                         &lt;div&gt;
-+                           &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Rebounds&lt;/div&gt;
-+                           &lt;div className=&quot;text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
++                           &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Rebounds&lt;/div&gt;
++                           &lt;div className="text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
 +                             {stat.season_high_rebounds}
 +                           &lt;/div&gt;
 +                         &lt;/div&gt;
@@ -500,16 +500,16 @@ Lines added: 321, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -5,4 +5,5 @@
-  import Badges from &#39;./tabs/Badges&#39;;
-  import Media from &#39;./tabs/Media&#39;;
-+ import StatsBySeason from &#39;./tabs/StatsBySeason&#39;;
+  import Badges from './tabs/Badges';
+  import Media from './tabs/Media';
++ import StatsBySeason from './tabs/StatsBySeason';
   
   type TabsProps = {
 ```
@@ -526,7 +526,7 @@ Lines added: 2, lines removed: 1
   
 - export default function PlayerTabs({ player, team, recentGames, playerId, performance, globalRating }: TabsProps) {
 + export default function PlayerTabs({ player, team, recentGames, playerId, performance, globalRating, seasonStats }: TabsProps) {
-    const [activeTab, setActiveTab] = useState(&#39;overview&#39;);
+    const [activeTab, setActiveTab] = useState('overview');
   
 ```
 
@@ -535,11 +535,11 @@ Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -22,4 +24,5 @@
-      { id: &#39;games&#39;, label: &#39;Games&#39; },
-      { id: &#39;career&#39;, label: &#39;Career&#39; },
-+     { id: &#39;stats-by-season&#39;, label: &#39;Stats by Season&#39; },
-      { id: &#39;badges&#39;, label: &#39;Badges&#39; },
-      { id: &#39;media&#39;, label: &#39;Media&#39; }
+      { id: 'games', label: 'Games' },
+      { id: 'career', label: 'Career' },
++     { id: 'stats-by-season', label: 'Stats by Season' },
+      { id: 'badges', label: 'Badges' },
+      { id: 'media', label: 'Media' }
 ```
 
 </details>
@@ -550,7 +550,7 @@ Lines added: 1, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: undefined
@@ -559,10 +559,10 @@ Lines added: 3, lines removed: undefined
 @@ -59,4 +59,7 @@
             &lt;Career player={player} playerId={playerId} /&gt;
           )}
-+         {activeTab === &#39;stats-by-season&#39; &amp;&amp; (
++         {activeTab === 'stats-by-season' &amp;&amp; (
 +           &lt;StatsBySeason player={player} seasonStats={seasonStats} /&gt;
 +         )}
-          {activeTab === &#39;badges&#39; &amp;&amp; (
+          {activeTab === 'badges' &amp;&amp; (
             &lt;Badges player={player} playerId={playerId} /&gt;
 ```
 
@@ -574,7 +574,7 @@ Lines added: 3, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
@@ -585,11 +585,11 @@ Lines added: 8, lines removed: undefined
   
 + // Get player season stats from player_league_season_stats_mart
 + const { data: seasonStatsData } = await supa(Astro.locals)
-+   .from(&quot;player_league_season_stats_mart&quot;)
-+   .select(&quot;*&quot;)
-+   .eq(&quot;player_id&quot;, id!)
-+   .order(&quot;game_year&quot;, { ascending: false })
-+   .order(&quot;season_number&quot;, { ascending: false });
++   .from("player_league_season_stats_mart")
++   .select("*")
++   .eq("player_id", id!)
++   .order("game_year", { ascending: false })
++   .order("season_number", { ascending: false });
 + 
   // ALWAYS use player_performance_mart.global_rating as the primary source (never player_performance_view)
   // Use v_player_global_rating view only for detailed breakdown components if available
@@ -603,7 +603,7 @@ Lines added: 8, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
@@ -625,7 +625,7 @@ Lines added: 1, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/players/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/players/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
@@ -759,7 +759,6 @@ _**Agent (model composer-1, mode Agent)**_
 
 ---
 
-
 Reviewing the current tab layout to identify mobile optimizations:
 
 
@@ -793,7 +792,6 @@ Reviewing the current tab layout to identify mobile optimizations:
 
 ---
 
-
 Optimizing the tab layout for mobile: improving spacing, touch targets, and responsive behavior.
 
 
@@ -801,17 +799,17 @@ Optimizing the tab layout for mobile: improving spacing, touch targets, and resp
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
 
 ```diff
 @@ -32,10 +32,10 @@
-      &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900&quot;&gt;
+      &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900"&gt;
         {/* Tab Navigation */}
--       &lt;div className=&quot;flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto&quot;&gt;
-+       &lt;div className=&quot;flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scrollbar-hide scroll-smooth&quot;&gt;
+-       &lt;div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto"&gt;
++       &lt;div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scrollbar-hide scroll-smooth"&gt;
           {tabs.map((tab) =&gt; (
             &lt;button
               key={tab.id}
@@ -819,7 +817,7 @@ Lines added: 2, lines removed: 2
 -             className={&#96;px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
 +             className={&#96;px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap min-w-fit ${
                 activeTab === tab.id
-                  ? &#39;text-patriot-blue-600 dark:text-blue-400 border-b-2 border-patriot-blue-600 dark:border-blue-400 bg-gray-50 dark:bg-neutral-800&#39;
+                  ? 'text-patriot-blue-600 dark:text-blue-400 border-b-2 border-patriot-blue-600 dark:border-blue-400 bg-gray-50 dark:bg-neutral-800'
 ```
 
 **Chunk 2**
@@ -829,9 +827,9 @@ Lines added: 1, lines removed: 1
 @@ -49,5 +49,5 @@
   
         {/* Tab Content */}
--       &lt;div className=&quot;p-6&quot;&gt;
-+       &lt;div className=&quot;p-3 sm:p-4 md:p-6&quot;&gt;
-          {activeTab === &#39;overview&#39; &amp;&amp; (
+-       &lt;div className="p-6"&gt;
++       &lt;div className="p-3 sm:p-4 md:p-6"&gt;
+          {activeTab === 'overview' &amp;&amp; (
             &lt;Overview player={player} team={team} performance={performance} globalRating={globalRating} /&gt;
 ```
 
@@ -843,7 +841,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 3
@@ -852,12 +850,12 @@ Lines added: 3, lines removed: 3
 @@ -78,7 +78,7 @@
       return (
         &lt;div&gt;
--         &lt;h2 className=&quot;text-xl font-bold mb-6 text-gray-900 dark:text-white&quot;&gt;Stats by Season&lt;/h2&gt;
--         &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900&quot;&gt;
--           &lt;p className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Loading season statistics...&lt;/p&gt;
-+         &lt;h2 className=&quot;text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white&quot;&gt;Stats by Season&lt;/h2&gt;
-+         &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 p-6 sm:p-8 text-center bg-gray-50 dark:bg-neutral-900&quot;&gt;
-+           &lt;p className=&quot;text-gray-600 dark:text-neutral-400 text-sm sm:text-base&quot;&gt;Loading season statistics...&lt;/p&gt;
+-         &lt;h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white"&gt;Stats by Season&lt;/h2&gt;
+-         &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900"&gt;
+-           &lt;p className="text-gray-600 dark:text-neutral-400"&gt;Loading season statistics...&lt;/p&gt;
++         &lt;h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white"&gt;Stats by Season&lt;/h2&gt;
++         &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 sm:p-8 text-center bg-gray-50 dark:bg-neutral-900"&gt;
++           &lt;p className="text-gray-600 dark:text-neutral-400 text-sm sm:text-base"&gt;Loading season statistics...&lt;/p&gt;
           &lt;/div&gt;
         &lt;/div&gt;
 ```
@@ -869,75 +867,75 @@ Lines added: 27, lines removed: 23
 @@ -88,45 +88,49 @@
     return (
       &lt;div&gt;
--       &lt;h2 className=&quot;text-xl font-bold mb-6 text-gray-900 dark:text-white&quot;&gt;Stats by Season&lt;/h2&gt;
-+       &lt;h2 className=&quot;text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white&quot;&gt;Stats by Season&lt;/h2&gt;
+-       &lt;h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white"&gt;Stats by Season&lt;/h2&gt;
++       &lt;h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white"&gt;Stats by Season&lt;/h2&gt;
         
         {sortedStats.length === 0 ? (
--         &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900&quot;&gt;
--           &lt;p className=&quot;text-gray-600 dark:text-neutral-400 text-lg&quot;&gt;
-+         &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 p-6 sm:p-8 text-center bg-gray-50 dark:bg-neutral-900&quot;&gt;
-+           &lt;p className=&quot;text-gray-600 dark:text-neutral-400 text-base sm:text-lg&quot;&gt;
+-         &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-8 text-center bg-gray-50 dark:bg-neutral-900"&gt;
+-           &lt;p className="text-gray-600 dark:text-neutral-400 text-lg"&gt;
++         &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 p-6 sm:p-8 text-center bg-gray-50 dark:bg-neutral-900"&gt;
++           &lt;p className="text-gray-600 dark:text-neutral-400 text-base sm:text-lg"&gt;
               No season statistics available
             &lt;/p&gt;
           &lt;/div&gt;
         ) : (
--         &lt;div className=&quot;space-y-6&quot;&gt;
-+         &lt;div className=&quot;space-y-4 sm:space-y-6&quot;&gt;
+-         &lt;div className="space-y-6"&gt;
++         &lt;div className="space-y-4 sm:space-y-6"&gt;
             {sortedStats.map((stat, index) =&gt; (
               &lt;div
                 key={stat.season_id || index}
--               className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 p-6&quot;
-+               className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 p-4 sm:p-6&quot;
+-               className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 p-6"
++               className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 p-4 sm:p-6"
               &gt;
                 {/* Season Header */}
--               &lt;div className=&quot;mb-4 pb-4 border-b border-gray-200 dark:border-neutral-800&quot;&gt;
--                 &lt;div className=&quot;flex flex-wrap items-center gap-3 mb-2&quot;&gt;
--                   &lt;h3 className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
-+               &lt;div className=&quot;mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200 dark:border-neutral-800&quot;&gt;
-+                 &lt;div className=&quot;flex flex-wrap items-center gap-2 sm:gap-3 mb-2&quot;&gt;
-+                   &lt;h3 className=&quot;text-base sm:text-lg font-semibold text-gray-900 dark:text-white break-words&quot;&gt;
-                      {stat.league_name || &#39;Unknown League&#39;}
+-               &lt;div className="mb-4 pb-4 border-b border-gray-200 dark:border-neutral-800"&gt;
+-                 &lt;div className="flex flex-wrap items-center gap-3 mb-2"&gt;
+-                   &lt;h3 className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
++               &lt;div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200 dark:border-neutral-800"&gt;
++                 &lt;div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2"&gt;
++                   &lt;h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white break-words"&gt;
+                      {stat.league_name || 'Unknown League'}
 -                     {stat.season_number !== null &amp;&amp; &#96; • Season ${stat.season_number}&#96;}
 +                     {stat.season_number !== null &amp;&amp; (
-+                       &lt;span className=&quot;block sm:inline&quot;&gt; {stat.season_number !== null &amp;&amp; &#96; • Season ${stat.season_number}&#96;}&lt;/span&gt;
++                       &lt;span className="block sm:inline"&gt; {stat.season_number !== null &amp;&amp; &#96; • Season ${stat.season_number}&#96;}&lt;/span&gt;
 +                     )}
                     &lt;/h3&gt;
 -                   {stat.game_year &amp;&amp; (
--                     &lt;span className=&quot;px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium&quot;&gt;
+-                     &lt;span className="px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium"&gt;
 -                       {stat.game_year}
 -                     &lt;/span&gt;
 -                   )}
 -                   {stat.potential_season_award &amp;&amp; (
--                     &lt;span className=&quot;px-2 py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium&quot;&gt;
+-                     &lt;span className="px-2 py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium"&gt;
 -                       🏆 {stat.potential_season_award}
 -                     &lt;/span&gt;
 -                   )}
 -                 &lt;/div&gt;
--                 &lt;div className=&quot;flex flex-wrap gap-4 text-sm text-gray-600 dark:text-neutral-400&quot;&gt;
-+                   &lt;div className=&quot;flex flex-wrap gap-2&quot;&gt;
+-                 &lt;div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-neutral-400"&gt;
++                   &lt;div className="flex flex-wrap gap-2"&gt;
 +                     {stat.game_year &amp;&amp; (
-+                       &lt;span className=&quot;px-2 py-0.5 sm:py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium whitespace-nowrap&quot;&gt;
++                       &lt;span className="px-2 py-0.5 sm:py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium whitespace-nowrap"&gt;
 +                         {stat.game_year}
 +                       &lt;/span&gt;
 +                     )}
 +                     {stat.potential_season_award &amp;&amp; (
-+                       &lt;span className=&quot;px-2 py-0.5 sm:py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs sm:text-sm font-medium whitespace-nowrap&quot;&gt;
++                       &lt;span className="px-2 py-0.5 sm:py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs sm:text-sm font-medium whitespace-nowrap"&gt;
 +                         🏆 {stat.potential_season_award}
 +                       &lt;/span&gt;
 +                     )}
 +                   &lt;/div&gt;
 +                 &lt;/div&gt;
-+                 &lt;div className=&quot;flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-neutral-400&quot;&gt;
++                 &lt;div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-neutral-400"&gt;
                     {stat.season_team_name &amp;&amp; (
 -                     &lt;span&gt;
-+                     &lt;span className=&quot;break-words&quot;&gt;
-                        &lt;span className=&quot;font-medium&quot;&gt;Team:&lt;/span&gt; {stat.season_team_name}
++                     &lt;span className="break-words"&gt;
+                        &lt;span className="font-medium"&gt;Team:&lt;/span&gt; {stat.season_team_name}
                       &lt;/span&gt;
                     )}
                     {stat.division_name &amp;&amp; (
 -                     &lt;span&gt;
-+                     &lt;span className=&quot;break-words&quot;&gt;
-                        &lt;span className=&quot;font-medium&quot;&gt;Division:&lt;/span&gt; {stat.division_name}
++                     &lt;span className="break-words"&gt;
+                        &lt;span className="font-medium"&gt;Division:&lt;/span&gt; {stat.division_name}
                         {stat.division_abbr &amp;&amp; &#96; (${stat.division_abbr})&#96;}
 ```
 
@@ -949,8 +947,8 @@ Lines added: 1, lines removed: 1
                     &lt;/span&gt;
                     {(stat.season_start_date || stat.season_last_game) &amp;&amp; (
 -                     &lt;span&gt;
-+                     &lt;span className=&quot;break-words sm:break-normal&quot;&gt;
-                        &lt;span className=&quot;font-medium&quot;&gt;Season:&lt;/span&gt;{&#39; &#39;}
++                     &lt;span className="break-words sm:break-normal"&gt;
+                        &lt;span className="font-medium"&gt;Season:&lt;/span&gt;{' '}
                         {formatDate(stat.season_start_date)} - {formatDate(stat.season_last_game)}
 ```
 
@@ -962,7 +960,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
 
 **Chunk 1**
 Lines added: 9, lines removed: 9
@@ -971,54 +969,54 @@ Lines added: 9, lines removed: 9
 @@ -150,42 +150,42 @@
   
                 {/* Stats Grid */}
--               &lt;div className=&quot;grid gap-6 lg:grid-cols-2&quot;&gt;
-+               &lt;div className=&quot;grid gap-4 sm:gap-6 lg:grid-cols-2&quot;&gt;
+-               &lt;div className="grid gap-6 lg:grid-cols-2"&gt;
++               &lt;div className="grid gap-4 sm:gap-6 lg:grid-cols-2"&gt;
                   {/* Per Game Averages */}
                   &lt;div&gt;
--                   &lt;h4 className=&quot;text-md font-semibold mb-3 text-gray-900 dark:text-white&quot;&gt;Per Game Averages&lt;/h4&gt;
--                   &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-3 gap-3&quot;&gt;
-+                   &lt;h4 className=&quot;text-sm sm:text-md font-semibold mb-2 sm:mb-3 text-gray-900 dark:text-white&quot;&gt;Per Game Averages&lt;/h4&gt;
-+                   &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3&quot;&gt;
+-                   &lt;h4 className="text-md font-semibold mb-3 text-gray-900 dark:text-white"&gt;Per Game Averages&lt;/h4&gt;
+-                   &lt;div className="grid grid-cols-2 sm:grid-cols-3 gap-3"&gt;
++                   &lt;h4 className="text-sm sm:text-md font-semibold mb-2 sm:mb-3 text-gray-900 dark:text-white"&gt;Per Game Averages&lt;/h4&gt;
++                   &lt;div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3"&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;PPG&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-                          {stat.ppg !== null ? stat.ppg.toFixed(1) : &#39;-&#39;}
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;PPG&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
+                          {stat.ppg !== null ? stat.ppg.toFixed(1) : '-'}
                         &lt;/div&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;APG&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-                          {stat.apg !== null ? stat.apg.toFixed(1) : &#39;-&#39;}
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;APG&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
+                          {stat.apg !== null ? stat.apg.toFixed(1) : '-'}
                         &lt;/div&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;RPG&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-                          {stat.rpg !== null ? stat.rpg.toFixed(1) : &#39;-&#39;}
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;RPG&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
+                          {stat.rpg !== null ? stat.rpg.toFixed(1) : '-'}
                         &lt;/div&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;SPG&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-                          {stat.spg !== null ? stat.spg.toFixed(1) : &#39;-&#39;}
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;SPG&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
+                          {stat.spg !== null ? stat.spg.toFixed(1) : '-'}
                         &lt;/div&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;BPG&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-                          {stat.bpg !== null ? stat.bpg.toFixed(1) : &#39;-&#39;}
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;BPG&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
+                          {stat.bpg !== null ? stat.bpg.toFixed(1) : '-'}
                         &lt;/div&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;TPG&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-                          {stat.tpg !== null ? stat.tpg.toFixed(1) : &#39;-&#39;}
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;TPG&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
+                          {stat.tpg !== null ? stat.tpg.toFixed(1) : '-'}
                         &lt;/div&gt;
 ```
 
@@ -1029,28 +1027,28 @@ Lines added: 5, lines removed: 5
 @@ -196,21 +196,21 @@
                   {/* Shooting Percentages &amp; Rankings */}
                   &lt;div&gt;
--                   &lt;h4 className=&quot;text-md font-semibold mb-3 text-gray-900 dark:text-white&quot;&gt;Shooting &amp; Rankings&lt;/h4&gt;
--                   &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-3 gap-3&quot;&gt;
-+                   &lt;h4 className=&quot;text-sm sm:text-md font-semibold mb-2 sm:mb-3 text-gray-900 dark:text-white&quot;&gt;Shooting &amp; Rankings&lt;/h4&gt;
-+                   &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3&quot;&gt;
+-                   &lt;h4 className="text-md font-semibold mb-3 text-gray-900 dark:text-white"&gt;Shooting &amp; Rankings&lt;/h4&gt;
+-                   &lt;div className="grid grid-cols-2 sm:grid-cols-3 gap-3"&gt;
++                   &lt;h4 className="text-sm sm:text-md font-semibold mb-2 sm:mb-3 text-gray-900 dark:text-white"&gt;Shooting &amp; Rankings&lt;/h4&gt;
++                   &lt;div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3"&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;FG%&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;FG%&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
                           {formatPercentage(stat.fg_pct)}
                         &lt;/div&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;3PT%&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;3PT%&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
                           {formatPercentage(stat.three_pt_pct)}
                         &lt;/div&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;FT%&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;FT%&lt;/div&gt;
+-                       &lt;div className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white"&gt;
                           {formatPercentage(stat.ft_pct)}
                         &lt;/div&gt;
 ```
@@ -1061,9 +1059,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -219,5 +219,5 @@
                         &lt;div&gt;
-                          &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Points Rank&lt;/div&gt;
--                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
-+                         &lt;div className=&quot;text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
+                          &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Points Rank&lt;/div&gt;
+-                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
++                         &lt;div className="text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
                             #{stat.season_points_rank}
                           &lt;/div&gt;
 ```
@@ -1074,9 +1072,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -227,5 +227,5 @@
                         &lt;div&gt;
-                          &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Assists Rank&lt;/div&gt;
--                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
-+                         &lt;div className=&quot;text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
+                          &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Assists Rank&lt;/div&gt;
+-                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
++                         &lt;div className="text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
                             #{stat.season_assists_rank}
                           &lt;/div&gt;
 ```
@@ -1087,9 +1085,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -235,5 +235,5 @@
                         &lt;div&gt;
-                          &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Rebounds Rank&lt;/div&gt;
--                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
-+                         &lt;div className=&quot;text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
+                          &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Rebounds Rank&lt;/div&gt;
+-                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
++                         &lt;div className="text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
                             #{stat.season_rebounds_rank}
                           &lt;/div&gt;
 ```
@@ -1100,9 +1098,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -243,5 +243,5 @@
                         &lt;div&gt;
-                          &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Performance Rank&lt;/div&gt;
--                         &lt;div className=&quot;text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
-+                         &lt;div className=&quot;text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400&quot;&gt;
+                          &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Performance Rank&lt;/div&gt;
+-                         &lt;div className="text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
++                         &lt;div className="text-base sm:text-lg font-bold text-purple-600 dark:text-purple-400"&gt;
                             #{stat.season_performance_rank}
                           &lt;/div&gt;
 ```
@@ -1115,7 +1113,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
 
 **Chunk 1**
 Lines added: 5, lines removed: 5
@@ -1124,28 +1122,28 @@ Lines added: 5, lines removed: 5
 @@ -253,21 +253,21 @@
   
                 {/* Season Totals &amp; Highs */}
--               &lt;div className=&quot;mt-4 pt-4 border-t border-gray-200 dark:border-neutral-800&quot;&gt;
--                 &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-4 gap-4&quot;&gt;
-+               &lt;div className=&quot;mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200 dark:border-neutral-800&quot;&gt;
-+                 &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4&quot;&gt;
+-               &lt;div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-800"&gt;
+-                 &lt;div className="grid grid-cols-2 sm:grid-cols-4 gap-4"&gt;
++               &lt;div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200 dark:border-neutral-800"&gt;
++                 &lt;div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"&gt;
                     &lt;div&gt;
-                      &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Total Points&lt;/div&gt;
--                     &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                     &lt;div className=&quot;text-base sm:text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
+                      &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Total Points&lt;/div&gt;
+-                     &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
++                     &lt;div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white"&gt;
                         {stat.total_points.toLocaleString()}
                       &lt;/div&gt;
                     &lt;/div&gt;
                     &lt;div&gt;
-                      &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Total Assists&lt;/div&gt;
--                     &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                     &lt;div className=&quot;text-base sm:text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
+                      &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Total Assists&lt;/div&gt;
+-                     &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
++                     &lt;div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white"&gt;
                         {stat.total_assists.toLocaleString()}
                       &lt;/div&gt;
                     &lt;/div&gt;
                     &lt;div&gt;
-                      &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Total Rebounds&lt;/div&gt;
--                     &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                     &lt;div className=&quot;text-base sm:text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
+                      &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Total Rebounds&lt;/div&gt;
+-                     &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
++                     &lt;div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white"&gt;
                         {stat.total_rebounds.toLocaleString()}
                       &lt;/div&gt;
 ```
@@ -1156,9 +1154,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -276,5 +276,5 @@
                       &lt;div&gt;
-                        &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Avg Performance&lt;/div&gt;
--                       &lt;div className=&quot;text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                       &lt;div className=&quot;text-base sm:text-lg font-semibold text-gray-900 dark:text-white&quot;&gt;
+                        &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Avg Performance&lt;/div&gt;
+-                       &lt;div className="text-lg font-semibold text-gray-900 dark:text-white"&gt;
++                       &lt;div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white"&gt;
                           {stat.avg_performance_score.toFixed(1)}
                         &lt;/div&gt;
 ```
@@ -1170,16 +1168,16 @@ Lines added: 3, lines removed: 3
 @@ -285,11 +285,11 @@
                   {/* Season Highs */}
                   {(stat.season_high_points || stat.season_high_assists || stat.season_high_rebounds) &amp;&amp; (
--                   &lt;div className=&quot;mt-4 pt-4 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                   &lt;div className=&quot;mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-                      &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-2&quot;&gt;Season Highs&lt;/div&gt;
--                     &lt;div className=&quot;grid grid-cols-3 gap-4&quot;&gt;
-+                     &lt;div className=&quot;grid grid-cols-3 gap-3 sm:gap-4&quot;&gt;
+-                   &lt;div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-700"&gt;
++                   &lt;div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200 dark:border-neutral-700"&gt;
+                      &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-2"&gt;Season Highs&lt;/div&gt;
+-                     &lt;div className="grid grid-cols-3 gap-4"&gt;
++                     &lt;div className="grid grid-cols-3 gap-3 sm:gap-4"&gt;
                         {stat.season_high_points !== null &amp;&amp; (
                           &lt;div&gt;
-                            &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Points&lt;/div&gt;
--                           &lt;div className=&quot;text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
-+                           &lt;div className=&quot;text-sm sm:text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
+                            &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Points&lt;/div&gt;
+-                           &lt;div className="text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
++                           &lt;div className="text-sm sm:text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
                               {stat.season_high_points}
                             &lt;/div&gt;
 ```
@@ -1190,9 +1188,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -299,5 +299,5 @@
                           &lt;div&gt;
-                            &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Assists&lt;/div&gt;
--                           &lt;div className=&quot;text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
-+                           &lt;div className=&quot;text-sm sm:text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
+                            &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Assists&lt;/div&gt;
+-                           &lt;div className="text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
++                           &lt;div className="text-sm sm:text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
                               {stat.season_high_assists}
                             &lt;/div&gt;
 ```
@@ -1203,9 +1201,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -307,5 +307,5 @@
                           &lt;div&gt;
-                            &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400&quot;&gt;Rebounds&lt;/div&gt;
--                           &lt;div className=&quot;text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
-+                           &lt;div className=&quot;text-sm sm:text-md font-semibold text-purple-600 dark:text-purple-400&quot;&gt;
+                            &lt;div className="text-xs text-gray-600 dark:text-neutral-400"&gt;Rebounds&lt;/div&gt;
+-                           &lt;div className="text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
++                           &lt;div className="text-sm sm:text-md font-semibold text-purple-600 dark:text-purple-400"&gt;
                               {stat.season_high_rebounds}
                             &lt;/div&gt;
 ```
@@ -1219,7 +1217,6 @@ Lines added: 1, lines removed: 1
 
 
 ---
-
 
 Fixing a bug and checking for a scrollbar-hide utility class:
 
@@ -1245,17 +1242,17 @@ Output mode: content
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -109,5 +109,5 @@
-                      {stat.league_name || &#39;Unknown League&#39;}
+                      {stat.league_name || 'Unknown League'}
                       {stat.season_number !== null &amp;&amp; (
--                       &lt;span className=&quot;block sm:inline&quot;&gt; {stat.season_number !== null &amp;&amp; &#96; • Season ${stat.season_number}&#96;}&lt;/span&gt;
-+                       &lt;span className=&quot;block sm:inline&quot;&gt; • Season {stat.season_number}&lt;/span&gt;
+-                       &lt;span className="block sm:inline"&gt; {stat.season_number !== null &amp;&amp; &#96; • Season ${stat.season_number}&#96;}&lt;/span&gt;
++                       &lt;span className="block sm:inline"&gt; • Season {stat.season_number}&lt;/span&gt;
                       )}
                     &lt;/h3&gt;
 ```
@@ -1277,7 +1274,6 @@ Lines added: 1, lines removed: 1
 
 
 ---
-
 
 Checking if `scrollbar-hide` is available in the CSS or if we should use an alternative:
 
@@ -1333,14 +1329,11 @@ Output mode: content
 
 
 
-
-
 ---
 
 
 
 ---
-
 
 Updating the tab navigation to use standard scrollbar utilities, matching other components:
 
@@ -1349,17 +1342,17 @@ Updating the tab navigation to use standard scrollbar utilities, matching other 
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/Tabs.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -32,5 +32,5 @@
-      &lt;div className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900&quot;&gt;
+      &lt;div className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900"&gt;
         {/* Tab Navigation */}
--       &lt;div className=&quot;flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scrollbar-hide scroll-smooth&quot;&gt;
-+       &lt;div className=&quot;flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scroll-smooth [&amp;::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]&quot;&gt;
+-       &lt;div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scrollbar-hide scroll-smooth"&gt;
++       &lt;div className="flex border-b border-gray-200 dark:border-neutral-800 overflow-x-auto scroll-smooth [&amp;::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"&gt;
           {tabs.map((tab) =&gt; (
             &lt;button
 ```
@@ -1398,7 +1391,6 @@ Lint errors for `proam-rankings/src/components/player/Tabs.tsx`
 
 ---
 
-
 Fixing the TypeScript error:
 
 
@@ -1406,7 +1398,7 @@ Fixing the TypeScript error:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/player/tabs/StatsBySeason.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -1447,7 +1439,6 @@ Lint results
 
 
 ---
-
 
 ## Mobile Tab Layout Optimizations
 

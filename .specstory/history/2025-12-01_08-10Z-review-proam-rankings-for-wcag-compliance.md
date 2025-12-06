@@ -34,7 +34,7 @@ My plan is now to list the files in the `proam-rankings/src` directory to gain a
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -44,7 +44,7 @@ No results found
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -54,7 +54,7 @@ No results found
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -654,19 +654,19 @@ I've decided to start applying the fixes, beginning with the `TeamTabs Island.ts
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -472,5 +472,5 @@
-                          &lt;div className=&quot;flex items-center gap-3 flex-1&quot;&gt;
+                          &lt;div className="flex items-center gap-3 flex-1"&gt;
                             {opponent?.logo_url &amp;&amp; (
--                             &lt;img src={opponent.logo_url} alt=&quot;&quot; className=&quot;h-8 w-8 rounded&quot; /&gt;
-+                             &lt;img src={opponent.logo_url} alt={&#96;${opponent.name} logo&#96;} className=&quot;h-8 w-8 rounded&quot; /&gt;
+-                             &lt;img src={opponent.logo_url} alt="" className="h-8 w-8 rounded" /&gt;
++                             &lt;img src={opponent.logo_url} alt={&#96;${opponent.name} logo&#96;} className="h-8 w-8 rounded" /&gt;
                             )}
-                            &lt;div className=&quot;flex-1&quot;&gt;
+                            &lt;div className="flex-1"&gt;
 ```
 
 </details>
@@ -677,7 +677,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
@@ -687,15 +687,15 @@ Lines added: 8, lines removed: undefined
                         key={match.id}
                         onClick={() =&gt; handleMatchClick(match)}
 +                       onKeyDown={(e) =&gt; {
-+                         if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                         if (e.key === 'Enter' || e.key === ' ') {
 +                           e.preventDefault();
 +                           handleMatchClick(match);
 +                         }
 +                       }}
-+                       role=&quot;button&quot;
++                       role="button"
 +                       tabIndex={0}
                         className={&#96;rounded-lg border border-gray-200 dark:border-neutral-800 p-4 transition ${
-                          idx % 2 === 0 ? &#39;bg-white dark:bg-patriot-blue-900/20&#39; : &#39;bg-gray-50 dark:bg-patriot-blue-900/10&#39;
+                          idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/20' : 'bg-gray-50 dark:bg-patriot-blue-900/10'
 ```
 
 </details>
@@ -706,29 +706,29 @@ Lines added: 8, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
 
 ```diff
 @@ -1013,8 +1013,16 @@
-            className=&quot;fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4&quot;
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4"
             onClick={closeModal}
 +           onKeyDown={(e) =&gt; {
-+             if (e.key === &#39;Escape&#39;) closeModal();
++             if (e.key === 'Escape') closeModal();
 +           }}
-+           role=&quot;button&quot;
++           role="button"
 +           tabIndex={0}
-+           aria-label=&quot;Close modal&quot;
++           aria-label="Close modal"
           &gt;
             &lt;div
-              className=&quot;bg-white dark:bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden&quot;
+              className="bg-white dark:bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
               onClick={(e) =&gt; e.stopPropagation()}
-+             role=&quot;dialog&quot;
-+             aria-modal=&quot;true&quot;
++             role="dialog"
++             aria-modal="true"
             &gt;
-              &lt;div className=&quot;p-3 sm:p-4 border-b border-gray-200 dark:border-neutral-800&quot;&gt;
+              &lt;div className="p-3 sm:p-4 border-b border-gray-200 dark:border-neutral-800"&gt;
 ```
 
 </details>
@@ -785,7 +785,7 @@ I'm structuring the fixes in two phases. I'll begin with the image `alt` text ad
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -794,9 +794,9 @@ Lines added: 1, lines removed: 1
 @@ -1215,5 +1215,5 @@
                             &lt;img
                               src={match.team_a.logo_url}
--                             alt=&quot;&quot;
-+                             alt={&#96;${match.team_a.name || &#39;Team A&#39;} logo&#96;}
-                              className=&quot;h-8 w-8 rounded object-cover&quot;
+-                             alt=""
++                             alt={&#96;${match.team_a.name || 'Team A'} logo&#96;}
+                              className="h-8 w-8 rounded object-cover"
                             /&gt;
 ```
 
@@ -808,7 +808,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -817,9 +817,9 @@ Lines added: 1, lines removed: 1
 @@ -1233,5 +1233,5 @@
                             &lt;img
                               src={match.team_b.logo_url}
--                             alt=&quot;&quot;
-+                             alt={&#96;${match.team_b.name || &#39;Team B&#39;} logo&#96;}
-                              className=&quot;h-8 w-8 rounded object-cover&quot;
+-                             alt=""
++                             alt={&#96;${match.team_b.name || 'Team B'} logo&#96;}
+                              className="h-8 w-8 rounded object-cover"
                             /&gt;
 ```
 
@@ -831,7 +831,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
@@ -841,15 +841,15 @@ Lines added: 8, lines removed: undefined
                       key={match.id}
                       onClick={() =&gt; handleMatchClick(match)}
 +                     onKeyDown={(e) =&gt; {
-+                       if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                       if (e.key === 'Enter' || e.key === ' ') {
 +                         e.preventDefault();
 +                         handleMatchClick(match);
 +                       }
 +                     }}
-+                     role=&quot;button&quot;
++                     role="button"
 +                     tabIndex={0}
                       className={&#96;rounded-lg border border-gray-200 dark:border-neutral-800 p-4 transition ${
-                        idx % 2 === 0 ? &#39;bg-white dark:bg-patriot-blue-900/20&#39; : &#39;bg-gray-50 dark:bg-patriot-blue-900/10&#39;
+                        idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/20' : 'bg-gray-50 dark:bg-patriot-blue-900/10'
 ```
 
 </details>
@@ -870,29 +870,29 @@ I'm currently focused on fixing the modal functionality within `LeagueTabsIsland
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
 
 ```diff
 @@ -2082,8 +2082,16 @@
-            className=&quot;fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4&quot;
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4"
             onClick={closeModal}
 +           onKeyDown={(e) =&gt; {
-+             if (e.key === &#39;Escape&#39;) closeModal();
++             if (e.key === 'Escape') closeModal();
 +           }}
-+           role=&quot;button&quot;
++           role="button"
 +           tabIndex={0}
-+           aria-label=&quot;Close modal&quot;
++           aria-label="Close modal"
           &gt;
             &lt;div
-              className=&quot;bg-white dark:bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden&quot;
+              className="bg-white dark:bg-neutral-900 rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
               onClick={(e) =&gt; e.stopPropagation()}
-+             role=&quot;dialog&quot;
-+             aria-modal=&quot;true&quot;
++             role="dialog"
++             aria-modal="true"
             &gt;
-              &lt;div className=&quot;p-3 sm:p-4 border-b border-gray-200 dark:border-neutral-800&quot;&gt;
+              &lt;div className="p-3 sm:p-4 border-b border-gray-200 dark:border-neutral-800"&gt;
 ```
 
 </details>
@@ -941,32 +941,32 @@ I've just finished auditing all the `onClick` handlers within `BracketDisplay.ts
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 9, lines removed: 1
 
 ```diff
 @@ -218,10 +218,18 @@
-                        className=&quot;border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer&quot;
+                        className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer"
                         onClick={() =&gt; setSelectedSeries(seriesData)}
 +                       onKeyDown={(e) =&gt; {
-+                         if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                         if (e.key === 'Enter' || e.key === ' ') {
 +                           e.preventDefault();
 +                           setSelectedSeries(seriesData);
 +                         }
 +                       }}
-+                       role=&quot;button&quot;
++                       role="button"
 +                       tabIndex={0}
                       &gt;
-                        &lt;div className={&#96;text-sm mb-1 ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamA?.id || &#39;&#39;)}&#96;}&gt;
-                          &lt;div className=&quot;flex items-center justify-between gap-2&quot;&gt;
-                            &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                        &lt;div className={&#96;text-sm mb-1 ${getWinnerClass({ winner_id: seriesData.seriesWinner } as BracketMatch, seriesData.teamA?.id || '')}&#96;}&gt;
+                          &lt;div className="flex items-center justify-between gap-2"&gt;
+                            &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                               {seriesData.teamA?.logo_url ? (
--                               &lt;img src={seriesData.teamA.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                               &lt;img src={seriesData.teamA.logo_url} alt={&#96;${seriesData.teamA.name || &#39;Team A&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                               &lt;img src={seriesData.teamA.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                               &lt;img src={seriesData.teamA.logo_url} alt={&#96;${seriesData.teamA.name || 'Team A'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                               ) : (
-                                &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                                &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -977,19 +977,19 @@ Lines added: 9, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -246,5 +246,5 @@
-                            &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                            &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                               {seriesData.teamB?.logo_url ? (
--                               &lt;img src={seriesData.teamB.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                               &lt;img src={seriesData.teamB.logo_url} alt={&#96;${seriesData.teamB.name || &#39;Team B&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                               &lt;img src={seriesData.teamB.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                               &lt;img src={seriesData.teamB.logo_url} alt={&#96;${seriesData.teamB.name || 'Team B'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                               ) : (
-                                &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                                &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1012,32 +1012,32 @@ I've been meticulously reworking the winners bracket logic. I'm focusing on ensu
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 9, lines removed: 1
 
 ```diff
 @@ -321,10 +321,18 @@
-                          className=&quot;border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer&quot;
+                          className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer"
                           onClick={() =&gt; setSelectedMatch(match)}
 +                         onKeyDown={(e) =&gt; {
-+                           if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                           if (e.key === 'Enter' || e.key === ' ') {
 +                             e.preventDefault();
 +                             setSelectedMatch(match);
 +                           }
 +                         }}
-+                         role=&quot;button&quot;
++                         role="button"
 +                         tabIndex={0}
                         &gt;
                           &lt;div className={&#96;text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}&#96;}&gt;
-                            &lt;div className=&quot;flex items-center justify-between gap-2&quot;&gt;
-                              &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                            &lt;div className="flex items-center justify-between gap-2"&gt;
+                              &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                                 {match.team_a?.logo_url ? (
--                                 &lt;img src={match.team_a.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                                 &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || &#39;Team A&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                                 &lt;img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                                 &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || 'Team A'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                                 ) : (
-                                  &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                                  &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1048,19 +1048,19 @@ Lines added: 9, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -349,5 +349,5 @@
-                              &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                              &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                                 {match.team_b?.logo_url ? (
--                                 &lt;img src={match.team_b.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                                 &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || &#39;Team B&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                                 &lt;img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                                 &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || 'Team B'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                                 ) : (
-                                  &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                                  &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1081,32 +1081,32 @@ I'm currently working on refining the loser's bracket algorithm within the doubl
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 9, lines removed: 1
 
 ```diff
 @@ -405,10 +405,18 @@
-                            className=&quot;border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-red-500 dark:hover:border-red-500 transition cursor-pointer&quot;
+                            className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-red-500 dark:hover:border-red-500 transition cursor-pointer"
                             onClick={() =&gt; setSelectedMatch(match)}
 +                           onKeyDown={(e) =&gt; {
-+                             if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                             if (e.key === 'Enter' || e.key === ' ') {
 +                               e.preventDefault();
 +                               setSelectedMatch(match);
 +                             }
 +                           }}
-+                           role=&quot;button&quot;
++                           role="button"
 +                           tabIndex={0}
                           &gt;
                             &lt;div className={&#96;text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}&#96;}&gt;
-                              &lt;div className=&quot;flex items-center justify-between gap-2&quot;&gt;
-                                &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                              &lt;div className="flex items-center justify-between gap-2"&gt;
+                                &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                                   {match.team_a?.logo_url ? (
--                                   &lt;img src={match.team_a.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                                   &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || &#39;Team A&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                                   &lt;img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                                   &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || 'Team A'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                                   ) : (
-                                    &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                                    &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1117,19 +1117,19 @@ Lines added: 9, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -433,5 +433,5 @@
-                                &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                                &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                                   {match.team_b?.logo_url ? (
--                                   &lt;img src={match.team_b.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                                   &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || &#39;Team B&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                                   &lt;img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                                   &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || 'Team B'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                                   ) : (
-                                    &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                                    &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1150,32 +1150,32 @@ Okay, I've got a grasp of the Swiss System framework. The core logic is sound no
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 9, lines removed: 1
 
 ```diff
 @@ -492,10 +492,18 @@
-                    className=&quot;border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-green-500 dark:hover:border-green-500 transition cursor-pointer&quot;
+                    className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-green-500 dark:hover:border-green-500 transition cursor-pointer"
                     onClick={() =&gt; setSelectedMatch(match)}
 +                   onKeyDown={(e) =&gt; {
-+                     if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                     if (e.key === 'Enter' || e.key === ' ') {
 +                       e.preventDefault();
 +                       setSelectedMatch(match);
 +                     }
 +                   }}
-+                   role=&quot;button&quot;
++                   role="button"
 +                   tabIndex={0}
                   &gt;
                     &lt;div className={&#96;text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}&#96;}&gt;
-                      &lt;div className=&quot;flex items-center justify-between gap-2&quot;&gt;
-                        &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                      &lt;div className="flex items-center justify-between gap-2"&gt;
+                        &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                           {match.team_a?.logo_url ? (
--                           &lt;img src={match.team_a.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                           &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || &#39;Team A&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                           &lt;img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                           &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || 'Team A'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                           ) : (
-                            &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                            &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1186,19 +1186,19 @@ Lines added: 9, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -520,5 +520,5 @@
-                        &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                        &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                           {match.team_b?.logo_url ? (
--                           &lt;img src={match.team_b.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                           &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || &#39;Team B&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                           &lt;img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                           &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || 'Team B'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                           ) : (
-                            &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                            &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1219,32 +1219,32 @@ I'm currently focusing on the core mechanism of the round-robin process. I'm mak
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 9, lines removed: 1
 
 ```diff
 @@ -571,10 +571,18 @@
-              className=&quot;border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-yellow-500 dark:hover:border-yellow-500 transition cursor-pointer&quot;
+              className="border border-gray-200 dark:border-neutral-700 rounded-lg p-3 bg-gray-50 dark:bg-neutral-800/50 hover:border-yellow-500 dark:hover:border-yellow-500 transition cursor-pointer"
               onClick={() =&gt; setSelectedMatch(match)}
 +             onKeyDown={(e) =&gt; {
-+               if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++               if (e.key === 'Enter' || e.key === ' ') {
 +                 e.preventDefault();
 +                 setSelectedMatch(match);
 +               }
 +             }}
-+             role=&quot;button&quot;
++             role="button"
 +             tabIndex={0}
             &gt;
               &lt;div className={&#96;text-sm mb-1 ${getWinnerClass(match, match.team_a_id)}&#96;}&gt;
-                &lt;div className=&quot;flex items-center justify-between gap-2&quot;&gt;
-                  &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                &lt;div className="flex items-center justify-between gap-2"&gt;
+                  &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                     {match.team_a?.logo_url ? (
--                     &lt;img src={match.team_a.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                     &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || &#39;Team A&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                     &lt;img src={match.team_a.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                     &lt;img src={match.team_a.logo_url} alt={&#96;${match.team_a.name || 'Team A'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                     ) : (
-                      &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                      &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1255,19 +1255,19 @@ Lines added: 9, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -599,5 +599,5 @@
-                  &lt;div className=&quot;flex items-center gap-2 flex-1 min-w-0&quot;&gt;
+                  &lt;div className="flex items-center gap-2 flex-1 min-w-0"&gt;
                     {match.team_b?.logo_url ? (
--                     &lt;img src={match.team_b.logo_url} alt=&quot;&quot; className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
-+                     &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || &#39;Team B&#39;} logo&#96;} className=&quot;w-5 h-5 rounded object-cover flex-shrink-0&quot; /&gt;
+-                     &lt;img src={match.team_b.logo_url} alt="" className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
++                     &lt;img src={match.team_b.logo_url} alt={&#96;${match.team_b.name || 'Team B'} logo&#96;} className="w-5 h-5 rounded object-cover flex-shrink-0" /&gt;
                     ) : (
-                      &lt;div className=&quot;w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0&quot;&gt;
+                      &lt;div className="w-5 h-5 rounded bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-600 dark:text-neutral-500 text-[8px] font-bold flex-shrink-0"&gt;
 ```
 
 </details>
@@ -1288,29 +1288,29 @@ I'm now focused on updating the Match Details and Series Details modals. The goa
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
 
 ```diff
 @@ -706,8 +706,16 @@
-            className=&quot;fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4&quot;
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
             onClick={() =&gt; setSelectedMatch(null)}
 +           onKeyDown={(e) =&gt; {
-+             if (e.key === &#39;Escape&#39;) setSelectedMatch(null);
++             if (e.key === 'Escape') setSelectedMatch(null);
 +           }}
-+           role=&quot;button&quot;
++           role="button"
 +           tabIndex={0}
-+           aria-label=&quot;Close modal&quot;
++           aria-label="Close modal"
           &gt;
             &lt;div
-              className=&quot;bg-white dark:bg-neutral-900 rounded-lg max-w-md w-full border border-gray-200 dark:border-neutral-700&quot;
+              className="bg-white dark:bg-neutral-900 rounded-lg max-w-md w-full border border-gray-200 dark:border-neutral-700"
               onClick={(e) =&gt; e.stopPropagation()}
-+             role=&quot;dialog&quot;
-+             aria-modal=&quot;true&quot;
++             role="dialog"
++             aria-modal="true"
             &gt;
-              &lt;div className=&quot;p-4 border-b border-gray-200 dark:border-neutral-800&quot;&gt;
+              &lt;div className="p-4 border-b border-gray-200 dark:border-neutral-800"&gt;
 ```
 
 </details>
@@ -1321,29 +1321,29 @@ Lines added: 8, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
 
 ```diff
 @@ -805,8 +805,16 @@
-            className=&quot;fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4&quot;
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
             onClick={() =&gt; setSelectedSeries(null)}
 +           onKeyDown={(e) =&gt; {
-+             if (e.key === &#39;Escape&#39;) setSelectedSeries(null);
++             if (e.key === 'Escape') setSelectedSeries(null);
 +           }}
-+           role=&quot;button&quot;
++           role="button"
 +           tabIndex={0}
-+           aria-label=&quot;Close modal&quot;
++           aria-label="Close modal"
           &gt;
             &lt;div
-              className=&quot;bg-white dark:bg-neutral-900 rounded-lg max-w-2xl w-full border border-gray-200 dark:border-neutral-700&quot;
+              className="bg-white dark:bg-neutral-900 rounded-lg max-w-2xl w-full border border-gray-200 dark:border-neutral-700"
               onClick={(e) =&gt; e.stopPropagation()}
-+             role=&quot;dialog&quot;
-+             aria-modal=&quot;true&quot;
++             role="dialog"
++             aria-modal="true"
             &gt;
-              &lt;div className=&quot;p-4 border-b border-gray-200 dark:border-neutral-800&quot;&gt;
+              &lt;div className="p-4 border-b border-gray-200 dark:border-neutral-800"&gt;
 ```
 
 </details>
@@ -1354,7 +1354,7 @@ Lines added: 8, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BracketDisplay.tsx</summary>
 
 **Chunk 1**
 Lines added: 9, lines removed: undefined
@@ -1364,16 +1364,16 @@ Lines added: 9, lines removed: undefined
                           setSelectedMatch(match);
                         }}
 +                       onKeyDown={(e) =&gt; {
-+                         if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                         if (e.key === 'Enter' || e.key === ' ') {
 +                           e.preventDefault();
 +                           setSelectedSeries(null);
 +                           setSelectedMatch(match);
 +                         }
 +                       }}
-+                       role=&quot;button&quot;
++                       role="button"
 +                       tabIndex={0}
                       &gt;
-                        &lt;div className=&quot;flex items-center justify-between&quot;&gt;
+                        &lt;div className="flex items-center justify-between"&gt;
 ```
 
 </details>
@@ -1417,7 +1417,7 @@ I'm now implementing the accessibility improvements. I'm focusing on the Grid Vi
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/AchievementsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/AchievementsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
@@ -1427,14 +1427,14 @@ Lines added: 8, lines removed: undefined
                 key={achievement.id}
                 onClick={() =&gt; setSelectedAchievement(achievement)}
 +               onKeyDown={(e) =&gt; {
-+                 if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                 if (e.key === 'Enter' || e.key === ' ') {
 +                   e.preventDefault();
 +                   setSelectedAchievement(achievement);
 +                 }
 +               }}
-+               role=&quot;button&quot;
++               role="button"
 +               tabIndex={0}
-                className=&quot;rounded-lg border border-gray-200 dark:border-white/20 bg-white dark:bg-patriot-blue-900/50 p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-patriot-red-500 dark:hover:border-patriot-red-500&quot;
+                className="rounded-lg border border-gray-200 dark:border-white/20 bg-white dark:bg-patriot-blue-900/50 p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-patriot-red-500 dark:hover:border-patriot-red-500"
               &gt;
 ```
 
@@ -1458,7 +1458,7 @@ I'm currently focusing on the layout. I'm visualizing the best way to represent 
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/AchievementsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/AchievementsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
@@ -1468,15 +1468,15 @@ Lines added: 8, lines removed: undefined
                 key={achievement.id}
                 onClick={() =&gt; setSelectedAchievement(achievement)}
 +               onKeyDown={(e) =&gt; {
-+                 if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++                 if (e.key === 'Enter' || e.key === ' ') {
 +                   e.preventDefault();
 +                   setSelectedAchievement(achievement);
 +                 }
 +               }}
-+               role=&quot;button&quot;
++               role="button"
 +               tabIndex={0}
                 className={&#96;p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-patriot-blue-900 transition-colors ${
-                  index !== filteredAchievements.length - 1 ? &#39;border-b border-gray-200 dark:border-white/20&#39; : &#39;&#39;
+                  index !== filteredAchievements.length - 1 ? 'border-b border-gray-200 dark:border-white/20' : ''
 ```
 
 </details>
@@ -1497,29 +1497,29 @@ I'm currently grappling with the modal aspects of the concept. It's becoming cle
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/AchievementsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/AchievementsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
 
 ```diff
 @@ -290,8 +290,16 @@
-            className=&quot;fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4&quot;
+            className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
             onClick={() =&gt; setSelectedAchievement(null)}
 +           onKeyDown={(e) =&gt; {
-+             if (e.key === &#39;Escape&#39;) setSelectedAchievement(null);
++             if (e.key === 'Escape') setSelectedAchievement(null);
 +           }}
-+           role=&quot;button&quot;
++           role="button"
 +           tabIndex={0}
-+           aria-label=&quot;Close modal&quot;
++           aria-label="Close modal"
           &gt;
             &lt;div 
-              className=&quot;bg-white dark:bg-patriot-blue-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-white/20&quot;
+              className="bg-white dark:bg-patriot-blue-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-white/20"
               onClick={(e) =&gt; e.stopPropagation()}
-+             role=&quot;dialog&quot;
-+             aria-modal=&quot;true&quot;
++             role="dialog"
++             aria-modal="true"
             &gt;
-              &lt;div className=&quot;p-6&quot;&gt;
+              &lt;div className="p-6"&gt;
 ```
 
 </details>
@@ -1576,7 +1576,7 @@ I've got a plan now for both `MatchesListIsland.tsx` and `PlayerBadgesIsland.tsx
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/MatchesListIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/MatchesListIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
@@ -1586,15 +1586,15 @@ Lines added: 8, lines removed: undefined
               key={match.id}
               onClick={() =&gt; handleMatchClick(match)}
 +             onKeyDown={(e) =&gt; {
-+               if (e.key === &#39;Enter&#39; || e.key === &#39; &#39;) {
++               if (e.key === 'Enter' || e.key === ' ') {
 +                 e.preventDefault();
 +                 handleMatchClick(match);
 +               }
 +             }}
-+             role=&quot;button&quot;
++             role="button"
 +             tabIndex={0}
               className={&#96;rounded-lg border border-gray-200 dark:border-white/20 p-3 sm:p-4 transition ${
-                idx % 2 === 0 ? &#39;bg-white dark:bg-patriot-blue-900/20&#39; : &#39;bg-gray-50 dark:bg-patriot-blue-900/10&#39;
+                idx % 2 === 0 ? 'bg-white dark:bg-patriot-blue-900/20' : 'bg-gray-50 dark:bg-patriot-blue-900/10'
 ```
 
 </details>
@@ -1605,27 +1605,27 @@ Lines added: 8, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/MatchesListIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/MatchesListIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
 
 ```diff
 @@ -282,8 +282,16 @@
-            className=&quot;fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4&quot;
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
             onClick={closeModal}
 +           onKeyDown={(e) =&gt; {
-+             if (e.key === &#39;Escape&#39;) closeModal();
++             if (e.key === 'Escape') closeModal();
 +           }}
-+           role=&quot;button&quot;
++           role="button"
 +           tabIndex={0}
-+           aria-label=&quot;Close modal&quot;
++           aria-label="Close modal"
           &gt;
             &lt;div
-              className=&quot;bg-white dark:bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden&quot;
+              className="bg-white dark:bg-patriot-blue-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden"
               onClick={(e) =&gt; e.stopPropagation()}
-+             role=&quot;dialog&quot;
-+             aria-modal=&quot;true&quot;
++             role="dialog"
++             aria-modal="true"
             &gt;
               {/* Modal Header */}
 ```
@@ -1648,7 +1648,7 @@ I'm currently focused on the `PlayerBadgesIsland.tsx` component. I'm taking a de
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/PlayerBadgesIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/PlayerBadgesIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
@@ -1658,12 +1658,12 @@ Lines added: 8, lines removed: undefined
               key={badge.id}
               onClick={() =&gt; isClickable &amp;&amp; setSelectedBadge(badge)}
 +             onKeyDown={(e) =&gt; {
-+               if (isClickable &amp;&amp; (e.key === &#39;Enter&#39; || e.key === &#39; &#39;)) {
++               if (isClickable &amp;&amp; (e.key === 'Enter' || e.key === ' ')) {
 +                 e.preventDefault();
 +                 setSelectedBadge(badge);
 +               }
 +             }}
-+             role={isClickable ? &quot;button&quot; : undefined}
++             role={isClickable ? "button" : undefined}
 +             tabIndex={isClickable ? 0 : undefined}
               className={&#96;rounded-lg border p-6 transition-all duration-200 ${
                 badge.unlocked 
@@ -1677,29 +1677,29 @@ Lines added: 8, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/PlayerBadgesIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/PlayerBadgesIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: undefined
 
 ```diff
 @@ -419,8 +419,16 @@
-            className=&quot;fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4&quot;
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
             onClick={() =&gt; setSelectedBadge(null)}
 +           onKeyDown={(e) =&gt; {
-+             if (e.key === &#39;Escape&#39;) setSelectedBadge(null);
++             if (e.key === 'Escape') setSelectedBadge(null);
 +           }}
-+           role=&quot;button&quot;
++           role="button"
 +           tabIndex={0}
-+           aria-label=&quot;Close modal&quot;
++           aria-label="Close modal"
           &gt;
             &lt;div 
-              className=&quot;bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto&quot;
+              className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
               onClick={(e) =&gt; e.stopPropagation()}
-+             role=&quot;dialog&quot;
-+             aria-modal=&quot;true&quot;
++             role="dialog"
++             aria-modal="true"
             &gt;
-              &lt;div className=&quot;p-6&quot;&gt;
+              &lt;div className="p-6"&gt;
 ```
 
 </details>
@@ -1851,7 +1851,7 @@ I'm now formulating the remediation plan. The `ranking-system.astro` file will r
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 1
@@ -1897,7 +1897,7 @@ I'm solidifying the replacement strategy. The consistent pattern in the `th` tag
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 3
@@ -1906,12 +1906,12 @@ Lines added: 3, lines removed: 3
 @@ -59,7 +59,7 @@
                 &lt;thead&gt;
                   &lt;tr&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Tier&lt;/th&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Description&lt;/th&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Max RP&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Tier&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Description&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Max RP&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Tier&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Description&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Max RP&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Tier&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Description&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Max RP&lt;/th&gt;
                   &lt;/tr&gt;
                 &lt;/thead&gt;
 ```
@@ -1923,14 +1923,14 @@ Lines added: 4, lines removed: 4
 @@ -291,8 +291,8 @@
                 &lt;thead&gt;
                   &lt;tr&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Tier&lt;/th&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Label&lt;/th&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Rating Range&lt;/th&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Description&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Tier&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Label&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Rating Range&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Description&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Tier&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Label&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Rating Range&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Description&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Tier&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Label&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Rating Range&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Description&lt;/th&gt;
                   &lt;/tr&gt;
                 &lt;/thead&gt;
 ```
@@ -1942,12 +1942,12 @@ Lines added: 3, lines removed: 3
 @@ -444,7 +444,7 @@
                 &lt;thead&gt;
                   &lt;tr&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;RP Source&lt;/th&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Decay Starts&lt;/th&gt;
--                   &lt;th class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Full Decay&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;RP Source&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Decay Starts&lt;/th&gt;
-+                   &lt;th scope=&quot;col&quot; class=&quot;px-4 py-3 text-left text-xs font-medium text-gold uppercase&quot;&gt;Full Decay&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;RP Source&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Decay Starts&lt;/th&gt;
+-                   &lt;th class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Full Decay&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;RP Source&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Decay Starts&lt;/th&gt;
++                   &lt;th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gold uppercase"&gt;Full Decay&lt;/th&gt;
                   &lt;/tr&gt;
                 &lt;/thead&gt;
 ```
@@ -1997,19 +1997,19 @@ I've confirmed my initial assessments, and now I'm shifting focus to the visual 
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -27,5 +27,5 @@
-              &lt;div class=&quot;bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-gray-200 dark:border-white/20&quot;&gt;
-                &lt;div class=&quot;flex items-center mb-2&quot;&gt;
--                 &lt;span class=&quot;text-2xl mr-2&quot;&gt;🧩&lt;/span&gt;
-+                 &lt;span class=&quot;text-2xl mr-2&quot; aria-hidden=&quot;true&quot;&gt;🧩&lt;/span&gt;
-                  &lt;h4 class=&quot;text-lg font-semibold text-gold&quot;&gt;Ranking Points (RP)&lt;/h4&gt;
-                  &lt;span class=&quot;ml-auto bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 text-xs px-2 py-1 rounded&quot;&gt;70% Weight&lt;/span&gt;
+              &lt;div class="bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-gray-200 dark:border-white/20"&gt;
+                &lt;div class="flex items-center mb-2"&gt;
+-                 &lt;span class="text-2xl mr-2"&gt;🧩&lt;/span&gt;
++                 &lt;span class="text-2xl mr-2" aria-hidden="true"&gt;🧩&lt;/span&gt;
+                  &lt;h4 class="text-lg font-semibold text-gold"&gt;Ranking Points (RP)&lt;/h4&gt;
+                  &lt;span class="ml-auto bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 text-xs px-2 py-1 rounded"&gt;70% Weight&lt;/span&gt;
 ```
 
 </details>
@@ -2020,19 +2020,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -36,5 +36,5 @@
-              &lt;div class=&quot;bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-patriot-red-200 dark:border-patriot-red-500/20&quot;&gt;
-                &lt;div class=&quot;flex items-center mb-2&quot;&gt;
--                 &lt;span class=&quot;text-2xl mr-2&quot;&gt;📈&lt;/span&gt;
-+                 &lt;span class=&quot;text-2xl mr-2&quot; aria-hidden=&quot;true&quot;&gt;📈&lt;/span&gt;
-                  &lt;h4 class=&quot;text-lg font-semibold text-gold&quot;&gt;ELO Rating&lt;/h4&gt;
-                  &lt;span class=&quot;ml-auto bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded&quot;&gt;30% Weight&lt;/span&gt;
+              &lt;div class="bg-white dark:bg-patriot-blue-900/30 p-5 rounded-lg border border-patriot-red-200 dark:border-patriot-red-500/20"&gt;
+                &lt;div class="flex items-center mb-2"&gt;
+-                 &lt;span class="text-2xl mr-2"&gt;📈&lt;/span&gt;
++                 &lt;span class="text-2xl mr-2" aria-hidden="true"&gt;📈&lt;/span&gt;
+                  &lt;h4 class="text-lg font-semibold text-gold"&gt;ELO Rating&lt;/h4&gt;
+                  &lt;span class="ml-auto bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded"&gt;30% Weight&lt;/span&gt;
 ```
 
 </details>
@@ -2043,18 +2043,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -46,5 +46,5 @@
-            &lt;div class=&quot;bg-gray-100 dark:bg-neutral-950 p-4 rounded-lg border border-gray-300 dark:border-neutral-800&quot;&gt;
-              &lt;div class=&quot;flex items-center justify-center&quot;&gt;
--               &lt;span class=&quot;text-gold mr-2&quot;&gt;⚖️&lt;/span&gt;
-+               &lt;span class=&quot;text-gold mr-2&quot; aria-hidden=&quot;true&quot;&gt;⚖️&lt;/span&gt;
-                &lt;code class=&quot;text-sm text-gray-900 dark:text-white&quot;&gt;Final Score = (RP Score × 0.70) + (ELO Normalized × 0.30)&lt;/code&gt;
+            &lt;div class="bg-gray-100 dark:bg-neutral-950 p-4 rounded-lg border border-gray-300 dark:border-neutral-800"&gt;
+              &lt;div class="flex items-center justify-center"&gt;
+-               &lt;span class="text-gold mr-2"&gt;⚖️&lt;/span&gt;
++               &lt;span class="text-gold mr-2" aria-hidden="true"&gt;⚖️&lt;/span&gt;
+                &lt;code class="text-sm text-gray-900 dark:text-white"&gt;Final Score = (RP Score × 0.70) + (ELO Normalized × 0.30)&lt;/code&gt;
               &lt;/div&gt;
 ```
 
@@ -2066,18 +2066,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -68,5 +68,5 @@
-                    &lt;td class=&quot;px-4 py-3&quot;&gt;
-                      &lt;span class=&quot;inline-flex items-center gap-2&quot;&gt;
+                    &lt;td class="px-4 py-3"&gt;
+                      &lt;span class="inline-flex items-center gap-2"&gt;
 -                       &lt;span&gt;💎&lt;/span&gt;
-+                       &lt;span aria-hidden=&quot;true&quot;&gt;💎&lt;/span&gt;
-                        &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;T1&lt;/span&gt;
++                       &lt;span aria-hidden="true"&gt;💎&lt;/span&gt;
+                        &lt;span class="font-medium text-gray-900 dark:text-white"&gt;T1&lt;/span&gt;
                       &lt;/span&gt;
 ```
 
@@ -2089,18 +2089,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -78,5 +78,5 @@
-                    &lt;td class=&quot;px-4 py-3&quot;&gt;
-                      &lt;span class=&quot;inline-flex items-center gap-2&quot;&gt;
+                    &lt;td class="px-4 py-3"&gt;
+                      &lt;span class="inline-flex items-center gap-2"&gt;
 -                       &lt;span&gt;🏆&lt;/span&gt;
-+                       &lt;span aria-hidden=&quot;true&quot;&gt;🏆&lt;/span&gt;
-                        &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;T2&lt;/span&gt;
++                       &lt;span aria-hidden="true"&gt;🏆&lt;/span&gt;
+                        &lt;span class="font-medium text-gray-900 dark:text-white"&gt;T2&lt;/span&gt;
                       &lt;/span&gt;
 ```
 
@@ -2112,18 +2112,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -88,5 +88,5 @@
-                    &lt;td class=&quot;px-4 py-3&quot;&gt;
-                      &lt;span class=&quot;inline-flex items-center gap-2&quot;&gt;
+                    &lt;td class="px-4 py-3"&gt;
+                      &lt;span class="inline-flex items-center gap-2"&gt;
 -                       &lt;span&gt;🥇&lt;/span&gt;
-+                       &lt;span aria-hidden=&quot;true&quot;&gt;🥇&lt;/span&gt;
-                        &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;T3&lt;/span&gt;
++                       &lt;span aria-hidden="true"&gt;🥇&lt;/span&gt;
+                        &lt;span class="font-medium text-gray-900 dark:text-white"&gt;T3&lt;/span&gt;
                       &lt;/span&gt;
 ```
 
@@ -2135,18 +2135,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -98,5 +98,5 @@
-                    &lt;td class=&quot;px-4 py-3&quot;&gt;
-                      &lt;span class=&quot;inline-flex items-center gap-2&quot;&gt;
+                    &lt;td class="px-4 py-3"&gt;
+                      &lt;span class="inline-flex items-center gap-2"&gt;
 -                       &lt;span&gt;🥈&lt;/span&gt;
-+                       &lt;span aria-hidden=&quot;true&quot;&gt;🥈&lt;/span&gt;
-                        &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;T4&lt;/span&gt;
++                       &lt;span aria-hidden="true"&gt;🥈&lt;/span&gt;
+                        &lt;span class="font-medium text-gray-900 dark:text-white"&gt;T4&lt;/span&gt;
                       &lt;/span&gt;
 ```
 
@@ -2158,18 +2158,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -108,5 +108,5 @@
-                    &lt;td class=&quot;px-4 py-3&quot;&gt;
-                      &lt;span class=&quot;inline-flex items-center gap-2&quot;&gt;
+                    &lt;td class="px-4 py-3"&gt;
+                      &lt;span class="inline-flex items-center gap-2"&gt;
 -                       &lt;span&gt;🥉&lt;/span&gt;
-+                       &lt;span aria-hidden=&quot;true&quot;&gt;🥉&lt;/span&gt;
-                        &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;T5&lt;/span&gt;
++                       &lt;span aria-hidden="true"&gt;🥉&lt;/span&gt;
+                        &lt;span class="font-medium text-gray-900 dark:text-white"&gt;T5&lt;/span&gt;
                       &lt;/span&gt;
 ```
 
@@ -2181,19 +2181,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -122,5 +122,5 @@
-            &lt;div class=&quot;mt-6 bg-red-50 dark:bg-patriot-red-900/20 border border-red-200 dark:border-patriot-red-500/30 p-5 rounded-lg&quot;&gt;
-              &lt;div class=&quot;flex items-start gap-3&quot;&gt;
--               &lt;span class=&quot;text-2xl&quot;&gt;⚡&lt;/span&gt;
-+               &lt;span class=&quot;text-2xl&quot; aria-hidden=&quot;true&quot;&gt;⚡&lt;/span&gt;
+            &lt;div class="mt-6 bg-red-50 dark:bg-patriot-red-900/20 border border-red-200 dark:border-patriot-red-500/30 p-5 rounded-lg"&gt;
+              &lt;div class="flex items-start gap-3"&gt;
+-               &lt;span class="text-2xl"&gt;⚡&lt;/span&gt;
++               &lt;span class="text-2xl" aria-hidden="true"&gt;⚡&lt;/span&gt;
                 &lt;div&gt;
-                  &lt;h4 class=&quot;text-lg font-semibold text-red-700 dark:text-patriot-red-300 mb-2&quot;&gt;Dynamic Tier Calculation&lt;/h4&gt;
+                  &lt;h4 class="text-lg font-semibold text-red-700 dark:text-patriot-red-300 mb-2"&gt;Dynamic Tier Calculation&lt;/h4&gt;
 ```
 
 </details>
@@ -2204,18 +2204,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -372,5 +372,5 @@
-              &lt;div class=&quot;bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10&quot;&gt;
-                &lt;div class=&quot;flex items-center gap-3 mb-3&quot;&gt;
--                 &lt;span class=&quot;text-2xl&quot;&gt;🤖&lt;/span&gt;
-+                 &lt;span class=&quot;text-2xl&quot; aria-hidden=&quot;true&quot;&gt;🤖&lt;/span&gt;
-                  &lt;h4 class=&quot;font-semibold text-patriot-blue-600 dark:text-blue-400&quot;&gt;1. OCR Processing&lt;/h4&gt;
+              &lt;div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10"&gt;
+                &lt;div class="flex items-center gap-3 mb-3"&gt;
+-                 &lt;span class="text-2xl"&gt;🤖&lt;/span&gt;
++                 &lt;span class="text-2xl" aria-hidden="true"&gt;🤖&lt;/span&gt;
+                  &lt;h4 class="font-semibold text-patriot-blue-600 dark:text-blue-400"&gt;1. OCR Processing&lt;/h4&gt;
                 &lt;/div&gt;
 ```
 
@@ -2227,18 +2227,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -392,5 +392,5 @@
-              &lt;div class=&quot;bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10&quot;&gt;
-                &lt;div class=&quot;flex items-center gap-3 mb-3&quot;&gt;
--                 &lt;span class=&quot;text-2xl&quot;&gt;⏳&lt;/span&gt;
-+                 &lt;span class=&quot;text-2xl&quot; aria-hidden=&quot;true&quot;&gt;⏳&lt;/span&gt;
-                  &lt;h4 class=&quot;font-semibold text-yellow-600 dark:text-yellow-400&quot;&gt;2. Under Review&lt;/h4&gt;
+              &lt;div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10"&gt;
+                &lt;div class="flex items-center gap-3 mb-3"&gt;
+-                 &lt;span class="text-2xl"&gt;⏳&lt;/span&gt;
++                 &lt;span class="text-2xl" aria-hidden="true"&gt;⏳&lt;/span&gt;
+                  &lt;h4 class="font-semibold text-yellow-600 dark:text-yellow-400"&gt;2. Under Review&lt;/h4&gt;
                 &lt;/div&gt;
 ```
 
@@ -2250,18 +2250,18 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -406,5 +406,5 @@
-              &lt;div class=&quot;bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10&quot;&gt;
-                &lt;div class=&quot;flex items-center gap-3 mb-3&quot;&gt;
--                 &lt;span class=&quot;text-2xl&quot;&gt;✅&lt;/span&gt;
-+                 &lt;span class=&quot;text-2xl&quot; aria-hidden=&quot;true&quot;&gt;✅&lt;/span&gt;
-                  &lt;h4 class=&quot;font-semibold text-green-600 dark:text-green-400&quot;&gt;3. Verified&lt;/h4&gt;
+              &lt;div class="bg-white dark:bg-patriot-blue-900/30 p-4 rounded-lg border border-gray-200 dark:border-white/10"&gt;
+                &lt;div class="flex items-center gap-3 mb-3"&gt;
+-                 &lt;span class="text-2xl"&gt;✅&lt;/span&gt;
++                 &lt;span class="text-2xl" aria-hidden="true"&gt;✅&lt;/span&gt;
+                  &lt;h4 class="font-semibold text-green-600 dark:text-green-400"&gt;3. Verified&lt;/h4&gt;
                 &lt;/div&gt;
 ```
 
@@ -2335,7 +2335,7 @@ I've just concluded the final step, adding `id="main-content"` to the `<main>` t
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -2344,10 +2344,10 @@ Lines added: 1, lines removed: 1
 @@ -10,5 +10,5 @@
   &gt;
     &lt;Navigation /&gt;
--     &lt;main class=&quot;mx-auto max-w-5xl p-6 logo-underlay&quot; style={&#96;--logo-url: url(&#39;/GR.svg&#39;)&#96;}&gt;
-+     &lt;main id=&quot;main-content&quot; class=&quot;mx-auto max-w-5xl p-6 logo-underlay&quot; style={&#96;--logo-url: url(&#39;/GR.svg&#39;)&#96;}&gt;
-        &lt;div class=&quot;mb-8 text-center&quot;&gt;
-          &lt;h1 class=&quot;text-3xl font-bold mb-2 text-gray-900 dark:text-white&quot;&gt;Ranking System&lt;/h1&gt;
+-     &lt;main class="mx-auto max-w-5xl p-6 logo-underlay" style={&#96;--logo-url: url('/GR.svg')&#96;}&gt;
++     &lt;main id="main-content" class="mx-auto max-w-5xl p-6 logo-underlay" style={&#96;--logo-url: url('/GR.svg')&#96;}&gt;
+        &lt;div class="mb-8 text-center"&gt;
+          &lt;h1 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white"&gt;Ranking System&lt;/h1&gt;
 ```
 
 </details>
@@ -2512,59 +2512,59 @@ I'm now generating the final replacement code block for the "Leaderboard Tiers" 
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 20, lines removed: 20
 
 ```diff
 @@ -141,28 +141,28 @@
-            &lt;p class=&quot;text-gray-700 dark:text-neutral-300 mb-6&quot;&gt;Teams are grouped into five performance tiers based on their hybrid score:&lt;/p&gt;
-            &lt;div class=&quot;grid gap-4 md:grid-cols-2 lg:grid-cols-5&quot;&gt;
--             &lt;div class=&quot;bg-purple-500/10 p-4 rounded-lg text-center border border-purple-500/20&quot;&gt;
--               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 mb-2&quot;&gt;S-Tier&lt;/div&gt;
--               &lt;p class=&quot;text-sm&quot;&gt;Top 4 Teams&lt;/p&gt;
--               &lt;p class=&quot;text-xs text-purple-300/60 mt-1&quot;&gt;Elite Competitors&lt;/p&gt;
-+             &lt;div class=&quot;bg-purple-50 dark:bg-purple-500/10 p-4 rounded-lg text-center border border-purple-200 dark:border-purple-500/20&quot;&gt;
-+               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 mb-2&quot;&gt;S-Tier&lt;/div&gt;
-+               &lt;p class=&quot;text-sm text-gray-900 dark:text-white&quot;&gt;Top 4 Teams&lt;/p&gt;
-+               &lt;p class=&quot;text-xs text-purple-700 dark:text-purple-300/60 mt-1&quot;&gt;Elite Competitors&lt;/p&gt;
+            &lt;p class="text-gray-700 dark:text-neutral-300 mb-6"&gt;Teams are grouped into five performance tiers based on their hybrid score:&lt;/p&gt;
+            &lt;div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5"&gt;
+-             &lt;div class="bg-purple-500/10 p-4 rounded-lg text-center border border-purple-500/20"&gt;
+-               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 mb-2"&gt;S-Tier&lt;/div&gt;
+-               &lt;p class="text-sm"&gt;Top 4 Teams&lt;/p&gt;
+-               &lt;p class="text-xs text-purple-300/60 mt-1"&gt;Elite Competitors&lt;/p&gt;
++             &lt;div class="bg-purple-50 dark:bg-purple-500/10 p-4 rounded-lg text-center border border-purple-200 dark:border-purple-500/20"&gt;
++               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 mb-2"&gt;S-Tier&lt;/div&gt;
++               &lt;p class="text-sm text-gray-900 dark:text-white"&gt;Top 4 Teams&lt;/p&gt;
++               &lt;p class="text-xs text-purple-700 dark:text-purple-300/60 mt-1"&gt;Elite Competitors&lt;/p&gt;
               &lt;/div&gt;
--             &lt;div class=&quot;bg-blue-500/10 p-4 rounded-lg text-center border border-blue-500/20&quot;&gt;
--               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 mb-2&quot;&gt;A-Tier&lt;/div&gt;
--               &lt;p class=&quot;text-sm&quot;&gt;Rank 5-12&lt;/p&gt;
--               &lt;p class=&quot;text-xs text-blue-300/60 mt-1&quot;&gt;Championship Contenders&lt;/p&gt;
-+             &lt;div class=&quot;bg-blue-50 dark:bg-blue-500/10 p-4 rounded-lg text-center border border-blue-200 dark:border-blue-500/20&quot;&gt;
-+               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 mb-2&quot;&gt;A-Tier&lt;/div&gt;
-+               &lt;p class=&quot;text-sm text-gray-900 dark:text-white&quot;&gt;Rank 5-12&lt;/p&gt;
-+               &lt;p class=&quot;text-xs text-blue-700 dark:text-blue-300/60 mt-1&quot;&gt;Championship Contenders&lt;/p&gt;
+-             &lt;div class="bg-blue-500/10 p-4 rounded-lg text-center border border-blue-500/20"&gt;
+-               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 mb-2"&gt;A-Tier&lt;/div&gt;
+-               &lt;p class="text-sm"&gt;Rank 5-12&lt;/p&gt;
+-               &lt;p class="text-xs text-blue-300/60 mt-1"&gt;Championship Contenders&lt;/p&gt;
++             &lt;div class="bg-blue-50 dark:bg-blue-500/10 p-4 rounded-lg text-center border border-blue-200 dark:border-blue-500/20"&gt;
++               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 mb-2"&gt;A-Tier&lt;/div&gt;
++               &lt;p class="text-sm text-gray-900 dark:text-white"&gt;Rank 5-12&lt;/p&gt;
++               &lt;p class="text-xs text-blue-700 dark:text-blue-300/60 mt-1"&gt;Championship Contenders&lt;/p&gt;
               &lt;/div&gt;
--             &lt;div class=&quot;bg-green-500/10 p-4 rounded-lg text-center border border-green-500/20&quot;&gt;
--               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/20 text-green-300 mb-2&quot;&gt;B-Tier&lt;/div&gt;
--               &lt;p class=&quot;text-sm&quot;&gt;Rank 13-30&lt;/p&gt;
--               &lt;p class=&quot;text-xs text-green-300/60 mt-1&quot;&gt;Playoff Hopefuls&lt;/p&gt;
-+             &lt;div class=&quot;bg-green-50 dark:bg-green-500/10 p-4 rounded-lg text-center border border-green-200 dark:border-green-500/20&quot;&gt;
-+               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 mb-2&quot;&gt;B-Tier&lt;/div&gt;
-+               &lt;p class=&quot;text-sm text-gray-900 dark:text-white&quot;&gt;Rank 13-30&lt;/p&gt;
-+               &lt;p class=&quot;text-xs text-green-700 dark:text-green-300/60 mt-1&quot;&gt;Playoff Hopefuls&lt;/p&gt;
+-             &lt;div class="bg-green-500/10 p-4 rounded-lg text-center border border-green-500/20"&gt;
+-               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/20 text-green-300 mb-2"&gt;B-Tier&lt;/div&gt;
+-               &lt;p class="text-sm"&gt;Rank 13-30&lt;/p&gt;
+-               &lt;p class="text-xs text-green-300/60 mt-1"&gt;Playoff Hopefuls&lt;/p&gt;
++             &lt;div class="bg-green-50 dark:bg-green-500/10 p-4 rounded-lg text-center border border-green-200 dark:border-green-500/20"&gt;
++               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 mb-2"&gt;B-Tier&lt;/div&gt;
++               &lt;p class="text-sm text-gray-900 dark:text-white"&gt;Rank 13-30&lt;/p&gt;
++               &lt;p class="text-xs text-green-700 dark:text-green-300/60 mt-1"&gt;Playoff Hopefuls&lt;/p&gt;
               &lt;/div&gt;
--             &lt;div class=&quot;bg-yellow-500/10 p-4 rounded-lg text-center border border-yellow-500/20&quot;&gt;
--               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300 mb-2&quot;&gt;C-Tier&lt;/div&gt;
--               &lt;p class=&quot;text-sm&quot;&gt;Rank 31-100&lt;/p&gt;
--               &lt;p class=&quot;text-xs text-yellow-300/60 mt-1&quot;&gt;Developing Teams&lt;/p&gt;
-+             &lt;div class=&quot;bg-yellow-50 dark:bg-yellow-500/10 p-4 rounded-lg text-center border border-yellow-200 dark:border-yellow-500/20&quot;&gt;
-+               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-300 mb-2&quot;&gt;C-Tier&lt;/div&gt;
-+               &lt;p class=&quot;text-sm text-gray-900 dark:text-white&quot;&gt;Rank 31-100&lt;/p&gt;
-+               &lt;p class=&quot;text-xs text-yellow-800 dark:text-yellow-300/60 mt-1&quot;&gt;Developing Teams&lt;/p&gt;
+-             &lt;div class="bg-yellow-500/10 p-4 rounded-lg text-center border border-yellow-500/20"&gt;
+-               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300 mb-2"&gt;C-Tier&lt;/div&gt;
+-               &lt;p class="text-sm"&gt;Rank 31-100&lt;/p&gt;
+-               &lt;p class="text-xs text-yellow-300/60 mt-1"&gt;Developing Teams&lt;/p&gt;
++             &lt;div class="bg-yellow-50 dark:bg-yellow-500/10 p-4 rounded-lg text-center border border-yellow-200 dark:border-yellow-500/20"&gt;
++               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-300 mb-2"&gt;C-Tier&lt;/div&gt;
++               &lt;p class="text-sm text-gray-900 dark:text-white"&gt;Rank 31-100&lt;/p&gt;
++               &lt;p class="text-xs text-yellow-800 dark:text-yellow-300/60 mt-1"&gt;Developing Teams&lt;/p&gt;
               &lt;/div&gt;
--             &lt;div class=&quot;bg-gray-500/10 p-4 rounded-lg text-center border border-gray-500/20&quot;&gt;
--               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 mb-2&quot;&gt;Unranked&lt;/div&gt;
--               &lt;p class=&quot;text-sm&quot;&gt;100+&lt;/p&gt;
--               &lt;p class=&quot;text-xs text-gray-300/60 mt-1&quot;&gt;New/Inactive&lt;/p&gt;
-+             &lt;div class=&quot;bg-gray-100 dark:bg-gray-500/10 p-4 rounded-lg text-center border border-gray-200 dark:border-gray-500/20&quot;&gt;
-+               &lt;div class=&quot;inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-500/20 text-gray-700 dark:text-gray-300 mb-2&quot;&gt;Unranked&lt;/div&gt;
-+               &lt;p class=&quot;text-sm text-gray-900 dark:text-white&quot;&gt;100+&lt;/p&gt;
-+               &lt;p class=&quot;text-xs text-gray-600 dark:text-gray-400 mt-1&quot;&gt;New/Inactive&lt;/p&gt;
+-             &lt;div class="bg-gray-500/10 p-4 rounded-lg text-center border border-gray-500/20"&gt;
+-               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 mb-2"&gt;Unranked&lt;/div&gt;
+-               &lt;p class="text-sm"&gt;100+&lt;/p&gt;
+-               &lt;p class="text-xs text-gray-300/60 mt-1"&gt;New/Inactive&lt;/p&gt;
++             &lt;div class="bg-gray-100 dark:bg-gray-500/10 p-4 rounded-lg text-center border border-gray-200 dark:border-gray-500/20"&gt;
++               &lt;div class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-500/20 text-gray-700 dark:text-gray-300 mb-2"&gt;Unranked&lt;/div&gt;
++               &lt;p class="text-sm text-gray-900 dark:text-white"&gt;100+&lt;/p&gt;
++               &lt;p class="text-xs text-gray-600 dark:text-gray-400 mt-1"&gt;New/Inactive&lt;/p&gt;
               &lt;/div&gt;
             &lt;/div&gt;
 ```

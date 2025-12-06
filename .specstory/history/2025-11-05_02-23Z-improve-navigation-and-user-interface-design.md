@@ -320,20 +320,20 @@ Parameters:
 
 ```json
 {
-  &quot;plan&quot;: &quot;# UI Enhancement Plan\n\n## Navigation &amp; Structure\n\n### Navigation Component (&#96;src/components/Navigation.astro&#96;)\n- Add backdrop blur and drop shadow to sticky navbar using &#96;backdrop-blur-md&#96; and &#96;shadow-lg&#96;\n- Enhance hover states with underline indicators or background highlights\n- Rename \&quot;System\&quot; link text to \&quot;Ranking System\&quot; (desktop line 80 - already correct in mobile line 177)\n- Add active state visual indicators (underline or background highlight)\n\n## Leaderboard UI\n\n### RankTableIsland Component (&#96;src/components/RankTableIsland.tsx&#96;)\n- Restructure dense text into visual blocks with better spacing:\n  - Larger team logos (h-8 w-8 instead of h-6 w-6)\n  - Separate stat blocks with icons or badges\n  - More prominent team name display\n- Add color-coded tier badges with distinct colors for Prospect/Elite/Premier tiers\n- Implement alternating row backgrounds (&#96;even:bg-patriot-blue-900/30&#96;)\n- Add hover glow effects and micro-animations on row reveal\n- Add tooltip component for Score, Elo, RP metrics with info icons\n\n### Tooltip Component (New: &#96;src/components/Tooltip.tsx&#96;)\n- Create reusable tooltip component with info icon trigger\n- Support hover/focus interactions\n- Include explanations for each metric\n\n## Mobile Experience\n\n### Home Page (&#96;src/pages/index.astro&#96;)\n- Enhance existing mobile card layout (lines 89-115):\n  - Add collapsible details section for additional stats\n  - Improve visual hierarchy with larger stat displays\n  - Add tier badge prominence\n- Add sticky \&quot;scroll to top\&quot; button component for long pages\n- Improve card spacing and padding for better touch targets\n\n### ScrollToTop Component (New: &#96;src/components/ScrollToTop.tsx&#96;)\n- Floating button that appears after scrolling past threshold\n- Smooth scroll animation\n- Positioned bottom-right with fade-in animation\n\n## Brand &amp; Visual Identity\n\n### Global Styles (&#96;src/styles/global.css&#96;)\n- Add subtle G.R.A.D.E. background pattern or gradient overlay utilities\n- Create accent gradient utilities for esports energy feel\n- Add neon edge effect utilities for hover states\n\n### Animations\n- Add CSS keyframe animations for:\n  - Tier transition effects\n  - Hover glows\n  - Row reveal animations (fade-in with slight slide)\n- Use Tailwind animation utilities with custom durations\n\n### Home Page Enhancements (&#96;src/pages/index.astro&#96;)\n- Add subtle animated background or data visualization element\n- Consider gradient accent overlays on key sections\n\n## Clarity &amp; Engagement\n\n### Info Sections\n- Add \&quot;Recently Verified\&quot; or \&quot;Hot Teams Rising\&quot; section component\n- Display teams with recent activity or rank changes\n- Add CTA banner linking to ranking formula page\n\n### Tooltips\n- Integrate tooltip component into leaderboard metrics\n- Add info icons next to Score, Elo, RP column headers\n- Tooltip content explaining each metric&#39;s meaning\n\n### Leaderboard Component\n- Add metric explanations via tooltips\n- Improve visual separation between stat groups\n\n## SEO &amp; Structured Data\n\n### Team Pages (&#96;src/pages/teams/[id].astro&#96;)\n- Add JSON-LD structured data for Team schema\n- Include team name, logo, description, and relevant stats\n- Add breadcrumb structured data\n\n### BaseLayout (&#96;src/components/BaseLayout.astro&#96;)\n- Consider adding Organization schema for G.R.A.D.E.\n- Add WebSite schema with search action\n\n## Implementation Files\n\n1. &#96;src/components/Navigation.astro&#96; - Navigation enhancements\n2. &#96;src/components/RankTableIsland.tsx&#96; - Leaderboard visual improvements\n3. &#96;src/components/Tooltip.tsx&#96; - New tooltip component\n4. &#96;src/components/ScrollToTop.tsx&#96; - New scroll to top button\n5. &#96;src/pages/index.astro&#96; - Mobile card improvements and engagement sections\n6. &#96;src/styles/global.css&#96; - Animation utilities and brand styling\n7. &#96;src/pages/teams/[id].astro&#96; - Structured data additions\n\n## Tier Color Scheme\n\nTier badges will use distinct colors:\n- Prospect: Blue variant (patriot-blue-400)\n- Elite: Gold/Yellow variant (brand-gold or similar)\n- Premier: Red/Gradient variant (patriot-red-500 with gradient)\n&quot;,
-  &quot;name&quot;: &quot;UI Enhancement Plan&quot;,
-  &quot;overview&quot;: &quot;Comprehensive UI/UX improvements for navigation, leaderboard, mobile experience, brand identity, and engagement features including visual refinements, animations, tooltips, and SEO enhancements.&quot;
+  "plan": "# UI Enhancement Plan\n\n## Navigation &amp; Structure\n\n### Navigation Component (&#96;src/components/Navigation.astro&#96;)\n- Add backdrop blur and drop shadow to sticky navbar using &#96;backdrop-blur-md&#96; and &#96;shadow-lg&#96;\n- Enhance hover states with underline indicators or background highlights\n- Rename \"System\" link text to \"Ranking System\" (desktop line 80 - already correct in mobile line 177)\n- Add active state visual indicators (underline or background highlight)\n\n## Leaderboard UI\n\n### RankTableIsland Component (&#96;src/components/RankTableIsland.tsx&#96;)\n- Restructure dense text into visual blocks with better spacing:\n  - Larger team logos (h-8 w-8 instead of h-6 w-6)\n  - Separate stat blocks with icons or badges\n  - More prominent team name display\n- Add color-coded tier badges with distinct colors for Prospect/Elite/Premier tiers\n- Implement alternating row backgrounds (&#96;even:bg-patriot-blue-900/30&#96;)\n- Add hover glow effects and micro-animations on row reveal\n- Add tooltip component for Score, Elo, RP metrics with info icons\n\n### Tooltip Component (New: &#96;src/components/Tooltip.tsx&#96;)\n- Create reusable tooltip component with info icon trigger\n- Support hover/focus interactions\n- Include explanations for each metric\n\n## Mobile Experience\n\n### Home Page (&#96;src/pages/index.astro&#96;)\n- Enhance existing mobile card layout (lines 89-115):\n  - Add collapsible details section for additional stats\n  - Improve visual hierarchy with larger stat displays\n  - Add tier badge prominence\n- Add sticky \"scroll to top\" button component for long pages\n- Improve card spacing and padding for better touch targets\n\n### ScrollToTop Component (New: &#96;src/components/ScrollToTop.tsx&#96;)\n- Floating button that appears after scrolling past threshold\n- Smooth scroll animation\n- Positioned bottom-right with fade-in animation\n\n## Brand &amp; Visual Identity\n\n### Global Styles (&#96;src/styles/global.css&#96;)\n- Add subtle G.R.A.D.E. background pattern or gradient overlay utilities\n- Create accent gradient utilities for esports energy feel\n- Add neon edge effect utilities for hover states\n\n### Animations\n- Add CSS keyframe animations for:\n  - Tier transition effects\n  - Hover glows\n  - Row reveal animations (fade-in with slight slide)\n- Use Tailwind animation utilities with custom durations\n\n### Home Page Enhancements (&#96;src/pages/index.astro&#96;)\n- Add subtle animated background or data visualization element\n- Consider gradient accent overlays on key sections\n\n## Clarity &amp; Engagement\n\n### Info Sections\n- Add \"Recently Verified\" or \"Hot Teams Rising\" section component\n- Display teams with recent activity or rank changes\n- Add CTA banner linking to ranking formula page\n\n### Tooltips\n- Integrate tooltip component into leaderboard metrics\n- Add info icons next to Score, Elo, RP column headers\n- Tooltip content explaining each metric's meaning\n\n### Leaderboard Component\n- Add metric explanations via tooltips\n- Improve visual separation between stat groups\n\n## SEO &amp; Structured Data\n\n### Team Pages (&#96;src/pages/teams/[id].astro&#96;)\n- Add JSON-LD structured data for Team schema\n- Include team name, logo, description, and relevant stats\n- Add breadcrumb structured data\n\n### BaseLayout (&#96;src/components/BaseLayout.astro&#96;)\n- Consider adding Organization schema for G.R.A.D.E.\n- Add WebSite schema with search action\n\n## Implementation Files\n\n1. &#96;src/components/Navigation.astro&#96; - Navigation enhancements\n2. &#96;src/components/RankTableIsland.tsx&#96; - Leaderboard visual improvements\n3. &#96;src/components/Tooltip.tsx&#96; - New tooltip component\n4. &#96;src/components/ScrollToTop.tsx&#96; - New scroll to top button\n5. &#96;src/pages/index.astro&#96; - Mobile card improvements and engagement sections\n6. &#96;src/styles/global.css&#96; - Animation utilities and brand styling\n7. &#96;src/pages/teams/[id].astro&#96; - Structured data additions\n\n## Tier Color Scheme\n\nTier badges will use distinct colors:\n- Prospect: Blue variant (patriot-blue-400)\n- Elite: Gold/Yellow variant (brand-gold or similar)\n- Premier: Red/Gradient variant (patriot-red-500 with gradient)\n",
+  "name": "UI Enhancement Plan",
+  "overview": "Comprehensive UI/UX improvements for navigation, leaderboard, mobile experience, brand identity, and engagement features including visual refinements, animations, tooltips, and SEO enhancements."
 }
 ```
 Additional data:
 
 ```json
 {
-  &quot;status&quot;: &quot;accepted&quot;,
-  &quot;reviewData&quot;: {
-    &quot;status&quot;: &quot;Requested&quot;,
-    &quot;selectedOption&quot;: &quot;none&quot;,
-    &quot;isShowingInput&quot;: false
+  "status": "accepted",
+  "reviewData": {
+    "status": "Requested",
+    "selectedOption": "none",
+    "isShowingInput": false
   }
 }
 ```
@@ -341,7 +341,7 @@ Result:
 
 ```json
 {
-  &quot;accepted&quot;: {}
+  "accepted": {}
 }
 ```
 Status: **completed**
@@ -408,7 +408,7 @@ Implementing the plan. Starting with navigation enhancements:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -417,10 +417,10 @@ Lines added: 1, lines removed: 1
 @@ -4,5 +4,5 @@
   ---
   
-- &lt;nav class=&quot;bg-patriot-blue-900 border-b border-patriot-blue-800 sticky top-0 z-50&quot;&gt;
-+ &lt;nav class=&quot;bg-patriot-blue-900/95 backdrop-blur-md border-b border-patriot-blue-800 sticky top-0 z-50 shadow-lg&quot;&gt;
-    &lt;div class=&quot;mx-auto max-w-6xl px-6 py-4&quot;&gt;
-      &lt;div class=&quot;flex items-center justify-between&quot;&gt;
+- &lt;nav class="bg-patriot-blue-900 border-b border-patriot-blue-800 sticky top-0 z-50"&gt;
++ &lt;nav class="bg-patriot-blue-900/95 backdrop-blur-md border-b border-patriot-blue-800 sticky top-0 z-50 shadow-lg"&gt;
+    &lt;div class="mx-auto max-w-6xl px-6 py-4"&gt;
+      &lt;div class="flex items-center justify-between"&gt;
 ```
 
 </details>
@@ -431,7 +431,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 19, lines removed: 10
@@ -439,93 +439,93 @@ Lines added: 19, lines removed: 10
 ```diff
 @@ -20,71 +20,80 @@
             &lt;a 
-              href=&quot;/&quot; 
--             class={&#96;hover:text-patriot-red-400 transition ${currentPath === &#39;/&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath === &#39;/&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
+              href="/" 
+-             class={&#96;hover:text-patriot-red-400 transition ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
             &gt;
               Home
-+             {currentPath === &#39;/&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
++             {currentPath === '/' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/teams&quot; 
--             class={&#96;hover:text-patriot-blue-400 transition ${currentPath.startsWith(&#39;/teams&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/teams&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
+              href="/teams" 
+-             class={&#96;hover:text-patriot-blue-400 transition ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
             &gt;
               Teams
-+             {currentPath.startsWith(&#39;/teams&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/teams') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/players&quot; 
--             class={&#96;hover:text-patriot-red-400 transition ${currentPath.startsWith(&#39;/players&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/players&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
+              href="/players" 
+-             class={&#96;hover:text-patriot-red-400 transition ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
             &gt;
               Players
-+             {currentPath.startsWith(&#39;/players&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/players') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/leagues&quot; 
--             class={&#96;hover:text-patriot-blue-400 transition ${currentPath.startsWith(&#39;/leagues&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/leagues&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
+              href="/leagues" 
+-             class={&#96;hover:text-patriot-blue-400 transition ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
             &gt;
               Leagues
-+             {currentPath.startsWith(&#39;/leagues&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/leagues') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/tournaments&quot; 
--             class={&#96;hover:text-patriot-red-400 transition ${currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
+              href="/tournaments" 
+-             class={&#96;hover:text-patriot-red-400 transition ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
             &gt;
               Tournaments
-+             {currentPath.startsWith(&#39;/tournaments&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/tournaments') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/matches&quot; 
--             class={&#96;hover:text-patriot-blue-400 transition ${currentPath.startsWith(&#39;/matches&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/matches&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
+              href="/matches" 
+-             class={&#96;hover:text-patriot-blue-400 transition ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
             &gt;
               Matches
-+             {currentPath.startsWith(&#39;/matches&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/matches') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/achievements&quot; 
--             class={&#96;hover:text-patriot-red-400 transition ${currentPath.startsWith(&#39;/achievements&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/achievements&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
+              href="/achievements" 
+-             class={&#96;hover:text-patriot-red-400 transition ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
             &gt;
               Achievements
-+             {currentPath.startsWith(&#39;/achievements&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/achievements') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/ranking-system&quot; 
--             class={&#96;hover:text-patriot-blue-400 transition ${currentPath === &#39;/ranking-system&#39; ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath === &#39;/ranking-system&#39; ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
+              href="/ranking-system" 
+-             class={&#96;hover:text-patriot-blue-400 transition ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
             &gt;
 -             System
 +             Ranking System
-+             {currentPath === &#39;/ranking-system&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
++             {currentPath === '/ranking-system' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
           &lt;li&gt;
             &lt;a 
-              href=&quot;/about&quot; 
--             class={&#96;hover:text-patriot-red-400 transition ${currentPath === &#39;/about&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition ${currentPath === &#39;/about&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
+              href="/about" 
+-             class={&#96;hover:text-patriot-red-400 transition ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200'}&#96;}
++             class={&#96;relative px-2 py-1 transition ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
             &gt;
               About
-+             {currentPath === &#39;/about&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
++             {currentPath === '/about' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 ```
@@ -564,7 +564,7 @@ Creating the Tooltip component:
 
 <tool-use data-tool-type="write" data-tool-name="write">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
+<details><summary>Tool use: **write** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
 
 **Chunk 1**
 Lines added: 71, lines removed: 1
@@ -572,7 +572,7 @@ Lines added: 71, lines removed: 1
 ```diff
 @@ -1,1 +1,71 @@
 - 
-+ import { useState, useRef, useEffect } from &quot;react&quot;;
++ import { useState, useRef, useEffect } from "react";
 + 
 + interface TooltipProps {
 +   content: string;
@@ -580,7 +580,7 @@ Lines added: 71, lines removed: 1
 +   className?: string;
 + }
 + 
-+ export default function Tooltip({ content, children, className = &quot;&quot; }: TooltipProps) {
++ export default function Tooltip({ content, children, className = "" }: TooltipProps) {
 +   const [isVisible, setIsVisible] = useState(false);
 +   const [position, setPosition] = useState&lt;{ top: number; left: number } | null&gt;(null);
 +   const tooltipRef = useRef&lt;HTMLDivElement&gt;(null);
@@ -612,30 +612,30 @@ Lines added: 71, lines removed: 1
 +     &gt;
 +       {children || (
 +         &lt;svg 
-+           className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; 
-+           fill=&quot;none&quot; 
-+           stroke=&quot;currentColor&quot; 
-+           viewBox=&quot;0 0 24 24&quot;
-+           aria-label=&quot;More information&quot;
++           className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" 
++           fill="none" 
++           stroke="currentColor" 
++           viewBox="0 0 24 24"
++           aria-label="More information"
 +         &gt;
 +           &lt;path 
-+             strokeLinecap=&quot;round&quot; 
-+             strokeLinejoin=&quot;round&quot; 
++             strokeLinecap="round" 
++             strokeLinejoin="round" 
 +             strokeWidth={2} 
-+             d=&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot; 
++             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
 +           /&gt;
 +         &lt;/svg&gt;
 +       )}
 +       {isVisible &amp;&amp; (
 +         &lt;div
 +           ref={tooltipRef}
-+           className=&quot;absolute z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in&quot;
-+           style={position ? { top: &#96;${position.top}px&#96;, left: &#96;${position.left}px&#96; } : { visibility: &#39;hidden&#39; }}
-+           role=&quot;tooltip&quot;
++           className="absolute z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in"
++           style={position ? { top: &#96;${position.top}px&#96;, left: &#96;${position.left}px&#96; } : { visibility: 'hidden' }}
++           role="tooltip"
 +         &gt;
 +           {content}
-+           &lt;div className=&quot;absolute top-full left-1/2 transform -translate-x-1/2 -mt-1&quot;&gt;
-+             &lt;div className=&quot;w-2 h-2 bg-neutral-900 border-r border-b border-neutral-700 transform rotate-45&quot;&gt;&lt;/div&gt;
++           &lt;div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1"&gt;
++             &lt;div className="w-2 h-2 bg-neutral-900 border-r border-b border-neutral-700 transform rotate-45"&gt;&lt;/div&gt;
 +           &lt;/div&gt;
 +         &lt;/div&gt;
 +       )}
@@ -687,7 +687,7 @@ Adding animations and brand styling to global.css:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/styles/global.css</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/styles/global.css</summary>
 
 **Chunk 1**
 Lines added: 93, lines removed: undefined
@@ -818,7 +818,7 @@ Creating the ScrollToTop component:
 
 <tool-use data-tool-type="write" data-tool-name="write">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
+<details><summary>Tool use: **write** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
 
 **Chunk 1**
 Lines added: 52, lines removed: 1
@@ -826,7 +826,7 @@ Lines added: 52, lines removed: 1
 ```diff
 @@ -1,1 +1,52 @@
 - 
-+ import { useState, useEffect } from &quot;react&quot;;
++ import { useState, useEffect } from "react";
 + 
 + export default function ScrollToTop() {
 +   const [isVisible, setIsVisible] = useState(false);
@@ -840,14 +840,14 @@ Lines added: 52, lines removed: 1
 +       }
 +     };
 + 
-+     window.addEventListener(&quot;scroll&quot;, toggleVisibility);
-+     return () =&gt; window.removeEventListener(&quot;scroll&quot;, toggleVisibility);
++     window.addEventListener("scroll", toggleVisibility);
++     return () =&gt; window.removeEventListener("scroll", toggleVisibility);
 +   }, []);
 + 
 +   const scrollToTop = () =&gt; {
 +     window.scrollTo({
 +       top: 0,
-+       behavior: &quot;smooth&quot;,
++       behavior: "smooth",
 +     });
 +   };
 + 
@@ -856,20 +856,20 @@ Lines added: 52, lines removed: 1
 +       {isVisible &amp;&amp; (
 +         &lt;button
 +           onClick={scrollToTop}
-+           className=&quot;fixed bottom-6 right-6 z-50 p-3 bg-patriot-blue-800 hover:bg-patriot-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 neon-edge-blue animate-slide-up&quot;
-+           aria-label=&quot;Scroll to top&quot;
++           className="fixed bottom-6 right-6 z-50 p-3 bg-patriot-blue-800 hover:bg-patriot-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 neon-edge-blue animate-slide-up"
++           aria-label="Scroll to top"
 +         &gt;
 +           &lt;svg
-+             className=&quot;w-6 h-6&quot;
-+             fill=&quot;none&quot;
-+             stroke=&quot;currentColor&quot;
-+             viewBox=&quot;0 0 24 24&quot;
++             className="w-6 h-6"
++             fill="none"
++             stroke="currentColor"
++             viewBox="0 0 24 24"
 +           &gt;
 +             &lt;path
-+               strokeLinecap=&quot;round&quot;
-+               strokeLinejoin=&quot;round&quot;
++               strokeLinecap="round"
++               strokeLinejoin="round"
 +               strokeWidth={2}
-+               d=&quot;M5 10l7-7m0 0l7 7m-7-7v18&quot;
++               d="M5 10l7-7m0 0l7 7m-7-7v18"
 +             /&gt;
 +           &lt;/svg&gt;
 +         &lt;/button&gt;
@@ -922,15 +922,15 @@ Enhancing RankTableIsland with visual improvements, color-coded tiers, and toolt
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -1,3 +1,4 @@
-  import { useMemo, useState } from &quot;react&quot;;
-+ import Tooltip from &quot;./Tooltip&quot;;
+  import { useMemo, useState } from "react";
++ import Tooltip from "./Tooltip";
   
   type Row = {
 ```
@@ -944,16 +944,16 @@ Lines added: 13, lines removed: undefined
   };
 + 
 + function getTierColor(tier: string | null): string {
-+   if (!tier) return &quot;bg-neutral-700 text-neutral-300&quot;;
++   if (!tier) return "bg-neutral-700 text-neutral-300";
 +   const tierLower = tier.toLowerCase();
-+   if (tierLower.includes(&quot;prospect&quot;)) {
-+     return &quot;bg-patriot-blue-500 text-white&quot;;
-+   } else if (tierLower.includes(&quot;elite&quot;)) {
-+     return &quot;bg-gradient-to-r from-brand-gold to-yellow-500 text-neutral-900 font-bold&quot;;
-+   } else if (tierLower.includes(&quot;premier&quot;)) {
-+     return &quot;bg-gradient-to-r from-patriot-red-500 to-patriot-red-600 text-white&quot;;
++   if (tierLower.includes("prospect")) {
++     return "bg-patriot-blue-500 text-white";
++   } else if (tierLower.includes("elite")) {
++     return "bg-gradient-to-r from-brand-gold to-yellow-500 text-neutral-900 font-bold";
++   } else if (tierLower.includes("premier")) {
++     return "bg-gradient-to-r from-patriot-red-500 to-patriot-red-600 text-white";
 +   }
-+   return &quot;bg-patriot-blue-800 text-white&quot;;
++   return "bg-patriot-blue-800 text-white";
 + }
   
   export default function RankTableIsland({ rows }: { rows: Row[] }) {
@@ -965,113 +965,113 @@ Lines added: 66, lines removed: 19
 ```diff
 @@ -23,43 +37,90 @@
     return (
-      &lt;table className=&quot;w-full text-sm hidden sm:table&quot; id=&quot;rankings-table&quot;&gt;
--       &lt;thead className=&quot;text-neutral-200 sticky top-0 bg-patriot-blue-900&quot;&gt;
-+       &lt;thead className=&quot;text-neutral-200 sticky top-0 bg-patriot-blue-900/95 backdrop-blur-md z-10&quot;&gt;
+      &lt;table className="w-full text-sm hidden sm:table" id="rankings-table"&gt;
+-       &lt;thead className="text-neutral-200 sticky top-0 bg-patriot-blue-900"&gt;
++       &lt;thead className="text-neutral-200 sticky top-0 bg-patriot-blue-900/95 backdrop-blur-md z-10"&gt;
           &lt;tr&gt;
--           &lt;th className=&quot;text-left py-2&quot;&gt;Rank&lt;/th&gt;
--           &lt;th className=&quot;text-left py-2&quot;&gt;Team&lt;/th&gt;
--           &lt;th className=&quot;text-right py-2 cursor-pointer hover:text-patriot-red-400 transition&quot; onClick={() =&gt; setSortKey(&quot;hybrid_score&quot;)}&gt;Score&lt;/th&gt;
--           &lt;th className=&quot;text-right py-2 cursor-pointer hover:text-patriot-blue-400 transition&quot; onClick={() =&gt; setSortKey(&quot;elo_rating&quot;)}&gt;Elo&lt;/th&gt;
--           &lt;th className=&quot;text-right py-2 cursor-pointer hover:text-patriot-red-400 transition&quot; onClick={() =&gt; setSortKey(&quot;current_rp&quot;)}&gt;RP&lt;/th&gt;
--           &lt;th className=&quot;text-center py-2&quot;&gt;Tier&lt;/th&gt;
-+           &lt;th className=&quot;text-left py-3 px-2&quot;&gt;Rank&lt;/th&gt;
-+           &lt;th className=&quot;text-left py-3 px-2&quot;&gt;Team&lt;/th&gt;
-+           &lt;th className=&quot;text-right py-3 px-2&quot;&gt;
-+             &lt;div className=&quot;flex items-center justify-end gap-1&quot;&gt;
-+               &lt;span className=&quot;cursor-pointer hover:text-patriot-red-400 transition&quot; onClick={() =&gt; setSortKey(&quot;hybrid_score&quot;)}&gt;Score&lt;/span&gt;
-+               &lt;Tooltip content=&quot;Hybrid Score combines ELO rating and win percentage to provide a comprehensive team ranking&quot;&gt;
-+                 &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                   &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot; /&gt;
+-           &lt;th className="text-left py-2"&gt;Rank&lt;/th&gt;
+-           &lt;th className="text-left py-2"&gt;Team&lt;/th&gt;
+-           &lt;th className="text-right py-2 cursor-pointer hover:text-patriot-red-400 transition" onClick={() =&gt; setSortKey("hybrid_score")}&gt;Score&lt;/th&gt;
+-           &lt;th className="text-right py-2 cursor-pointer hover:text-patriot-blue-400 transition" onClick={() =&gt; setSortKey("elo_rating")}&gt;Elo&lt;/th&gt;
+-           &lt;th className="text-right py-2 cursor-pointer hover:text-patriot-red-400 transition" onClick={() =&gt; setSortKey("current_rp")}&gt;RP&lt;/th&gt;
+-           &lt;th className="text-center py-2"&gt;Tier&lt;/th&gt;
++           &lt;th className="text-left py-3 px-2"&gt;Rank&lt;/th&gt;
++           &lt;th className="text-left py-3 px-2"&gt;Team&lt;/th&gt;
++           &lt;th className="text-right py-3 px-2"&gt;
++             &lt;div className="flex items-center justify-end gap-1"&gt;
++               &lt;span className="cursor-pointer hover:text-patriot-red-400 transition" onClick={() =&gt; setSortKey("hybrid_score")}&gt;Score&lt;/span&gt;
++               &lt;Tooltip content="Hybrid Score combines ELO rating and win percentage to provide a comprehensive team ranking"&gt;
++                 &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                   &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;
 +                 &lt;/svg&gt;
 +               &lt;/Tooltip&gt;
 +             &lt;/div&gt;
 +           &lt;/th&gt;
-+           &lt;th className=&quot;text-right py-3 px-2&quot;&gt;
-+             &lt;div className=&quot;flex items-center justify-end gap-1&quot;&gt;
-+               &lt;span className=&quot;cursor-pointer hover:text-patriot-blue-400 transition&quot; onClick={() =&gt; setSortKey(&quot;elo_rating&quot;)}&gt;Elo&lt;/span&gt;
-+               &lt;Tooltip content=&quot;ELO rating measures team skill level based on match results against other teams&quot;&gt;
-+                 &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                   &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot; /&gt;
++           &lt;th className="text-right py-3 px-2"&gt;
++             &lt;div className="flex items-center justify-end gap-1"&gt;
++               &lt;span className="cursor-pointer hover:text-patriot-blue-400 transition" onClick={() =&gt; setSortKey("elo_rating")}&gt;Elo&lt;/span&gt;
++               &lt;Tooltip content="ELO rating measures team skill level based on match results against other teams"&gt;
++                 &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                   &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;
 +                 &lt;/svg&gt;
 +               &lt;/Tooltip&gt;
 +             &lt;/div&gt;
 +           &lt;/th&gt;
-+           &lt;th className=&quot;text-right py-3 px-2&quot;&gt;
-+             &lt;div className=&quot;flex items-center justify-end gap-1&quot;&gt;
-+               &lt;span className=&quot;cursor-pointer hover:text-patriot-red-400 transition&quot; onClick={() =&gt; setSortKey(&quot;current_rp&quot;)}&gt;RP&lt;/span&gt;
-+               &lt;Tooltip content=&quot;Ranking Points (RP) represent tournament and league achievements&quot;&gt;
-+                 &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                   &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot; /&gt;
++           &lt;th className="text-right py-3 px-2"&gt;
++             &lt;div className="flex items-center justify-end gap-1"&gt;
++               &lt;span className="cursor-pointer hover:text-patriot-red-400 transition" onClick={() =&gt; setSortKey("current_rp")}&gt;RP&lt;/span&gt;
++               &lt;Tooltip content="Ranking Points (RP) represent tournament and league achievements"&gt;
++                 &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                   &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;
 +                 &lt;/svg&gt;
 +               &lt;/Tooltip&gt;
 +             &lt;/div&gt;
 +           &lt;/th&gt;
-+           &lt;th className=&quot;text-center py-3 px-2&quot;&gt;Tier&lt;/th&gt;
++           &lt;th className="text-center py-3 px-2"&gt;Tier&lt;/th&gt;
           &lt;/tr&gt;
         &lt;/thead&gt;
         &lt;tbody&gt;
           {sorted.map((r, idx) =&gt; (
--           &lt;tr key={r.team_id} className=&quot;border-b border-patriot-blue-800 hover:bg-patriot-blue-900/50 transition&quot;&gt;
--             &lt;td className=&quot;py-2 text-neutral-300&quot;&gt;#{idx + 1}&lt;/td&gt;
--             &lt;td className=&quot;py-2&quot;&gt;
+-           &lt;tr key={r.team_id} className="border-b border-patriot-blue-800 hover:bg-patriot-blue-900/50 transition"&gt;
+-             &lt;td className="py-2 text-neutral-300"&gt;#{idx + 1}&lt;/td&gt;
+-             &lt;td className="py-2"&gt;
 +           &lt;tr 
 +             key={r.team_id} 
 +             className={&#96;border-b border-patriot-blue-800/50 transition-all duration-200 hover:bg-patriot-blue-900/70 hover:shadow-md hover:neon-edge ${
-+               idx % 2 === 0 ? &#39;bg-patriot-blue-900/30&#39; : &#39;bg-transparent&#39;
++               idx % 2 === 0 ? 'bg-patriot-blue-900/30' : 'bg-transparent'
 +             } animate-slide-up&#96;}
 +             style={{ animationDelay: &#96;${idx * 0.03}s&#96; }}
 +           &gt;
-+             &lt;td className=&quot;py-3 px-2&quot;&gt;
-+               &lt;div className=&quot;text-neutral-300 font-semibold&quot;&gt;#{idx + 1}&lt;/div&gt;
++             &lt;td className="py-3 px-2"&gt;
++               &lt;div className="text-neutral-300 font-semibold"&gt;#{idx + 1}&lt;/div&gt;
 +             &lt;/td&gt;
-+             &lt;td className=&quot;py-3 px-2&quot;&gt;
++             &lt;td className="py-3 px-2"&gt;
                 &lt;a 
                   href={&#96;/teams/${r.team_id}&#96;}
--                 className=&quot;flex items-center gap-2 hover:text-patriot-red-400 transition&quot;
-+                 className=&quot;flex items-center gap-3 hover:text-patriot-red-400 transition group&quot;
+-                 className="flex items-center gap-2 hover:text-patriot-red-400 transition"
++                 className="flex items-center gap-3 hover:text-patriot-red-400 transition group"
                 &gt;
                   {r.logo_url ? (
                     &lt;img 
                       src={r.logo_url} 
-                      alt=&quot;&quot; 
--                     className=&quot;h-6 w-6 rounded object-cover&quot; 
-+                     className=&quot;h-8 w-8 rounded object-cover ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot; 
-                      loading=&quot;lazy&quot; 
+                      alt="" 
+-                     className="h-6 w-6 rounded object-cover" 
++                     className="h-8 w-8 rounded object-cover ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition" 
+                      loading="lazy" 
                     /&gt;
                   ) : (
--                   &lt;div className=&quot;h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold&quot;&gt;
-+                   &lt;div className=&quot;h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot;&gt;
-                      {r.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                   &lt;div className="h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold"&gt;
++                   &lt;div className="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition"&gt;
+                      {r.team_name?.substring(0, 2).toUpperCase() || '??'}
                     &lt;/div&gt;
                   )}
 -                 {r.team_name}
-+                 &lt;span className=&quot;font-medium&quot;&gt;{r.team_name}&lt;/span&gt;
++                 &lt;span className="font-medium"&gt;{r.team_name}&lt;/span&gt;
                 &lt;/a&gt;
               &lt;/td&gt;
--             &lt;td className=&quot;text-right font-medium&quot;&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/td&gt;
--             &lt;td className=&quot;text-right&quot;&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/td&gt;
--             &lt;td className=&quot;text-right&quot;&gt;{r.current_rp ?? 0}&lt;/td&gt;
--             &lt;td className=&quot;text-center&quot;&gt;
--               &lt;span className=&quot;px-2 py-0.5 rounded text-xs font-bold bg-patriot-blue-800 text-white&quot;&gt;
-+             &lt;td className=&quot;py-3 px-2&quot;&gt;
-+               &lt;div className=&quot;text-right&quot;&gt;
-+                 &lt;div className=&quot;font-semibold text-lg&quot;&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/div&gt;
+-             &lt;td className="text-right font-medium"&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/td&gt;
+-             &lt;td className="text-right"&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/td&gt;
+-             &lt;td className="text-right"&gt;{r.current_rp ?? 0}&lt;/td&gt;
+-             &lt;td className="text-center"&gt;
+-               &lt;span className="px-2 py-0.5 rounded text-xs font-bold bg-patriot-blue-800 text-white"&gt;
++             &lt;td className="py-3 px-2"&gt;
++               &lt;div className="text-right"&gt;
++                 &lt;div className="font-semibold text-lg"&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/div&gt;
 +               &lt;/div&gt;
 +             &lt;/td&gt;
-+             &lt;td className=&quot;py-3 px-2&quot;&gt;
-+               &lt;div className=&quot;text-right&quot;&gt;
-+                 &lt;div className=&quot;font-medium&quot;&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/div&gt;
++             &lt;td className="py-3 px-2"&gt;
++               &lt;div className="text-right"&gt;
++                 &lt;div className="font-medium"&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/div&gt;
 +               &lt;/div&gt;
 +             &lt;/td&gt;
-+             &lt;td className=&quot;py-3 px-2&quot;&gt;
-+               &lt;div className=&quot;text-right&quot;&gt;
-+                 &lt;div className=&quot;font-medium&quot;&gt;{r.current_rp ?? 0}&lt;/div&gt;
++             &lt;td className="py-3 px-2"&gt;
++               &lt;div className="text-right"&gt;
++                 &lt;div className="font-medium"&gt;{r.current_rp ?? 0}&lt;/div&gt;
 +               &lt;/div&gt;
 +             &lt;/td&gt;
-+             &lt;td className=&quot;text-center py-3 px-2&quot;&gt;
++             &lt;td className="text-center py-3 px-2"&gt;
 +               &lt;span className={&#96;px-3 py-1 rounded-md text-xs font-bold ${getTierColor(r.leaderboard_tier)} animate-tier-transition shadow-sm&#96;}&gt;
-                  {r.leaderboard_tier || &#39;-&#39;}
+                  {r.leaderboard_tier || '-'}
                 &lt;/span&gt;
 ```
 
@@ -1117,7 +1117,7 @@ Creating a mobile card component with collapsible details, then updating the hom
 
 <tool-use data-tool-type="write" data-tool-name="write">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/MobileRankCard.tsx</summary>
+<details><summary>Tool use: **write** • Edit file: proam-rankings/src/components/MobileRankCard.tsx</summary>
 
 **Chunk 1**
 Lines added: 117, lines removed: 1
@@ -1125,7 +1125,7 @@ Lines added: 117, lines removed: 1
 ```diff
 @@ -1,1 +1,117 @@
 - 
-+ import { useState } from &quot;react&quot;;
++ import { useState } from "react";
 + 
 + type Row = {
 +   team_id: string | null;
@@ -1139,16 +1139,16 @@ Lines added: 117, lines removed: 1
 + };
 + 
 + function getTierColor(tier: string | null): string {
-+   if (!tier) return &quot;bg-neutral-700 text-neutral-300&quot;;
++   if (!tier) return "bg-neutral-700 text-neutral-300";
 +   const tierLower = tier.toLowerCase();
-+   if (tierLower.includes(&quot;prospect&quot;)) {
-+     return &quot;bg-patriot-blue-500 text-white&quot;;
-+   } else if (tierLower.includes(&quot;elite&quot;)) {
-+     return &quot;bg-gradient-to-r from-brand-gold to-yellow-500 text-neutral-900 font-bold&quot;;
-+   } else if (tierLower.includes(&quot;premier&quot;)) {
-+     return &quot;bg-gradient-to-r from-patriot-red-500 to-patriot-red-600 text-white&quot;;
++   if (tierLower.includes("prospect")) {
++     return "bg-patriot-blue-500 text-white";
++   } else if (tierLower.includes("elite")) {
++     return "bg-gradient-to-r from-brand-gold to-yellow-500 text-neutral-900 font-bold";
++   } else if (tierLower.includes("premier")) {
++     return "bg-gradient-to-r from-patriot-red-500 to-patriot-red-600 text-white";
 +   }
-+   return &quot;bg-patriot-blue-800 text-white&quot;;
++   return "bg-patriot-blue-800 text-white";
 + }
 + 
 + export default function MobileRankCard({ row, rank }: { row: Row; rank: number }) {
@@ -1157,7 +1157,7 @@ Lines added: 117, lines removed: 1
 +   return (
 +     &lt;a 
 +       href={&#96;/teams/${row.team_id}&#96;}
-+       className=&quot;block rounded-lg border border-patriot-blue-800 bg-patriot-blue-900/30 p-4 hover:border-patriot-red-500 hover:bg-patriot-blue-900/50 transition-all duration-200 animate-slide-up&quot;
++       className="block rounded-lg border border-patriot-blue-800 bg-patriot-blue-900/30 p-4 hover:border-patriot-red-500 hover:bg-patriot-blue-900/50 transition-all duration-200 animate-slide-up"
 +       onClick={(e) =&gt; {
 +         if (isExpanded) {
 +           e.preventDefault();
@@ -1166,22 +1166,22 @@ Lines added: 117, lines removed: 1
 +       }}
 +     &gt;
 +       &lt;article&gt;
-+         &lt;header className=&quot;flex items-center gap-3 mb-3&quot;&gt;
-+           &lt;div className=&quot;text-neutral-400 font-bold text-sm w-8&quot;&gt;#{rank}&lt;/div&gt;
++         &lt;header className="flex items-center gap-3 mb-3"&gt;
++           &lt;div className="text-neutral-400 font-bold text-sm w-8"&gt;#{rank}&lt;/div&gt;
 +           {row.logo_url ? (
 +             &lt;img 
 +               src={row.logo_url}
-+               alt=&quot;&quot; 
-+               className=&quot;h-10 w-10 rounded object-cover ring-2 ring-patriot-blue-800&quot; 
-+               loading=&quot;lazy&quot; 
++               alt="" 
++               className="h-10 w-10 rounded object-cover ring-2 ring-patriot-blue-800" 
++               loading="lazy" 
 +             /&gt;
 +           ) : (
-+             &lt;div className=&quot;h-10 w-10 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800&quot;&gt;
-+               {row.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++             &lt;div className="h-10 w-10 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800"&gt;
++               {row.team_name?.substring(0, 2).toUpperCase() || '??'}
 +             &lt;/div&gt;
 +           )}
-+           &lt;div className=&quot;flex-1 min-w-0&quot;&gt;
-+             &lt;div className=&quot;font-semibold text-base truncate&quot;&gt;{row.team_name}&lt;/div&gt;
++           &lt;div className="flex-1 min-w-0"&gt;
++             &lt;div className="font-semibold text-base truncate"&gt;{row.team_name}&lt;/div&gt;
 +           &lt;/div&gt;
 +           {row.leaderboard_tier &amp;&amp; (
 +             &lt;span className={&#96;px-2 py-1 rounded text-xs font-bold ${getTierColor(row.leaderboard_tier)} shadow-sm&#96;}&gt;
@@ -1190,18 +1190,18 @@ Lines added: 117, lines removed: 1
 +           )}
 +         &lt;/header&gt;
 +         
-+         &lt;dl className=&quot;grid grid-cols-3 gap-3 mb-2&quot;&gt;
-+           &lt;div className=&quot;text-center p-2 bg-patriot-blue-900/50 rounded&quot;&gt;
-+             &lt;dt className=&quot;text-neutral-400 text-xs mb-1&quot;&gt;Score&lt;/dt&gt;
-+             &lt;dd className=&quot;font-bold text-lg text-patriot-red-400&quot;&gt;{Math.round(row.hybrid_score ?? 0)}&lt;/dd&gt;
++         &lt;dl className="grid grid-cols-3 gap-3 mb-2"&gt;
++           &lt;div className="text-center p-2 bg-patriot-blue-900/50 rounded"&gt;
++             &lt;dt className="text-neutral-400 text-xs mb-1"&gt;Score&lt;/dt&gt;
++             &lt;dd className="font-bold text-lg text-patriot-red-400"&gt;{Math.round(row.hybrid_score ?? 0)}&lt;/dd&gt;
 +           &lt;/div&gt;
-+           &lt;div className=&quot;text-center p-2 bg-patriot-blue-900/50 rounded&quot;&gt;
-+             &lt;dt className=&quot;text-neutral-400 text-xs mb-1&quot;&gt;Elo&lt;/dt&gt;
-+             &lt;dd className=&quot;font-bold text-lg text-patriot-blue-400&quot;&gt;{Math.round(row.elo_rating ?? 1500)}&lt;/dd&gt;
++           &lt;div className="text-center p-2 bg-patriot-blue-900/50 rounded"&gt;
++             &lt;dt className="text-neutral-400 text-xs mb-1"&gt;Elo&lt;/dt&gt;
++             &lt;dd className="font-bold text-lg text-patriot-blue-400"&gt;{Math.round(row.elo_rating ?? 1500)}&lt;/dd&gt;
 +           &lt;/div&gt;
-+           &lt;div className=&quot;text-center p-2 bg-patriot-blue-900/50 rounded&quot;&gt;
-+             &lt;dt className=&quot;text-neutral-400 text-xs mb-1&quot;&gt;RP&lt;/dt&gt;
-+             &lt;dd className=&quot;font-bold text-lg&quot;&gt;{row.current_rp ?? 0}&lt;/dd&gt;
++           &lt;div className="text-center p-2 bg-patriot-blue-900/50 rounded"&gt;
++             &lt;dt className="text-neutral-400 text-xs mb-1"&gt;RP&lt;/dt&gt;
++             &lt;dd className="font-bold text-lg"&gt;{row.current_rp ?? 0}&lt;/dd&gt;
 +           &lt;/div&gt;
 +         &lt;/dl&gt;
 + 
@@ -1211,27 +1211,27 @@ Lines added: 117, lines removed: 1
 +             e.stopPropagation();
 +             setIsExpanded(!isExpanded);
 +           }}
-+           className=&quot;w-full mt-2 text-xs text-neutral-400 hover:text-neutral-300 flex items-center justify-center gap-1&quot;
++           className="w-full mt-2 text-xs text-neutral-400 hover:text-neutral-300 flex items-center justify-center gap-1"
 +         &gt;
-+           &lt;span&gt;{isExpanded ? &#39;Less&#39; : &#39;More&#39;} Details&lt;/span&gt;
++           &lt;span&gt;{isExpanded ? 'Less' : 'More'} Details&lt;/span&gt;
 +           &lt;svg 
-+             className={&#96;w-4 h-4 transition-transform ${isExpanded ? &#39;rotate-180&#39; : &#39;&#39;}&#96;}
-+             fill=&quot;none&quot; 
-+             stroke=&quot;currentColor&quot; 
-+             viewBox=&quot;0 0 24 24&quot;
++             className={&#96;w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}&#96;}
++             fill="none" 
++             stroke="currentColor" 
++             viewBox="0 0 24 24"
 +           &gt;
-+             &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M19 9l-7 7-7-7&quot; /&gt;
++             &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /&gt;
 +           &lt;/svg&gt;
 +         &lt;/button&gt;
 + 
 +         {isExpanded &amp;&amp; (
-+           &lt;div className=&quot;mt-3 pt-3 border-t border-patriot-blue-800 animate-fade-in&quot;&gt;
-+             &lt;div className=&quot;text-xs text-neutral-400 space-y-1&quot;&gt;
-+               &lt;div className=&quot;flex justify-between&quot;&gt;
++           &lt;div className="mt-3 pt-3 border-t border-patriot-blue-800 animate-fade-in"&gt;
++             &lt;div className="text-xs text-neutral-400 space-y-1"&gt;
++               &lt;div className="flex justify-between"&gt;
 +                 &lt;span&gt;Global Rank:&lt;/span&gt;
-+                 &lt;span className=&quot;text-neutral-300 font-medium&quot;&gt;#{row.global_rank ?? &#39;-&#39;}&lt;/span&gt;
++                 &lt;span className="text-neutral-300 font-medium"&gt;#{row.global_rank ?? '-'}&lt;/span&gt;
 +               &lt;/div&gt;
-+               &lt;div className=&quot;text-neutral-500 text-[10px] mt-2&quot;&gt;
++               &lt;div className="text-neutral-500 text-[10px] mt-2"&gt;
 +                 Tap anywhere on card to view full team profile
 +               &lt;/div&gt;
 +             &lt;/div&gt;
@@ -1252,19 +1252,19 @@ Lines added: 117, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: undefined
 
 ```diff
 @@ -3,4 +3,6 @@
-  import Navigation from &quot;../components/Navigation.astro&quot;;
-  import RankTableIsland from &quot;../components/RankTableIsland&quot;;
-+ import MobileRankCard from &quot;../components/MobileRankCard&quot;;
-+ import ScrollToTop from &quot;../components/ScrollToTop&quot;;
-  import UpcomingSpotlightBanner from &quot;../components/UpcomingSpotlightBanner.astro&quot;;
-  import { supa } from &quot;../lib/supabase&quot;;
+  import Navigation from "../components/Navigation.astro";
+  import RankTableIsland from "../components/RankTableIsland";
++ import MobileRankCard from "../components/MobileRankCard";
++ import ScrollToTop from "../components/ScrollToTop";
+  import UpcomingSpotlightBanner from "../components/UpcomingSpotlightBanner.astro";
+  import { supa } from "../lib/supabase";
 ```
 
 </details>
@@ -1275,7 +1275,7 @@ Lines added: 2, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -1284,10 +1284,10 @@ Lines added: 1, lines removed: 1
 @@ -77,5 +77,5 @@
   /&gt;
     &lt;Navigation /&gt;
--   &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
-+   &lt;main class=&quot;mx-auto max-w-6xl p-6 grade-pattern&quot;&gt;
+-   &lt;main class="mx-auto max-w-6xl p-6"&gt;
++   &lt;main class="mx-auto max-w-6xl p-6 grade-pattern"&gt;
       &lt;UpcomingSpotlightBanner /&gt;
-      &lt;div class=&quot;mb-6&quot;&gt;
+      &lt;div class="mb-6"&gt;
 ```
 
 **Chunk 2**
@@ -1298,43 +1298,43 @@ Lines added: 23, lines removed: 28
       &lt;/div&gt;
   
 -       &lt;!-- Mobile cards (smaller screens) --&gt;
--       &lt;section class=&quot;space-y-2 sm:hidden&quot;&gt;
+-       &lt;section class="space-y-2 sm:hidden"&gt;
 -         {rows.map((r: typeof rows[0]) =&gt; (
--           &lt;a href={&#96;/teams/${r.team_id}&#96;} class=&quot;block rounded border border-patriot-blue-800 p-3 hover:border-patriot-red-500 transition&quot;&gt;
+-           &lt;a href={&#96;/teams/${r.team_id}&#96;} class="block rounded border border-patriot-blue-800 p-3 hover:border-patriot-red-500 transition"&gt;
 -             &lt;article&gt;
--               &lt;header class=&quot;flex items-center gap-3&quot;&gt;
+-               &lt;header class="flex items-center gap-3"&gt;
 -                 {r.logo_url ? (
 -                   &lt;img src={r.logo_url}
--                      alt=&quot;&quot; class=&quot;h-8 w-8 rounded object-cover&quot; loading=&quot;lazy&quot; /&gt;
+-                      alt="" class="h-8 w-8 rounded object-cover" loading="lazy" /&gt;
 -                 ) : (
--                   &lt;div class=&quot;h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold&quot;&gt;
--                     {r.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                   &lt;div class="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold"&gt;
+-                     {r.team_name?.substring(0, 2).toUpperCase() || '??'}
 -                   &lt;/div&gt;
 -                 )}
--                 &lt;div class=&quot;font-semibold&quot;&gt;{r.team_name}&lt;/div&gt;
+-                 &lt;div class="font-semibold"&gt;{r.team_name}&lt;/div&gt;
 -                 {r.leaderboard_tier &amp;&amp; (
--                   &lt;div class=&quot;ml-auto text-xs font-bold text-neutral-400&quot;&gt;{r.leaderboard_tier}&lt;/div&gt;
+-                   &lt;div class="ml-auto text-xs font-bold text-neutral-400"&gt;{r.leaderboard_tier}&lt;/div&gt;
 -                 )}
 -               &lt;/header&gt;
--               &lt;dl class=&quot;mt-2 grid grid-cols-3 text-sm&quot;&gt;
--                 &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;Score&lt;/dt&gt;&lt;dd class=&quot;font-medium&quot;&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/dd&gt;&lt;/div&gt;
--                 &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;Elo&lt;/dt&gt;&lt;dd class=&quot;font-medium&quot;&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/dd&gt;&lt;/div&gt;
--                 &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;RP&lt;/dt&gt;&lt;dd&gt;{r.current_rp ?? 0}&lt;/dd&gt;&lt;/div&gt;
+-               &lt;dl class="mt-2 grid grid-cols-3 text-sm"&gt;
+-                 &lt;div&gt;&lt;dt class="text-neutral-400"&gt;Score&lt;/dt&gt;&lt;dd class="font-medium"&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/dd&gt;&lt;/div&gt;
+-                 &lt;div&gt;&lt;dt class="text-neutral-400"&gt;Elo&lt;/dt&gt;&lt;dd class="font-medium"&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/dd&gt;&lt;/div&gt;
+-                 &lt;div&gt;&lt;dt class="text-neutral-400"&gt;RP&lt;/dt&gt;&lt;dd&gt;{r.current_rp ?? 0}&lt;/dd&gt;&lt;/div&gt;
 -               &lt;/dl&gt;
 -             &lt;/article&gt;
 -           &lt;/a&gt;
 -         ))}
 -       &lt;/section&gt;
 +     &lt;!-- CTA Banner --&gt;
-+     &lt;div class=&quot;mb-6 p-4 rounded-lg bg-gradient-to-r from-patriot-red-600/20 via-patriot-blue-600/20 to-patriot-red-600/20 border border-patriot-red-500/30 hover:border-patriot-red-500/50 transition&quot;&gt;
-+       &lt;div class=&quot;flex items-center justify-between flex-wrap gap-3&quot;&gt;
++     &lt;div class="mb-6 p-4 rounded-lg bg-gradient-to-r from-patriot-red-600/20 via-patriot-blue-600/20 to-patriot-red-600/20 border border-patriot-red-500/30 hover:border-patriot-red-500/50 transition"&gt;
++       &lt;div class="flex items-center justify-between flex-wrap gap-3"&gt;
 +         &lt;div&gt;
-+           &lt;h3 class=&quot;font-semibold text-lg mb-1&quot;&gt;Want to understand our ranking system?&lt;/h3&gt;
-+           &lt;p class=&quot;text-sm text-neutral-300&quot;&gt;Learn how teams are ranked using our Hybrid Score system&lt;/p&gt;
++           &lt;h3 class="font-semibold text-lg mb-1"&gt;Want to understand our ranking system?&lt;/h3&gt;
++           &lt;p class="text-sm text-neutral-300"&gt;Learn how teams are ranked using our Hybrid Score system&lt;/p&gt;
 +         &lt;/div&gt;
 +         &lt;a 
-+           href=&quot;/ranking-system&quot; 
-+           class=&quot;px-4 py-2 bg-patriot-red-600 hover:bg-patriot-red-700 text-white rounded-md font-medium transition whitespace-nowrap&quot;
++           href="/ranking-system" 
++           class="px-4 py-2 bg-patriot-red-600 hover:bg-patriot-red-700 text-white rounded-md font-medium transition whitespace-nowrap"
 +         &gt;
 +           View Rankings Formula
 +         &lt;/a&gt;
@@ -1342,7 +1342,7 @@ Lines added: 23, lines removed: 28
 +     &lt;/div&gt;
 + 
 +     &lt;!-- Mobile cards (smaller screens) --&gt;
-+     &lt;section class=&quot;space-y-3 sm:hidden&quot;&gt;
++     &lt;section class="space-y-3 sm:hidden"&gt;
 +       &lt;MobileRankCard client:load rows={rows} /&gt;
 +     &lt;/section&gt;
   
@@ -1372,7 +1372,7 @@ Fixing MobileRankCard to map over rows correctly:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/MobileRankCard.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/MobileRankCard.tsx</summary>
 
 **Chunk 1**
 Lines added: 11, lines removed: 1
@@ -1460,7 +1460,7 @@ Adding a "Hot Teams Rising" section to the home page:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 19, lines removed: 1
@@ -1501,7 +1501,7 @@ Lines added: 19, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 42, lines removed: undefined
@@ -1513,38 +1513,38 @@ Lines added: 42, lines removed: undefined
 + 
 +     &lt;!-- Hot Teams Rising Section --&gt;
 +     {hotTeams.length &gt; 0 &amp;&amp; (
-+       &lt;section class=&quot;mb-8&quot;&gt;
-+         &lt;div class=&quot;flex items-center gap-2 mb-4&quot;&gt;
-+           &lt;span class=&quot;text-2xl&quot;&gt;🔥&lt;/span&gt;
-+           &lt;h2 class=&quot;text-xl font-bold&quot;&gt;Hot Teams Rising&lt;/h2&gt;
++       &lt;section class="mb-8"&gt;
++         &lt;div class="flex items-center gap-2 mb-4"&gt;
++           &lt;span class="text-2xl"&gt;🔥&lt;/span&gt;
++           &lt;h2 class="text-xl font-bold"&gt;Hot Teams Rising&lt;/h2&gt;
 +         &lt;/div&gt;
-+         &lt;div class=&quot;grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3&quot;&gt;
++         &lt;div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"&gt;
 +           {hotTeams.map((team: typeof rows[0]) =&gt; (
 +             &lt;a 
 +               href={&#96;/teams/${team.team_id}&#96;}
-+               class=&quot;block p-3 rounded-lg border border-patriot-blue-800 bg-patriot-blue-900/30 hover:border-patriot-red-500 hover:bg-patriot-blue-900/50 transition-all duration-200 group&quot;
++               class="block p-3 rounded-lg border border-patriot-blue-800 bg-patriot-blue-900/30 hover:border-patriot-red-500 hover:bg-patriot-blue-900/50 transition-all duration-200 group"
 +             &gt;
-+               &lt;div class=&quot;flex flex-col items-center text-center&quot;&gt;
++               &lt;div class="flex flex-col items-center text-center"&gt;
 +                 {team.logo_url ? (
 +                   &lt;img 
 +                     src={team.logo_url}
-+                     alt=&quot;&quot;
-+                     class=&quot;h-12 w-12 rounded object-cover mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot;
-+                     loading=&quot;lazy&quot;
++                     alt=""
++                     class="h-12 w-12 rounded object-cover mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition"
++                     loading="lazy"
 +                   /&gt;
 +                 ) : (
-+                   &lt;div class=&quot;h-12 w-12 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot;&gt;
-+                     {team.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                   &lt;div class="h-12 w-12 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition"&gt;
++                     {team.team_name?.substring(0, 2).toUpperCase() || '??'}
 +                   &lt;/div&gt;
 +                 )}
-+                 &lt;div class=&quot;font-semibold text-sm truncate w-full mb-1&quot;&gt;{team.team_name}&lt;/div&gt;
++                 &lt;div class="font-semibold text-sm truncate w-full mb-1"&gt;{team.team_name}&lt;/div&gt;
 +                 {team.win_percentage !== null &amp;&amp; (
-+                   &lt;div class=&quot;text-xs text-patriot-red-400 font-medium&quot;&gt;
++                   &lt;div class="text-xs text-patriot-red-400 font-medium"&gt;
 +                     {(team.win_percentage * 100).toFixed(0)}% Win Rate
 +                   &lt;/div&gt;
 +                 )}
 +                 {team.global_rank &amp;&amp; (
-+                   &lt;div class=&quot;text-xs text-neutral-400 mt-1&quot;&gt;Rank #{team.global_rank}&lt;/div&gt;
++                   &lt;div class="text-xs text-neutral-400 mt-1"&gt;Rank #{team.global_rank}&lt;/div&gt;
 +                 )}
 +               &lt;/div&gt;
 +             &lt;/a&gt;
@@ -1627,56 +1627,56 @@ Adding structured data to the team page and BaseLayout:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 44, lines removed: undefined
 
 ```diff
 @@ -174,4 +174,48 @@
-  const ogImage = team.logo_url || &quot;/GR.svg&quot;;
+  const ogImage = team.logo_url || "/GR.svg";
   const ogUrl = Astro.url.href;
 + 
 + // Structured data for team
 + const teamStructuredData = {
-+   &quot;@context&quot;: &quot;https://schema.org&quot;,
-+   &quot;@type&quot;: &quot;SportsTeam&quot;,
-+   &quot;name&quot;: team.name,
-+   &quot;description&quot;: teamDescription,
-+   &quot;url&quot;: ogUrl,
-+   &quot;logo&quot;: team.logo_url ? (team.logo_url.startsWith(&#39;http&#39;) ? team.logo_url : &#96;${Astro.url.origin}${team.logo_url}&#96;) : &#96;${Astro.url.origin}/GR.svg&#96;,
-+   &quot;sport&quot;: &quot;Basketball&quot;,
-+   &quot;identifier&quot;: team.id,
++   "@context": "https://schema.org",
++   "@type": "SportsTeam",
++   "name": team.name,
++   "description": teamDescription,
++   "url": ogUrl,
++   "logo": team.logo_url ? (team.logo_url.startsWith('http') ? team.logo_url : &#96;${Astro.url.origin}${team.logo_url}&#96;) : &#96;${Astro.url.origin}/GR.svg&#96;,
++   "sport": "Basketball",
++   "identifier": team.id,
 +   ...(team.global_rank &amp;&amp; {
-+     &quot;ranking&quot;: {
-+       &quot;@type&quot;: &quot;ItemList&quot;,
-+       &quot;position&quot;: team.global_rank
++     "ranking": {
++       "@type": "ItemList",
++       "position": team.global_rank
 +     }
 +   })
 + };
 + 
 + // Breadcrumb structured data
 + const breadcrumbStructuredData = {
-+   &quot;@context&quot;: &quot;https://schema.org&quot;,
-+   &quot;@type&quot;: &quot;BreadcrumbList&quot;,
-+   &quot;itemListElement&quot;: [
++   "@context": "https://schema.org",
++   "@type": "BreadcrumbList",
++   "itemListElement": [
 +     {
-+       &quot;@type&quot;: &quot;ListItem&quot;,
-+       &quot;position&quot;: 1,
-+       &quot;name&quot;: &quot;Home&quot;,
-+       &quot;item&quot;: Astro.url.origin
++       "@type": "ListItem",
++       "position": 1,
++       "name": "Home",
++       "item": Astro.url.origin
 +     },
 +     {
-+       &quot;@type&quot;: &quot;ListItem&quot;,
-+       &quot;position&quot;: 2,
-+       &quot;name&quot;: &quot;Teams&quot;,
-+       &quot;item&quot;: &#96;${Astro.url.origin}/teams&#96;
++       "@type": "ListItem",
++       "position": 2,
++       "name": "Teams",
++       "item": &#96;${Astro.url.origin}/teams&#96;
 +     },
 +     {
-+       &quot;@type&quot;: &quot;ListItem&quot;,
-+       &quot;position&quot;: 3,
-+       &quot;name&quot;: team.name,
-+       &quot;item&quot;: ogUrl
++       "@type": "ListItem",
++       "position": 3,
++       "name": team.name,
++       "item": ogUrl
 +     }
 +   ]
 + };
@@ -1689,17 +1689,17 @@ Lines added: 6, lines removed: 1
 
 ```diff
 @@ -182,5 +226,10 @@
-    ogType=&quot;website&quot;
+    ogType="website"
     ogUrl={ogUrl}
 - /&gt;
 + &gt;
 +   &lt;Fragment&gt;
-+     &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(teamStructuredData)} /&gt;
-+     &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
++     &lt;script type="application/ld+json" set:html={JSON.stringify(teamStructuredData)} /&gt;
++     &lt;script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
 +   &lt;/Fragment&gt;
 + &lt;/BaseLayout&gt;
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
@@ -1710,39 +1710,39 @@ Lines added: 6, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BaseLayout.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BaseLayout.astro</summary>
 
 **Chunk 1**
 Lines added: 26, lines removed: undefined
 
 ```diff
 @@ -20,4 +20,30 @@
-  const ogImageUrl = ogImage ? (ogImage.startsWith(&#39;http&#39;) ? ogImage : &#96;${siteUrl}${ogImage}&#96;) : defaultImage;
-  const siteName = &quot;Global Rank Analytics Data Engine (G.R.A.D.E.)&quot;;
+  const ogImageUrl = ogImage ? (ogImage.startsWith('http') ? ogImage : &#96;${siteUrl}${ogImage}&#96;) : defaultImage;
+  const siteName = "Global Rank Analytics Data Engine (G.R.A.D.E.)";
 + 
 + // Organization structured data
 + const organizationStructuredData = {
-+   &quot;@context&quot;: &quot;https://schema.org&quot;,
-+   &quot;@type&quot;: &quot;Organization&quot;,
-+   &quot;name&quot;: siteName,
-+   &quot;url&quot;: siteUrl,
-+   &quot;logo&quot;: defaultImage,
-+   &quot;description&quot;: &quot;Comprehensive global rankings and analytics for NBA 2K Pro-Am competitive teams and players&quot;
++   "@context": "https://schema.org",
++   "@type": "Organization",
++   "name": siteName,
++   "url": siteUrl,
++   "logo": defaultImage,
++   "description": "Comprehensive global rankings and analytics for NBA 2K Pro-Am competitive teams and players"
 + };
 + 
 + // WebSite structured data
 + const websiteStructuredData = {
-+   &quot;@context&quot;: &quot;https://schema.org&quot;,
-+   &quot;@type&quot;: &quot;WebSite&quot;,
-+   &quot;name&quot;: siteName,
-+   &quot;url&quot;: siteUrl,
-+   &quot;potentialAction&quot;: {
-+     &quot;@type&quot;: &quot;SearchAction&quot;,
-+     &quot;target&quot;: {
-+       &quot;@type&quot;: &quot;EntryPoint&quot;,
-+       &quot;urlTemplate&quot;: &#96;${siteUrl}/teams?search={search_term_string}&#96;
++   "@context": "https://schema.org",
++   "@type": "WebSite",
++   "name": siteName,
++   "url": siteUrl,
++   "potentialAction": {
++     "@type": "SearchAction",
++     "target": {
++       "@type": "EntryPoint",
++       "urlTemplate": &#96;${siteUrl}/teams?search={search_term_string}&#96;
 +     },
-+     &quot;query-input&quot;: &quot;required name=search_term_string&quot;
++     "query-input": "required name=search_term_string"
 +   }
 + };
   ---
@@ -1757,21 +1757,21 @@ Lines added: 26, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BaseLayout.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BaseLayout.astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: undefined
 
 ```diff
 @@ -74,4 +74,8 @@
-      &lt;link rel=&quot;icon&quot; type=&quot;image/svg+xml&quot; href=&quot;/favicon.svg&quot; /&gt;
-      &lt;link rel=&quot;apple-touch-icon&quot; sizes=&quot;180x180&quot; href=&quot;/apple-touch-icon.png&quot; /&gt;
+      &lt;link rel="icon" type="image/svg+xml" href="/favicon.svg" /&gt;
+      &lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" /&gt;
 +     
 +     &lt;!-- Structured Data --&gt;
-+     &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(organizationStructuredData)} /&gt;
-+     &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(websiteStructuredData)} /&gt;
++     &lt;script type="application/ld+json" set:html={JSON.stringify(organizationStructuredData)} /&gt;
++     &lt;script type="application/ld+json" set:html={JSON.stringify(websiteStructuredData)} /&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1799,7 +1799,7 @@ Fixing Fragment usage in the team page:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 4
@@ -1809,11 +1809,11 @@ Lines added: 2, lines removed: 4
     ogUrl={ogUrl}
   &gt;
 -   &lt;Fragment&gt;
--     &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(teamStructuredData)} /&gt;
--     &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
+-     &lt;script type="application/ld+json" set:html={JSON.stringify(teamStructuredData)} /&gt;
+-     &lt;script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
 -   &lt;/Fragment&gt;
-+   &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(teamStructuredData)} /&gt;
-+   &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
++   &lt;script type="application/ld+json" set:html={JSON.stringify(teamStructuredData)} /&gt;
++   &lt;script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
   &lt;/BaseLayout&gt;
     &lt;Navigation /&gt;
 ```
@@ -1911,22 +1911,22 @@ Fixing the team page structure to match other pages:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 2
 
 ```diff
 @@ -226,8 +226,7 @@
-    ogType=&quot;website&quot;
+    ogType="website"
     ogUrl={ogUrl}
 - &gt;
 + /&gt;
-    &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(teamStructuredData)} /&gt;
-    &lt;script type=&quot;application/ld+json&quot; set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
+    &lt;script type="application/ld+json" set:html={JSON.stringify(teamStructuredData)} /&gt;
+    &lt;script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} /&gt;
 - &lt;/BaseLayout&gt;
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
@@ -2073,7 +2073,7 @@ Fixing the win percentage display to remove the ×100 multiplication.
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -2081,7 +2081,7 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -135,5 +135,5 @@
                   {team.win_percentage !== null &amp;&amp; (
-                    &lt;div class=&quot;text-xs text-patriot-red-400 font-medium&quot;&gt;
+                    &lt;div class="text-xs text-patriot-red-400 font-medium"&gt;
 -                     {(team.win_percentage * 100).toFixed(0)}% Win Rate
 +                     {team.win_percentage.toFixed(1)}% Win Rate
                     &lt;/div&gt;
@@ -2152,7 +2152,7 @@ Fixing tooltip positioning to handle off-screen cases, and filtering the hot tea
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
 
 **Chunk 1**
 Lines added: 28, lines removed: 6
@@ -2189,7 +2189,7 @@ Lines added: 28, lines removed: 6
 +         top = triggerRect.bottom + scrollY + 8;
 +       }
 + 
-+       // Ensure tooltip doesn&#39;t go below viewport
++       // Ensure tooltip doesn't go below viewport
 +       if (top + tooltipRect.height &gt; scrollY + viewportHeight - 10) {
 +         top = scrollY + viewportHeight - tooltipRect.height - 10;
 +       }
@@ -2207,7 +2207,7 @@ Lines added: 28, lines removed: 6
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 6, lines removed: 1
@@ -2267,7 +2267,7 @@ Adding `is_active` to the query and ensuring proper filtering:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 1
@@ -2280,7 +2280,7 @@ Lines added: 2, lines removed: 1
 +     games_played,
 +     is_active
     &#96;)
-    .gte(&quot;games_played&quot;, 1)
+    .gte("games_played", 1)
 ```
 
 </details>
@@ -2422,7 +2422,7 @@ Fixing tooltip positioning to prevent horizontal scroll and switching images to 
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
 
 **Chunk 1**
 Lines added: 11, lines removed: 12
@@ -2464,7 +2464,7 @@ Lines added: 11, lines removed: 12
 +         top = triggerRect.bottom + 8;
         }
   
-        // Ensure tooltip doesn&#39;t go below viewport
+        // Ensure tooltip doesn't go below viewport
 -       if (top + tooltipRect.height &gt; scrollY + viewportHeight - 10) {
 -         top = scrollY + viewportHeight - tooltipRect.height - 10;
 +       if (top + tooltipRect.height &gt; viewportHeight - padding) {
@@ -2481,7 +2481,7 @@ Lines added: 11, lines removed: 12
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -2490,10 +2490,10 @@ Lines added: 1, lines removed: 1
 @@ -77,5 +77,5 @@
           &lt;div
             ref={tooltipRef}
--           className=&quot;absolute z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in&quot;
-+           className=&quot;fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in max-w-[calc(100vw-20px)]&quot;
-            style={position ? { top: &#96;${position.top}px&#96;, left: &#96;${position.left}px&#96; } : { visibility: &#39;hidden&#39; }}
-            role=&quot;tooltip&quot;
+-           className="absolute z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in"
++           className="fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in max-w-[calc(100vw-20px)]"
+            style={position ? { top: &#96;${position.top}px&#96;, left: &#96;${position.left}px&#96; } : { visibility: 'hidden' }}
+            role="tooltip"
 ```
 
 </details>
@@ -2584,7 +2584,7 @@ Converting images in Astro files to use Astro's Image component:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
@@ -2592,9 +2592,9 @@ Lines added: 1, lines removed: undefined
 ```diff
 @@ -1,3 +1,4 @@
   ---
-+ import { Image } from &quot;astro:assets&quot;;
-  import BaseLayout from &quot;../components/BaseLayout.astro&quot;;
-  import Navigation from &quot;../components/Navigation.astro&quot;;
++ import { Image } from "astro:assets";
+  import BaseLayout from "../components/BaseLayout.astro";
+  import Navigation from "../components/Navigation.astro";
 ```
 
 </details>
@@ -2605,16 +2605,16 @@ Lines added: 1, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -133,4 +133,5 @@
-                      class=&quot;h-12 w-12 rounded object-cover mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot;
-                      loading=&quot;lazy&quot;
-+                     decoding=&quot;async&quot;
+                      class="h-12 w-12 rounded object-cover mb-2 ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition"
+                      loading="lazy"
++                     decoding="async"
                     /&gt;
                   ) : (
 ```
@@ -2711,7 +2711,7 @@ Improving tooltip positioning to prevent overflow and better handle edge cases:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
 
 **Chunk 1**
 Lines added: 45, lines removed: 28
@@ -2759,7 +2759,7 @@ Lines added: 45, lines removed: 28
 +         let left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
 +         let positionAbove = true;
 + 
-+         // Check if there&#39;s enough space above
++         // Check if there's enough space above
 +         if (top &lt; padding) {
 +           // Not enough space above, position below instead
 +           top = triggerRect.bottom + gap;
@@ -2773,13 +2773,13 @@ Lines added: 45, lines removed: 28
 +           left = Math.max(padding, viewportWidth - tooltipRect.width - padding);
 +         }
   
--       // Ensure tooltip doesn&#39;t go below viewport
+-       // Ensure tooltip doesn't go below viewport
 -       if (top + tooltipRect.height &gt; viewportHeight - padding) {
 -         top = viewportHeight - tooltipRect.height - padding;
 -       }
-+         // Ensure tooltip doesn&#39;t go below viewport
++         // Ensure tooltip doesn't go below viewport
 +         if (top + tooltipRect.height &gt; viewportHeight - padding) {
-+           // If below would overflow, try above if we haven&#39;t already
++           // If below would overflow, try above if we haven't already
 +           if (!positionAbove &amp;&amp; triggerRect.top - tooltipRect.height - gap &gt;= padding) {
 +             top = triggerRect.top - tooltipRect.height - gap;
 +             positionAbove = true;
@@ -2808,7 +2808,7 @@ Lines added: 45, lines removed: 28
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
 
 **Chunk 1**
 Lines added: 7, lines removed: 6
@@ -2817,21 +2817,21 @@ Lines added: 7, lines removed: 6
 @@ -94,12 +94,13 @@
           &lt;div
             ref={tooltipRef}
--           className=&quot;fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in max-w-[calc(100vw-20px)]&quot;
--           style={position ? { top: &#96;${position.top}px&#96;, left: &#96;${position.left}px&#96; } : { visibility: &#39;hidden&#39; }}
-+           className=&quot;fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 pointer-events-none animate-fade-in&quot;
+-           className="fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 whitespace-nowrap pointer-events-none animate-fade-in max-w-[calc(100vw-20px)]"
+-           style={position ? { top: &#96;${position.top}px&#96;, left: &#96;${position.left}px&#96; } : { visibility: 'hidden' }}
++           className="fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 pointer-events-none animate-fade-in"
 +           style={position ? { 
 +             top: &#96;${position.top}px&#96;, 
 +             left: &#96;${position.left}px&#96;,
 +             maxWidth: &#96;${Math.min(300, window.innerWidth - 24)}px&#96;
-+           } : { visibility: &#39;hidden&#39;, position: &#39;fixed&#39; }}
-            role=&quot;tooltip&quot;
++           } : { visibility: 'hidden', position: 'fixed' }}
+            role="tooltip"
           &gt;
 -           {content}
--           &lt;div className=&quot;absolute top-full left-1/2 transform -translate-x-1/2 -mt-1&quot;&gt;
--             &lt;div className=&quot;w-2 h-2 bg-neutral-900 border-r border-b border-neutral-700 transform rotate-45&quot;&gt;&lt;/div&gt;
+-           &lt;div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1"&gt;
+-             &lt;div className="w-2 h-2 bg-neutral-900 border-r border-b border-neutral-700 transform rotate-45"&gt;&lt;/div&gt;
 -           &lt;/div&gt;
-+           &lt;div className=&quot;whitespace-normal break-words&quot;&gt;{content}&lt;/div&gt;
++           &lt;div className="whitespace-normal break-words"&gt;{content}&lt;/div&gt;
           &lt;/div&gt;
         )}
 ```
@@ -2870,7 +2870,7 @@ Fixing the window reference issue for SSR:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Tooltip.tsx</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
@@ -2879,15 +2879,15 @@ Lines added: 2, lines removed: 2
 @@ -94,9 +94,9 @@
           &lt;div
             ref={tooltipRef}
--           className=&quot;fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 pointer-events-none animate-fade-in&quot;
-+           className=&quot;fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 pointer-events-none animate-fade-in max-w-[300px]&quot;
+-           className="fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 pointer-events-none animate-fade-in"
++           className="fixed z-50 px-3 py-2 text-xs text-white bg-neutral-900 rounded-lg shadow-lg border border-neutral-700 pointer-events-none animate-fade-in max-w-[300px]"
             style={position ? { 
               top: &#96;${position.top}px&#96;, 
               left: &#96;${position.left}px&#96;,
 -             maxWidth: &#96;${Math.min(300, window.innerWidth - 24)}px&#96;
-+             maxWidth: &#39;min(300px, calc(100vw - 24px))&#39;
-            } : { visibility: &#39;hidden&#39;, position: &#39;fixed&#39; }}
-            role=&quot;tooltip&quot;
++             maxWidth: 'min(300px, calc(100vw - 24px))'
+            } : { visibility: 'hidden', position: 'fixed' }}
+            role="tooltip"
 ```
 
 </details>
@@ -3074,7 +3074,7 @@ _No matches found_
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -3083,8 +3083,8 @@ Lines added: 1, lines removed: 1
 @@ -79,5 +79,5 @@
               key={r.team_id} 
               className={&#96;border-b border-patriot-blue-800/50 transition-all duration-200 hover:bg-patriot-blue-900/70 hover:shadow-md hover:neon-edge ${
--               idx % 2 === 0 ? &#39;bg-patriot-blue-900/30&#39; : &#39;bg-transparent&#39;
-+               idx % 2 === 0 ? &#39;bg-patriot-blue-900/40&#39; : &#39;bg-patriot-blue-900/20&#39;
+-               idx % 2 === 0 ? 'bg-patriot-blue-900/30' : 'bg-transparent'
++               idx % 2 === 0 ? 'bg-patriot-blue-900/40' : 'bg-patriot-blue-900/20'
               } animate-slide-up&#96;}
               style={{ animationDelay: &#96;${idx * 0.03}s&#96; }}
 ```
@@ -3097,21 +3097,21 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
 
 ```diff
 @@ -744,5 +744,7 @@
-                                  &lt;tbody className=&quot;divide-y divide-neutral-800&quot;&gt;
+                                  &lt;tbody className="divide-y divide-neutral-800"&gt;
                                     {divisionTeams.map((team, idx) =&gt; (
--                                     &lt;tr key={team.team_id} className=&quot;hover:bg-neutral-900&quot;&gt;
+-                                     &lt;tr key={team.team_id} className="hover:bg-neutral-900"&gt;
 +                                     &lt;tr key={team.team_id} className={&#96;hover:bg-neutral-900 transition-colors ${
-+                                       idx % 2 === 0 ? &#39;bg-neutral-900/30&#39; : &#39;bg-neutral-900/10&#39;
++                                       idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
 +                                     }&#96;}&gt;
-                                        &lt;td className=&quot;py-2 px-4 text-neutral-400&quot;&gt;{idx + 1}&lt;/td&gt;
-                                        &lt;td className=&quot;py-2 px-4&quot;&gt;
+                                        &lt;td className="py-2 px-4 text-neutral-400"&gt;{idx + 1}&lt;/td&gt;
+                                        &lt;td className="py-2 px-4"&gt;
 ```
 
 </details>
@@ -3184,7 +3184,7 @@ Updating all tables to include alternating row colors:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TournamentTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TournamentTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 2
@@ -3194,12 +3194,12 @@ Lines added: 4, lines removed: 2
                             return rankA - rankB;
                           })
 -                         .map((team) =&gt; (
--                           &lt;tr key={team.team_id} className=&quot;hover:bg-neutral-900&quot;&gt;
+-                           &lt;tr key={team.team_id} className="hover:bg-neutral-900"&gt;
 +                         .map((team, idx) =&gt; (
 +                           &lt;tr key={team.team_id} className={&#96;hover:bg-neutral-900 transition-colors ${
-+                             idx % 2 === 0 ? &#39;bg-neutral-900/30&#39; : &#39;bg-neutral-900/10&#39;
++                             idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
 +                           }&#96;}&gt;
-                              &lt;td className=&quot;py-2 px-4&quot;&gt;
+                              &lt;td className="py-2 px-4"&gt;
                                 &lt;a
 ```
 
@@ -3211,21 +3211,21 @@ Lines added: 4, lines removed: 2
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
 
 ```diff
 @@ -907,5 +907,7 @@
-                        &lt;tbody className=&quot;divide-y divide-neutral-800&quot;&gt;
+                        &lt;tbody className="divide-y divide-neutral-800"&gt;
                           {standings.map((team, idx) =&gt; (
--                           &lt;tr key={team.team_id} className=&quot;hover:bg-neutral-900&quot;&gt;
+-                           &lt;tr key={team.team_id} className="hover:bg-neutral-900"&gt;
 +                           &lt;tr key={team.team_id} className={&#96;hover:bg-neutral-900 transition-colors ${
-+                             idx % 2 === 0 ? &#39;bg-neutral-900/30&#39; : &#39;bg-neutral-900/10&#39;
++                             idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
 +                           }&#96;}&gt;
-                              &lt;td className=&quot;py-2 px-4 text-neutral-400&quot;&gt;{idx + 1}&lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4&quot;&gt;
+                              &lt;td className="py-2 px-4 text-neutral-400"&gt;{idx + 1}&lt;/td&gt;
+                              &lt;td className="py-2 px-4"&gt;
 ```
 
 </details>
@@ -3279,21 +3279,21 @@ Fixing the conference teams table:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
 
 ```diff
 @@ -838,5 +838,7 @@
-                                          &lt;tbody className=&quot;divide-y divide-neutral-800&quot;&gt;
+                                          &lt;tbody className="divide-y divide-neutral-800"&gt;
                                             {conferenceTeams.map((team, idx) =&gt; (
--                                             &lt;tr key={team.team_id} className=&quot;hover:bg-neutral-900&quot;&gt;
+-                                             &lt;tr key={team.team_id} className="hover:bg-neutral-900"&gt;
 +                                             &lt;tr key={team.team_id} className={&#96;hover:bg-neutral-900 transition-colors ${
-+                                               idx % 2 === 0 ? &#39;bg-neutral-900/30&#39; : &#39;bg-neutral-900/10&#39;
++                                               idx % 2 === 0 ? 'bg-neutral-900/30' : 'bg-neutral-900/10'
 +                                             }&#96;}&gt;
-                                                &lt;td className=&quot;py-2 px-4 text-neutral-400&quot;&gt;{idx + 1}&lt;/td&gt;
-                                                &lt;td className=&quot;py-2 px-4&quot;&gt;
+                                                &lt;td className="py-2 px-4 text-neutral-400"&gt;{idx + 1}&lt;/td&gt;
+                                                &lt;td className="py-2 px-4"&gt;
 ```
 
 </details>
@@ -3560,7 +3560,7 @@ Implementing WCAG 2.1 AA fixes, focusing on color contrast, keyboard navigation,
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/BaseLayout.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/BaseLayout.astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: undefined
@@ -3568,9 +3568,9 @@ Lines added: 4, lines removed: undefined
 ```diff
 @@ -80,4 +80,8 @@
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 +     &lt;!-- Skip to main content link for keyboard navigation --&gt;
-+     &lt;a href=&quot;#main-content&quot; class=&quot;sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-patriot-red-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-brand-navy&quot;&gt;
++     &lt;a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-patriot-red-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-brand-navy"&gt;
 +       Skip to main content
 +     &lt;/a&gt;
       &lt;slot /&gt;
@@ -3585,7 +3585,7 @@ Lines added: 4, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/styles/global.css</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/styles/global.css</summary>
 
 **Chunk 1**
 Lines added: 40, lines removed: undefined
@@ -3646,7 +3646,7 @@ Lines added: 40, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 5, lines removed: 4
@@ -3655,19 +3655,19 @@ Lines added: 5, lines removed: 4
 @@ -16,12 +16,13 @@
         
         &lt;!-- Desktop Navigation --&gt;
--       &lt;ul class=&quot;hidden lg:flex items-center gap-4 text-sm&quot;&gt;
+-       &lt;ul class="hidden lg:flex items-center gap-4 text-sm"&gt;
 -         &lt;li&gt;
-+       &lt;ul class=&quot;hidden lg:flex items-center gap-4 text-sm&quot; role=&quot;list&quot;&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++       &lt;ul class="hidden lg:flex items-center gap-4 text-sm" role="list"&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath === &#39;/&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === &#39;/&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             aria-current={currentPath === &#39;/&#39; ? &#39;page&#39; : undefined}
+              href="/" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             aria-current={currentPath === '/' ? 'page' : undefined}
             &gt;
               Home
--             {currentPath === &#39;/&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath === &#39;/&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath === '/' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
++             {currentPath === '/' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 ```
@@ -3680,7 +3680,7 @@ Lines added: 5, lines removed: 4
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 32, lines removed: 24
@@ -3690,107 +3690,107 @@ Lines added: 32, lines removed: 24
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/teams&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/teams&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith(&#39;/teams&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/teams&#39;) ? &#39;page&#39; : undefined}
+              href="/teams" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/teams') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             aria-current={currentPath.startsWith('/teams') ? 'page' : undefined}
             &gt;
               Teams
--             {currentPath.startsWith(&#39;/teams&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath.startsWith(&#39;/teams&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath.startsWith('/teams') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/teams') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/players&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/players&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith(&#39;/players&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/players&#39;) ? &#39;page&#39; : undefined}
+              href="/players" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/players') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             aria-current={currentPath.startsWith('/players') ? 'page' : undefined}
             &gt;
               Players
--             {currentPath.startsWith(&#39;/players&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath.startsWith(&#39;/players&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath.startsWith('/players') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/players') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/leagues&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/leagues&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith(&#39;/leagues&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/leagues&#39;) ? &#39;page&#39; : undefined}
+              href="/leagues" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/leagues') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             aria-current={currentPath.startsWith('/leagues') ? 'page' : undefined}
             &gt;
               Leagues
--             {currentPath.startsWith(&#39;/leagues&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath.startsWith(&#39;/leagues&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath.startsWith('/leagues') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/leagues') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/tournaments&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;page&#39; : undefined}
+              href="/tournaments" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/tournaments') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             aria-current={currentPath.startsWith('/tournaments') ? 'page' : undefined}
             &gt;
               Tournaments
--             {currentPath.startsWith(&#39;/tournaments&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath.startsWith(&#39;/tournaments&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath.startsWith('/tournaments') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/tournaments') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/matches&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/matches&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith(&#39;/matches&#39;) ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/matches&#39;) ? &#39;page&#39; : undefined}
+              href="/matches" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/matches') ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             aria-current={currentPath.startsWith('/matches') ? 'page' : undefined}
             &gt;
               Matches
--             {currentPath.startsWith(&#39;/matches&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath.startsWith(&#39;/matches&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath.startsWith('/matches') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/matches') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/achievements&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith(&#39;/achievements&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith(&#39;/achievements&#39;) ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/achievements&#39;) ? &#39;page&#39; : undefined}
+              href="/achievements" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath.startsWith('/achievements') ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             aria-current={currentPath.startsWith('/achievements') ? 'page' : undefined}
             &gt;
               Achievements
--             {currentPath.startsWith(&#39;/achievements&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath.startsWith(&#39;/achievements&#39;) &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath.startsWith('/achievements') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
++             {currentPath.startsWith('/achievements') &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/ranking-system&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath === &#39;/ranking-system&#39; ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === &#39;/ranking-system&#39; ? &#39;text-patriot-blue-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-blue-400&#39;}&#96;}
-+             aria-current={currentPath === &#39;/ranking-system&#39; ? &#39;page&#39; : undefined}
+              href="/ranking-system" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/ranking-system' ? 'text-patriot-blue-400 font-semibold' : 'text-neutral-200 hover:text-patriot-blue-400'}&#96;}
++             aria-current={currentPath === '/ranking-system' ? 'page' : undefined}
             &gt;
               Ranking System
--             {currentPath === &#39;/ranking-system&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath === &#39;/ranking-system&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath === '/ranking-system' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400"&gt;&lt;/span&gt;}
++             {currentPath === '/ranking-system' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-blue-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/about&quot; 
--             class={&#96;relative px-2 py-1 transition ${currentPath === &#39;/about&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === &#39;/about&#39; ? &#39;text-patriot-red-400 font-semibold&#39; : &#39;text-neutral-200 hover:text-patriot-red-400&#39;}&#96;}
-+             aria-current={currentPath === &#39;/about&#39; ? &#39;page&#39; : undefined}
+              href="/about" 
+-             class={&#96;relative px-2 py-1 transition ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             class={&#96;relative px-2 py-1 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded ${currentPath === '/about' ? 'text-patriot-red-400 font-semibold' : 'text-neutral-200 hover:text-patriot-red-400'}&#96;}
++             aria-current={currentPath === '/about' ? 'page' : undefined}
             &gt;
               About
--             {currentPath === &#39;/about&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot;&gt;&lt;/span&gt;}
-+             {currentPath === &#39;/about&#39; &amp;&amp; &lt;span class=&quot;absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;}
+-             {currentPath === '/about' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400"&gt;&lt;/span&gt;}
++             {currentPath === '/about' &amp;&amp; &lt;span class="absolute bottom-0 left-0 right-0 h-0.5 bg-patriot-red-400" aria-hidden="true"&gt;&lt;/span&gt;}
             &lt;/a&gt;
           &lt;/li&gt;
 ```
@@ -3803,7 +3803,7 @@ Lines added: 32, lines removed: 24
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 2
@@ -3811,16 +3811,16 @@ Lines added: 4, lines removed: 2
 ```diff
 @@ -112,8 +112,10 @@
         &lt;button 
-          id=&quot;mobile-menu-button&quot;
--         class=&quot;lg:hidden text-neutral-200 hover:text-white&quot;
-+         class=&quot;lg:hidden text-neutral-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded p-1&quot;
-          aria-label=&quot;Toggle menu&quot;
-+         aria-expanded=&quot;false&quot;
-+         aria-controls=&quot;mobile-menu&quot;
+          id="mobile-menu-button"
+-         class="lg:hidden text-neutral-200 hover:text-white"
++         class="lg:hidden text-neutral-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 rounded p-1"
+          aria-label="Toggle menu"
++         aria-expanded="false"
++         aria-controls="mobile-menu"
         &gt;
--         &lt;svg class=&quot;w-6 h-6&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+         &lt;svg class=&quot;w-6 h-6&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;
-            &lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M4 6h16M4 12h16M4 18h16&quot;&gt;&lt;/path&gt;
+-         &lt;svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++         &lt;svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"&gt;
+            &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"&gt;&lt;/path&gt;
           &lt;/svg&gt;
 ```
 
@@ -3832,7 +3832,7 @@ Lines added: 4, lines removed: 2
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
@@ -3841,10 +3841,10 @@ Lines added: 2, lines removed: 2
 @@ -124,6 +124,6 @@
   
       &lt;!-- Mobile Navigation (hidden by default) --&gt;
--     &lt;div id=&quot;mobile-menu&quot; class=&quot;hidden lg:hidden mt-4 pb-2&quot;&gt;
--       &lt;ul class=&quot;space-y-1&quot;&gt;
-+     &lt;div id=&quot;mobile-menu&quot; class=&quot;hidden lg:hidden mt-4 pb-2&quot; role=&quot;menu&quot;&gt;
-+       &lt;ul class=&quot;space-y-1&quot; role=&quot;list&quot;&gt;
+-     &lt;div id="mobile-menu" class="hidden lg:hidden mt-4 pb-2"&gt;
+-       &lt;ul class="space-y-1"&gt;
++     &lt;div id="mobile-menu" class="hidden lg:hidden mt-4 pb-2" role="menu"&gt;
++       &lt;ul class="space-y-1" role="list"&gt;
           &lt;li&gt;
             &lt;a 
 ```
@@ -3857,7 +3857,7 @@ Lines added: 2, lines removed: 2
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 12, lines removed: 1
@@ -3868,20 +3868,20 @@ Lines added: 12, lines removed: 1
   &lt;script&gt;
 -   // Mobile menu toggle
 +   // Mobile menu toggle with accessibility
-    const button = document.getElementById(&#39;mobile-menu-button&#39;);
-    const menu = document.getElementById(&#39;mobile-menu&#39;);
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
     
-    button?.addEventListener(&#39;click&#39;, () =&gt; {
-+     const isHidden = menu?.classList.contains(&#39;hidden&#39;);
-      menu?.classList.toggle(&#39;hidden&#39;);
-+     button?.setAttribute(&#39;aria-expanded&#39;, isHidden ? &#39;true&#39; : &#39;false&#39;);
+    button?.addEventListener('click', () =&gt; {
++     const isHidden = menu?.classList.contains('hidden');
+      menu?.classList.toggle('hidden');
++     button?.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
 +   });
 + 
 +   // Close mobile menu on escape key
-+   document.addEventListener(&#39;keydown&#39;, (e) =&gt; {
-+     if (e.key === &#39;Escape&#39; &amp;&amp; menu &amp;&amp; !menu.classList.contains(&#39;hidden&#39;)) {
-+       menu.classList.add(&#39;hidden&#39;);
-+       button?.setAttribute(&#39;aria-expanded&#39;, &#39;false&#39;);
++   document.addEventListener('keydown', (e) =&gt; {
++     if (e.key === 'Escape' &amp;&amp; menu &amp;&amp; !menu.classList.contains('hidden')) {
++       menu.classList.add('hidden');
++       button?.setAttribute('aria-expanded', 'false');
 +       button?.focus();
 +     }
     });
@@ -3896,24 +3896,24 @@ Lines added: 12, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 2
 
 ```diff
 @@ -126,9 +126,11 @@
-      &lt;div id=&quot;mobile-menu&quot; class=&quot;hidden lg:hidden mt-4 pb-2&quot; role=&quot;menu&quot;&gt;
-        &lt;ul class=&quot;space-y-1&quot; role=&quot;list&quot;&gt;
+      &lt;div id="mobile-menu" class="hidden lg:hidden mt-4 pb-2" role="menu"&gt;
+        &lt;ul class="space-y-1" role="list"&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/&quot; 
-              aria-label=&quot;Navigate to Home page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === &#39;/&#39; ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === &#39;/&#39; ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath === &#39;/&#39; ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/" 
+              aria-label="Navigate to Home page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath === '/' ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Home
 ```
@@ -3926,7 +3926,7 @@ Lines added: 4, lines removed: 2
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 12, lines removed: 5
@@ -3935,28 +3935,28 @@ Lines added: 12, lines removed: 5
 @@ -36,12 +36,19 @@
   
     return (
--     &lt;table className=&quot;w-full text-sm hidden sm:table&quot; id=&quot;rankings-table&quot;&gt;
-+     &lt;table className=&quot;w-full text-sm hidden sm:table&quot; id=&quot;rankings-table&quot; aria-label=&quot;Team rankings table&quot;&gt;
-        &lt;thead className=&quot;text-neutral-200 sticky top-0 bg-patriot-blue-900/95 backdrop-blur-md z-10&quot;&gt;
+-     &lt;table className="w-full text-sm hidden sm:table" id="rankings-table"&gt;
++     &lt;table className="w-full text-sm hidden sm:table" id="rankings-table" aria-label="Team rankings table"&gt;
+        &lt;thead className="text-neutral-200 sticky top-0 bg-patriot-blue-900/95 backdrop-blur-md z-10"&gt;
           &lt;tr&gt;
--           &lt;th className=&quot;text-left py-3 px-2&quot;&gt;Rank&lt;/th&gt;
--           &lt;th className=&quot;text-left py-3 px-2&quot;&gt;Team&lt;/th&gt;
--           &lt;th className=&quot;text-right py-3 px-2&quot;&gt;
-+           &lt;th scope=&quot;col&quot; className=&quot;text-left py-3 px-2&quot;&gt;Rank&lt;/th&gt;
-+           &lt;th scope=&quot;col&quot; className=&quot;text-left py-3 px-2&quot;&gt;Team&lt;/th&gt;
-+           &lt;th scope=&quot;col&quot; className=&quot;text-right py-3 px-2&quot;&gt;
-              &lt;div className=&quot;flex items-center justify-end gap-1&quot;&gt;
--               &lt;span className=&quot;cursor-pointer hover:text-patriot-red-400 transition&quot; onClick={() =&gt; setSortKey(&quot;hybrid_score&quot;)}&gt;Score&lt;/span&gt;
+-           &lt;th className="text-left py-3 px-2"&gt;Rank&lt;/th&gt;
+-           &lt;th className="text-left py-3 px-2"&gt;Team&lt;/th&gt;
+-           &lt;th className="text-right py-3 px-2"&gt;
++           &lt;th scope="col" className="text-left py-3 px-2"&gt;Rank&lt;/th&gt;
++           &lt;th scope="col" className="text-left py-3 px-2"&gt;Team&lt;/th&gt;
++           &lt;th scope="col" className="text-right py-3 px-2"&gt;
+              &lt;div className="flex items-center justify-end gap-1"&gt;
+-               &lt;span className="cursor-pointer hover:text-patriot-red-400 transition" onClick={() =&gt; setSortKey("hybrid_score")}&gt;Score&lt;/span&gt;
 +               &lt;button 
-+                 type=&quot;button&quot;
-+                 className=&quot;cursor-pointer hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1&quot;
-+                 onClick={() =&gt; setSortKey(&quot;hybrid_score&quot;)}
-+                 aria-label=&quot;Sort by Score&quot;
++                 type="button"
++                 className="cursor-pointer hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1"
++                 onClick={() =&gt; setSortKey("hybrid_score")}
++                 aria-label="Sort by Score"
 +               &gt;
 +                 Score
 +               &lt;/button&gt;
-                &lt;Tooltip content=&quot;Hybrid Score combines ELO rating and win percentage to provide a comprehensive team ranking&quot;&gt;
-                  &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
+                &lt;Tooltip content="Hybrid Score combines ELO rating and win percentage to provide a comprehensive team ranking"&gt;
+                  &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
 ```
 
 </details>
@@ -3967,7 +3967,7 @@ Lines added: 12, lines removed: 5
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 21, lines removed: 7
@@ -3976,48 +3976,48 @@ Lines added: 21, lines removed: 7
 @@ -58,25 +58,39 @@
               &lt;/div&gt;
             &lt;/th&gt;
--           &lt;th className=&quot;text-right py-3 px-2&quot;&gt;
-+           &lt;th scope=&quot;col&quot; className=&quot;text-right py-3 px-2&quot;&gt;
-              &lt;div className=&quot;flex items-center justify-end gap-1&quot;&gt;
--               &lt;span className=&quot;cursor-pointer hover:text-patriot-blue-400 transition&quot; onClick={() =&gt; setSortKey(&quot;elo_rating&quot;)}&gt;Elo&lt;/span&gt;
+-           &lt;th className="text-right py-3 px-2"&gt;
++           &lt;th scope="col" className="text-right py-3 px-2"&gt;
+              &lt;div className="flex items-center justify-end gap-1"&gt;
+-               &lt;span className="cursor-pointer hover:text-patriot-blue-400 transition" onClick={() =&gt; setSortKey("elo_rating")}&gt;Elo&lt;/span&gt;
 +               &lt;button 
-+                 type=&quot;button&quot;
-+                 className=&quot;cursor-pointer hover:text-patriot-blue-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 rounded px-1&quot;
-+                 onClick={() =&gt; setSortKey(&quot;elo_rating&quot;)}
-+                 aria-label=&quot;Sort by Elo rating&quot;
++                 type="button"
++                 className="cursor-pointer hover:text-patriot-blue-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 rounded px-1"
++                 onClick={() =&gt; setSortKey("elo_rating")}
++                 aria-label="Sort by Elo rating"
 +               &gt;
 +                 Elo
 +               &lt;/button&gt;
-                &lt;Tooltip content=&quot;ELO rating measures team skill level based on match results against other teams&quot;&gt;
--                 &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                 &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;
-                    &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot; /&gt;
+                &lt;Tooltip content="ELO rating measures team skill level based on match results against other teams"&gt;
+-                 &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                 &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"&gt;
+                    &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;
                   &lt;/svg&gt;
                 &lt;/Tooltip&gt;
               &lt;/div&gt;
             &lt;/th&gt;
--           &lt;th className=&quot;text-right py-3 px-2&quot;&gt;
-+           &lt;th scope=&quot;col&quot; className=&quot;text-right py-3 px-2&quot;&gt;
-              &lt;div className=&quot;flex items-center justify-end gap-1&quot;&gt;
--               &lt;span className=&quot;cursor-pointer hover:text-patriot-red-400 transition&quot; onClick={() =&gt; setSortKey(&quot;current_rp&quot;)}&gt;RP&lt;/span&gt;
+-           &lt;th className="text-right py-3 px-2"&gt;
++           &lt;th scope="col" className="text-right py-3 px-2"&gt;
+              &lt;div className="flex items-center justify-end gap-1"&gt;
+-               &lt;span className="cursor-pointer hover:text-patriot-red-400 transition" onClick={() =&gt; setSortKey("current_rp")}&gt;RP&lt;/span&gt;
 +               &lt;button 
-+                 type=&quot;button&quot;
-+                 className=&quot;cursor-pointer hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1&quot;
-+                 onClick={() =&gt; setSortKey(&quot;current_rp&quot;)}
-+                 aria-label=&quot;Sort by Ranking Points&quot;
++                 type="button"
++                 className="cursor-pointer hover:text-patriot-red-400 transition focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded px-1"
++                 onClick={() =&gt; setSortKey("current_rp")}
++                 aria-label="Sort by Ranking Points"
 +               &gt;
 +                 RP
 +               &lt;/button&gt;
-                &lt;Tooltip content=&quot;Ranking Points (RP) represent tournament and league achievements&quot;&gt;
--                 &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                 &lt;svg className=&quot;w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;
-                    &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot; /&gt;
+                &lt;Tooltip content="Ranking Points (RP) represent tournament and league achievements"&gt;
+-                 &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                 &lt;svg className="w-4 h-4 text-neutral-400 hover:text-neutral-300 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"&gt;
+                    &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;
                   &lt;/svg&gt;
                 &lt;/Tooltip&gt;
               &lt;/div&gt;
             &lt;/th&gt;
--           &lt;th className=&quot;text-center py-3 px-2&quot;&gt;Tier&lt;/th&gt;
-+           &lt;th scope=&quot;col&quot; className=&quot;text-center py-3 px-2&quot;&gt;Tier&lt;/th&gt;
+-           &lt;th className="text-center py-3 px-2"&gt;Tier&lt;/th&gt;
++           &lt;th scope="col" className="text-center py-3 px-2"&gt;Tier&lt;/th&gt;
           &lt;/tr&gt;
         &lt;/thead&gt;
 ```
@@ -4030,7 +4030,7 @@ Lines added: 21, lines removed: 7
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 3
@@ -4039,19 +4039,19 @@ Lines added: 3, lines removed: 3
 @@ -115,14 +115,14 @@
                     &lt;img 
                       src={r.logo_url} 
--                     alt=&quot;&quot; 
-+                     alt={&#96;${r.team_name || &#39;Team&#39;} logo&#96;}
-                      className=&quot;h-8 w-8 rounded object-cover ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot; 
-                      loading=&quot;lazy&quot; 
+-                     alt="" 
++                     alt={&#96;${r.team_name || 'Team'} logo&#96;}
+                      className="h-8 w-8 rounded object-cover ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition" 
+                      loading="lazy" 
                     /&gt;
                   ) : (
--                   &lt;div className=&quot;h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot;&gt;
-+                   &lt;div className=&quot;h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition&quot; aria-label={&#96;${r.team_name || &#39;Team&#39;} logo placeholder&#96;}&gt;
-                      {r.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                   &lt;div className="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition"&gt;
++                   &lt;div className="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-xs font-bold ring-2 ring-patriot-blue-800 group-hover:ring-patriot-red-500 transition" aria-label={&#96;${r.team_name || 'Team'} logo placeholder&#96;}&gt;
+                      {r.team_name?.substring(0, 2).toUpperCase() || '??'}
                     &lt;/div&gt;
                   )}
--                 &lt;span className=&quot;font-medium&quot;&gt;{r.team_name}&lt;/span&gt;
-+                 &lt;span className=&quot;font-medium&quot;&gt;{r.team_name || &#39;Unknown Team&#39;}&lt;/span&gt;
+-                 &lt;span className="font-medium"&gt;{r.team_name}&lt;/span&gt;
++                 &lt;span className="font-medium"&gt;{r.team_name || 'Unknown Team'}&lt;/span&gt;
                 &lt;/a&gt;
               &lt;/td&gt;
 ```
@@ -4064,7 +4064,7 @@ Lines added: 3, lines removed: 3
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/RankTableIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 1
@@ -4073,9 +4073,9 @@ Lines added: 2, lines removed: 1
 @@ -110,5 +110,6 @@
                 &lt;a 
                   href={&#96;/teams/${r.team_id}&#96;}
--                 className=&quot;flex items-center gap-3 hover:text-patriot-red-400 transition group&quot;
-+                 className=&quot;flex items-center gap-3 hover:text-patriot-red-400 transition group focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded&quot;
-+                 aria-label={&#96;View ${r.team_name || &#39;team&#39;} profile&#96;}
+-                 className="flex items-center gap-3 hover:text-patriot-red-400 transition group"
++                 className="flex items-center gap-3 hover:text-patriot-red-400 transition group focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 rounded"
++                 aria-label={&#96;View ${r.team_name || 'team'} profile&#96;}
                 &gt;
                   {r.logo_url ? (
 ```
@@ -4096,7 +4096,7 @@ Lines added: 2, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -4105,10 +4105,10 @@ Lines added: 1, lines removed: 1
 @@ -102,5 +102,5 @@
   /&gt;
     &lt;Navigation /&gt;
--   &lt;main class=&quot;mx-auto max-w-6xl p-6 grade-pattern&quot;&gt;
-+   &lt;main id=&quot;main-content&quot; class=&quot;mx-auto max-w-6xl p-6 grade-pattern&quot; role=&quot;main&quot;&gt;
+-   &lt;main class="mx-auto max-w-6xl p-6 grade-pattern"&gt;
++   &lt;main id="main-content" class="mx-auto max-w-6xl p-6 grade-pattern" role="main"&gt;
       &lt;UpcomingSpotlightBanner /&gt;
-      &lt;div class=&quot;mb-6&quot;&gt;
+      &lt;div class="mb-6"&gt;
 ```
 
 </details>
@@ -4127,7 +4127,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -4136,9 +4136,9 @@ Lines added: 1, lines removed: 1
 @@ -29,5 +29,5 @@
           &lt;button
             onClick={scrollToTop}
--           className=&quot;fixed bottom-6 right-6 z-50 p-3 bg-patriot-blue-800 hover:bg-patriot-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 neon-edge-blue animate-slide-up&quot;
-+           className=&quot;fixed bottom-6 right-6 z-50 p-3 bg-patriot-blue-800 hover:bg-patriot-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 neon-edge-blue animate-slide-up focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-brand-navy&quot;
-            aria-label=&quot;Scroll to top&quot;
+-           className="fixed bottom-6 right-6 z-50 p-3 bg-patriot-blue-800 hover:bg-patriot-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 neon-edge-blue animate-slide-up"
++           className="fixed bottom-6 right-6 z-50 p-3 bg-patriot-blue-800 hover:bg-patriot-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 neon-edge-blue animate-slide-up focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-brand-navy"
+            aria-label="Scroll to top"
           &gt;
 ```
 
@@ -4187,7 +4187,7 @@ Updating remaining mobile navigation links for accessibility:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 32, lines removed: 16
@@ -4197,105 +4197,105 @@ Lines added: 32, lines removed: 16
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/teams&quot; 
-              aria-label=&quot;Navigate to Teams page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith(&#39;/teams&#39;) ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith(&#39;/teams&#39;) ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/teams&#39;) ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/teams" 
+              aria-label="Navigate to Teams page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/teams') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath.startsWith('/teams') ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Teams
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/players&quot; 
-              aria-label=&quot;Navigate to Players page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith(&#39;/players&#39;) ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith(&#39;/players&#39;) ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/players&#39;) ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/players" 
+              aria-label="Navigate to Players page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/players') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath.startsWith('/players') ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Players
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/leagues&quot; 
-              aria-label=&quot;Navigate to Leagues page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith(&#39;/leagues&#39;) ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith(&#39;/leagues&#39;) ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/leagues&#39;) ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/leagues" 
+              aria-label="Navigate to Leagues page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/leagues') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath.startsWith('/leagues') ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Leagues
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/tournaments&quot; 
-              aria-label=&quot;Navigate to Tournaments page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/tournaments&#39;) ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/tournaments" 
+              aria-label="Navigate to Tournaments page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/tournaments') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath.startsWith('/tournaments') ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Tournaments
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/matches&quot; 
-              aria-label=&quot;Navigate to Matches page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith(&#39;/matches&#39;) ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith(&#39;/matches&#39;) ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/matches&#39;) ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/matches" 
+              aria-label="Navigate to Matches page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/matches') ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath.startsWith('/matches') ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Matches
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/achievements&quot; 
-              aria-label=&quot;Navigate to Achievements page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith(&#39;/achievements&#39;) ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith(&#39;/achievements&#39;) ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath.startsWith(&#39;/achievements&#39;) ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/achievements" 
+              aria-label="Navigate to Achievements page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath.startsWith('/achievements') ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath.startsWith('/achievements') ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Achievements
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/ranking-system&quot; 
-              aria-label=&quot;Navigate to Ranking System page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === &#39;/ranking-system&#39; ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === &#39;/ranking-system&#39; ? &#39;bg-patriot-blue-800 text-patriot-blue-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath === &#39;/ranking-system&#39; ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/ranking-system" 
+              aria-label="Navigate to Ranking System page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-blue-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/ranking-system' ? 'bg-patriot-blue-800 text-patriot-blue-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath === '/ranking-system' ? 'page' : undefined}
++             role="menuitem"
             &gt;
               Ranking System
             &lt;/a&gt;
           &lt;/li&gt;
 -         &lt;li&gt;
-+         &lt;li role=&quot;none&quot;&gt;
++         &lt;li role="none"&gt;
             &lt;a 
-              href=&quot;/about&quot; 
-              aria-label=&quot;Navigate to About page&quot;
--             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === &#39;/about&#39; ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === &#39;/about&#39; ? &#39;bg-patriot-blue-800 text-patriot-red-400&#39; : &#39;text-neutral-200&#39;}&#96;}
-+             aria-current={currentPath === &#39;/about&#39; ? &#39;page&#39; : undefined}
-+             role=&quot;menuitem&quot;
+              href="/about" 
+              aria-label="Navigate to About page"
+-             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             class={&#96;block px-3 py-2 rounded hover:bg-patriot-blue-800 focus:outline-none focus:ring-2 focus:ring-patriot-red-400 focus:ring-offset-2 focus:ring-offset-patriot-blue-900 ${currentPath === '/about' ? 'bg-patriot-blue-800 text-patriot-red-400' : 'text-neutral-200'}&#96;}
++             aria-current={currentPath === '/about' ? 'page' : undefined}
++             role="menuitem"
             &gt;
               About
 ```
@@ -4316,16 +4316,16 @@ Lines added: 32, lines removed: 16
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -37,4 +37,5 @@
-              stroke=&quot;currentColor&quot;
-              viewBox=&quot;0 0 24 24&quot;
-+             aria-hidden=&quot;true&quot;
+              stroke="currentColor"
+              viewBox="0 0 24 24"
++             aria-hidden="true"
             &gt;
               &lt;path
 ```
@@ -4365,7 +4365,7 @@ Adding motion preferences and improving color contrast:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/styles/global.css</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/styles/global.css</summary>
 
 **Chunk 1**
 Lines added: 26, lines removed: undefined
@@ -4375,7 +4375,7 @@ Lines added: 26, lines removed: undefined
       outline-offset: 2px;
     }
 + 
-+   /* Respect user&#39;s motion preferences - WCAG 2.3.3 */
++   /* Respect user's motion preferences - WCAG 2.3.3 */
 +   @media (prefers-reduced-motion: reduce) {
 +     *,
 +     *::before,
@@ -4420,7 +4420,7 @@ Lines added: 26, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/ScrollToTop.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
@@ -4430,11 +4430,11 @@ Lines added: 3, lines removed: 1
   
     const scrollToTop = () =&gt; {
 +     // Respect prefers-reduced-motion
-+     const prefersReducedMotion = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;).matches;
++     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       window.scrollTo({
         top: 0,
--       behavior: &quot;smooth&quot;,
-+       behavior: prefersReducedMotion ? &quot;auto&quot; : &quot;smooth&quot;,
+-       behavior: "smooth",
++       behavior: prefersReducedMotion ? "auto" : "smooth",
       });
     };
 ```

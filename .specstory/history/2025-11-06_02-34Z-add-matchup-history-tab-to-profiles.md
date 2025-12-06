@@ -212,23 +212,23 @@ Adding the matchup data query to the team profile page, then updating the TeamTa
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 7, lines removed: undefined
 
 ```diff
 @@ -122,4 +122,11 @@
-    .order(&quot;game_year&quot;, { ascending: false });
+    .order("game_year", { ascending: false });
   
 + // Get head-to-head matchup data
 + const { data: matchupData } = await supa((Astro.locals as any).runtime)
-+   .from(&quot;head_to_head_matchup_mart&quot;)
-+   .select(&quot;*&quot;)
++   .from("head_to_head_matchup_mart")
++   .select("*")
 +   .or(&#96;team_1_id.eq.${id},team_2_id.eq.${id}&#96;)
-+   .order(&quot;total_meetings&quot;, { ascending: false });
++   .order("total_meetings", { ascending: false });
 + 
-  // Fetch global_rank and theme colors from teams table since it&#39;s not in the mart
+  // Fetch global_rank and theme colors from teams table since it's not in the mart
   let globalRank = null;
 ```
 
@@ -240,7 +240,7 @@ Lines added: 7, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
@@ -272,7 +272,7 @@ Updating TeamTabsIsland to add the matchup history tab:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 26, lines removed: undefined
@@ -331,7 +331,7 @@ Lines added: 1, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
@@ -350,9 +350,9 @@ Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -170,4 +171,5 @@
-      { id: 2, label: &quot;Team History&quot; },
-      { id: 3, label: &quot;Past Players&quot; },
-+     { id: 4, label: &quot;Matchup History&quot; },
+      { id: 2, label: "Team History" },
+      { id: 3, label: "Past Players" },
++     { id: 4, label: "Matchup History" },
     ];
   
 ```
@@ -365,7 +365,7 @@ Lines added: 1, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 172, lines removed: undefined
@@ -378,13 +378,13 @@ Lines added: 172, lines removed: undefined
 +         {/* Matchup History Tab */}
 +         {activeTab === 4 &amp;&amp; (
 +           &lt;div&gt;
-+             &lt;h3 className=&quot;text-lg font-bold mb-4 text-gray-900 dark:text-white&quot;&gt;Matchup History&lt;/h3&gt;
++             &lt;h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white"&gt;Matchup History&lt;/h3&gt;
 +             {matchups.length === 0 ? (
-+               &lt;div className=&quot;text-center py-8 text-gray-600 dark:text-neutral-400&quot;&gt;
++               &lt;div className="text-center py-8 text-gray-600 dark:text-neutral-400"&gt;
 +                 No matchup history available.
 +               &lt;/div&gt;
 +             ) : (
-+               &lt;div className=&quot;space-y-4&quot;&gt;
++               &lt;div className="space-y-4"&gt;
 +                 {matchups.map((matchup) =&gt; {
 +                   // Determine which team is the current team and which is the opponent
 +                   const isTeam1 = matchup.team_1_id === teamId;
@@ -401,7 +401,7 @@ Lines added: 172, lines removed: undefined
 +                   
 +                   const winPercentage = matchup.total_meetings &gt; 0 
 +                     ? ((teamWins / matchup.total_meetings) * 100).toFixed(1) 
-+                     : &#39;0.0&#39;;
++                     : '0.0';
 +                   
 +                   const isWinningRecord = teamWins &gt; opponentWins;
 +                   const isLosingRecord = teamWins &lt; opponentWins;
@@ -409,65 +409,65 @@ Lines added: 172, lines removed: undefined
 +                   return (
 +                     &lt;div 
 +                       key={&#96;${matchup.team_1_id}-${matchup.team_2_id}&#96;}
-+                       className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
++                       className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
 +                     &gt;
-+                       &lt;div className=&quot;flex items-start gap-4&quot;&gt;
++                       &lt;div className="flex items-start gap-4"&gt;
 +                         {/* Opponent Logo */}
 +                         {opponentLogo ? (
 +                           &lt;img 
 +                             src={opponentLogo} 
 +                             alt={opponentName} 
-+                             className=&quot;h-16 w-16 rounded-lg object-cover flex-shrink-0&quot;
++                             className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
 +                           /&gt;
 +                         ) : (
-+                           &lt;div className=&quot;h-16 w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-lg font-bold flex-shrink-0&quot;&gt;
-+                             {opponentName?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                           &lt;div className="h-16 w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-lg font-bold flex-shrink-0"&gt;
++                             {opponentName?.substring(0, 2).toUpperCase() || '??'}
 +                           &lt;/div&gt;
 +                         )}
 +                         
 +                         {/* Matchup Info */}
-+                         &lt;div className=&quot;flex-1 min-w-0&quot;&gt;
-+                           &lt;div className=&quot;flex items-center justify-between mb-2&quot;&gt;
-+                             &lt;h4 className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
++                         &lt;div className="flex-1 min-w-0"&gt;
++                           &lt;div className="flex items-center justify-between mb-2"&gt;
++                             &lt;h4 className="text-lg font-bold text-gray-900 dark:text-white"&gt;
 +                               &lt;a 
 +                                 href={&#96;/teams/${opponentId}&#96;}
-+                                 className=&quot;hover:text-patriot-blue-600 dark:hover:text-blue-400 transition&quot;
++                                 className="hover:text-patriot-blue-600 dark:hover:text-blue-400 transition"
 +                               &gt;
 +                                 {opponentName}
 +                               &lt;/a&gt;
 +                             &lt;/h4&gt;
 +                             &lt;div className={&#96;text-sm font-semibold px-2 py-1 rounded ${
 +                               isWinningRecord 
-+                                 ? &#39;bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300&#39;
++                                 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
 +                                 : isLosingRecord
-+                                 ? &#39;bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300&#39;
-+                                 : &#39;bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300&#39;
++                                 ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
++                                 : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
 +                             }&#96;}&gt;
 +                               {teamWins}-{opponentWins}
 +                             &lt;/div&gt;
 +                           &lt;/div&gt;
 +                           
-+                           &lt;div className=&quot;grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm&quot;&gt;
++                           &lt;div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm"&gt;
 +                             &lt;div&gt;
-+                               &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Total Meetings:&lt;/span&gt;
-+                               &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{matchup.total_meetings}&lt;/span&gt;
++                               &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Total Meetings:&lt;/span&gt;
++                               &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;{matchup.total_meetings}&lt;/span&gt;
 +                             &lt;/div&gt;
 +                             &lt;div&gt;
-+                               &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Win %:&lt;/span&gt;
-+                               &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{winPercentage}%&lt;/span&gt;
++                               &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Win %:&lt;/span&gt;
++                               &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;{winPercentage}%&lt;/span&gt;
 +                             &lt;/div&gt;
 +                             {matchup.last_meeting &amp;&amp; (
 +                               &lt;div&gt;
-+                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Last Meeting:&lt;/span&gt;
-+                                 &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
++                                 &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Last Meeting:&lt;/span&gt;
++                                 &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;
 +                                   {new Date(matchup.last_meeting).toLocaleDateString()}
 +                                 &lt;/span&gt;
 +                               &lt;/div&gt;
 +                             )}
 +                             {matchup.days_since_last_meeting !== null &amp;&amp; (
 +                               &lt;div&gt;
-+                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Days Ago:&lt;/span&gt;
-+                                 &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
++                                 &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Days Ago:&lt;/span&gt;
++                                 &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;
 +                                   {matchup.days_since_last_meeting}
 +                                 &lt;/span&gt;
 +                               &lt;/div&gt;
@@ -476,15 +476,15 @@ Lines added: 172, lines removed: undefined
 +                           
 +                           {/* Average Scores */}
 +                           {(teamAvgScore !== null || opponentAvgScore !== null) &amp;&amp; (
-+                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                               &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Average Scores:&lt;/div&gt;
-+                               &lt;div className=&quot;flex items-center gap-2&quot;&gt;
-+                                 &lt;span className=&quot;text-sm font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                                   {teamAvgScore ? teamAvgScore.toFixed(1) : &#39;-&#39;}
++                             &lt;div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
++                               &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Average Scores:&lt;/div&gt;
++                               &lt;div className="flex items-center gap-2"&gt;
++                                 &lt;span className="text-sm font-semibold text-gray-900 dark:text-white"&gt;
++                                   {teamAvgScore ? teamAvgScore.toFixed(1) : '-'}
 +                                 &lt;/span&gt;
-+                                 &lt;span className=&quot;text-gray-400&quot;&gt;vs&lt;/span&gt;
-+                                 &lt;span className=&quot;text-sm font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                                   {opponentAvgScore ? opponentAvgScore.toFixed(1) : &#39;-&#39;}
++                                 &lt;span className="text-gray-400"&gt;vs&lt;/span&gt;
++                                 &lt;span className="text-sm font-semibold text-gray-900 dark:text-white"&gt;
++                                   {opponentAvgScore ? opponentAvgScore.toFixed(1) : '-'}
 +                                 &lt;/span&gt;
 +                               &lt;/div&gt;
 +                             &lt;/div&gt;
@@ -492,19 +492,19 @@ Lines added: 172, lines removed: undefined
 +                           
 +                           {/* Recent Form (Last 5 Games) */}
 +                           {(teamLast5Wins &gt; 0 || opponentLast5Wins &gt; 0) &amp;&amp; (
-+                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                               &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Last 5 Games:&lt;/div&gt;
-+                               &lt;div className=&quot;flex items-center gap-2&quot;&gt;
++                             &lt;div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
++                               &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Last 5 Games:&lt;/div&gt;
++                               &lt;div className="flex items-center gap-2"&gt;
 +                                 &lt;span className={&#96;text-sm font-semibold ${
 +                                   teamLast5Wins &gt; opponentLast5Wins
-+                                     ? &#39;text-green-600 dark:text-green-400&#39;
++                                     ? 'text-green-600 dark:text-green-400'
 +                                     : teamLast5Wins &lt; opponentLast5Wins
-+                                     ? &#39;text-red-600 dark:text-red-400&#39;
-+                                     : &#39;text-gray-900 dark:text-white&#39;
++                                     ? 'text-red-600 dark:text-red-400'
++                                     : 'text-gray-900 dark:text-white'
 +                                 }&#96;}&gt;
 +                                   {teamLast5Wins}-{opponentLast5Wins}
 +                                 &lt;/span&gt;
-+                                 &lt;span className=&quot;text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
++                                 &lt;span className="text-xs text-gray-500 dark:text-neutral-500"&gt;
 +                                   ({teamLast5Wins + opponentLast5Wins} meetings)
 +                                 &lt;/span&gt;
 +                               &lt;/div&gt;
@@ -513,18 +513,18 @@ Lines added: 172, lines removed: undefined
 +                           
 +                           {/* Context Breakdown */}
 +                           {(matchup.league_meetings &gt; 0 || matchup.tournament_meetings &gt; 0) &amp;&amp; (
-+                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                               &lt;div className=&quot;flex items-center gap-4 text-xs&quot;&gt;
++                             &lt;div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
++                               &lt;div className="flex items-center gap-4 text-xs"&gt;
 +                                 {matchup.league_meetings &gt; 0 &amp;&amp; (
 +                                   &lt;div&gt;
-+                                     &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;League:&lt;/span&gt;
-+                                     &lt;span className=&quot;ml-1 font-semibold text-gray-900 dark:text-white&quot;&gt;{matchup.league_meetings}&lt;/span&gt;
++                                     &lt;span className="text-gray-600 dark:text-neutral-400"&gt;League:&lt;/span&gt;
++                                     &lt;span className="ml-1 font-semibold text-gray-900 dark:text-white"&gt;{matchup.league_meetings}&lt;/span&gt;
 +                                   &lt;/div&gt;
 +                                 )}
 +                                 {matchup.tournament_meetings &gt; 0 &amp;&amp; (
 +                                   &lt;div&gt;
-+                                     &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Tournament:&lt;/span&gt;
-+                                     &lt;span className=&quot;ml-1 font-semibold text-gray-900 dark:text-white&quot;&gt;{matchup.tournament_meetings}&lt;/span&gt;
++                                     &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Tournament:&lt;/span&gt;
++                                     &lt;span className="ml-1 font-semibold text-gray-900 dark:text-white"&gt;{matchup.tournament_meetings}&lt;/span&gt;
 +                                   &lt;/div&gt;
 +                                 )}
 +                               &lt;/div&gt;
@@ -533,7 +533,7 @@ Lines added: 172, lines removed: undefined
 +                           
 +                           {/* First Meeting */}
 +                           {matchup.first_meeting &amp;&amp; (
-+                             &lt;div className=&quot;mt-2 text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
++                             &lt;div className="mt-2 text-xs text-gray-500 dark:text-neutral-500"&gt;
 +                               First meeting: {new Date(matchup.first_meeting).toLocaleDateString()}
 +                             &lt;/div&gt;
 +                           )}
@@ -638,7 +638,7 @@ Fixing type errors: using `team_name` instead of `name` and handling null values
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
@@ -663,7 +663,7 @@ Lines added: 2, lines removed: 2
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -673,7 +673,7 @@ Lines added: 1, lines removed: 1
   
   &lt;BaseLayout 
 -   title={team.name}
-+   title={team.name ?? &#39;Team&#39;}
++   title={team.name ?? 'Team'}
     description={teamDescription}
     ogImage={ogImage}
 ```
@@ -683,10 +683,10 @@ Lines added: 1, lines removed: 1
 
 ```diff
 @@ -241,5 +241,5 @@
-          { label: &quot;Home&quot;, href: &quot;/&quot; },
-          { label: &quot;Teams&quot;, href: &quot;/teams&quot; },
+          { label: "Home", href: "/" },
+          { label: "Teams", href: "/teams" },
 -         { label: team.name, href: &#96;/teams/${team.id}&#96; }
-+         { label: team.name ?? &#39;Team&#39;, href: &#96;/teams/${team.id}&#96; }
++         { label: team.name ?? 'Team', href: &#96;/teams/${team.id}&#96; }
         ]} /&gt;
         &lt;!-- Team Header --&gt;
 ```
@@ -765,7 +765,6 @@ _**Agent (model composer-1, mode Agent)**_
 
 ---
 
-
 Reviewing the matchup history tab layout and optimizing for mobile:
 
 
@@ -791,7 +790,6 @@ Reviewing the matchup history tab layout and optimizing for mobile:
 
 ---
 
-
 Optimizing the matchup history tab for mobile: improving layout, spacing, and responsiveness.
 
 
@@ -799,7 +797,7 @@ Optimizing the matchup history tab for mobile: improving layout, spacing, and re
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 3
@@ -808,16 +806,16 @@ Lines added: 3, lines removed: 3
 @@ -657,11 +657,11 @@
           {activeTab === 4 &amp;&amp; (
             &lt;div&gt;
--             &lt;h3 className=&quot;text-lg font-bold mb-4 text-gray-900 dark:text-white&quot;&gt;Matchup History&lt;/h3&gt;
-+             &lt;h3 className=&quot;text-base sm:text-lg font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white&quot;&gt;Matchup History&lt;/h3&gt;
+-             &lt;h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white"&gt;Matchup History&lt;/h3&gt;
++             &lt;h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white"&gt;Matchup History&lt;/h3&gt;
               {matchups.length === 0 ? (
--               &lt;div className=&quot;text-center py-8 text-gray-600 dark:text-neutral-400&quot;&gt;
-+               &lt;div className=&quot;text-center py-8 text-gray-600 dark:text-neutral-400 text-sm&quot;&gt;
+-               &lt;div className="text-center py-8 text-gray-600 dark:text-neutral-400"&gt;
++               &lt;div className="text-center py-8 text-gray-600 dark:text-neutral-400 text-sm"&gt;
                   No matchup history available.
                 &lt;/div&gt;
               ) : (
--               &lt;div className=&quot;space-y-4&quot;&gt;
-+               &lt;div className=&quot;space-y-3 sm:space-y-4&quot;&gt;
+-               &lt;div className="space-y-4"&gt;
++               &lt;div className="space-y-3 sm:space-y-4"&gt;
                   {matchups.map((matchup) =&gt; {
                     // Determine which team is the current team and which is the opponent
 ```
@@ -829,57 +827,57 @@ Lines added: 31, lines removed: 17
 @@ -688,24 +688,38 @@
                       &lt;div 
                         key={&#96;${matchup.team_1_id}-${matchup.team_2_id}&#96;}
--                       className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
-+                       className=&quot;rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-3 sm:p-4 hover:border-blue-500 dark:hover:border-blue-500 transition&quot;
+-                       className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
++                       className="rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50 p-3 sm:p-4 hover:border-blue-500 dark:hover:border-blue-500 transition"
                       &gt;
--                       &lt;div className=&quot;flex items-start gap-4&quot;&gt;
-+                       &lt;div className=&quot;flex flex-col sm:flex-row items-start gap-3 sm:gap-4&quot;&gt;
+-                       &lt;div className="flex items-start gap-4"&gt;
++                       &lt;div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4"&gt;
                           {/* Opponent Logo */}
 -                         {opponentLogo ? (
 -                           &lt;img 
 -                             src={opponentLogo} 
 -                             alt={opponentName} 
--                             className=&quot;h-16 w-16 rounded-lg object-cover flex-shrink-0&quot;
+-                             className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
 -                           /&gt;
 -                         ) : (
--                           &lt;div className=&quot;h-16 w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-lg font-bold flex-shrink-0&quot;&gt;
--                             {opponentName?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                           &lt;div className="h-16 w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-lg font-bold flex-shrink-0"&gt;
+-                             {opponentName?.substring(0, 2).toUpperCase() || '??'}
 -                           &lt;/div&gt;
 -                         )}
 -                         
-+                         &lt;div className=&quot;flex-shrink-0 w-full sm:w-auto flex sm:block items-center gap-3 sm:gap-0&quot;&gt;
++                         &lt;div className="flex-shrink-0 w-full sm:w-auto flex sm:block items-center gap-3 sm:gap-0"&gt;
 +                           {opponentLogo ? (
 +                             &lt;img 
 +                               src={opponentLogo} 
 +                               alt={opponentName} 
-+                               className=&quot;h-12 w-12 sm:h-16 sm:w-16 rounded-lg object-cover&quot;
++                               className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg object-cover"
 +                             /&gt;
 +                           ) : (
-+                             &lt;div className=&quot;h-12 w-12 sm:h-16 sm:w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-sm sm:text-lg font-bold&quot;&gt;
-+                               {opponentName?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                             &lt;div className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-gray-400 text-sm sm:text-lg font-bold"&gt;
++                               {opponentName?.substring(0, 2).toUpperCase() || '??'}
 +                             &lt;/div&gt;
 +                           )}
 +                           
 +                           {/* Record badge on mobile - show next to logo */}
 +                           &lt;div className={&#96;sm:hidden text-xs font-semibold px-2 py-1 rounded whitespace-nowrap ${
 +                             isWinningRecord 
-+                               ? &#39;bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300&#39;
++                               ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
 +                               : isLosingRecord
-+                               ? &#39;bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300&#39;
-+                               : &#39;bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300&#39;
++                               ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
++                               : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
 +                           }&#96;}&gt;
 +                             {teamWins}-{opponentWins}
 +                           &lt;/div&gt;
 +                         &lt;/div&gt;
 +                         
                           {/* Matchup Info */}
--                         &lt;div className=&quot;flex-1 min-w-0&quot;&gt;
--                           &lt;div className=&quot;flex items-center justify-between mb-2&quot;&gt;
--                             &lt;h4 className=&quot;text-lg font-bold text-gray-900 dark:text-white&quot;&gt;
-+                         &lt;div className=&quot;flex-1 min-w-0 w-full&quot;&gt;
+-                         &lt;div className="flex-1 min-w-0"&gt;
+-                           &lt;div className="flex items-center justify-between mb-2"&gt;
+-                             &lt;h4 className="text-lg font-bold text-gray-900 dark:text-white"&gt;
++                         &lt;div className="flex-1 min-w-0 w-full"&gt;
 +                           {/* Header - Stack on mobile, horizontal on larger screens */}
-+                           &lt;div className=&quot;flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2 sm:mb-2&quot;&gt;
-+                             &lt;h4 className=&quot;text-base sm:text-lg font-bold text-gray-900 dark:text-white truncate&quot;&gt;
++                           &lt;div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2 sm:mb-2"&gt;
++                             &lt;h4 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white truncate"&gt;
                                 &lt;a 
                                   href={&#96;/teams/${opponentId}&#96;}
 ```
@@ -895,7 +893,7 @@ Lines added: 2, lines removed: 1
 +                             {/* Record badge - hidden on mobile (shown above), visible on larger screens */}
 +                             &lt;div className={&#96;hidden sm:block text-sm font-semibold px-2 py-1 rounded whitespace-nowrap ${
                                 isWinningRecord 
-                                  ? &#39;bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300&#39;
+                                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
 ```
 
 **Chunk 4**
@@ -905,41 +903,41 @@ Lines added: 14, lines removed: 13
 @@ -726,25 +741,26 @@
                             &lt;/div&gt;
                             
--                           &lt;div className=&quot;grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm&quot;&gt;
+-                           &lt;div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm"&gt;
 -                             &lt;div&gt;
--                               &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Total Meetings:&lt;/span&gt;
--                               &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{matchup.total_meetings}&lt;/span&gt;
+-                               &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Total Meetings:&lt;/span&gt;
+-                               &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;{matchup.total_meetings}&lt;/span&gt;
 +                           {/* Stats Grid - More compact on mobile */}
-+                           &lt;div className=&quot;grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm&quot;&gt;
-+                             &lt;div className=&quot;break-words&quot;&gt;
-+                               &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Meetings:&lt;/span&gt;
-+                               &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{matchup.total_meetings}&lt;/span&gt;
++                           &lt;div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm"&gt;
++                             &lt;div className="break-words"&gt;
++                               &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Meetings:&lt;/span&gt;
++                               &lt;span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white"&gt;{matchup.total_meetings}&lt;/span&gt;
                               &lt;/div&gt;
 -                             &lt;div&gt;
-+                             &lt;div className=&quot;break-words&quot;&gt;
-                                &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Win %:&lt;/span&gt;
--                               &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{winPercentage}%&lt;/span&gt;
-+                               &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;{winPercentage}%&lt;/span&gt;
++                             &lt;div className="break-words"&gt;
+                                &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Win %:&lt;/span&gt;
+-                               &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;{winPercentage}%&lt;/span&gt;
++                               &lt;span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white"&gt;{winPercentage}%&lt;/span&gt;
                               &lt;/div&gt;
                               {matchup.last_meeting &amp;&amp; (
 -                               &lt;div&gt;
--                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Last Meeting:&lt;/span&gt;
--                                 &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
+-                                 &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Last Meeting:&lt;/span&gt;
+-                                 &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;
 -                                   {new Date(matchup.last_meeting).toLocaleDateString()}
-+                               &lt;div className=&quot;break-words&quot;&gt;
-+                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Last:&lt;/span&gt;
-+                                 &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white text-[10px] sm:text-sm&quot;&gt;
-+                                   {new Date(matchup.last_meeting).toLocaleDateString(&#39;en-US&#39;, { month: &#39;short&#39;, day: &#39;numeric&#39;, year: &#39;numeric&#39; })}
++                               &lt;div className="break-words"&gt;
++                                 &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Last:&lt;/span&gt;
++                                 &lt;span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white text-[10px] sm:text-sm"&gt;
++                                   {new Date(matchup.last_meeting).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                   &lt;/span&gt;
                                 &lt;/div&gt;
                               )}
                               {matchup.days_since_last_meeting !== null &amp;&amp; (
 -                               &lt;div&gt;
--                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Days Ago:&lt;/span&gt;
--                                 &lt;span className=&quot;ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                               &lt;div className=&quot;break-words&quot;&gt;
-+                                 &lt;span className=&quot;text-gray-600 dark:text-neutral-400&quot;&gt;Days:&lt;/span&gt;
-+                                 &lt;span className=&quot;ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white&quot;&gt;
+-                                 &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Days Ago:&lt;/span&gt;
+-                                 &lt;span className="ml-2 font-semibold text-gray-900 dark:text-white"&gt;
++                               &lt;div className="break-words"&gt;
++                                 &lt;span className="text-gray-600 dark:text-neutral-400"&gt;Days:&lt;/span&gt;
++                                 &lt;span className="ml-1 sm:ml-2 font-semibold text-gray-900 dark:text-white"&gt;
                                     {matchup.days_since_last_meeting}
                                   &lt;/span&gt;
 ```
@@ -951,20 +949,20 @@ Lines added: 5, lines removed: 5
 @@ -755,12 +771,12 @@
                             {/* Average Scores */}
                             {(teamAvgScore !== null || opponentAvgScore !== null) &amp;&amp; (
--                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
--                               &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Average Scores:&lt;/div&gt;
--                               &lt;div className=&quot;flex items-center gap-2&quot;&gt;
--                                 &lt;span className=&quot;text-sm font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                             &lt;div className=&quot;mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                               &lt;div className=&quot;text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Average Scores:&lt;/div&gt;
-+                               &lt;div className=&quot;flex items-center gap-2 text-xs sm:text-sm&quot;&gt;
-+                                 &lt;span className=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;
-                                    {teamAvgScore ? teamAvgScore.toFixed(1) : &#39;-&#39;}
+-                             &lt;div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
+-                               &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Average Scores:&lt;/div&gt;
+-                               &lt;div className="flex items-center gap-2"&gt;
+-                                 &lt;span className="text-sm font-semibold text-gray-900 dark:text-white"&gt;
++                             &lt;div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
++                               &lt;div className="text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Average Scores:&lt;/div&gt;
++                               &lt;div className="flex items-center gap-2 text-xs sm:text-sm"&gt;
++                                 &lt;span className="font-semibold text-gray-900 dark:text-white"&gt;
+                                    {teamAvgScore ? teamAvgScore.toFixed(1) : '-'}
                                   &lt;/span&gt;
-                                  &lt;span className=&quot;text-gray-400&quot;&gt;vs&lt;/span&gt;
--                                 &lt;span className=&quot;text-sm font-semibold text-gray-900 dark:text-white&quot;&gt;
-+                                 &lt;span className=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;
-                                    {opponentAvgScore ? opponentAvgScore.toFixed(1) : &#39;-&#39;}
+                                  &lt;span className="text-gray-400"&gt;vs&lt;/span&gt;
+-                                 &lt;span className="text-sm font-semibold text-gray-900 dark:text-white"&gt;
++                                 &lt;span className="font-semibold text-gray-900 dark:text-white"&gt;
+                                    {opponentAvgScore ? opponentAvgScore.toFixed(1) : '-'}
                                   &lt;/span&gt;
 ```
 
@@ -975,16 +973,16 @@ Lines added: 4, lines removed: 4
 @@ -771,8 +787,8 @@
                             {/* Recent Form (Last 5 Games) */}
                             {(teamLast5Wins &gt; 0 || opponentLast5Wins &gt; 0) &amp;&amp; (
--                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
--                               &lt;div className=&quot;text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Last 5 Games:&lt;/div&gt;
--                               &lt;div className=&quot;flex items-center gap-2&quot;&gt;
+-                             &lt;div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
+-                               &lt;div className="text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Last 5 Games:&lt;/div&gt;
+-                               &lt;div className="flex items-center gap-2"&gt;
 -                                 &lt;span className={&#96;text-sm font-semibold ${
-+                             &lt;div className=&quot;mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                               &lt;div className=&quot;text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1&quot;&gt;Last 5 Games:&lt;/div&gt;
-+                               &lt;div className=&quot;flex items-center gap-2 text-xs sm:text-sm&quot;&gt;
++                             &lt;div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
++                               &lt;div className="text-[10px] sm:text-xs text-gray-600 dark:text-neutral-400 mb-1"&gt;Last 5 Games:&lt;/div&gt;
++                               &lt;div className="flex items-center gap-2 text-xs sm:text-sm"&gt;
 +                                 &lt;span className={&#96;font-semibold ${
                                     teamLast5Wins &gt; opponentLast5Wins
-                                      ? &#39;text-green-600 dark:text-green-400&#39;
+                                      ? 'text-green-600 dark:text-green-400'
 ```
 
 **Chunk 7**
@@ -994,8 +992,8 @@ Lines added: 1, lines removed: 1
 @@ -783,5 +799,5 @@
                                     {teamLast5Wins}-{opponentLast5Wins}
                                   &lt;/span&gt;
--                                 &lt;span className=&quot;text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
-+                                 &lt;span className=&quot;text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
+-                                 &lt;span className="text-xs text-gray-500 dark:text-neutral-500"&gt;
++                                 &lt;span className="text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500"&gt;
                                     ({teamLast5Wins + opponentLast5Wins} meetings)
                                   &lt;/span&gt;
 ```
@@ -1007,10 +1005,10 @@ Lines added: 2, lines removed: 2
 @@ -792,6 +808,6 @@
                             {/* Context Breakdown */}
                             {(matchup.league_meetings &gt; 0 || matchup.tournament_meetings &gt; 0) &amp;&amp; (
--                             &lt;div className=&quot;mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
--                               &lt;div className=&quot;flex items-center gap-4 text-xs&quot;&gt;
-+                             &lt;div className=&quot;mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700&quot;&gt;
-+                               &lt;div className=&quot;flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs flex-wrap&quot;&gt;
+-                             &lt;div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
+-                               &lt;div className="flex items-center gap-4 text-xs"&gt;
++                             &lt;div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-200 dark:border-neutral-700"&gt;
++                               &lt;div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs flex-wrap"&gt;
                                   {matchup.league_meetings &gt; 0 &amp;&amp; (
                                     &lt;div&gt;
 ```
@@ -1022,10 +1020,10 @@ Lines added: 2, lines removed: 2
 @@ -812,6 +828,6 @@
                             {/* First Meeting */}
                             {matchup.first_meeting &amp;&amp; (
--                             &lt;div className=&quot;mt-2 text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
+-                             &lt;div className="mt-2 text-xs text-gray-500 dark:text-neutral-500"&gt;
 -                               First meeting: {new Date(matchup.first_meeting).toLocaleDateString()}
-+                             &lt;div className=&quot;mt-2 text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500&quot;&gt;
-+                               First meeting: {new Date(matchup.first_meeting).toLocaleDateString(&#39;en-US&#39;, { month: &#39;short&#39;, day: &#39;numeric&#39;, year: &#39;numeric&#39; })}
++                             &lt;div className="mt-2 text-[10px] sm:text-xs text-gray-500 dark:text-neutral-500"&gt;
++                               First meeting: {new Date(matchup.first_meeting).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                               &lt;/div&gt;
                             )}
 ```
@@ -1056,7 +1054,6 @@ Lint results
 
 
 ---
-
 
 ## Mobile Optimizations:
 

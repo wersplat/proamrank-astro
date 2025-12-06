@@ -299,77 +299,77 @@ Parameters:
 
 ```json
 {
-  &quot;plan&quot;: &quot;# Player Statistics Tab Enhancements and Champions Display\n\n## 1. Player Statistics Tab Enhancements\n\n### Add Player Totals Toggle\n- Add a toggle button group (similar to stats filter buttons) to switch between \&quot;Per Game\&quot; (averages) and \&quot;Totals\&quot; (raw season stats)\n- When \&quot;Totals\&quot; is selected, display raw cumulative stats instead of averages:\n  - Show &#96;points&#96;, &#96;rebounds&#96;, &#96;assists&#96;, &#96;steals&#96;, &#96;blocks&#96;, &#96;turnovers&#96; as totals\n  - Keep percentages (FG%, 3P%, FT%) and other calculated fields the same\n  - Update column headers to reflect totals (e.g., \&quot;PTS\&quot; instead of \&quot;PPG\&quot;, \&quot;REB\&quot; instead of \&quot;RPG\&quot;)\n- Location: &#96;proam-rankings/src/components/LeagueTabsIsland.tsx&#96; (Player Statistics tab section, ~line 1099-1292)\n\n### Add Player Name Search Filter\n- Add a search input field above the player statistics table\n- Filter the displayed players by matching against &#96;player_gamertag&#96; field\n- Use similar styling and behavior as the team search filter in the Matches tab\n- Reset to page 1 when search filter changes\n- Location: Same file, above the stats filter toggle buttons\n\n## 2. Information Tab Champions Display\n\n### Display Champions\n- Add a new section showing:\n  - **Open Champion**: Display team name from &#96;openTournament.champion&#96; (may need to resolve team ID to name)\n  - **Regular Season Champion**: First place team from standings (sorted by wins, then win percentage)\n  - **Playoff Champion**: Display team name from &#96;playoffTournament.champion&#96; (may need to resolve team ID to name)\n- Show \&quot;TBD\&quot; or \&quot;Not Yet Determined\&quot; if champion is null/undefined\n- Location: &#96;proam-rankings/src/components/LeagueTabsIsland.tsx&#96; (Information tab section, ~line 1496-1632)\n\n### Triple Crown Progress Bar\n- Calculate which teams have won championships this season:\n  - Regular season: team with highest wins/win percentage in standings\n  - Open: team from &#96;openTournament.champion&#96;\n  - Playoff: team from &#96;playoffTournament.champion&#96;\n- For each team that has won at least one championship, show a progress bar:\n  - Display team name\n  - Progress bar showing X/3 championships won (Regular Season, Open, Playoff)\n  - Visual indicator: 0/3 = 0%, 1/3 = 33%, 2/3 = 67%, 3/3 = 100%\n  - Special styling when 3/3 is achieved (e.g., gold color, \&quot;Triple Crown Achieved!\&quot; text)\n- Location: Same Information tab section, below champions list\n\n## Implementation Details\n\n### Player Statistics Changes\n- Add state: &#96;const [statsView, setStatsView] = useState&lt;&#39;perGame&#39; | &#39;totals&#39;&gt;(&#39;perGame&#39;)&#96;\n- Add state: &#96;const [playerSearchFilter, setPlayerSearchFilter] = useState&lt;string&gt;(&#39;&#39;)&#96;\n- Filter and sort logic already exists; add search filter to the filtering chain\n- Update table rendering to conditionally show totals vs averages based on &#96;statsView&#96;\n\n### Champions Data Handling\n- Champions may be stored as team IDs - need to resolve to team names using teamMap or standings data\n- Regular season champion: &#96;standings[0]?.team_name&#96; (after sorting by wins/win %)\n- Triple crown calculation: Check if same team_id appears in all three champion fields\n\n### Styling\n- Match existing component styling (neutral colors, blue accents)\n- Progress bar: Use Tailwind classes similar to existing UI elements\n- Champions section: Use similar card/box styling as other information displays&quot;,
-  &quot;name&quot;: &quot;Player Stats Totals and Champions Display&quot;,
-  &quot;todos&quot;: [
+  "plan": "# Player Statistics Tab Enhancements and Champions Display\n\n## 1. Player Statistics Tab Enhancements\n\n### Add Player Totals Toggle\n- Add a toggle button group (similar to stats filter buttons) to switch between \"Per Game\" (averages) and \"Totals\" (raw season stats)\n- When \"Totals\" is selected, display raw cumulative stats instead of averages:\n  - Show &#96;points&#96;, &#96;rebounds&#96;, &#96;assists&#96;, &#96;steals&#96;, &#96;blocks&#96;, &#96;turnovers&#96; as totals\n  - Keep percentages (FG%, 3P%, FT%) and other calculated fields the same\n  - Update column headers to reflect totals (e.g., \"PTS\" instead of \"PPG\", \"REB\" instead of \"RPG\")\n- Location: &#96;proam-rankings/src/components/LeagueTabsIsland.tsx&#96; (Player Statistics tab section, ~line 1099-1292)\n\n### Add Player Name Search Filter\n- Add a search input field above the player statistics table\n- Filter the displayed players by matching against &#96;player_gamertag&#96; field\n- Use similar styling and behavior as the team search filter in the Matches tab\n- Reset to page 1 when search filter changes\n- Location: Same file, above the stats filter toggle buttons\n\n## 2. Information Tab Champions Display\n\n### Display Champions\n- Add a new section showing:\n  - **Open Champion**: Display team name from &#96;openTournament.champion&#96; (may need to resolve team ID to name)\n  - **Regular Season Champion**: First place team from standings (sorted by wins, then win percentage)\n  - **Playoff Champion**: Display team name from &#96;playoffTournament.champion&#96; (may need to resolve team ID to name)\n- Show \"TBD\" or \"Not Yet Determined\" if champion is null/undefined\n- Location: &#96;proam-rankings/src/components/LeagueTabsIsland.tsx&#96; (Information tab section, ~line 1496-1632)\n\n### Triple Crown Progress Bar\n- Calculate which teams have won championships this season:\n  - Regular season: team with highest wins/win percentage in standings\n  - Open: team from &#96;openTournament.champion&#96;\n  - Playoff: team from &#96;playoffTournament.champion&#96;\n- For each team that has won at least one championship, show a progress bar:\n  - Display team name\n  - Progress bar showing X/3 championships won (Regular Season, Open, Playoff)\n  - Visual indicator: 0/3 = 0%, 1/3 = 33%, 2/3 = 67%, 3/3 = 100%\n  - Special styling when 3/3 is achieved (e.g., gold color, \"Triple Crown Achieved!\" text)\n- Location: Same Information tab section, below champions list\n\n## Implementation Details\n\n### Player Statistics Changes\n- Add state: &#96;const [statsView, setStatsView] = useState&lt;'perGame' | 'totals'&gt;('perGame')&#96;\n- Add state: &#96;const [playerSearchFilter, setPlayerSearchFilter] = useState&lt;string&gt;('')&#96;\n- Filter and sort logic already exists; add search filter to the filtering chain\n- Update table rendering to conditionally show totals vs averages based on &#96;statsView&#96;\n\n### Champions Data Handling\n- Champions may be stored as team IDs - need to resolve to team names using teamMap or standings data\n- Regular season champion: &#96;standings[0]?.team_name&#96; (after sorting by wins/win %)\n- Triple crown calculation: Check if same team_id appears in all three champion fields\n\n### Styling\n- Match existing component styling (neutral colors, blue accents)\n- Progress bar: Use Tailwind classes similar to existing UI elements\n- Champions section: Use similar card/box styling as other information displays",
+  "name": "Player Stats Totals and Champions Display",
+  "todos": [
     {
-      &quot;content&quot;: &quot;Add toggle button group in Player Statistics tab to switch between &#39;Per Game&#39; and &#39;Totals&#39; view&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;add-player-totals-toggle&quot;
+      "content": "Add toggle button group in Player Statistics tab to switch between 'Per Game' and 'Totals' view",
+      "status": "pending",
+      "id": "add-player-totals-toggle"
     },
     {
-      &quot;content&quot;: &quot;Add search input field to filter players by name in Player Statistics tab&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;add-player-search-filter&quot;
+      "content": "Add search input field to filter players by name in Player Statistics tab",
+      "status": "pending",
+      "id": "add-player-search-filter"
     },
     {
-      &quot;content&quot;: &quot;Update table rendering logic to show raw totals instead of averages when Totals view is selected&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;implement-totals-view&quot;,
-      &quot;dependencies&quot;: [
-        &quot;add-player-totals-toggle&quot;
+      "content": "Update table rendering logic to show raw totals instead of averages when Totals view is selected",
+      "status": "pending",
+      "id": "implement-totals-view",
+      "dependencies": [
+        "add-player-totals-toggle"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add filtering logic to filter player stats by search query matching player_gamertag&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;implement-search-filtering&quot;,
-      &quot;dependencies&quot;: [
-        &quot;add-player-search-filter&quot;
+      "content": "Add filtering logic to filter player stats by search query matching player_gamertag",
+      "status": "pending",
+      "id": "implement-search-filtering",
+      "dependencies": [
+        "add-player-search-filter"
       ]
     },
     {
-      &quot;content&quot;: &quot;Resolve champion team IDs to team names for display (check if champions are IDs or names)&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;resolve-champion-names&quot;
+      "content": "Resolve champion team IDs to team names for display (check if champions are IDs or names)",
+      "status": "pending",
+      "id": "resolve-champion-names"
     },
     {
-      &quot;content&quot;: &quot;Add champions display section in Information tab showing Open, Regular Season, and Playoff champions&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;display-champions-section&quot;,
-      &quot;dependencies&quot;: [
-        &quot;resolve-champion-names&quot;
+      "content": "Add champions display section in Information tab showing Open, Regular Season, and Playoff champions",
+      "status": "pending",
+      "id": "display-champions-section",
+      "dependencies": [
+        "resolve-champion-names"
       ]
     },
     {
-      &quot;content&quot;: &quot;Calculate which teams have won championships and determine triple crown achievements&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;calculate-triple-crown&quot;,
-      &quot;dependencies&quot;: [
-        &quot;resolve-champion-names&quot;
+      "content": "Calculate which teams have won championships and determine triple crown achievements",
+      "status": "pending",
+      "id": "calculate-triple-crown",
+      "dependencies": [
+        "resolve-champion-names"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add progress bar component showing X/3 championships won for teams with at least one championship&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;implement-progress-bar&quot;,
-      &quot;dependencies&quot;: [
-        &quot;calculate-triple-crown&quot;
+      "content": "Add progress bar component showing X/3 championships won for teams with at least one championship",
+      "status": "pending",
+      "id": "implement-progress-bar",
+      "dependencies": [
+        "calculate-triple-crown"
       ]
     }
   ],
-  &quot;overview&quot;: &quot;Add player totals toggle and search filter to Player Statistics tab, and display champions with triple crown progress bar in Information tab.&quot;
+  "overview": "Add player totals toggle and search filter to Player Statistics tab, and display champions with triple crown progress bar in Information tab."
 }
 ```
 Additional data:
 
 ```json
 {
-  &quot;status&quot;: &quot;accepted&quot;,
-  &quot;reviewData&quot;: {
-    &quot;status&quot;: &quot;Requested&quot;,
-    &quot;selectedOption&quot;: &quot;none&quot;,
-    &quot;isShowingInput&quot;: false
+  "status": "accepted",
+  "reviewData": {
+    "status": "Requested",
+    "selectedOption": "none",
+    "isShowingInput": false
   }
 }
 ```
@@ -377,61 +377,61 @@ Result:
 
 ```json
 {
-  &quot;accepted&quot;: {
-    &quot;finalTodos&quot;: [
+  "accepted": {
+    "finalTodos": [
       {
-        &quot;content&quot;: &quot;Add toggle button group in Player Statistics tab to switch between &#39;Per Game&#39; and &#39;Totals&#39; view&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;add-player-totals-toggle&quot;
+        "content": "Add toggle button group in Player Statistics tab to switch between 'Per Game' and 'Totals' view",
+        "status": "pending",
+        "id": "add-player-totals-toggle"
       },
       {
-        &quot;content&quot;: &quot;Add search input field to filter players by name in Player Statistics tab&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;add-player-search-filter&quot;
+        "content": "Add search input field to filter players by name in Player Statistics tab",
+        "status": "pending",
+        "id": "add-player-search-filter"
       },
       {
-        &quot;content&quot;: &quot;Update table rendering logic to show raw totals instead of averages when Totals view is selected&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;implement-totals-view&quot;,
-        &quot;dependencies&quot;: [
-          &quot;add-player-totals-toggle&quot;
+        "content": "Update table rendering logic to show raw totals instead of averages when Totals view is selected",
+        "status": "pending",
+        "id": "implement-totals-view",
+        "dependencies": [
+          "add-player-totals-toggle"
         ]
       },
       {
-        &quot;content&quot;: &quot;Add filtering logic to filter player stats by search query matching player_gamertag&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;implement-search-filtering&quot;,
-        &quot;dependencies&quot;: [
-          &quot;add-player-search-filter&quot;
+        "content": "Add filtering logic to filter player stats by search query matching player_gamertag",
+        "status": "pending",
+        "id": "implement-search-filtering",
+        "dependencies": [
+          "add-player-search-filter"
         ]
       },
       {
-        &quot;content&quot;: &quot;Resolve champion team IDs to team names for display (check if champions are IDs or names)&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;resolve-champion-names&quot;
+        "content": "Resolve champion team IDs to team names for display (check if champions are IDs or names)",
+        "status": "pending",
+        "id": "resolve-champion-names"
       },
       {
-        &quot;content&quot;: &quot;Add champions display section in Information tab showing Open, Regular Season, and Playoff champions&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;display-champions-section&quot;,
-        &quot;dependencies&quot;: [
-          &quot;resolve-champion-names&quot;
+        "content": "Add champions display section in Information tab showing Open, Regular Season, and Playoff champions",
+        "status": "pending",
+        "id": "display-champions-section",
+        "dependencies": [
+          "resolve-champion-names"
         ]
       },
       {
-        &quot;content&quot;: &quot;Calculate which teams have won championships and determine triple crown achievements&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;calculate-triple-crown&quot;,
-        &quot;dependencies&quot;: [
-          &quot;resolve-champion-names&quot;
+        "content": "Calculate which teams have won championships and determine triple crown achievements",
+        "status": "pending",
+        "id": "calculate-triple-crown",
+        "dependencies": [
+          "resolve-champion-names"
         ]
       },
       {
-        &quot;content&quot;: &quot;Add progress bar component showing X/3 championships won for teams with at least one championship&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;implement-progress-bar&quot;,
-        &quot;dependencies&quot;: [
-          &quot;calculate-triple-crown&quot;
+        "content": "Add progress bar component showing X/3 championships won for teams with at least one championship",
+        "status": "pending",
+        "id": "implement-progress-bar",
+        "dependencies": [
+          "calculate-triple-crown"
         ]
       }
     ]
@@ -529,17 +529,17 @@ Adding state variables, then updating the Player Statistics and Information tabs
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: undefined
 
 ```diff
 @@ -245,4 +245,6 @@
-    const [selectedTournamentType, setSelectedTournamentType] = useState&lt;&#39;open&#39; | &#39;playoff&#39;&gt;(&#39;open&#39;);
-    const [statsFilter, setStatsFilter] = useState&lt;&#39;regular&#39; | &#39;open&#39; | &#39;playoff&#39;&gt;(&#39;regular&#39;);
-+   const [statsView, setStatsView] = useState&lt;&#39;perGame&#39; | &#39;totals&#39;&gt;(&#39;perGame&#39;);
-+   const [playerSearchFilter, setPlayerSearchFilter] = useState&lt;string&gt;(&#39;&#39;);
+    const [selectedTournamentType, setSelectedTournamentType] = useState&lt;'open' | 'playoff'&gt;('open');
+    const [statsFilter, setStatsFilter] = useState&lt;'regular' | 'open' | 'playoff'&gt;('regular');
++   const [statsView, setStatsView] = useState&lt;'perGame' | 'totals'&gt;('perGame');
++   const [playerSearchFilter, setPlayerSearchFilter] = useState&lt;string&gt;('');
     
     // Matches filter states
 ```
@@ -578,7 +578,7 @@ Updating the filtering logic to include the player search filter:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 16, lines removed: 1
@@ -625,7 +625,7 @@ Updating the Player Statistics tab to add the search filter and toggle buttons:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 33, lines removed: undefined
@@ -635,32 +635,32 @@ Lines added: 33, lines removed: undefined
               ) : (
                 &lt;&gt;
 +                 {/* Player Search Filter */}
-+                 &lt;div className=&quot;mb-4&quot;&gt;
-+                   &lt;label className=&quot;text-sm text-neutral-400 mb-2 block&quot;&gt;Search by Player Name&lt;/label&gt;
-+                   &lt;div className=&quot;relative&quot;&gt;
++                 &lt;div className="mb-4"&gt;
++                   &lt;label className="text-sm text-neutral-400 mb-2 block"&gt;Search by Player Name&lt;/label&gt;
++                   &lt;div className="relative"&gt;
 +                     &lt;input
-+                       type=&quot;text&quot;
++                       type="text"
 +                       value={playerSearchFilter}
 +                       onChange={(e) =&gt; setPlayerSearchFilter(e.target.value)}
-+                       placeholder=&quot;Search by player name...&quot;
-+                       className=&quot;w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500&quot;
++                       placeholder="Search by player name..."
++                       className="w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
 +                     /&gt;
 +                     &lt;svg
-+                       className=&quot;absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400&quot;
-+                       fill=&quot;none&quot;
-+                       stroke=&quot;currentColor&quot;
-+                       viewBox=&quot;0 0 24 24&quot;
++                       className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
++                       fill="none"
++                       stroke="currentColor"
++                       viewBox="0 0 24 24"
 +                     &gt;
-+                       &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot; /&gt;
++                       &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /&gt;
 +                     &lt;/svg&gt;
 +                     {playerSearchFilter &amp;&amp; (
 +                       &lt;button
-+                         onClick={() =&gt; setPlayerSearchFilter(&#39;&#39;)}
-+                         className=&quot;absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white&quot;
-+                         aria-label=&quot;Clear player search&quot;
++                         onClick={() =&gt; setPlayerSearchFilter('')}
++                         className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
++                         aria-label="Clear player search"
 +                       &gt;
-+                         &lt;svg className=&quot;w-4 h-4&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                           &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M6 18L18 6M6 6l12 12&quot; /&gt;
++                         &lt;svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                           &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /&gt;
 +                         &lt;/svg&gt;
 +                       &lt;/button&gt;
 +                     )}
@@ -668,7 +668,7 @@ Lines added: 33, lines removed: undefined
 +                 &lt;/div&gt;
 + 
                   {/* Stats Filter Toggle */}
-                  &lt;div className=&quot;mb-4 flex flex-wrap gap-2&quot;&gt;
+                  &lt;div className="mb-4 flex flex-wrap gap-2"&gt;
 ```
 
 **Chunk 2**
@@ -680,30 +680,30 @@ Lines added: 24, lines removed: undefined
                   &lt;/div&gt;
 + 
 +                 {/* View Toggle (Per Game vs Totals) */}
-+                 &lt;div className=&quot;mb-4 flex flex-wrap gap-2&quot;&gt;
++                 &lt;div className="mb-4 flex flex-wrap gap-2"&gt;
 +                   &lt;button
-+                     onClick={() =&gt; setStatsView(&#39;perGame&#39;)}
++                     onClick={() =&gt; setStatsView('perGame')}
 +                     className={&#96;px-4 py-2 rounded-lg text-sm font-medium transition ${
-+                       statsView === &#39;perGame&#39;
-+                         ? &#39;bg-blue-600 text-white&#39;
-+                         : &#39;bg-neutral-800 text-neutral-300 hover:bg-neutral-700&#39;
++                       statsView === 'perGame'
++                         ? 'bg-blue-600 text-white'
++                         : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
 +                     }&#96;}
 +                   &gt;
 +                     Per Game
 +                   &lt;/button&gt;
 +                   &lt;button
-+                     onClick={() =&gt; setStatsView(&#39;totals&#39;)}
++                     onClick={() =&gt; setStatsView('totals')}
 +                     className={&#96;px-4 py-2 rounded-lg text-sm font-medium transition ${
-+                       statsView === &#39;totals&#39;
-+                         ? &#39;bg-blue-600 text-white&#39;
-+                         : &#39;bg-neutral-800 text-neutral-300 hover:bg-neutral-700&#39;
++                       statsView === 'totals'
++                         ? 'bg-blue-600 text-white'
++                         : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
 +                     }&#96;}
 +                   &gt;
 +                     Totals
 +                   &lt;/button&gt;
 +                 &lt;/div&gt;
                   
-                  &lt;div className=&quot;mb-4 text-sm text-neutral-400&quot;&gt;
+                  &lt;div className="mb-4 text-sm text-neutral-400"&gt;
 ```
 
 </details>
@@ -723,7 +723,7 @@ Updating the table headers and cells to support totals view:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 12, lines removed: 12
@@ -731,52 +731,52 @@ Lines added: 12, lines removed: 12
 ```diff
 @@ -1236,37 +1236,37 @@
                           &lt;th 
-                            className=&quot;text-right py-2 px-4 cursor-pointer hover:text-white&quot;
--                           onClick={() =&gt; handleSort(&#39;avg_points&#39;)}
-+                           onClick={() =&gt; handleSort(statsView === &#39;totals&#39; ? &#39;points&#39; : &#39;avg_points&#39;)}
+                            className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() =&gt; handleSort('avg_points')}
++                           onClick={() =&gt; handleSort(statsView === 'totals' ? 'points' : 'avg_points')}
                           &gt;
--                           PPG {sortBy === &#39;avg_points&#39; &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
-+                           {statsView === &#39;totals&#39; ? &#39;PTS&#39; : &#39;PPG&#39;} {sortBy === (statsView === &#39;totals&#39; ? &#39;points&#39; : &#39;avg_points&#39;) &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
+-                           PPG {sortBy === 'avg_points' &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
++                           {statsView === 'totals' ? 'PTS' : 'PPG'} {sortBy === (statsView === 'totals' ? 'points' : 'avg_points') &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
                           &lt;/th&gt;
                           &lt;th 
-                            className=&quot;text-right py-2 px-4 cursor-pointer hover:text-white&quot;
--                           onClick={() =&gt; handleSort(&#39;avg_rebounds&#39;)}
-+                           onClick={() =&gt; handleSort(statsView === &#39;totals&#39; ? &#39;rebounds&#39; : &#39;avg_rebounds&#39;)}
+                            className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() =&gt; handleSort('avg_rebounds')}
++                           onClick={() =&gt; handleSort(statsView === 'totals' ? 'rebounds' : 'avg_rebounds')}
                           &gt;
--                           RPG {sortBy === &#39;avg_rebounds&#39; &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
-+                           {statsView === &#39;totals&#39; ? &#39;REB&#39; : &#39;RPG&#39;} {sortBy === (statsView === &#39;totals&#39; ? &#39;rebounds&#39; : &#39;avg_rebounds&#39;) &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
+-                           RPG {sortBy === 'avg_rebounds' &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
++                           {statsView === 'totals' ? 'REB' : 'RPG'} {sortBy === (statsView === 'totals' ? 'rebounds' : 'avg_rebounds') &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
                           &lt;/th&gt;
                           &lt;th 
-                            className=&quot;text-right py-2 px-4 cursor-pointer hover:text-white&quot;
--                           onClick={() =&gt; handleSort(&#39;avg_assists&#39;)}
-+                           onClick={() =&gt; handleSort(statsView === &#39;totals&#39; ? &#39;assists&#39; : &#39;avg_assists&#39;)}
+                            className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() =&gt; handleSort('avg_assists')}
++                           onClick={() =&gt; handleSort(statsView === 'totals' ? 'assists' : 'avg_assists')}
                           &gt;
--                           APG {sortBy === &#39;avg_assists&#39; &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
-+                           {statsView === &#39;totals&#39; ? &#39;AST&#39; : &#39;APG&#39;} {sortBy === (statsView === &#39;totals&#39; ? &#39;assists&#39; : &#39;avg_assists&#39;) &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
+-                           APG {sortBy === 'avg_assists' &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
++                           {statsView === 'totals' ? 'AST' : 'APG'} {sortBy === (statsView === 'totals' ? 'assists' : 'avg_assists') &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
                           &lt;/th&gt;
                           &lt;th 
-                            className=&quot;text-right py-2 px-4 cursor-pointer hover:text-white&quot;
--                           onClick={() =&gt; handleSort(&#39;avg_steals&#39;)}
-+                           onClick={() =&gt; handleSort(statsView === &#39;totals&#39; ? &#39;steals&#39; : &#39;avg_steals&#39;)}
+                            className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() =&gt; handleSort('avg_steals')}
++                           onClick={() =&gt; handleSort(statsView === 'totals' ? 'steals' : 'avg_steals')}
                           &gt;
--                           SPG {sortBy === &#39;avg_steals&#39; &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
-+                           {statsView === &#39;totals&#39; ? &#39;STL&#39; : &#39;SPG&#39;} {sortBy === (statsView === &#39;totals&#39; ? &#39;steals&#39; : &#39;avg_steals&#39;) &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
+-                           SPG {sortBy === 'avg_steals' &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
++                           {statsView === 'totals' ? 'STL' : 'SPG'} {sortBy === (statsView === 'totals' ? 'steals' : 'avg_steals') &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
                           &lt;/th&gt;
                           &lt;th 
-                            className=&quot;text-right py-2 px-4 cursor-pointer hover:text-white&quot;
--                           onClick={() =&gt; handleSort(&#39;avg_blocks&#39;)}
-+                           onClick={() =&gt; handleSort(statsView === &#39;totals&#39; ? &#39;blocks&#39; : &#39;avg_blocks&#39;)}
+                            className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() =&gt; handleSort('avg_blocks')}
++                           onClick={() =&gt; handleSort(statsView === 'totals' ? 'blocks' : 'avg_blocks')}
                           &gt;
--                           BPG {sortBy === &#39;avg_blocks&#39; &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
-+                           {statsView === &#39;totals&#39; ? &#39;BLK&#39; : &#39;BPG&#39;} {sortBy === (statsView === &#39;totals&#39; ? &#39;blocks&#39; : &#39;avg_blocks&#39;) &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
+-                           BPG {sortBy === 'avg_blocks' &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
++                           {statsView === 'totals' ? 'BLK' : 'BPG'} {sortBy === (statsView === 'totals' ? 'blocks' : 'avg_blocks') &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
                           &lt;/th&gt;
                           &lt;th 
-                            className=&quot;text-right py-2 px-4 cursor-pointer hover:text-white&quot;
--                           onClick={() =&gt; handleSort(&#39;avg_turnovers&#39;)}
-+                           onClick={() =&gt; handleSort(statsView === &#39;totals&#39; ? &#39;turnovers&#39; : &#39;avg_turnovers&#39;)}
+                            className="text-right py-2 px-4 cursor-pointer hover:text-white"
+-                           onClick={() =&gt; handleSort('avg_turnovers')}
++                           onClick={() =&gt; handleSort(statsView === 'totals' ? 'turnovers' : 'avg_turnovers')}
                           &gt;
--                           TOV {sortBy === &#39;avg_turnovers&#39; &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
-+                           {statsView === &#39;totals&#39; ? &#39;TOV&#39; : &#39;TOV&#39;} {sortBy === (statsView === &#39;totals&#39; ? &#39;turnovers&#39; : &#39;avg_turnovers&#39;) &amp;&amp; (sortDirection === &#39;asc&#39; ? &#39;↑&#39; : &#39;↓&#39;)}
+-                           TOV {sortBy === 'avg_turnovers' &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
++                           {statsView === 'totals' ? 'TOV' : 'TOV'} {sortBy === (statsView === 'totals' ? 'turnovers' : 'avg_turnovers') &amp;&amp; (sortDirection === 'asc' ? '↑' : '↓')}
                           &lt;/th&gt;
                           &lt;th 
 ```
@@ -798,57 +798,57 @@ Updating the table body cells to show totals when totals view is selected:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 24, lines removed: 6
 
 ```diff
 @@ -1321,20 +1321,38 @@
-                              &lt;td className=&quot;py-2 px-4 text-right&quot;&gt;{player.games_played}&lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4 text-right font-semibold text-blue-400&quot;&gt;
--                               {player.avg_points?.toFixed(1) ?? &#39;-&#39;}
-+                               {statsView === &#39;totals&#39; 
+                              &lt;td className="py-2 px-4 text-right"&gt;{player.games_played}&lt;/td&gt;
+                              &lt;td className="py-2 px-4 text-right font-semibold text-blue-400"&gt;
+-                               {player.avg_points?.toFixed(1) ?? '-'}
++                               {statsView === 'totals' 
 +                                 ? (player.points ?? 0).toLocaleString()
-+                                 : (player.avg_points?.toFixed(1) ?? &#39;-&#39;)
++                                 : (player.avg_points?.toFixed(1) ?? '-')
 +                               }
                               &lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4 text-right&quot;&gt;
--                               {player.avg_rebounds?.toFixed(1) ?? &#39;-&#39;}
-+                               {statsView === &#39;totals&#39; 
+                              &lt;td className="py-2 px-4 text-right"&gt;
+-                               {player.avg_rebounds?.toFixed(1) ?? '-'}
++                               {statsView === 'totals' 
 +                                 ? (player.rebounds ?? 0).toLocaleString()
-+                                 : (player.avg_rebounds?.toFixed(1) ?? &#39;-&#39;)
++                                 : (player.avg_rebounds?.toFixed(1) ?? '-')
 +                               }
                               &lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4 text-right text-green-400&quot;&gt;
--                               {player.avg_assists?.toFixed(1) ?? &#39;-&#39;}
-+                               {statsView === &#39;totals&#39; 
+                              &lt;td className="py-2 px-4 text-right text-green-400"&gt;
+-                               {player.avg_assists?.toFixed(1) ?? '-'}
++                               {statsView === 'totals' 
 +                                 ? (player.assists ?? 0).toLocaleString()
-+                                 : (player.avg_assists?.toFixed(1) ?? &#39;-&#39;)
++                                 : (player.avg_assists?.toFixed(1) ?? '-')
 +                               }
                               &lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4 text-right text-yellow-400&quot;&gt;
--                               {player.avg_steals?.toFixed(1) ?? &#39;-&#39;}
-+                               {statsView === &#39;totals&#39; 
+                              &lt;td className="py-2 px-4 text-right text-yellow-400"&gt;
+-                               {player.avg_steals?.toFixed(1) ?? '-'}
++                               {statsView === 'totals' 
 +                                 ? (player.steals ?? 0).toLocaleString()
-+                                 : (player.avg_steals?.toFixed(1) ?? &#39;-&#39;)
++                                 : (player.avg_steals?.toFixed(1) ?? '-')
 +                               }
                               &lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4 text-right text-red-400&quot;&gt;
--                               {player.avg_blocks?.toFixed(1) ?? &#39;-&#39;}
-+                               {statsView === &#39;totals&#39; 
+                              &lt;td className="py-2 px-4 text-right text-red-400"&gt;
+-                               {player.avg_blocks?.toFixed(1) ?? '-'}
++                               {statsView === 'totals' 
 +                                 ? (player.blocks ?? 0).toLocaleString()
-+                                 : (player.avg_blocks?.toFixed(1) ?? &#39;-&#39;)
++                                 : (player.avg_blocks?.toFixed(1) ?? '-')
 +                               }
                               &lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4 text-right text-neutral-400&quot;&gt;
--                               {player.avg_turnovers?.toFixed(1) ?? &#39;-&#39;}
-+                               {statsView === &#39;totals&#39; 
+                              &lt;td className="py-2 px-4 text-right text-neutral-400"&gt;
+-                               {player.avg_turnovers?.toFixed(1) ?? '-'}
++                               {statsView === 'totals' 
 +                                 ? (player.turnovers ?? 0).toLocaleString()
-+                                 : (player.avg_turnovers?.toFixed(1) ?? &#39;-&#39;)
++                                 : (player.avg_turnovers?.toFixed(1) ?? '-')
 +                               }
                               &lt;/td&gt;
-                              &lt;td className=&quot;py-2 px-4 text-right&quot;&gt;
+                              &lt;td className="py-2 px-4 text-right"&gt;
 ```
 
 </details>
@@ -961,7 +961,7 @@ Adding champion resolution logic before the return statement:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 91, lines removed: undefined
@@ -1018,7 +1018,7 @@ Lines added: 91, lines removed: undefined
 +           });
 +         }
 +         const data = teamsWithChampionships.get(regularSeasonChampion)!;
-+         data.championships.push(&#39;Regular Season&#39;);
++         data.championships.push('Regular Season');
 +         data.count = data.championships.length;
 +       }
 +     }
@@ -1036,7 +1036,7 @@ Lines added: 91, lines removed: undefined
 +           });
 +         }
 +         const data = teamsWithChampionships.get(openTournament.champion)!;
-+         data.championships.push(&#39;Open Tournament&#39;);
++         data.championships.push('Open Tournament');
 +         data.count = data.championships.length;
 +       }
 +     }
@@ -1054,7 +1054,7 @@ Lines added: 91, lines removed: undefined
 +           });
 +         }
 +         const data = teamsWithChampionships.get(playoffTournament.champion)!;
-+         data.championships.push(&#39;Playoff Tournament&#39;);
++         data.championships.push('Playoff Tournament');
 +         data.count = data.championships.length;
 +       }
 +     }
@@ -1082,7 +1082,7 @@ Adding the champions section and triple crown progress bars to the Information t
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 69, lines removed: undefined
@@ -1094,25 +1094,25 @@ Lines added: 69, lines removed: undefined
 + 
 +                 {/* Champions Section */}
 +                 {(regularSeasonChampionName || openChampionName || playoffChampionName) &amp;&amp; (
-+                   &lt;div className=&quot;pt-4 border-t border-neutral-800&quot;&gt;
-+                     &lt;div className=&quot;text-sm text-neutral-400 mb-3&quot;&gt;Season Champions&lt;/div&gt;
-+                     &lt;div className=&quot;grid gap-4 sm:grid-cols-3&quot;&gt;
++                   &lt;div className="pt-4 border-t border-neutral-800"&gt;
++                     &lt;div className="text-sm text-neutral-400 mb-3"&gt;Season Champions&lt;/div&gt;
++                     &lt;div className="grid gap-4 sm:grid-cols-3"&gt;
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-xs text-neutral-500 mb-1&quot;&gt;Regular Season&lt;/div&gt;
-+                         &lt;div className=&quot;text-lg font-semibold&quot;&gt;
-+                           {regularSeasonChampionName || &#39;TBD&#39;}
++                         &lt;div className="text-xs text-neutral-500 mb-1"&gt;Regular Season&lt;/div&gt;
++                         &lt;div className="text-lg font-semibold"&gt;
++                           {regularSeasonChampionName || 'TBD'}
 +                         &lt;/div&gt;
 +                       &lt;/div&gt;
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-xs text-neutral-500 mb-1&quot;&gt;Open Tournament&lt;/div&gt;
-+                         &lt;div className=&quot;text-lg font-semibold&quot;&gt;
-+                           {openChampionName || &#39;TBD&#39;}
++                         &lt;div className="text-xs text-neutral-500 mb-1"&gt;Open Tournament&lt;/div&gt;
++                         &lt;div className="text-lg font-semibold"&gt;
++                           {openChampionName || 'TBD'}
 +                         &lt;/div&gt;
 +                       &lt;/div&gt;
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-xs text-neutral-500 mb-1&quot;&gt;Playoff Tournament&lt;/div&gt;
-+                         &lt;div className=&quot;text-lg font-semibold&quot;&gt;
-+                           {playoffChampionName || &#39;TBD&#39;}
++                         &lt;div className="text-xs text-neutral-500 mb-1"&gt;Playoff Tournament&lt;/div&gt;
++                         &lt;div className="text-lg font-semibold"&gt;
++                           {playoffChampionName || 'TBD'}
 +                         &lt;/div&gt;
 +                       &lt;/div&gt;
 +                     &lt;/div&gt;
@@ -1121,38 +1121,38 @@ Lines added: 69, lines removed: undefined
 + 
 +                 {/* Triple Crown Progress */}
 +                 {tripleCrownData.length &gt; 0 &amp;&amp; (
-+                   &lt;div className=&quot;pt-4 border-t border-neutral-800&quot;&gt;
-+                     &lt;div className=&quot;text-sm text-neutral-400 mb-3&quot;&gt;Triple Crown Progress&lt;/div&gt;
-+                     &lt;div className=&quot;space-y-4&quot;&gt;
++                   &lt;div className="pt-4 border-t border-neutral-800"&gt;
++                     &lt;div className="text-sm text-neutral-400 mb-3"&gt;Triple Crown Progress&lt;/div&gt;
++                     &lt;div className="space-y-4"&gt;
 +                       {tripleCrownData.map((team) =&gt; {
 +                         const progress = (team.count / 3) * 100;
 +                         const isTripleCrown = team.count === 3;
 +                         
 +                         return (
-+                           &lt;div key={team.teamId} className=&quot;space-y-2&quot;&gt;
-+                             &lt;div className=&quot;flex items-center justify-between&quot;&gt;
-+                               &lt;span className=&quot;text-sm font-medium&quot;&gt;{team.teamName}&lt;/span&gt;
++                           &lt;div key={team.teamId} className="space-y-2"&gt;
++                             &lt;div className="flex items-center justify-between"&gt;
++                               &lt;span className="text-sm font-medium"&gt;{team.teamName}&lt;/span&gt;
 +                               &lt;span className={&#96;text-xs font-semibold ${
-+                                 isTripleCrown ? &#39;text-yellow-400&#39; : &#39;text-neutral-400&#39;
++                                 isTripleCrown ? 'text-yellow-400' : 'text-neutral-400'
 +                               }&#96;}&gt;
 +                                 {team.count}/3
-+                                 {isTripleCrown &amp;&amp; &#39; 🏆 Triple Crown Achieved!&#39;}
++                                 {isTripleCrown &amp;&amp; ' 🏆 Triple Crown Achieved!'}
 +                               &lt;/span&gt;
 +                             &lt;/div&gt;
-+                             &lt;div className=&quot;w-full bg-neutral-800 rounded-full h-3 overflow-hidden&quot;&gt;
++                             &lt;div className="w-full bg-neutral-800 rounded-full h-3 overflow-hidden"&gt;
 +                               &lt;div
 +                                 className={&#96;h-full transition-all duration-300 ${
 +                                   isTripleCrown
-+                                     ? &#39;bg-gradient-to-r from-yellow-500 to-yellow-600&#39;
++                                     ? 'bg-gradient-to-r from-yellow-500 to-yellow-600'
 +                                     : progress &gt;= 67
-+                                     ? &#39;bg-gradient-to-r from-blue-500 to-blue-600&#39;
-+                                     : &#39;bg-gradient-to-r from-neutral-600 to-neutral-700&#39;
++                                     ? 'bg-gradient-to-r from-blue-500 to-blue-600'
++                                     : 'bg-gradient-to-r from-neutral-600 to-neutral-700'
 +                                 }&#96;}
 +                                 style={{ width: &#96;${progress}%&#96; }}
 +                               /&gt;
 +                             &lt;/div&gt;
-+                             &lt;div className=&quot;text-xs text-neutral-500&quot;&gt;
-+                               {team.championships.join(&#39;, &#39;)}
++                             &lt;div className="text-xs text-neutral-500"&gt;
++                               {team.championships.join(', ')}
 +                             &lt;/div&gt;
 +                           &lt;/div&gt;
 +                         );
@@ -1207,7 +1207,7 @@ Adding logic to handle sorting when switching between views:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 27, lines removed: undefined
@@ -1221,23 +1221,23 @@ Lines added: 27, lines removed: undefined
 +   useEffect(() =&gt; {
 +     // Map between totals and per-game sort fields
 +     const fieldMap: Record&lt;string, { totals: keyof PlayerStatFull; perGame: keyof PlayerStatFull }&gt; = {
-+       points: { totals: &#39;points&#39;, perGame: &#39;avg_points&#39; },
-+       rebounds: { totals: &#39;rebounds&#39;, perGame: &#39;avg_rebounds&#39; },
-+       assists: { totals: &#39;assists&#39;, perGame: &#39;avg_assists&#39; },
-+       steals: { totals: &#39;steals&#39;, perGame: &#39;avg_steals&#39; },
-+       blocks: { totals: &#39;blocks&#39;, perGame: &#39;avg_blocks&#39; },
-+       turnovers: { totals: &#39;turnovers&#39;, perGame: &#39;avg_turnovers&#39; },
-+       avg_points: { totals: &#39;points&#39;, perGame: &#39;avg_points&#39; },
-+       avg_rebounds: { totals: &#39;rebounds&#39;, perGame: &#39;avg_rebounds&#39; },
-+       avg_assists: { totals: &#39;assists&#39;, perGame: &#39;avg_assists&#39; },
-+       avg_steals: { totals: &#39;steals&#39;, perGame: &#39;avg_steals&#39; },
-+       avg_blocks: { totals: &#39;blocks&#39;, perGame: &#39;avg_blocks&#39; },
-+       avg_turnovers: { totals: &#39;turnovers&#39;, perGame: &#39;avg_turnovers&#39; },
++       points: { totals: 'points', perGame: 'avg_points' },
++       rebounds: { totals: 'rebounds', perGame: 'avg_rebounds' },
++       assists: { totals: 'assists', perGame: 'avg_assists' },
++       steals: { totals: 'steals', perGame: 'avg_steals' },
++       blocks: { totals: 'blocks', perGame: 'avg_blocks' },
++       turnovers: { totals: 'turnovers', perGame: 'avg_turnovers' },
++       avg_points: { totals: 'points', perGame: 'avg_points' },
++       avg_rebounds: { totals: 'rebounds', perGame: 'avg_rebounds' },
++       avg_assists: { totals: 'assists', perGame: 'avg_assists' },
++       avg_steals: { totals: 'steals', perGame: 'avg_steals' },
++       avg_blocks: { totals: 'blocks', perGame: 'avg_blocks' },
++       avg_turnovers: { totals: 'turnovers', perGame: 'avg_turnovers' },
 +     };
 + 
 +     const mapping = fieldMap[sortBy];
 +     if (mapping) {
-+       const newField = statsView === &#39;totals&#39; ? mapping.totals : mapping.perGame;
++       const newField = statsView === 'totals' ? mapping.totals : mapping.perGame;
 +       if (newField !== sortBy) {
 +         setSortBy(newField);
 +       }
@@ -1544,7 +1544,7 @@ Updating the code to use champion data from `league_season_performance_mart`. Ad
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: undefined
@@ -1577,7 +1577,7 @@ Updating the Astro page to pass champion data from `leagueData`:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
@@ -1626,7 +1626,7 @@ Updating the component to use champion data from `leagueInfo` instead of calcula
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 17, lines removed: 17
@@ -1690,7 +1690,7 @@ Updating the triple crown calculation to use the champion IDs:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 40, lines removed: 49
@@ -1711,7 +1711,7 @@ Lines added: 40, lines removed: 49
 -           });
 -         }
 -         const data = teamsWithChampionships.get(regularSeasonChampion)!;
--         data.championships.push(&#39;Regular Season&#39;);
+-         data.championships.push('Regular Season');
 -         data.count = data.championships.length;
 -       }
 -     }
@@ -1725,7 +1725,7 @@ Lines added: 40, lines removed: 49
 +         });
 +       }
 +       const data = teamsWithChampionships.get(regularSeasonChampionId)!;
-+       data.championships.push(&#39;Regular Season&#39;);
++       data.championships.push('Regular Season');
 +       data.count = data.championships.length;
 +     }
   
@@ -1742,7 +1742,7 @@ Lines added: 40, lines removed: 49
 -           });
 -         }
 -         const data = teamsWithChampionships.get(openTournament.champion)!;
--         data.championships.push(&#39;Open Tournament&#39;);
+-         data.championships.push('Open Tournament');
 -         data.count = data.championships.length;
 -       }
 -     }
@@ -1756,7 +1756,7 @@ Lines added: 40, lines removed: 49
 +         });
 +       }
 +       const data = teamsWithChampionships.get(openChampionId)!;
-+       data.championships.push(&#39;Open Tournament&#39;);
++       data.championships.push('Open Tournament');
 +       data.count = data.championships.length;
 +     }
   
@@ -1773,7 +1773,7 @@ Lines added: 40, lines removed: 49
 -           });
 -         }
 -         const data = teamsWithChampionships.get(playoffTournament.champion)!;
--         data.championships.push(&#39;Playoff Tournament&#39;);
+-         data.championships.push('Playoff Tournament');
 -         data.count = data.championships.length;
 -       }
 -     }
@@ -1787,7 +1787,7 @@ Lines added: 40, lines removed: 49
 +         });
 +       }
 +       const data = teamsWithChampionships.get(playoffChampionId)!;
-+       data.championships.push(&#39;Playoff Tournament&#39;);
++       data.championships.push('Playoff Tournament');
 +       data.count = data.championships.length;
 +     }
   
@@ -1884,7 +1884,7 @@ Reverting the champions display to use tournament objects and calculating regula
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 24, lines removed: 13
@@ -1952,7 +1952,7 @@ Updating the triple crown calculation to use champion names from `leagueInfo` wh
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -1985,7 +1985,7 @@ Lines added: 52, lines removed: 43
 -         });
 -       }
 -       const data = teamsWithChampionships.get(regularSeasonChampionId)!;
--       data.championships.push(&#39;Regular Season&#39;);
+-       data.championships.push('Regular Season');
 -       data.count = data.championships.length;
 -     }
 +     // Regular Season Champion (from league_season_performance_mart)
@@ -2001,7 +2001,7 @@ Lines added: 52, lines removed: 43
 +           });
 +         }
 +         const data = teamsWithChampionships.get(regularSeasonChampionId)!;
-+         data.championships.push(&#39;Regular Season&#39;);
++         data.championships.push('Regular Season');
 +         data.count = data.championships.length;
 +       }
 +     }
@@ -2017,7 +2017,7 @@ Lines added: 52, lines removed: 43
 -         });
 -       }
 -       const data = teamsWithChampionships.get(openChampionId)!;
--       data.championships.push(&#39;Open Tournament&#39;);
+-       data.championships.push('Open Tournament');
 -       data.count = data.championships.length;
 -     }
 +     // Open Champion (from league_season_performance_mart)
@@ -2033,7 +2033,7 @@ Lines added: 52, lines removed: 43
 +           });
 +         }
 +         const data = teamsWithChampionships.get(openChampionId)!;
-+         data.championships.push(&#39;Open Tournament&#39;);
++         data.championships.push('Open Tournament');
 +         data.count = data.championships.length;
 +       }
 +     }
@@ -2049,7 +2049,7 @@ Lines added: 52, lines removed: 43
 -         });
 -       }
 -       const data = teamsWithChampionships.get(playoffChampionId)!;
--       data.championships.push(&#39;Playoff Tournament&#39;);
+-       data.championships.push('Playoff Tournament');
 -       data.count = data.championships.length;
 -     }
 +     // Playoff Champion (from league_season_performance_mart)
@@ -2065,7 +2065,7 @@ Lines added: 52, lines removed: 43
 +           });
 +         }
 +         const data = teamsWithChampionships.get(playoffChampionId)!;
-+         data.championships.push(&#39;Playoff Tournament&#39;);
++         data.championships.push('Playoff Tournament');
 +         data.count = data.championships.length;
 +       }
 +     }
@@ -2094,7 +2094,7 @@ Fixing the dependency array — `getTeamName` is a function, not a dependency:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -2126,7 +2126,7 @@ Refactoring the regularSeasonChampionId calculation to use useMemo:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 7, lines removed: 6
@@ -2323,7 +2323,7 @@ Fixing the triple crown tracker logic and updating the UI to show three icons ne
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
@@ -2355,7 +2355,7 @@ Lines added: 17, lines removed: 11
             });
           }
           const data = teamsWithChampionships.get(regularSeasonChampionId)!;
--         data.championships.push(&#39;Regular Season&#39;);
+-         data.championships.push('Regular Season');
 -         data.count = data.championships.length;
 +         data.hasRegularSeason = true;
 +         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
@@ -2379,7 +2379,7 @@ Lines added: 17, lines removed: 11
             });
           }
           const data = teamsWithChampionships.get(openChampionId)!;
--         data.championships.push(&#39;Open Tournament&#39;);
+-         data.championships.push('Open Tournament');
 -         data.count = data.championships.length;
 +         data.hasOpen = true;
 +         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
@@ -2403,7 +2403,7 @@ Lines added: 17, lines removed: 11
             });
           }
           const data = teamsWithChampionships.get(playoffChampionId)!;
--         data.championships.push(&#39;Playoff Tournament&#39;);
+-         data.championships.push('Playoff Tournament');
 -         data.count = data.championships.length;
 +         data.hasPlayoff = true;
 +         data.count = (data.hasRegularSeason ? 1 : 0) + (data.hasOpen ? 1 : 0) + (data.hasPlayoff ? 1 : 0);
@@ -2428,118 +2428,118 @@ Updating the UI to show three icons next to each team name:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 75, lines removed: 27
 
 ```diff
 @@ -1837,35 +1837,83 @@
-                    &lt;div className=&quot;pt-4 border-t border-neutral-800&quot;&gt;
-                      &lt;div className=&quot;text-sm text-neutral-400 mb-3&quot;&gt;Triple Crown Progress&lt;/div&gt;
--                     &lt;div className=&quot;space-y-4&quot;&gt;
-+                     &lt;div className=&quot;space-y-3&quot;&gt;
+                    &lt;div className="pt-4 border-t border-neutral-800"&gt;
+                      &lt;div className="text-sm text-neutral-400 mb-3"&gt;Triple Crown Progress&lt;/div&gt;
+-                     &lt;div className="space-y-4"&gt;
++                     &lt;div className="space-y-3"&gt;
                         {tripleCrownData.map((team) =&gt; {
 -                         const progress = (team.count / 3) * 100;
                           const isTripleCrown = team.count === 3;
                           
                           return (
--                           &lt;div key={team.teamId} className=&quot;space-y-2&quot;&gt;
--                             &lt;div className=&quot;flex items-center justify-between&quot;&gt;
--                               &lt;span className=&quot;text-sm font-medium&quot;&gt;{team.teamName}&lt;/span&gt;
+-                           &lt;div key={team.teamId} className="space-y-2"&gt;
+-                             &lt;div className="flex items-center justify-between"&gt;
+-                               &lt;span className="text-sm font-medium"&gt;{team.teamName}&lt;/span&gt;
 -                               &lt;span className={&#96;text-xs font-semibold ${
--                                 isTripleCrown ? &#39;text-yellow-400&#39; : &#39;text-neutral-400&#39;
+-                                 isTripleCrown ? 'text-yellow-400' : 'text-neutral-400'
 -                               }&#96;}&gt;
 -                                 {team.count}/3
--                                 {isTripleCrown &amp;&amp; &#39; 🏆 Triple Crown Achieved!&#39;}
+-                                 {isTripleCrown &amp;&amp; ' 🏆 Triple Crown Achieved!'}
 -                               &lt;/span&gt;
 -                             &lt;/div&gt;
--                             &lt;div className=&quot;w-full bg-neutral-800 rounded-full h-3 overflow-hidden&quot;&gt;
+-                             &lt;div className="w-full bg-neutral-800 rounded-full h-3 overflow-hidden"&gt;
 -                               &lt;div
 -                                 className={&#96;h-full transition-all duration-300 ${
 -                                   isTripleCrown
--                                     ? &#39;bg-gradient-to-r from-yellow-500 to-yellow-600&#39;
+-                                     ? 'bg-gradient-to-r from-yellow-500 to-yellow-600'
 -                                     : progress &gt;= 67
--                                     ? &#39;bg-gradient-to-r from-blue-500 to-blue-600&#39;
--                                     : &#39;bg-gradient-to-r from-neutral-600 to-neutral-700&#39;
+-                                     ? 'bg-gradient-to-r from-blue-500 to-blue-600'
+-                                     : 'bg-gradient-to-r from-neutral-600 to-neutral-700'
 -                                 }&#96;}
 -                                 style={{ width: &#96;${progress}%&#96; }}
 -                               /&gt;
 -                             &lt;/div&gt;
--                             &lt;div className=&quot;text-xs text-neutral-500&quot;&gt;
--                               {team.championships.join(&#39;, &#39;)}
+-                             &lt;div className="text-xs text-neutral-500"&gt;
+-                               {team.championships.join(', ')}
 -                             &lt;/div&gt;
-+                           &lt;div key={team.teamId} className=&quot;flex items-center gap-3&quot;&gt;
-+                             &lt;span className=&quot;text-sm font-medium flex-1&quot;&gt;{team.teamName}&lt;/span&gt;
-+                             &lt;div className=&quot;flex items-center gap-2&quot;&gt;
++                           &lt;div key={team.teamId} className="flex items-center gap-3"&gt;
++                             &lt;span className="text-sm font-medium flex-1"&gt;{team.teamName}&lt;/span&gt;
++                             &lt;div className="flex items-center gap-2"&gt;
 +                               {/* Regular Season Icon */}
-+                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                               &lt;div className="flex flex-col items-center gap-1"&gt;
 +                                 &lt;svg
 +                                   className={&#96;w-5 h-5 ${
 +                                     team.hasRegularSeason
-+                                       ? &#39;text-yellow-400 fill-current&#39;
-+                                       : &#39;text-neutral-600&#39;
++                                       ? 'text-yellow-400 fill-current'
++                                       : 'text-neutral-600'
 +                                   }&#96;}
-+                                   fill=&quot;none&quot;
-+                                   stroke=&quot;currentColor&quot;
-+                                   viewBox=&quot;0 0 24 24&quot;
++                                   fill="none"
++                                   stroke="currentColor"
++                                   viewBox="0 0 24 24"
 +                                 &gt;
 +                                   &lt;path
-+                                     strokeLinecap=&quot;round&quot;
-+                                     strokeLinejoin=&quot;round&quot;
++                                     strokeLinecap="round"
++                                     strokeLinejoin="round"
 +                                     strokeWidth={2}
-+                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
 +                                   /&gt;
 +                                 &lt;/svg&gt;
-+                                 &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;RS&lt;/span&gt;
++                                 &lt;span className="text-[8px] text-neutral-500"&gt;RS&lt;/span&gt;
 +                               &lt;/div&gt;
 +                               
 +                               {/* Open Tournament Icon */}
-+                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                               &lt;div className="flex flex-col items-center gap-1"&gt;
 +                                 &lt;svg
 +                                   className={&#96;w-5 h-5 ${
 +                                     team.hasOpen
-+                                       ? &#39;text-blue-400 fill-current&#39;
-+                                       : &#39;text-neutral-600&#39;
++                                       ? 'text-blue-400 fill-current'
++                                       : 'text-neutral-600'
 +                                   }&#96;}
-+                                   fill=&quot;none&quot;
-+                                   stroke=&quot;currentColor&quot;
-+                                   viewBox=&quot;0 0 24 24&quot;
++                                   fill="none"
++                                   stroke="currentColor"
++                                   viewBox="0 0 24 24"
 +                                 &gt;
 +                                   &lt;path
-+                                     strokeLinecap=&quot;round&quot;
-+                                     strokeLinejoin=&quot;round&quot;
++                                     strokeLinecap="round"
++                                     strokeLinejoin="round"
 +                                     strokeWidth={2}
-+                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
 +                                   /&gt;
 +                                 &lt;/svg&gt;
-+                                 &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;Open&lt;/span&gt;
++                                 &lt;span className="text-[8px] text-neutral-500"&gt;Open&lt;/span&gt;
 +                               &lt;/div&gt;
 +                               
 +                               {/* Playoff Tournament Icon */}
-+                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
++                               &lt;div className="flex flex-col items-center gap-1"&gt;
 +                                 &lt;svg
 +                                   className={&#96;w-5 h-5 ${
 +                                     team.hasPlayoff
-+                                       ? &#39;text-purple-400 fill-current&#39;
-+                                       : &#39;text-neutral-600&#39;
++                                       ? 'text-purple-400 fill-current'
++                                       : 'text-neutral-600'
 +                                   }&#96;}
-+                                   fill=&quot;none&quot;
-+                                   stroke=&quot;currentColor&quot;
-+                                   viewBox=&quot;0 0 24 24&quot;
++                                   fill="none"
++                                   stroke="currentColor"
++                                   viewBox="0 0 24 24"
 +                                 &gt;
 +                                   &lt;path
-+                                     strokeLinecap=&quot;round&quot;
-+                                     strokeLinejoin=&quot;round&quot;
++                                     strokeLinecap="round"
++                                     strokeLinejoin="round"
 +                                     strokeWidth={2}
-+                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
++                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
 +                                   /&gt;
 +                                 &lt;/svg&gt;
-+                                 &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;Playoff&lt;/span&gt;
++                                 &lt;span className="text-[8px] text-neutral-500"&gt;Playoff&lt;/span&gt;
 +                               &lt;/div&gt;
 +                             &lt;/div&gt;
 +                             {isTripleCrown &amp;&amp; (
-+                               &lt;span className=&quot;text-xs font-semibold text-yellow-400 ml-2&quot;&gt;
++                               &lt;span className="text-xs font-semibold text-yellow-400 ml-2"&gt;
 +                                 🏆 Triple Crown!
 +                               &lt;/span&gt;
 +                             )}
@@ -2564,30 +2564,30 @@ Replacing the icons with star icons for clarity:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 4, lines removed: 4
 
 ```diff
 @@ -1845,13 +1845,13 @@
-                              &lt;span className=&quot;text-sm font-medium flex-1&quot;&gt;{team.teamName}&lt;/span&gt;
-                              &lt;div className=&quot;flex items-center gap-2&quot;&gt;
+                              &lt;span className="text-sm font-medium flex-1"&gt;{team.teamName}&lt;/span&gt;
+                              &lt;div className="flex items-center gap-2"&gt;
 -                               {/* Regular Season Icon */}
--                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
+-                               &lt;div className="flex flex-col items-center gap-1"&gt;
 +                               {/* Regular Season Star */}
-+                               &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Regular Season&quot;&gt;
++                               &lt;div className="flex flex-col items-center gap-1" title="Regular Season"&gt;
                                   &lt;svg
                                     className={&#96;w-5 h-5 ${
                                       team.hasRegularSeason
--                                       ? &#39;text-yellow-400 fill-current&#39;
-+                                       ? &#39;text-yellow-400&#39;
-                                        : &#39;text-neutral-600&#39;
+-                                       ? 'text-yellow-400 fill-current'
++                                       ? 'text-yellow-400'
+                                        : 'text-neutral-600'
                                     }&#96;}
--                                   fill=&quot;none&quot;
-+                                   fill={team.hasRegularSeason ? &#39;currentColor&#39; : &#39;none&#39;}
-                                    stroke=&quot;currentColor&quot;
-                                    viewBox=&quot;0 0 24 24&quot;
+-                                   fill="none"
++                                   fill={team.hasRegularSeason ? 'currentColor' : 'none'}
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
 ```
 
 **Chunk 2**
@@ -2595,32 +2595,32 @@ Lines added: 6, lines removed: 6
 
 ```diff
 @@ -1860,20 +1860,20 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
 -                                     strokeWidth={2}
--                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
+-                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
 +                                     strokeWidth={team.hasRegularSeason ? 0 : 1.5}
-+                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
++                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                                     /&gt;
                                   &lt;/svg&gt;
-                                  &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;RS&lt;/span&gt;
+                                  &lt;span className="text-[8px] text-neutral-500"&gt;RS&lt;/span&gt;
                                 &lt;/div&gt;
                                 
 -                               {/* Open Tournament Icon */}
--                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
+-                               &lt;div className="flex flex-col items-center gap-1"&gt;
 +                               {/* Open Tournament Star */}
-+                               &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Open Tournament&quot;&gt;
++                               &lt;div className="flex flex-col items-center gap-1" title="Open Tournament"&gt;
                                   &lt;svg
                                     className={&#96;w-5 h-5 ${
                                       team.hasOpen
--                                       ? &#39;text-blue-400 fill-current&#39;
-+                                       ? &#39;text-blue-400&#39;
-                                        : &#39;text-neutral-600&#39;
+-                                       ? 'text-blue-400 fill-current'
++                                       ? 'text-blue-400'
+                                        : 'text-neutral-600'
                                     }&#96;}
--                                   fill=&quot;none&quot;
-+                                   fill={team.hasOpen ? &#39;currentColor&#39; : &#39;none&#39;}
-                                    stroke=&quot;currentColor&quot;
-                                    viewBox=&quot;0 0 24 24&quot;
+-                                   fill="none"
++                                   fill={team.hasOpen ? 'currentColor' : 'none'}
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
 ```
 
 **Chunk 3**
@@ -2628,32 +2628,32 @@ Lines added: 6, lines removed: 6
 
 ```diff
 @@ -1882,20 +1882,20 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
 -                                     strokeWidth={2}
--                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
+-                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
 +                                     strokeWidth={team.hasOpen ? 0 : 1.5}
-+                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
++                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                                     /&gt;
                                   &lt;/svg&gt;
-                                  &lt;span className=&quot;text-[8px] text-neutral-500&quot;&gt;Open&lt;/span&gt;
+                                  &lt;span className="text-[8px] text-neutral-500"&gt;Open&lt;/span&gt;
                                 &lt;/div&gt;
                                 
 -                               {/* Playoff Tournament Icon */}
--                               &lt;div className=&quot;flex flex-col items-center gap-1&quot;&gt;
+-                               &lt;div className="flex flex-col items-center gap-1"&gt;
 +                               {/* Playoff Tournament Star */}
-+                               &lt;div className=&quot;flex flex-col items-center gap-1&quot; title=&quot;Playoff Tournament&quot;&gt;
++                               &lt;div className="flex flex-col items-center gap-1" title="Playoff Tournament"&gt;
                                   &lt;svg
                                     className={&#96;w-5 h-5 ${
                                       team.hasPlayoff
--                                       ? &#39;text-purple-400 fill-current&#39;
-+                                       ? &#39;text-purple-400&#39;
-                                        : &#39;text-neutral-600&#39;
+-                                       ? 'text-purple-400 fill-current'
++                                       ? 'text-purple-400'
+                                        : 'text-neutral-600'
                                     }&#96;}
--                                   fill=&quot;none&quot;
-+                                   fill={team.hasPlayoff ? &#39;currentColor&#39; : &#39;none&#39;}
-                                    stroke=&quot;currentColor&quot;
-                                    viewBox=&quot;0 0 24 24&quot;
+-                                   fill="none"
++                                   fill={team.hasPlayoff ? 'currentColor' : 'none'}
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
 ```
 
 **Chunk 4**
@@ -2661,12 +2661,12 @@ Lines added: 2, lines removed: 2
 
 ```diff
 @@ -1904,6 +1904,6 @@
-                                      strokeLinecap=&quot;round&quot;
-                                      strokeLinejoin=&quot;round&quot;
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
 -                                     strokeWidth={2}
--                                     d=&quot;M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z&quot;
+-                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
 +                                     strokeWidth={team.hasPlayoff ? 0 : 1.5}
-+                                     d=&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;
++                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                                     /&gt;
                                   &lt;/svg&gt;
 ```
@@ -2770,7 +2770,7 @@ Updating the Information tab to use champion data from `leagueInfo` (mart). Addi
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 18, lines removed: 1
@@ -2810,7 +2810,7 @@ Lines added: 18, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 5, lines removed: 4
@@ -2953,7 +2953,7 @@ Updating the code to treat `open_champion` and `playoff_champion` as team names 
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 3
@@ -2981,7 +2981,7 @@ Lines added: 3, lines removed: 3
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
@@ -3054,7 +3054,7 @@ Updating the triple crown calculation to use team names directly from `leagueInf
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 44, lines removed: 53
@@ -3176,7 +3176,7 @@ Lines added: 44, lines removed: 53
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1

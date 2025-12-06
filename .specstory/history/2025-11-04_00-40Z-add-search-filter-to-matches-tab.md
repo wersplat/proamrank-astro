@@ -227,20 +227,20 @@ Parameters:
 
 ```json
 {
-  &quot;plan&quot;: &quot;# Add Search/Filter to Matches Tab in League Details Page\n\n## Overview\nAdd search and filter functionality to the matches tab (activeTab === 2) in &#96;LeagueTabsIsland.tsx&#96;. Users can filter by date range and team name with autocomplete suggestions.\n\n## Implementation Details\n\n### Files to Modify\n- &#96;proam-rankings/src/components/LeagueTabsIsland.tsx&#96;\n\n### Changes Required\n\n1. **Add State Management**\n   - Add &#96;dateStartFilter&#96; state (string | null)\n   - Add &#96;dateEndFilter&#96; state (string | null)\n   - Add &#96;teamSearchFilter&#96; state (string)\n   - Add &#96;teamSearchOpen&#96; state (boolean) for dropdown visibility\n   - Update &#96;matchesPage&#96; reset logic when filters change\n\n2. **Extract Unique Team Names**\n   - Create a function to extract unique team names from &#96;matches&#96; array\n   - Include both &#96;team_a.name&#96; and &#96;team_b.name&#96;\n   - Filter out null/undefined values\n   - Sort alphabetically for dropdown display\n\n3. **Filter Matches Logic**\n   - Create &#96;filteredMatches&#96; computed value that:\n     - Filters by date range: &#96;played_at&#96; between &#96;dateStartFilter&#96; and &#96;dateEndFilter&#96; (inclusive)\n     - Filters by team name: matches where &#96;team_a.name&#96; or &#96;team_b.name&#96; contains &#96;teamSearchFilter&#96; (case-insensitive)\n   - Reset &#96;matchesPage&#96; to 1 when filters change\n   - Update pagination to use &#96;filteredMatches&#96; instead of &#96;matches&#96;\n\n4. **UI Components**\n\n   **Date Range Inputs** (above match list):\n   - Two date input fields side-by-side\n   - Label: \&quot;Start Date\&quot; and \&quot;End Date\&quot;\n   - Placeholder: \&quot;MM/DD/YYYY\&quot; or use date picker\n   - Clear button for each input\n   - Style: consistent with existing neutral-800/neutral-900 theme\n\n   **Team Search Input** (above match list):\n   - Text input with search icon\n   - Placeholder: \&quot;Search by team name...\&quot;\n   - Autocomplete dropdown that:\n     - Shows when &#96;teamSearchOpen&#96; is true and input has focus\n     - Filters team options based on current input value\n     - Highlights matching portion\n     - Clicking an option sets the filter and closes dropdown\n   - Clear button to reset team filter\n   - Case-insensitive search\n\n5. **Update Match Count Display**\n   - Change from &#96;matches.length&#96; to &#96;filteredMatches.length&#96;\n   - Update pagination calculations to use &#96;filteredMatches.length&#96;\n   - Show \&quot;No matches found\&quot; message when &#96;filteredMatches.length === 0&#96;\n\n6. **Reset Pagination**\n   - Reset &#96;matchesPage&#96; to 1 whenever filters change\n   - Use &#96;useEffect&#96; to watch filter state changes\n\n### Technical Considerations\n- Date filtering: Parse date strings and compare dates properly\n- Team filtering: Use case-insensitive string matching (includes)\n- Performance: Filtering happens client-side since matches are already loaded\n- UX: Clear visual indication when filters are active\n- Accessibility: Proper labels and keyboard navigation for inputs\n\n### Styling\n- Match existing design system (neutral-800, neutral-900, blue-500 accents)\n- Use consistent spacing and padding\n- Responsive layout for mobile devices\n- Dropdown should appear above other content (z-index)&quot;,
-  &quot;name&quot;: &quot;Matches Search Filter&quot;,
-  &quot;overview&quot;: &quot;Add search and filter functionality to the matches tab in LeagueTabsIsland component, including date range picker and team search with autocomplete dropdown.&quot;
+  "plan": "# Add Search/Filter to Matches Tab in League Details Page\n\n## Overview\nAdd search and filter functionality to the matches tab (activeTab === 2) in &#96;LeagueTabsIsland.tsx&#96;. Users can filter by date range and team name with autocomplete suggestions.\n\n## Implementation Details\n\n### Files to Modify\n- &#96;proam-rankings/src/components/LeagueTabsIsland.tsx&#96;\n\n### Changes Required\n\n1. **Add State Management**\n   - Add &#96;dateStartFilter&#96; state (string | null)\n   - Add &#96;dateEndFilter&#96; state (string | null)\n   - Add &#96;teamSearchFilter&#96; state (string)\n   - Add &#96;teamSearchOpen&#96; state (boolean) for dropdown visibility\n   - Update &#96;matchesPage&#96; reset logic when filters change\n\n2. **Extract Unique Team Names**\n   - Create a function to extract unique team names from &#96;matches&#96; array\n   - Include both &#96;team_a.name&#96; and &#96;team_b.name&#96;\n   - Filter out null/undefined values\n   - Sort alphabetically for dropdown display\n\n3. **Filter Matches Logic**\n   - Create &#96;filteredMatches&#96; computed value that:\n     - Filters by date range: &#96;played_at&#96; between &#96;dateStartFilter&#96; and &#96;dateEndFilter&#96; (inclusive)\n     - Filters by team name: matches where &#96;team_a.name&#96; or &#96;team_b.name&#96; contains &#96;teamSearchFilter&#96; (case-insensitive)\n   - Reset &#96;matchesPage&#96; to 1 when filters change\n   - Update pagination to use &#96;filteredMatches&#96; instead of &#96;matches&#96;\n\n4. **UI Components**\n\n   **Date Range Inputs** (above match list):\n   - Two date input fields side-by-side\n   - Label: \"Start Date\" and \"End Date\"\n   - Placeholder: \"MM/DD/YYYY\" or use date picker\n   - Clear button for each input\n   - Style: consistent with existing neutral-800/neutral-900 theme\n\n   **Team Search Input** (above match list):\n   - Text input with search icon\n   - Placeholder: \"Search by team name...\"\n   - Autocomplete dropdown that:\n     - Shows when &#96;teamSearchOpen&#96; is true and input has focus\n     - Filters team options based on current input value\n     - Highlights matching portion\n     - Clicking an option sets the filter and closes dropdown\n   - Clear button to reset team filter\n   - Case-insensitive search\n\n5. **Update Match Count Display**\n   - Change from &#96;matches.length&#96; to &#96;filteredMatches.length&#96;\n   - Update pagination calculations to use &#96;filteredMatches.length&#96;\n   - Show \"No matches found\" message when &#96;filteredMatches.length === 0&#96;\n\n6. **Reset Pagination**\n   - Reset &#96;matchesPage&#96; to 1 whenever filters change\n   - Use &#96;useEffect&#96; to watch filter state changes\n\n### Technical Considerations\n- Date filtering: Parse date strings and compare dates properly\n- Team filtering: Use case-insensitive string matching (includes)\n- Performance: Filtering happens client-side since matches are already loaded\n- UX: Clear visual indication when filters are active\n- Accessibility: Proper labels and keyboard navigation for inputs\n\n### Styling\n- Match existing design system (neutral-800, neutral-900, blue-500 accents)\n- Use consistent spacing and padding\n- Responsive layout for mobile devices\n- Dropdown should appear above other content (z-index)",
+  "name": "Matches Search Filter",
+  "overview": "Add search and filter functionality to the matches tab in LeagueTabsIsland component, including date range picker and team search with autocomplete dropdown."
 }
 ```
 Additional data:
 
 ```json
 {
-  &quot;status&quot;: &quot;accepted&quot;,
-  &quot;reviewData&quot;: {
-    &quot;status&quot;: &quot;Done&quot;,
-    &quot;selectedOption&quot;: &quot;approve&quot;,
-    &quot;isShowingInput&quot;: false
+  "status": "accepted",
+  "reviewData": {
+    "status": "Done",
+    "selectedOption": "approve",
+    "isShowingInput": false
   }
 }
 ```
@@ -248,7 +248,7 @@ Result:
 
 ```json
 {
-  &quot;accepted&quot;: {}
+  "accepted": {}
 }
 ```
 Status: **completed**
@@ -297,16 +297,16 @@ Implementing the search/filter functionality. Adding the necessary imports and s
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -1,3 +1,3 @@
-- import { useState } from &quot;react&quot;;
-+ import { useState, useEffect, useMemo } from &quot;react&quot;;
-  import BracketDisplay from &quot;./BracketDisplay&quot;;
+- import { useState } from "react";
++ import { useState, useEffect, useMemo } from "react";
+  import BracketDisplay from "./BracketDisplay";
   
 ```
 
@@ -327,25 +327,25 @@ Adding filter state variables after the existing state declarations:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 7, lines removed: 1
 
 ```diff
 @@ -245,5 +245,11 @@
-    const [selectedTournamentType, setSelectedTournamentType] = useState&lt;&#39;open&#39; | &#39;playoff&#39;&gt;(&#39;open&#39;);
-    const [statsFilter, setStatsFilter] = useState&lt;&#39;regular&#39; | &#39;open&#39; | &#39;playoff&#39;&gt;(&#39;regular&#39;);
+    const [selectedTournamentType, setSelectedTournamentType] = useState&lt;'open' | 'playoff'&gt;('open');
+    const [statsFilter, setStatsFilter] = useState&lt;'regular' | 'open' | 'playoff'&gt;('regular');
 - 
 +   
 +   // Matches filter states
 +   const [dateStartFilter, setDateStartFilter] = useState&lt;string | null&gt;(null);
 +   const [dateEndFilter, setDateEndFilter] = useState&lt;string | null&gt;(null);
-+   const [teamSearchFilter, setTeamSearchFilter] = useState&lt;string&gt;(&#39;&#39;);
++   const [teamSearchFilter, setTeamSearchFilter] = useState&lt;string&gt;('');
 +   const [teamSearchOpen, setTeamSearchOpen] = useState(false);
 + 
     const tabs = [
-      { id: 0, label: &quot;Standings&quot; },
+      { id: 0, label: "Standings" },
 ```
 
 </details>
@@ -365,14 +365,14 @@ Adding logic to extract unique team names and filter matches. Replacing the pagi
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 65, lines removed: 2
 
 ```diff
 @@ -261,11 +261,74 @@
-      { id: 6, label: &quot;Information&quot; },
+      { id: 6, label: "Information" },
     ];
 + 
 +   // Extract unique team names from matches
@@ -415,8 +415,8 @@ Lines added: 65, lines removed: 2
 +     if (teamSearchFilter.trim()) {
 +       const searchLower = teamSearchFilter.toLowerCase().trim();
 +       filtered = filtered.filter((match) =&gt; {
-+         const teamAName = match.team_a?.name?.toLowerCase() || &#39;&#39;;
-+         const teamBName = match.team_b?.name?.toLowerCase() || &#39;&#39;;
++         const teamAName = match.team_a?.name?.toLowerCase() || '';
++         const teamBName = match.team_b?.name?.toLowerCase() || '';
 +         return teamAName.includes(searchLower) || teamBName.includes(searchLower);
 +       });
 +     }
@@ -484,7 +484,7 @@ Replacing the matches tab section to add filter inputs and update the match coun
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 139, lines removed: 3
@@ -494,48 +494,48 @@ Lines added: 139, lines removed: 3
           {activeTab === 2 &amp;&amp; (
             &lt;div&gt;
 +             {/* Filter Controls */}
-+             &lt;div className=&quot;mb-6 space-y-4&quot;&gt;
++             &lt;div className="mb-6 space-y-4"&gt;
 +               {/* Date Range Filters */}
-+               &lt;div className=&quot;grid grid-cols-1 sm:grid-cols-2 gap-4&quot;&gt;
-+                 &lt;div className=&quot;space-y-1&quot;&gt;
-+                   &lt;label className=&quot;text-sm text-neutral-400&quot;&gt;Start Date&lt;/label&gt;
-+                   &lt;div className=&quot;relative&quot;&gt;
++               &lt;div className="grid grid-cols-1 sm:grid-cols-2 gap-4"&gt;
++                 &lt;div className="space-y-1"&gt;
++                   &lt;label className="text-sm text-neutral-400"&gt;Start Date&lt;/label&gt;
++                   &lt;div className="relative"&gt;
 +                     &lt;input
-+                       type=&quot;date&quot;
-+                       value={dateStartFilter || &#39;&#39;}
++                       type="date"
++                       value={dateStartFilter || ''}
 +                       onChange={(e) =&gt; setDateStartFilter(e.target.value || null)}
-+                       className=&quot;w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500&quot;
++                       className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
 +                     /&gt;
 +                     {dateStartFilter &amp;&amp; (
 +                       &lt;button
 +                         onClick={() =&gt; setDateStartFilter(null)}
-+                         className=&quot;absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white&quot;
-+                         aria-label=&quot;Clear start date&quot;
++                         className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
++                         aria-label="Clear start date"
 +                       &gt;
-+                         &lt;svg className=&quot;w-4 h-4&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                           &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M6 18L18 6M6 6l12 12&quot; /&gt;
++                         &lt;svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                           &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /&gt;
 +                         &lt;/svg&gt;
 +                       &lt;/button&gt;
 +                     )}
 +                   &lt;/div&gt;
 +                 &lt;/div&gt;
-+                 &lt;div className=&quot;space-y-1&quot;&gt;
-+                   &lt;label className=&quot;text-sm text-neutral-400&quot;&gt;End Date&lt;/label&gt;
-+                   &lt;div className=&quot;relative&quot;&gt;
++                 &lt;div className="space-y-1"&gt;
++                   &lt;label className="text-sm text-neutral-400"&gt;End Date&lt;/label&gt;
++                   &lt;div className="relative"&gt;
 +                     &lt;input
-+                       type=&quot;date&quot;
-+                       value={dateEndFilter || &#39;&#39;}
++                       type="date"
++                       value={dateEndFilter || ''}
 +                       onChange={(e) =&gt; setDateEndFilter(e.target.value || null)}
-+                       className=&quot;w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500&quot;
++                       className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
 +                     /&gt;
 +                     {dateEndFilter &amp;&amp; (
 +                       &lt;button
 +                         onClick={() =&gt; setDateEndFilter(null)}
-+                         className=&quot;absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white&quot;
-+                         aria-label=&quot;Clear end date&quot;
++                         className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
++                         aria-label="Clear end date"
 +                       &gt;
-+                         &lt;svg className=&quot;w-4 h-4&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                           &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M6 18L18 6M6 6l12 12&quot; /&gt;
++                         &lt;svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                           &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /&gt;
 +                         &lt;/svg&gt;
 +                       &lt;/button&gt;
 +                     )}
@@ -544,12 +544,12 @@ Lines added: 139, lines removed: 3
 +               &lt;/div&gt;
 + 
 +               {/* Team Search Filter */}
-+               &lt;div className=&quot;space-y-1&quot;&gt;
-+                 &lt;label className=&quot;text-sm text-neutral-400&quot;&gt;Search by Team&lt;/label&gt;
-+                 &lt;div className=&quot;relative&quot;&gt;
-+                   &lt;div className=&quot;relative&quot;&gt;
++               &lt;div className="space-y-1"&gt;
++                 &lt;label className="text-sm text-neutral-400"&gt;Search by Team&lt;/label&gt;
++                 &lt;div className="relative"&gt;
++                   &lt;div className="relative"&gt;
 +                     &lt;input
-+                       type=&quot;text&quot;
++                       type="text"
 +                       value={teamSearchFilter}
 +                       onChange={(e) =&gt; {
 +                         setTeamSearchFilter(e.target.value);
@@ -560,35 +560,35 @@ Lines added: 139, lines removed: 3
 +                         // Delay closing to allow clicks on dropdown items
 +                         setTimeout(() =&gt; setTeamSearchOpen(false), 200);
 +                       }}
-+                       placeholder=&quot;Search by team name...&quot;
-+                       className=&quot;w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500&quot;
++                       placeholder="Search by team name..."
++                       className="w-full px-4 py-2 pl-10 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
 +                     /&gt;
 +                     &lt;svg
-+                       className=&quot;absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400&quot;
-+                       fill=&quot;none&quot;
-+                       stroke=&quot;currentColor&quot;
-+                       viewBox=&quot;0 0 24 24&quot;
++                       className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
++                       fill="none"
++                       stroke="currentColor"
++                       viewBox="0 0 24 24"
 +                     &gt;
-+                       &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot; /&gt;
++                       &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /&gt;
 +                     &lt;/svg&gt;
 +                     {teamSearchFilter &amp;&amp; (
 +                       &lt;button
 +                         onClick={() =&gt; {
-+                           setTeamSearchFilter(&#39;&#39;);
++                           setTeamSearchFilter('');
 +                           setTeamSearchOpen(false);
 +                         }}
-+                         className=&quot;absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white&quot;
-+                         aria-label=&quot;Clear team search&quot;
++                         className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
++                         aria-label="Clear team search"
 +                       &gt;
-+                         &lt;svg className=&quot;w-4 h-4&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+                           &lt;path strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot; strokeWidth={2} d=&quot;M6 18L18 6M6 6l12 12&quot; /&gt;
++                         &lt;svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++                           &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /&gt;
 +                         &lt;/svg&gt;
 +                       &lt;/button&gt;
 +                     )}
 +                   &lt;/div&gt;
 +                   {/* Autocomplete Dropdown */}
 +                   {teamSearchOpen &amp;&amp; filteredTeamNames.length &gt; 0 &amp;&amp; (
-+                     &lt;div className=&quot;absolute z-50 w-full mt-1 bg-neutral-800 border border-neutral-700 rounded shadow-lg max-h-60 overflow-y-auto&quot;&gt;
++                     &lt;div className="absolute z-50 w-full mt-1 bg-neutral-800 border border-neutral-700 rounded shadow-lg max-h-60 overflow-y-auto"&gt;
 +                       {filteredTeamNames.map((teamName) =&gt; {
 +                         const lowerSearch = teamSearchFilter.toLowerCase();
 +                         const lowerName = teamName.toLowerCase();
@@ -597,17 +597,17 @@ Lines added: 139, lines removed: 3
 +                         return (
 +                           &lt;button
 +                             key={teamName}
-+                             type=&quot;button&quot;
++                             type="button"
 +                             onClick={() =&gt; {
 +                               setTeamSearchFilter(teamName);
 +                               setTeamSearchOpen(false);
 +                             }}
-+                             className=&quot;w-full text-left px-4 py-2 hover:bg-neutral-700 text-white transition&quot;
++                             className="w-full text-left px-4 py-2 hover:bg-neutral-700 text-white transition"
 +                           &gt;
 +                             {index !== -1 ? (
 +                               &lt;&gt;
 +                                 {teamName.substring(0, index)}
-+                                 &lt;span className=&quot;bg-blue-500/30 font-semibold&quot;&gt;
++                                 &lt;span className="bg-blue-500/30 font-semibold"&gt;
 +                                   {teamName.substring(index, index + teamSearchFilter.length)}
 +                                 &lt;/span&gt;
 +                                 {teamName.substring(index + teamSearchFilter.length)}
@@ -627,21 +627,21 @@ Lines added: 139, lines removed: 3
               {/* Matches count and page info */}
 -             {matches.length &gt; 0 &amp;&amp; (
 +             {filteredMatches.length &gt; 0 &amp;&amp; (
-                &lt;div className=&quot;mb-4 text-sm text-neutral-400&quot;&gt;
+                &lt;div className="mb-4 text-sm text-neutral-400"&gt;
 -                 Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, matches.length)} of {matches.length} matches
 +                 Showing {matchesStartIndex + 1}-{Math.min(matchesEndIndex, filteredMatches.length)} of {filteredMatches.length} matches
 +                 {(dateStartFilter || dateEndFilter || teamSearchFilter.trim()) &amp;&amp; (
-+                   &lt;span className=&quot;ml-2 text-neutral-500&quot;&gt;
++                   &lt;span className="ml-2 text-neutral-500"&gt;
 +                     (filtered from {matches.length} total)
 +                   &lt;/span&gt;
 +                 )}
                 &lt;/div&gt;
               )}
   
-              &lt;div className=&quot;space-y-2&quot;&gt;
+              &lt;div className="space-y-2"&gt;
 -               {matches.length === 0 ? (
 +               {filteredMatches.length === 0 ? (
-                  &lt;div className=&quot;text-center py-8 text-neutral-400&quot;&gt;
+                  &lt;div className="text-center py-8 text-neutral-400"&gt;
                     No matches found.
 ```
 
@@ -688,14 +688,14 @@ Fixing the autocomplete highlighting to handle case-insensitive matching:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: proam-rankings/src/components/LeagueTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
 
 ```diff
 @@ -942,7 +942,7 @@
-                      &lt;div className=&quot;absolute z-50 w-full mt-1 bg-neutral-800 border border-neutral-700 rounded shadow-lg max-h-60 overflow-y-auto&quot;&gt;
+                      &lt;div className="absolute z-50 w-full mt-1 bg-neutral-800 border border-neutral-700 rounded shadow-lg max-h-60 overflow-y-auto"&gt;
                         {filteredTeamNames.map((teamName) =&gt; {
 -                         const lowerSearch = teamSearchFilter.toLowerCase();
 +                         const lowerSearch = teamSearchFilter.toLowerCase().trim();
@@ -711,13 +711,13 @@ Lines added: 3, lines removed: 3
 
 ```diff
 @@ -956,11 +956,11 @@
-                              className=&quot;w-full text-left px-4 py-2 hover:bg-neutral-700 text-white transition&quot;
+                              className="w-full text-left px-4 py-2 hover:bg-neutral-700 text-white transition"
                             &gt;
 -                             {index !== -1 ? (
 +                             {index !== -1 &amp;&amp; lowerSearch ? (
                                 &lt;&gt;
                                   {teamName.substring(0, index)}
-                                  &lt;span className=&quot;bg-blue-500/30 font-semibold&quot;&gt;
+                                  &lt;span className="bg-blue-500/30 font-semibold"&gt;
 -                                   {teamName.substring(index, index + teamSearchFilter.length)}
 +                                   {teamName.substring(index, index + teamSearchFilter.trim().length)}
                                   &lt;/span&gt;

@@ -41,7 +41,7 @@ Running `npm audit fix` to resolve the vulnerabilities:
 ---
 
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
-<details><summary>Tool use: **command** • Run command: cd "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings" && npm audit fix</summary>
+<details><summary>Tool use: **run_terminal_cmd** • Run command: cd "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings" && npm audit fix</summary>
 
 ```bash
 cd "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings" && npm audit fix
@@ -73,7 +73,7 @@ Vulnerabilities resolved. Verifying with `npm audit`:
 ---
 
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
-<details><summary>Tool use: **command** • Run command: cd "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings" && npm audit</summary>
+<details><summary>Tool use: **run_terminal_cmd** • Run command: cd "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings" && npm audit</summary>
 
 ```bash
 cd "/Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings" && npm audit
@@ -137,7 +137,7 @@ I'm now cataloging all files present within the `proam-rankings/documentation` d
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -147,7 +147,7 @@ No results found
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -177,7 +177,7 @@ I'm now outlining the structure of the updated `README.md` file. I'll include se
 
 <tool-use data-tool-type="write" data-tool-name="write">
 
-<details><summary>Tool use: **code_edit** • Edit file: proam-rankings/README.md</summary>
+<details><summary>Tool use: **write** • Edit file: proam-rankings/README.md</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: 3
@@ -249,7 +249,7 @@ Lines added: 2, lines removed: 1
 + - **Required tables**: &#96;teams&#96;, &#96;players&#96;, &#96;matches&#96;, &#96;player_stats&#96;, &#96;team_rosters&#96;, &#96;leagues&#96;, &#96;tournaments&#96;
   - **Required views**: &#96;team_performance_view&#96;, &#96;player_performance_view&#96;, &#96;team_roster_current&#96;
 + - **Data Marts**: See &#96;documentation/DATA_MARTS_SUMMARY.md&#96; for setting up the analytical layer.
-  - These should match your Next.js app&#39;s database schema exactly
+  - These should match your Next.js app's database schema exactly
   
 ```
 
@@ -292,7 +292,7 @@ Lines added: 21, lines removed: 5
 + 
 + ## Architecture &amp; Performance
 + 
-+ This project uses a &quot;Data Mart&quot; architecture to handle complex statistical queries efficiently. Instead of complex joins on raw tables for every request, we use optimized views and tables (Marts) that pre-calculate or structure data for specific UI needs (e.g., &#96;Team Analytics Data Mart&#96;, &#96;Player Performance Data Mart&#96;).
++ This project uses a "Data Mart" architecture to handle complex statistical queries efficiently. Instead of complex joins on raw tables for every request, we use optimized views and tables (Marts) that pre-calculate or structure data for specific UI needs (e.g., &#96;Team Analytics Data Mart&#96;, &#96;Player Performance Data Mart&#96;).
 + 
 + Refer to &#96;documentation/MART_QUERY_EXAMPLES.sql&#96; for how to query these marts effectively.
   

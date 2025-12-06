@@ -695,47 +695,47 @@ Parameters:
 
 ```json
 {
-  &quot;plan&quot;: &quot;# Site Rebrand to Global Rankings Analytics Engine (G.R.A.D.E.)\n\n## Overview\nUpdate all user-facing site name references from \&quot;Pro-Am Rankings\&quot; to \&quot;Global Rankings Analytics Engine (G.R.A.D.E.)\&quot; across the application.\n\n## Files to Update\n\n### 1. Navigation Component\n- **File**: &#96;src/components/Navigation.astro&#96;\n- **Changes**: \n  - Update logo alt text and aria-label (line 10-11)\n  - Update visible site name in header (line 13)\n  - Change from \&quot;Pro-Am Rankings\&quot; to \&quot;Global Rankings Analytics Engine (G.R.A.D.E.)\&quot; or shorter variant\n\n### 2. Page Titles (All Astro Pages)\nUpdate &#96;&lt;title&gt;&#96; tags in the following files:\n- &#96;src/pages/index.astro&#96; (line 73)\n- &#96;src/pages/about.astro&#96; (line 10)\n- &#96;src/pages/ranking-system.astro&#96; (line 10)\n- &#96;src/pages/achievements/index.astro&#96; (line 19 - currently \&quot;Pro-Am Rank\&quot;)\n- &#96;src/pages/teams/index.astro&#96; (line 116)\n- &#96;src/pages/teams/[id].astro&#96; (line 174)\n- &#96;src/pages/players/index.astro&#96; (line 125)\n- &#96;src/pages/players/[id].astro&#96; (line 189)\n- &#96;src/pages/leagues/index.astro&#96; (line 142)\n- &#96;src/pages/leagues/[id].astro&#96; (line 586)\n- &#96;src/pages/tournaments/index.astro&#96; (line 125)\n- &#96;src/pages/tournaments/[id].astro&#96; (line 259)\n- &#96;src/pages/matches/index.astro&#96; (line 375)\n- &#96;src/pages/matchups/[id].astro&#96; (line 421)\n- &#96;src/pages/colleges/index.astro&#96; (line 81)\n- &#96;src/pages/colleges/[id].astro&#96; (line 34)\n- &#96;src/pages/students/index.astro&#96; (line 105)\n- &#96;src/pages/sentry-test.astro&#96; (line 140 - in Sentry message)\n\n### 3. About Page Content\n- **File**: &#96;src/pages/about.astro&#96;\n- **Changes**:\n  - Update main heading (line 16)\n  - Update tagline (line 17)\n  - Update all content references to \&quot;Pro-Am Rankings\&quot; (lines 25, 28)\n\n### 4. Achievements Page\n- **File**: &#96;src/pages/achievements/index.astro&#96;\n- **Changes**:\n  - Update description (line 6)\n\n### 5. README\n- **File**: &#96;README.md&#96;\n- **Changes**:\n  - Update title and description (lines 1, 3)\n\n## Format Considerations\n\nFor page titles, use format: &#96;{Page Name} - G.R.A.D.E.&#96; or &#96;{Page Name} - Global Rankings Analytics Engine (G.R.A.D.E.)&#96; depending on length preference.\n\nFor navigation, consider shorter display: \&quot;G.R.A.D.E.\&quot; or \&quot;Global Rankings Analytics Engine\&quot; with subtitle \&quot;(G.R.A.D.E.)\&quot;\n\n## Technical Notes\n\nThe following files contain references but are primarily technical/internal and may not need updates:\n- &#96;package.json&#96; - Project name \&quot;proam-rankings\&quot; (internal)\n- &#96;wrangler.toml&#96; - Service name \&quot;proamrank-astro\&quot; (deployment config)\n- &#96;astro.config.mjs&#96; - Sentry project \&quot;proamrank\&quot; (monitoring config)\n- Documentation files in &#96;/documentation&#96; folder\n- Environment variable references (PUBLIC_ASSETS_BASE, etc.)\n\nThese can be updated separately if desired for consistency.&quot;,
-  &quot;name&quot;: &quot;Site rebrand to G.R.A.D.E.&quot;,
-  &quot;todos&quot;: [
+  "plan": "# Site Rebrand to Global Rankings Analytics Engine (G.R.A.D.E.)\n\n## Overview\nUpdate all user-facing site name references from \"Pro-Am Rankings\" to \"Global Rankings Analytics Engine (G.R.A.D.E.)\" across the application.\n\n## Files to Update\n\n### 1. Navigation Component\n- **File**: &#96;src/components/Navigation.astro&#96;\n- **Changes**: \n  - Update logo alt text and aria-label (line 10-11)\n  - Update visible site name in header (line 13)\n  - Change from \"Pro-Am Rankings\" to \"Global Rankings Analytics Engine (G.R.A.D.E.)\" or shorter variant\n\n### 2. Page Titles (All Astro Pages)\nUpdate &#96;&lt;title&gt;&#96; tags in the following files:\n- &#96;src/pages/index.astro&#96; (line 73)\n- &#96;src/pages/about.astro&#96; (line 10)\n- &#96;src/pages/ranking-system.astro&#96; (line 10)\n- &#96;src/pages/achievements/index.astro&#96; (line 19 - currently \"Pro-Am Rank\")\n- &#96;src/pages/teams/index.astro&#96; (line 116)\n- &#96;src/pages/teams/[id].astro&#96; (line 174)\n- &#96;src/pages/players/index.astro&#96; (line 125)\n- &#96;src/pages/players/[id].astro&#96; (line 189)\n- &#96;src/pages/leagues/index.astro&#96; (line 142)\n- &#96;src/pages/leagues/[id].astro&#96; (line 586)\n- &#96;src/pages/tournaments/index.astro&#96; (line 125)\n- &#96;src/pages/tournaments/[id].astro&#96; (line 259)\n- &#96;src/pages/matches/index.astro&#96; (line 375)\n- &#96;src/pages/matchups/[id].astro&#96; (line 421)\n- &#96;src/pages/colleges/index.astro&#96; (line 81)\n- &#96;src/pages/colleges/[id].astro&#96; (line 34)\n- &#96;src/pages/students/index.astro&#96; (line 105)\n- &#96;src/pages/sentry-test.astro&#96; (line 140 - in Sentry message)\n\n### 3. About Page Content\n- **File**: &#96;src/pages/about.astro&#96;\n- **Changes**:\n  - Update main heading (line 16)\n  - Update tagline (line 17)\n  - Update all content references to \"Pro-Am Rankings\" (lines 25, 28)\n\n### 4. Achievements Page\n- **File**: &#96;src/pages/achievements/index.astro&#96;\n- **Changes**:\n  - Update description (line 6)\n\n### 5. README\n- **File**: &#96;README.md&#96;\n- **Changes**:\n  - Update title and description (lines 1, 3)\n\n## Format Considerations\n\nFor page titles, use format: &#96;{Page Name} - G.R.A.D.E.&#96; or &#96;{Page Name} - Global Rankings Analytics Engine (G.R.A.D.E.)&#96; depending on length preference.\n\nFor navigation, consider shorter display: \"G.R.A.D.E.\" or \"Global Rankings Analytics Engine\" with subtitle \"(G.R.A.D.E.)\"\n\n## Technical Notes\n\nThe following files contain references but are primarily technical/internal and may not need updates:\n- &#96;package.json&#96; - Project name \"proam-rankings\" (internal)\n- &#96;wrangler.toml&#96; - Service name \"proamrank-astro\" (deployment config)\n- &#96;astro.config.mjs&#96; - Sentry project \"proamrank\" (monitoring config)\n- Documentation files in &#96;/documentation&#96; folder\n- Environment variable references (PUBLIC_ASSETS_BASE, etc.)\n\nThese can be updated separately if desired for consistency.",
+  "name": "Site rebrand to G.R.A.D.E.",
+  "todos": [
     {
-      &quot;content&quot;: &quot;Update Navigation.astro component with new site name in header and aria-labels&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;update-navigation&quot;
+      "content": "Update Navigation.astro component with new site name in header and aria-labels",
+      "status": "pending",
+      "id": "update-navigation"
     },
     {
-      &quot;content&quot;: &quot;Update all page title tags across all Astro pages (index, about, ranking-system, achievements, teams, players, leagues, tournaments, matches, colleges, students)&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;update-page-titles&quot;
+      "content": "Update all page title tags across all Astro pages (index, about, ranking-system, achievements, teams, players, leagues, tournaments, matches, colleges, students)",
+      "status": "pending",
+      "id": "update-page-titles"
     },
     {
-      &quot;content&quot;: &quot;Update About page content to replace all Pro-Am Rankings references with new name&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;update-about-content&quot;
+      "content": "Update About page content to replace all Pro-Am Rankings references with new name",
+      "status": "pending",
+      "id": "update-about-content"
     },
     {
-      &quot;content&quot;: &quot;Update achievements page description and title&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;update-achievements-page&quot;
+      "content": "Update achievements page description and title",
+      "status": "pending",
+      "id": "update-achievements-page"
     },
     {
-      &quot;content&quot;: &quot;Update README.md with new site name&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;update-readme&quot;
+      "content": "Update README.md with new site name",
+      "status": "pending",
+      "id": "update-readme"
     }
   ],
-  &quot;overview&quot;: &quot;Update all user-facing references from \&quot;Pro-Am Rankings\&quot; to \&quot;Global Rankings Analytics Engine (G.R.A.D.E.)\&quot; across page titles, navigation, about page content, and related branding elements.&quot;
+  "overview": "Update all user-facing references from \"Pro-Am Rankings\" to \"Global Rankings Analytics Engine (G.R.A.D.E.)\" across page titles, navigation, about page content, and related branding elements."
 }
 ```
 Additional data:
 
 ```json
 {
-  &quot;status&quot;: &quot;accepted&quot;,
-  &quot;reviewData&quot;: {
-    &quot;status&quot;: &quot;Done&quot;,
-    &quot;selectedOption&quot;: &quot;approve&quot;,
-    &quot;isShowingInput&quot;: false
+  "status": "accepted",
+  "reviewData": {
+    "status": "Done",
+    "selectedOption": "approve",
+    "isShowingInput": false
   }
 }
 ```
@@ -743,32 +743,32 @@ Result:
 
 ```json
 {
-  &quot;accepted&quot;: {
-    &quot;finalTodos&quot;: [
+  "accepted": {
+    "finalTodos": [
       {
-        &quot;content&quot;: &quot;Update Navigation.astro component with new site name in header and aria-labels&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;update-navigation&quot;
+        "content": "Update Navigation.astro component with new site name in header and aria-labels",
+        "status": "pending",
+        "id": "update-navigation"
       },
       {
-        &quot;content&quot;: &quot;Update all page title tags across all Astro pages (index, about, ranking-system, achievements, teams, players, leagues, tournaments, matches, colleges, students)&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;update-page-titles&quot;
+        "content": "Update all page title tags across all Astro pages (index, about, ranking-system, achievements, teams, players, leagues, tournaments, matches, colleges, students)",
+        "status": "pending",
+        "id": "update-page-titles"
       },
       {
-        &quot;content&quot;: &quot;Update About page content to replace all Pro-Am Rankings references with new name&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;update-about-content&quot;
+        "content": "Update About page content to replace all Pro-Am Rankings references with new name",
+        "status": "pending",
+        "id": "update-about-content"
       },
       {
-        &quot;content&quot;: &quot;Update achievements page description and title&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;update-achievements-page&quot;
+        "content": "Update achievements page description and title",
+        "status": "pending",
+        "id": "update-achievements-page"
       },
       {
-        &quot;content&quot;: &quot;Update README.md with new site name&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;id&quot;: &quot;update-readme&quot;
+        "content": "Update README.md with new site name",
+        "status": "pending",
+        "id": "update-readme"
       }
     ]
   }
@@ -834,20 +834,20 @@ Updating the navigation component, then proceeding through the remaining files:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/Navigation.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/Navigation.astro</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 3
 
 ```diff
 @@ -8,8 +8,8 @@
-      &lt;div class=&quot;flex items-center justify-between&quot;&gt;
+      &lt;div class="flex items-center justify-between"&gt;
         &lt;!-- Logo/Title --&gt;
--       &lt;a href=&quot;/&quot; class=&quot;flex items-center gap-2&quot; aria-label=&quot;Pro-Am Rankings Home&quot;&gt;
--         &lt;img src=&quot;/GR.svg&quot; alt=&quot;Pro-Am Rankings&quot; class=&quot;h-8 w-auto&quot; loading=&quot;eager&quot; decoding=&quot;async&quot; /&gt;
-+       &lt;a href=&quot;/&quot; class=&quot;flex items-center gap-2&quot; aria-label=&quot;Global Rankings Analytics Engine Home&quot;&gt;
-+         &lt;img src=&quot;/GR.svg&quot; alt=&quot;G.R.A.D.E.&quot; class=&quot;h-8 w-auto&quot; loading=&quot;eager&quot; decoding=&quot;async&quot; /&gt;
-          &lt;span class=&quot;text-xl font-bold bg-gradient-to-r from-patriot-red-600 via-white to-patriot-blue-600 bg-clip-text text-transparent&quot;&gt;
+-       &lt;a href="/" class="flex items-center gap-2" aria-label="Pro-Am Rankings Home"&gt;
+-         &lt;img src="/GR.svg" alt="Pro-Am Rankings" class="h-8 w-auto" loading="eager" decoding="async" /&gt;
++       &lt;a href="/" class="flex items-center gap-2" aria-label="Global Rankings Analytics Engine Home"&gt;
++         &lt;img src="/GR.svg" alt="G.R.A.D.E." class="h-8 w-auto" loading="eager" decoding="async" /&gt;
+          &lt;span class="text-xl font-bold bg-gradient-to-r from-patriot-red-600 via-white to-patriot-blue-600 bg-clip-text text-transparent"&gt;
 -           Pro-Am Rankings
 +           G.R.A.D.E.
           &lt;/span&gt;
@@ -941,19 +941,19 @@ Updating all page titles:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -71,5 +71,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -964,19 +964,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/ranking-system.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -8,5 +8,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Ranking System - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Ranking System - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -987,19 +987,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -114,5 +114,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Teams - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Teams - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1010,19 +1010,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -123,5 +123,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Players - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Players - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1033,19 +1033,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -140,5 +140,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Leagues - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Leagues - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1056,19 +1056,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -123,5 +123,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Tournaments - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Tournaments - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1079,19 +1079,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matches/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matches/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -373,5 +373,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Recent Matches - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Recent Matches - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1183,19 +1183,19 @@ Updating the remaining page titles:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -172,5 +172,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;{team.name} - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;{team.name} - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1206,19 +1206,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -187,5 +187,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;{player.gamertag} - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;{player.gamertag} - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1229,19 +1229,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -584,5 +584,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;{league.league_name} - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;{league.league_name} - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1252,19 +1252,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -257,5 +257,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;{tournament.name} - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;{tournament.name} - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1275,19 +1275,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matchups/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matchups/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -419,5 +419,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;{spotlightMatch.stage} - {spotlightMatch.team_a.name} vs {spotlightMatch.team_b.name} - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;{spotlightMatch.stage} - {spotlightMatch.team_a.name} vs {spotlightMatch.team_b.name} - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1298,19 +1298,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/colleges/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/colleges/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -79,5 +79,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Colleges - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Colleges - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1321,19 +1321,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/colleges/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/colleges/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -32,5 +32,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;{college.name} - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;{college.name} - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1344,19 +1344,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/students/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/students/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -103,5 +103,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;Prospective Students - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;Prospective Students - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1367,7 +1367,7 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/sentry-test.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/sentry-test.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -1375,10 +1375,10 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -138,5 +138,5 @@
         // Manual capture
-        document.getElementById(&#39;manualCapture&#39;)?.addEventListener(&#39;click&#39;, () =&gt; {
--         Sentry.captureMessage(&#39;[Sentry Test] Manual test message from ProAm Rankings&#39;, {
-+         Sentry.captureMessage(&#39;[Sentry Test] Manual test message from G.R.A.D.E.&#39;, {
-            level: &#39;info&#39;,
+        document.getElementById('manualCapture')?.addEventListener('click', () =&gt; {
+-         Sentry.captureMessage('[Sentry Test] Manual test message from ProAm Rankings', {
++         Sentry.captureMessage('[Sentry Test] Manual test message from G.R.A.D.E.', {
+            level: 'info',
             tags: {
 ```
 
@@ -1421,19 +1421,19 @@ Updating the About page content:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -8,5 +8,5 @@
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+      &lt;meta charset="utf-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 -     &lt;title&gt;About - Pro-Am Rankings&lt;/title&gt;
 +     &lt;title&gt;About - G.R.A.D.E.&lt;/title&gt;
     &lt;/head&gt;
-    &lt;body class=&quot;bg-brand-navy text-white&quot;&gt;
+    &lt;body class="bg-brand-navy text-white"&gt;
 ```
 
 </details>
@@ -1444,19 +1444,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
 
 ```diff
 @@ -14,6 +14,6 @@
-      &lt;main class=&quot;mx-auto max-w-5xl p-6&quot;&gt;
-        &lt;div class=&quot;mb-8 text-center&quot;&gt;
--         &lt;h1 class=&quot;text-3xl font-bold mb-2&quot;&gt;About Pro-Am Rankings&lt;/h1&gt;
--         &lt;p class=&quot;text-neutral-400&quot;&gt;Your comprehensive source for NBA 2K Pro-Am competitive statistics and rankings&lt;/p&gt;
-+         &lt;h1 class=&quot;text-3xl font-bold mb-2&quot;&gt;About G.R.A.D.E.&lt;/h1&gt;
-+         &lt;p class=&quot;text-neutral-400&quot;&gt;Global Rankings Analytics Engine - Your comprehensive source for NBA 2K Pro-Am competitive statistics and rankings&lt;/p&gt;
+      &lt;main class="mx-auto max-w-5xl p-6"&gt;
+        &lt;div class="mb-8 text-center"&gt;
+-         &lt;h1 class="text-3xl font-bold mb-2"&gt;About Pro-Am Rankings&lt;/h1&gt;
+-         &lt;p class="text-neutral-400"&gt;Your comprehensive source for NBA 2K Pro-Am competitive statistics and rankings&lt;/p&gt;
++         &lt;h1 class="text-3xl font-bold mb-2"&gt;About G.R.A.D.E.&lt;/h1&gt;
++         &lt;p class="text-neutral-400"&gt;Global Rankings Analytics Engine - Your comprehensive source for NBA 2K Pro-Am competitive statistics and rankings&lt;/p&gt;
         &lt;/div&gt;
   
 ```
@@ -1469,21 +1469,21 @@ Lines added: 2, lines removed: 2
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/about.astro</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
 
 ```diff
 @@ -23,8 +23,8 @@
-            &lt;h2 class=&quot;text-2xl font-semibold mb-4 pb-2 border-b border-neutral-800&quot;&gt;Our Purpose&lt;/h2&gt;
-            &lt;p class=&quot;text-neutral-300 mb-4&quot;&gt;
+            &lt;h2 class="text-2xl font-semibold mb-4 pb-2 border-b border-neutral-800"&gt;Our Purpose&lt;/h2&gt;
+            &lt;p class="text-neutral-300 mb-4"&gt;
 -             Pro-Am Rankings is dedicated to tracking the NBA 2K Pro-Am competitive scene, providing comprehensive global rankings for teams and players across all major leagues and tournaments. Our mission is to deliver objective, verified statistics and rankings that accurately reflect competitive performance in the Pro-Am community.
 +             The Global Rankings Analytics Engine (G.R.A.D.E.) is dedicated to tracking the NBA 2K Pro-Am competitive scene, providing comprehensive global rankings for teams and players across all major leagues and tournaments. Our mission is to deliver objective, verified statistics and rankings that accurately reflect competitive performance in the Pro-Am community.
             &lt;/p&gt;
-            &lt;p class=&quot;text-neutral-300&quot;&gt;
--             Whether you&#39;re a player looking to track your progress, a team scouting talent, or a fan following the competitive scene, Pro-Am Rankings offers the most complete and accurate data available.
-+             Whether you&#39;re a player looking to track your progress, a team scouting talent, or a fan following the competitive scene, G.R.A.D.E. offers the most complete and accurate data available.
+            &lt;p class="text-neutral-300"&gt;
+-             Whether you're a player looking to track your progress, a team scouting talent, or a fan following the competitive scene, Pro-Am Rankings offers the most complete and accurate data available.
++             Whether you're a player looking to track your progress, a team scouting talent, or a fan following the competitive scene, G.R.A.D.E. offers the most complete and accurate data available.
             &lt;/p&gt;
           &lt;/div&gt;
 ```
@@ -1527,7 +1527,7 @@ Updating the achievements page:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/achievements/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/achievements/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
@@ -1535,9 +1535,9 @@ Lines added: 1, lines removed: 1
 ```diff
 @@ -4,5 +4,5 @@
   
-  const title = &#39;Achievements&#39;;
-- const description = &#39;Browse all available achievements and badges in Pro-Am Rank&#39;;
-+ const description = &#39;Browse all available achievements and badges in G.R.A.D.E.&#39;;
+  const title = 'Achievements';
+- const description = 'Browse all available achievements and badges in Pro-Am Rank';
++ const description = 'Browse all available achievements and badges in G.R.A.D.E.';
   
   // Get query params for filters
 ```
@@ -1550,19 +1550,19 @@ Lines added: 1, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/achievements/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/achievements/index.astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: 1
 
 ```diff
 @@ -17,5 +17,5 @@
-      &lt;meta charset=&quot;UTF-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+      &lt;meta charset="UTF-8" /&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
 -     &lt;title&gt;{title} | Pro-Am Rank&lt;/title&gt;
 +     &lt;title&gt;{title} | G.R.A.D.E.&lt;/title&gt;
-      &lt;meta name=&quot;description&quot; content={description} /&gt;
-      &lt;link rel=&quot;icon&quot; type=&quot;image/svg+xml&quot; href=&quot;/favicon.svg&quot; /&gt;
+      &lt;meta name="description" content={description} /&gt;
+      &lt;link rel="icon" type="image/svg+xml" href="/favicon.svg" /&gt;
 ```
 
 </details>
@@ -1604,7 +1604,7 @@ Updating the README:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/README.md</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/README.md</summary>
 
 **Chunk 1**
 Lines added: 2, lines removed: 2
@@ -1614,8 +1614,8 @@ Lines added: 2, lines removed: 2
 - # Pro-Am Rankings (Astro + Supabase + R2)
 + # Global Rankings Analytics Engine (G.R.A.D.E.)
   
-- Lightweight Astro version of the Pro-Am Rankings platform, matching the Next.js app&#39;s database schema.
-+ Lightweight Astro version of the Global Rankings Analytics Engine (G.R.A.D.E.) platform, matching the Next.js app&#39;s database schema.
+- Lightweight Astro version of the Pro-Am Rankings platform, matching the Next.js app's database schema.
++ Lightweight Astro version of the Global Rankings Analytics Engine (G.R.A.D.E.) platform, matching the Next.js app's database schema.
   
   ## Features
 ```

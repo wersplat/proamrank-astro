@@ -40,7 +40,7 @@ Reviewing the project structure to understand the site before proposing a backli
 
 <tool-use data-tool-type="generic" data-tool-name="list_dir">
 <details>
-            <summary>Tool use: **list_directory** • Listed directory undefined • **0** results</summary>
+            <summary>Tool use: **list_dir** • Listed directory undefined • **0** results</summary>
         
 No results found
 </details>
@@ -305,83 +305,83 @@ Parameters:
 
 ```json
 {
-  &quot;plan&quot;: &quot;# Internal Linking Strategy for SEO\n\nAdd contextual internal links throughout the site to improve search engine crawlability and distribute page authority. This will help search engines discover and index all pages while establishing semantic relationships between content.\n\n## Key Areas to Enhance\n\n### 1. Match Listings &amp; Components\n**Files:**\n- &#96;src/components/MatchesListIsland.tsx&#96;\n- &#96;src/components/LeagueMatchesIsland.tsx&#96;\n- &#96;src/components/TeamMatchesIsland.tsx&#96;\n\n**Changes:**\n- Convert league badges (currently &#96;&lt;span&gt;&#96;) to clickable links (&#96;&lt;a href=\&quot;/leagues/{season_id}\&quot;&gt;&#96;)\n- Convert tournament badges to clickable links (&#96;&lt;a href=\&quot;/tournaments/{tournament_id}\&quot;&gt;&#96;)\n- Add league/tournament links in match detail modals\n\n### 2. Home Page Rankings\n**File:** &#96;src/pages/index.astro&#96;\n\n**Changes:**\n- Wrap mobile card team names/logos with links to &#96;/teams/{id}&#96;\n- Ensure desktop table (RankTableIsland) includes team links\n\n### 3. Tournament Detail Pages\n**File:** &#96;src/pages/tournaments/[id].astro&#96;\n\n**Changes:**\n- Link team names/logos in standings/results to &#96;/teams/{id}&#96;\n- Link organizer league name to &#96;/leagues/{id}&#96; if applicable\n- Add \&quot;Related Tournaments\&quot; or \&quot;Participating Teams\&quot; section with links\n\n### 4. League Detail Pages\n**File:** &#96;src/pages/leagues/[id].astro&#96;\n\n**Changes:**\n- Ensure all team names in standings link to &#96;/teams/{id}&#96;\n- Link season information to league detail pages\n- Add contextual links in top performers sections\n\n### 5. Team Detail Pages\n**File:** &#96;src/pages/teams/[id].astro&#96; / &#96;src/components/TeamTabsIsland.tsx&#96;\n\n**Changes:**\n- Add \&quot;Participating Leagues\&quot; section linking to active leagues\n- Add \&quot;Recent Tournaments\&quot; section linking to tournaments\n- Link league/tournament badges in match history\n\n### 6. Player Detail Pages\n**File:** &#96;src/components/player/tabs/Games.tsx&#96; / &#96;src/components/PlayerGamesIsland.tsx&#96;\n\n**Changes:**\n- Link team names in game logs to &#96;/teams/{id}&#96;\n- Link league/tournament names in game logs to respective pages\n- Link opponent team names to team pages\n\n### 7. Breadcrumbs &amp; Contextual Navigation\n**Files:** Create new component or enhance existing\n\n**Changes:**\n- Add breadcrumb navigation to detail pages (e.g., Home &gt; Teams &gt; Team Name)\n- Add \&quot;Related Content\&quot; sections (e.g., \&quot;Other teams in this league\&quot;, \&quot;Players on this team\&quot;)\n\n### 8. League/Tournament Standings Tables\n**Files:**\n- &#96;src/components/LeagueTabsIsland.tsx&#96;\n- &#96;src/components/TournamentTabsIsland.tsx&#96;\n\n**Changes:**\n- Verify all team links in standings tables\n- Add player links in top performers tables (if missing)\n- Link division names if applicable\n\n## Implementation Approach\n\n1. **Audit existing links** - Document which links already exist\n2. **Add missing contextual links** - Convert non-linked entities to links\n3. **Add breadcrumbs** - Improve navigation hierarchy\n4. **Test crawlability** - Ensure all pages are reachable via internal links\n\n## SEO Benefits\n\n- Improved crawlability: Search engines can discover all pages through internal links\n- Better page authority distribution: Links pass value to important pages\n- Enhanced user experience: Easier navigation between related content\n- Better indexing: Helps search engines understand site structure and relationships&quot;,
-  &quot;name&quot;: &quot;Internal Linking SEO Strategy&quot;,
-  &quot;todos&quot;: [
+  "plan": "# Internal Linking Strategy for SEO\n\nAdd contextual internal links throughout the site to improve search engine crawlability and distribute page authority. This will help search engines discover and index all pages while establishing semantic relationships between content.\n\n## Key Areas to Enhance\n\n### 1. Match Listings &amp; Components\n**Files:**\n- &#96;src/components/MatchesListIsland.tsx&#96;\n- &#96;src/components/LeagueMatchesIsland.tsx&#96;\n- &#96;src/components/TeamMatchesIsland.tsx&#96;\n\n**Changes:**\n- Convert league badges (currently &#96;&lt;span&gt;&#96;) to clickable links (&#96;&lt;a href=\"/leagues/{season_id}\"&gt;&#96;)\n- Convert tournament badges to clickable links (&#96;&lt;a href=\"/tournaments/{tournament_id}\"&gt;&#96;)\n- Add league/tournament links in match detail modals\n\n### 2. Home Page Rankings\n**File:** &#96;src/pages/index.astro&#96;\n\n**Changes:**\n- Wrap mobile card team names/logos with links to &#96;/teams/{id}&#96;\n- Ensure desktop table (RankTableIsland) includes team links\n\n### 3. Tournament Detail Pages\n**File:** &#96;src/pages/tournaments/[id].astro&#96;\n\n**Changes:**\n- Link team names/logos in standings/results to &#96;/teams/{id}&#96;\n- Link organizer league name to &#96;/leagues/{id}&#96; if applicable\n- Add \"Related Tournaments\" or \"Participating Teams\" section with links\n\n### 4. League Detail Pages\n**File:** &#96;src/pages/leagues/[id].astro&#96;\n\n**Changes:**\n- Ensure all team names in standings link to &#96;/teams/{id}&#96;\n- Link season information to league detail pages\n- Add contextual links in top performers sections\n\n### 5. Team Detail Pages\n**File:** &#96;src/pages/teams/[id].astro&#96; / &#96;src/components/TeamTabsIsland.tsx&#96;\n\n**Changes:**\n- Add \"Participating Leagues\" section linking to active leagues\n- Add \"Recent Tournaments\" section linking to tournaments\n- Link league/tournament badges in match history\n\n### 6. Player Detail Pages\n**File:** &#96;src/components/player/tabs/Games.tsx&#96; / &#96;src/components/PlayerGamesIsland.tsx&#96;\n\n**Changes:**\n- Link team names in game logs to &#96;/teams/{id}&#96;\n- Link league/tournament names in game logs to respective pages\n- Link opponent team names to team pages\n\n### 7. Breadcrumbs &amp; Contextual Navigation\n**Files:** Create new component or enhance existing\n\n**Changes:**\n- Add breadcrumb navigation to detail pages (e.g., Home &gt; Teams &gt; Team Name)\n- Add \"Related Content\" sections (e.g., \"Other teams in this league\", \"Players on this team\")\n\n### 8. League/Tournament Standings Tables\n**Files:**\n- &#96;src/components/LeagueTabsIsland.tsx&#96;\n- &#96;src/components/TournamentTabsIsland.tsx&#96;\n\n**Changes:**\n- Verify all team links in standings tables\n- Add player links in top performers tables (if missing)\n- Link division names if applicable\n\n## Implementation Approach\n\n1. **Audit existing links** - Document which links already exist\n2. **Add missing contextual links** - Convert non-linked entities to links\n3. **Add breadcrumbs** - Improve navigation hierarchy\n4. **Test crawlability** - Ensure all pages are reachable via internal links\n\n## SEO Benefits\n\n- Improved crawlability: Search engines can discover all pages through internal links\n- Better page authority distribution: Links pass value to important pages\n- Enhanced user experience: Easier navigation between related content\n- Better indexing: Helps search engines understand site structure and relationships",
+  "name": "Internal Linking SEO Strategy",
+  "todos": [
     {
-      &quot;content&quot;: &quot;Audit existing internal links across all components and pages to identify gaps&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;audit-links&quot;
+      "content": "Audit existing internal links across all components and pages to identify gaps",
+      "status": "pending",
+      "id": "audit-links"
     },
     {
-      &quot;content&quot;: &quot;Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;match-listings&quot;,
-      &quot;dependencies&quot;: [
-        &quot;audit-links&quot;
+      "content": "Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)",
+      "status": "pending",
+      "id": "match-listings",
+      "dependencies": [
+        "audit-links"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add team links to home page mobile cards and verify desktop table links&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;home-page&quot;,
-      &quot;dependencies&quot;: [
-        &quot;audit-links&quot;
+      "content": "Add team links to home page mobile cards and verify desktop table links",
+      "status": "pending",
+      "id": "home-page",
+      "dependencies": [
+        "audit-links"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add team links in tournament standings/results and organizer links&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;tournament-pages&quot;,
-      &quot;dependencies&quot;: [
-        &quot;audit-links&quot;
+      "content": "Add team links in tournament standings/results and organizer links",
+      "status": "pending",
+      "id": "tournament-pages",
+      "dependencies": [
+        "audit-links"
       ]
     },
     {
-      &quot;content&quot;: &quot;Verify and add team links in league standings and top performers&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;league-pages&quot;,
-      &quot;dependencies&quot;: [
-        &quot;audit-links&quot;
+      "content": "Verify and add team links in league standings and top performers",
+      "status": "pending",
+      "id": "league-pages",
+      "dependencies": [
+        "audit-links"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add league/tournament links in team match history and related sections&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;team-pages&quot;,
-      &quot;dependencies&quot;: [
-        &quot;audit-links&quot;
+      "content": "Add league/tournament links in team match history and related sections",
+      "status": "pending",
+      "id": "team-pages",
+      "dependencies": [
+        "audit-links"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add team/league/tournament links in player game logs&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;player-pages&quot;,
-      &quot;dependencies&quot;: [
-        &quot;audit-links&quot;
+      "content": "Add team/league/tournament links in player game logs",
+      "status": "pending",
+      "id": "player-pages",
+      "dependencies": [
+        "audit-links"
       ]
     },
     {
-      &quot;content&quot;: &quot;Create breadcrumb component and add to detail pages&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;breadcrumbs&quot;,
-      &quot;dependencies&quot;: [
-        &quot;audit-links&quot;
+      "content": "Create breadcrumb component and add to detail pages",
+      "status": "pending",
+      "id": "breadcrumbs",
+      "dependencies": [
+        "audit-links"
       ]
     }
   ],
-  &quot;overview&quot;: &quot;Add strategic internal links throughout the site to improve SEO crawlability and page authority distribution. Focus on connecting related entities (teams, players, leagues, tournaments, matches) with contextual links.&quot;
+  "overview": "Add strategic internal links throughout the site to improve SEO crawlability and page authority distribution. Focus on connecting related entities (teams, players, leagues, tournaments, matches) with contextual links."
 }
 ```
 Additional data:
 
 ```json
 {
-  &quot;status&quot;: &quot;accepted&quot;,
-  &quot;reviewData&quot;: {
-    &quot;status&quot;: &quot;Done&quot;,
-    &quot;selectedOption&quot;: &quot;approve&quot;,
-    &quot;isShowingInput&quot;: false
+  "status": "accepted",
+  "reviewData": {
+    "status": "Done",
+    "selectedOption": "approve",
+    "isShowingInput": false
   }
 }
 ```
@@ -389,108 +389,108 @@ Result:
 
 ```json
 {
-  &quot;accepted&quot;: {
-    &quot;finalTodos&quot;: [
+  "accepted": {
+    "finalTodos": [
       {
-        &quot;content&quot;: &quot;Audit existing internal links across all components and pages to identify gaps&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;audit-links&quot;
+        "content": "Audit existing internal links across all components and pages to identify gaps",
+        "status": "completed",
+        "id": "audit-links"
       },
       {
-        &quot;content&quot;: &quot;Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;match-listings&quot;,
-        &quot;dependencies&quot;: [
-          &quot;audit-links&quot;
+        "content": "Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)",
+        "status": "completed",
+        "id": "match-listings",
+        "dependencies": [
+          "audit-links"
         ]
       },
       {
-        &quot;content&quot;: &quot;Add team links to home page mobile cards and verify desktop table links&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;home-page&quot;,
-        &quot;dependencies&quot;: [
-          &quot;audit-links&quot;
+        "content": "Add team links to home page mobile cards and verify desktop table links",
+        "status": "completed",
+        "id": "home-page",
+        "dependencies": [
+          "audit-links"
         ]
       },
       {
-        &quot;content&quot;: &quot;Add team links in tournament standings/results and organizer links&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;tournament-pages&quot;,
-        &quot;dependencies&quot;: [
-          &quot;audit-links&quot;
+        "content": "Add team links in tournament standings/results and organizer links",
+        "status": "completed",
+        "id": "tournament-pages",
+        "dependencies": [
+          "audit-links"
         ]
       },
       {
-        &quot;content&quot;: &quot;Verify and add team links in league standings and top performers&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;league-pages&quot;,
-        &quot;dependencies&quot;: [
-          &quot;audit-links&quot;
+        "content": "Verify and add team links in league standings and top performers",
+        "status": "completed",
+        "id": "league-pages",
+        "dependencies": [
+          "audit-links"
         ]
       },
       {
-        &quot;content&quot;: &quot;Add league/tournament links in team match history and related sections&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;team-pages&quot;,
-        &quot;dependencies&quot;: [
-          &quot;audit-links&quot;
+        "content": "Add league/tournament links in team match history and related sections",
+        "status": "completed",
+        "id": "team-pages",
+        "dependencies": [
+          "audit-links"
         ]
       },
       {
-        &quot;content&quot;: &quot;Add team/league/tournament links in player game logs&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;player-pages&quot;,
-        &quot;dependencies&quot;: [
-          &quot;audit-links&quot;
+        "content": "Add team/league/tournament links in player game logs",
+        "status": "completed",
+        "id": "player-pages",
+        "dependencies": [
+          "audit-links"
         ]
       },
       {
-        &quot;content&quot;: &quot;Create breadcrumb component and add to detail pages&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;breadcrumbs&quot;,
-        &quot;dependencies&quot;: [
-          &quot;audit-links&quot;
+        "content": "Create breadcrumb component and add to detail pages",
+        "status": "completed",
+        "id": "breadcrumbs",
+        "dependencies": [
+          "audit-links"
         ]
       },
       {
-        &quot;content&quot;: &quot;Audit existing internal links across all components and pages to identify gaps&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-wbi4ck215&quot;
+        "content": "Audit existing internal links across all components and pages to identify gaps",
+        "status": "completed",
+        "id": "todo-1762306709966-wbi4ck215"
       },
       {
-        &quot;content&quot;: &quot;Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-nj99pg0gc&quot;
+        "content": "Add league/tournament links to match listings (MatchesListIsland, LeagueMatchesIsland, TeamMatchesIsland)",
+        "status": "completed",
+        "id": "todo-1762306709966-nj99pg0gc"
       },
       {
-        &quot;content&quot;: &quot;Add team links to home page mobile cards and verify desktop table links&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-mxo8hi5cs&quot;
+        "content": "Add team links to home page mobile cards and verify desktop table links",
+        "status": "completed",
+        "id": "todo-1762306709966-mxo8hi5cs"
       },
       {
-        &quot;content&quot;: &quot;Add team links in tournament standings/results and organizer links&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-kwdp37fe5&quot;
+        "content": "Add team links in tournament standings/results and organizer links",
+        "status": "completed",
+        "id": "todo-1762306709966-kwdp37fe5"
       },
       {
-        &quot;content&quot;: &quot;Verify and add team links in league standings and top performers&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-rariiy79g&quot;
+        "content": "Verify and add team links in league standings and top performers",
+        "status": "completed",
+        "id": "todo-1762306709966-rariiy79g"
       },
       {
-        &quot;content&quot;: &quot;Add league/tournament links in team match history and related sections&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-6nfww7ab2&quot;
+        "content": "Add league/tournament links in team match history and related sections",
+        "status": "completed",
+        "id": "todo-1762306709966-6nfww7ab2"
       },
       {
-        &quot;content&quot;: &quot;Add team/league/tournament links in player game logs&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-015sa5k14&quot;
+        "content": "Add team/league/tournament links in player game logs",
+        "status": "completed",
+        "id": "todo-1762306709966-015sa5k14"
       },
       {
-        &quot;content&quot;: &quot;Create breadcrumb component and add to detail pages&quot;,
-        &quot;status&quot;: &quot;completed&quot;,
-        &quot;id&quot;: &quot;todo-1762306709966-oa1zc0xqv&quot;
+        "content": "Create breadcrumb component and add to detail pages",
+        "status": "completed",
+        "id": "todo-1762306709966-oa1zc0xqv"
       }
     ]
   }
@@ -601,34 +601,34 @@ Adding missing internal links, starting with match listings and then moving to o
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 14, lines removed: 6
 
 ```diff
 @@ -227,13 +227,21 @@
-              &lt;div className=&quot;flex items-center flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3 text-[10px] sm:text-xs text-neutral-400&quot;&gt;
+              &lt;div className="flex items-center flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3 text-[10px] sm:text-xs text-neutral-400"&gt;
                 &lt;span&gt;{new Date(match.played_at).toLocaleDateString()}&lt;/span&gt;
 -               {match.league &amp;&amp; (
--                 &lt;span className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs&quot;&gt;
+-                 &lt;span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs"&gt;
 +               {match.league &amp;&amp; match.season_id &amp;&amp; (
 +                 &lt;a
 +                   href={&#96;/leagues/${match.season_id}&#96;}
 +                   onClick={(e) =&gt; e.stopPropagation()}
-+                   className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition&quot;
++                   className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition"
 +                 &gt;
                     {match.league.league_name} {match.league.season_number &amp;&amp; &#96;S${match.league.season_number}&#96;}
 -                 &lt;/span&gt;
 +                 &lt;/a&gt;
                 )}
 -               {match.tournament &amp;&amp; (
--                 &lt;span className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs&quot;&gt;
+-                 &lt;span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs"&gt;
 +               {match.tournament &amp;&amp; match.tournament_id &amp;&amp; (
 +                 &lt;a
 +                   href={&#96;/tournaments/${match.tournament_id}&#96;}
 +                   onClick={(e) =&gt; e.stopPropagation()}
-+                   className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs hover:bg-patriot-red-900/50 transition&quot;
++                   className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs hover:bg-patriot-red-900/50 transition"
 +                 &gt;
                     {match.tournament.name}
 -                 &lt;/span&gt;
@@ -645,32 +645,32 @@ Lines added: 14, lines removed: 6
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/MatchesListIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 12, lines removed: 6
 
 ```diff
 @@ -297,13 +297,19 @@
-                &lt;div className=&quot;flex items-center gap-2 text-xs text-neutral-500&quot;&gt;
+                &lt;div className="flex items-center gap-2 text-xs text-neutral-500"&gt;
                   &lt;span&gt;{new Date(selectedMatch.played_at).toLocaleDateString()}&lt;/span&gt;
 -                 {selectedMatch.league &amp;&amp; (
--                   &lt;span className=&quot;px-2 py-0.5 rounded bg-neutral-800 text-neutral-300&quot;&gt;
+-                   &lt;span className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300"&gt;
 +                 {selectedMatch.league &amp;&amp; selectedMatch.season_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/leagues/${selectedMatch.season_id}&#96;}
-+                     className=&quot;px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition&quot;
++                     className="px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition"
 +                   &gt;
                       {selectedMatch.league.league_name} {selectedMatch.league.season_number &amp;&amp; &#96;S${selectedMatch.league.season_number}&#96;}
 -                   &lt;/span&gt;
 +                   &lt;/a&gt;
                   )}
 -                 {selectedMatch.tournament &amp;&amp; (
--                   &lt;span className=&quot;px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300&quot;&gt;
+-                   &lt;span className="px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300"&gt;
 +                 {selectedMatch.tournament &amp;&amp; selectedMatch.tournament_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/tournaments/${selectedMatch.tournament_id}&#96;}
-+                     className=&quot;px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 hover:bg-patriot-red-900/50 transition&quot;
++                     className="px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 hover:bg-patriot-red-900/50 transition"
 +                   &gt;
                       {selectedMatch.tournament.name}
 -                   &lt;/span&gt;
@@ -687,34 +687,34 @@ Lines added: 12, lines removed: 6
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 14, lines removed: 6
 
 ```diff
 @@ -211,13 +211,21 @@
-              &lt;div className=&quot;flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2&quot;&gt;
+              &lt;div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2"&gt;
                 &lt;span&gt;{new Date(match.played_at).toLocaleDateString()}&lt;/span&gt;
 -               {match.league &amp;&amp; (
--                 &lt;span className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs&quot;&gt;
+-                 &lt;span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs"&gt;
 +               {match.league &amp;&amp; match.season_id &amp;&amp; (
 +                 &lt;a
 +                   href={&#96;/leagues/${match.season_id}&#96;}
 +                   onClick={(e) =&gt; e.stopPropagation()}
-+                   className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition&quot;
++                   className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition"
 +                 &gt;
                     {match.league.league_name} {match.league.season_number &amp;&amp; &#96;S${match.league.season_number}&#96;}
 -                 &lt;/span&gt;
 +                 &lt;/a&gt;
                 )}
 -               {match.tournament &amp;&amp; (
--                 &lt;span className=&quot;px-2 py-0.5 rounded bg-purple-900/30 text-purple-300&quot;&gt;
+-                 &lt;span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300"&gt;
 +               {match.tournament &amp;&amp; match.tournament_id &amp;&amp; (
 +                 &lt;a
 +                   href={&#96;/tournaments/${match.tournament_id}&#96;}
 +                   onClick={(e) =&gt; e.stopPropagation()}
-+                   className=&quot;px-2 py-0.5 rounded bg-purple-900/30 text-purple-300 hover:bg-purple-900/50 transition&quot;
++                   className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300 hover:bg-purple-900/50 transition"
 +                 &gt;
                     {match.tournament.name}
 -                 &lt;/span&gt;
@@ -731,32 +731,32 @@ Lines added: 14, lines removed: 6
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/LeagueMatchesIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 12, lines removed: 6
 
 ```diff
 @@ -276,13 +276,19 @@
-                &lt;div className=&quot;flex items-center gap-2 text-xs text-neutral-500&quot;&gt;
+                &lt;div className="flex items-center gap-2 text-xs text-neutral-500"&gt;
                   &lt;span&gt;{new Date(selectedMatch.played_at).toLocaleDateString()}&lt;/span&gt;
 -                 {selectedMatch.league &amp;&amp; (
--                   &lt;span className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs&quot;&gt;
+-                   &lt;span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs"&gt;
 +                 {selectedMatch.league &amp;&amp; selectedMatch.season_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/leagues/${selectedMatch.season_id}&#96;}
-+                     className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition&quot;
++                     className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition"
 +                   &gt;
                       {selectedMatch.league.league_name} {selectedMatch.league.season_number &amp;&amp; &#96;S${selectedMatch.league.season_number}&#96;}
 -                   &lt;/span&gt;
 +                   &lt;/a&gt;
                   )}
 -                 {selectedMatch.tournament &amp;&amp; (
--                   &lt;span className=&quot;px-2 py-0.5 rounded bg-purple-900/30 text-purple-300&quot;&gt;
+-                   &lt;span className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300"&gt;
 +                 {selectedMatch.tournament &amp;&amp; selectedMatch.tournament_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/tournaments/${selectedMatch.tournament_id}&#96;}
-+                     className=&quot;px-2 py-0.5 rounded bg-purple-900/30 text-purple-300 hover:bg-purple-900/50 transition&quot;
++                     className="px-2 py-0.5 rounded bg-purple-900/30 text-purple-300 hover:bg-purple-900/50 transition"
 +                   &gt;
                       {selectedMatch.tournament.name}
 -                   &lt;/span&gt;
@@ -773,35 +773,35 @@ Lines added: 12, lines removed: 6
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 15, lines removed: 7
 
 ```diff
 @@ -207,13 +207,21 @@
-                &lt;div className=&quot;flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2&quot;&gt;
+                &lt;div className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-400 mt-2"&gt;
                   &lt;span&gt;{new Date(match.played_at).toLocaleDateString()}&lt;/span&gt;
 -                 {match.league &amp;&amp; (
--                 &lt;span className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs&quot;&gt;
+-                 &lt;span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs"&gt;
 -                   {match.league.league_name} {match.league.season_number &amp;&amp; &#96;S${match.league.season_number}&#96;}
 -                 &lt;/span&gt;
 +                 {match.league &amp;&amp; match.season_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/leagues/${match.season_id}&#96;}
 +                     onClick={(e) =&gt; e.stopPropagation()}
-+                     className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition&quot;
++                     className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 text-[10px] sm:text-xs hover:bg-patriot-blue-700 transition"
 +                   &gt;
 +                     {match.league.league_name} {match.league.season_number &amp;&amp; &#96;S${match.league.season_number}&#96;}
 +                   &lt;/a&gt;
                   )}
 -                 {match.tournament &amp;&amp; (
--                   &lt;span className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs&quot;&gt;
+-                   &lt;span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs"&gt;
 +                 {match.tournament &amp;&amp; match.tournament_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/tournaments/${match.tournament_id}&#96;}
 +                     onClick={(e) =&gt; e.stopPropagation()}
-+                     className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs hover:bg-patriot-red-900/50 transition&quot;
++                     className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs hover:bg-patriot-red-900/50 transition"
 +                   &gt;
                       {match.tournament.name}
 -                   &lt;/span&gt;
@@ -818,32 +818,32 @@ Lines added: 15, lines removed: 7
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamMatchesIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 12, lines removed: 6
 
 ```diff
 @@ -266,13 +266,19 @@
-                &lt;div className=&quot;flex items-center gap-2 text-xs text-neutral-500&quot;&gt;
+                &lt;div className="flex items-center gap-2 text-xs text-neutral-500"&gt;
                   &lt;span&gt;{new Date(selectedMatch.played_at).toLocaleDateString()}&lt;/span&gt;
 -                 {selectedMatch.league &amp;&amp; (
--                   &lt;span className=&quot;px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200&quot;&gt;
+-                   &lt;span className="px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200"&gt;
 +                 {selectedMatch.league &amp;&amp; selectedMatch.season_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/leagues/${selectedMatch.season_id}&#96;}
-+                     className=&quot;px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 hover:bg-patriot-blue-700 transition&quot;
++                     className="px-2 py-0.5 rounded bg-patriot-blue-800 text-neutral-200 hover:bg-patriot-blue-700 transition"
 +                   &gt;
                       {selectedMatch.league.league_name} {selectedMatch.league.season_number &amp;&amp; &#96;S${selectedMatch.league.season_number}&#96;}
 -                   &lt;/span&gt;
 +                   &lt;/a&gt;
                   )}
 -                 {selectedMatch.tournament &amp;&amp; (
--                   &lt;span className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs&quot;&gt;
+-                   &lt;span className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs"&gt;
 +                 {selectedMatch.tournament &amp;&amp; selectedMatch.tournament_id &amp;&amp; (
 +                   &lt;a
 +                     href={&#96;/tournaments/${selectedMatch.tournament_id}&#96;}
-+                     className=&quot;px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs hover:bg-patriot-red-900/50 transition&quot;
++                     className="px-1.5 sm:px-2 py-0.5 rounded bg-patriot-red-900/30 text-patriot-red-300 text-[10px] sm:text-xs hover:bg-patriot-red-900/50 transition"
 +                   &gt;
                       {selectedMatch.tournament.name}
 -                   &lt;/span&gt;
@@ -894,50 +894,50 @@ Adding links to the home page and fixing the desktop table:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/RankTableIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/RankTableIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 19, lines removed: 14
 
 ```diff
 @@ -37,18 +37,23 @@
-            &lt;tr key={r.team_id} className=&quot;border-b border-patriot-blue-800 hover:bg-patriot-blue-900/50 transition&quot;&gt;
-              &lt;td className=&quot;py-2 text-neutral-300&quot;&gt;#{idx + 1}&lt;/td&gt;
--             &lt;td className=&quot;py-2 flex items-center gap-2&quot;&gt;
+            &lt;tr key={r.team_id} className="border-b border-patriot-blue-800 hover:bg-patriot-blue-900/50 transition"&gt;
+              &lt;td className="py-2 text-neutral-300"&gt;#{idx + 1}&lt;/td&gt;
+-             &lt;td className="py-2 flex items-center gap-2"&gt;
 -               {r.logo_url ? (
 -                 &lt;img 
 -                   src={r.logo_url} 
--                   alt=&quot;&quot; 
--                   className=&quot;h-6 w-6 rounded object-cover&quot; 
--                   loading=&quot;lazy&quot; 
+-                   alt="" 
+-                   className="h-6 w-6 rounded object-cover" 
+-                   loading="lazy" 
 -                 /&gt;
 -               ) : (
--                 &lt;div className=&quot;h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold&quot;&gt;
--                   {r.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                 &lt;div className="h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold"&gt;
+-                   {r.team_name?.substring(0, 2).toUpperCase() || '??'}
 -                 &lt;/div&gt;
 -               )}
 -               {r.team_name}
-+             &lt;td className=&quot;py-2&quot;&gt;
++             &lt;td className="py-2"&gt;
 +               &lt;a 
 +                 href={&#96;/teams/${r.team_id}&#96;}
-+                 className=&quot;flex items-center gap-2 hover:text-patriot-red-400 transition&quot;
++                 className="flex items-center gap-2 hover:text-patriot-red-400 transition"
 +               &gt;
 +                 {r.logo_url ? (
 +                   &lt;img 
 +                     src={r.logo_url} 
-+                     alt=&quot;&quot; 
-+                     className=&quot;h-6 w-6 rounded object-cover&quot; 
-+                     loading=&quot;lazy&quot; 
++                     alt="" 
++                     className="h-6 w-6 rounded object-cover" 
++                     loading="lazy" 
 +                   /&gt;
 +                 ) : (
-+                   &lt;div className=&quot;h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold&quot;&gt;
-+                     {r.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                   &lt;div className="h-6 w-6 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-300 text-[10px] font-bold"&gt;
++                     {r.team_name?.substring(0, 2).toUpperCase() || '??'}
 +                   &lt;/div&gt;
 +                 )}
 +                 {r.team_name}
 +               &lt;/a&gt;
               &lt;/td&gt;
-              &lt;td className=&quot;text-right font-medium&quot;&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/td&gt;
+              &lt;td className="text-right font-medium"&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/td&gt;
 ```
 
 </details>
@@ -965,56 +965,56 @@ Adding links to the home page mobile cards:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 23, lines removed: 21
 
 ```diff
 @@ -87,25 +87,27 @@
-        &lt;section class=&quot;space-y-2 sm:hidden&quot;&gt;
+        &lt;section class="space-y-2 sm:hidden"&gt;
           {rows.map((r: typeof rows[0]) =&gt; (
--           &lt;article class=&quot;rounded border border-patriot-blue-800 p-3&quot;&gt;
--             &lt;header class=&quot;flex items-center gap-3&quot;&gt;
+-           &lt;article class="rounded border border-patriot-blue-800 p-3"&gt;
+-             &lt;header class="flex items-center gap-3"&gt;
 -               {r.logo_url ? (
 -                 &lt;img src={r.logo_url}
--                    alt=&quot;&quot; class=&quot;h-8 w-8 rounded object-cover&quot; loading=&quot;lazy&quot; /&gt;
+-                    alt="" class="h-8 w-8 rounded object-cover" loading="lazy" /&gt;
 -               ) : (
--                 &lt;div class=&quot;h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold&quot;&gt;
--                   {r.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
+-                 &lt;div class="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold"&gt;
+-                   {r.team_name?.substring(0, 2).toUpperCase() || '??'}
 -                 &lt;/div&gt;
 -               )}
--               &lt;div class=&quot;font-semibold&quot;&gt;{r.team_name}&lt;/div&gt;
+-               &lt;div class="font-semibold"&gt;{r.team_name}&lt;/div&gt;
 -               {r.leaderboard_tier &amp;&amp; (
--                 &lt;div class=&quot;ml-auto text-xs font-bold text-neutral-400&quot;&gt;{r.leaderboard_tier}&lt;/div&gt;
+-                 &lt;div class="ml-auto text-xs font-bold text-neutral-400"&gt;{r.leaderboard_tier}&lt;/div&gt;
 -               )}
 -             &lt;/header&gt;
--             &lt;dl class=&quot;mt-2 grid grid-cols-3 text-sm&quot;&gt;
--               &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;Score&lt;/dt&gt;&lt;dd class=&quot;font-medium&quot;&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/dd&gt;&lt;/div&gt;
--               &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;Elo&lt;/dt&gt;&lt;dd class=&quot;font-medium&quot;&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/dd&gt;&lt;/div&gt;
--               &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;RP&lt;/dt&gt;&lt;dd&gt;{r.current_rp ?? 0}&lt;/dd&gt;&lt;/div&gt;
+-             &lt;dl class="mt-2 grid grid-cols-3 text-sm"&gt;
+-               &lt;div&gt;&lt;dt class="text-neutral-400"&gt;Score&lt;/dt&gt;&lt;dd class="font-medium"&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/dd&gt;&lt;/div&gt;
+-               &lt;div&gt;&lt;dt class="text-neutral-400"&gt;Elo&lt;/dt&gt;&lt;dd class="font-medium"&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/dd&gt;&lt;/div&gt;
+-               &lt;div&gt;&lt;dt class="text-neutral-400"&gt;RP&lt;/dt&gt;&lt;dd&gt;{r.current_rp ?? 0}&lt;/dd&gt;&lt;/div&gt;
 -             &lt;/dl&gt;
 -           &lt;/article&gt;
-+           &lt;a href={&#96;/teams/${r.team_id}&#96;} class=&quot;block rounded border border-patriot-blue-800 p-3 hover:border-patriot-red-500 transition&quot;&gt;
++           &lt;a href={&#96;/teams/${r.team_id}&#96;} class="block rounded border border-patriot-blue-800 p-3 hover:border-patriot-red-500 transition"&gt;
 +             &lt;article&gt;
-+               &lt;header class=&quot;flex items-center gap-3&quot;&gt;
++               &lt;header class="flex items-center gap-3"&gt;
 +                 {r.logo_url ? (
 +                   &lt;img src={r.logo_url}
-+                      alt=&quot;&quot; class=&quot;h-8 w-8 rounded object-cover&quot; loading=&quot;lazy&quot; /&gt;
++                      alt="" class="h-8 w-8 rounded object-cover" loading="lazy" /&gt;
 +                 ) : (
-+                   &lt;div class=&quot;h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold&quot;&gt;
-+                     {r.team_name?.substring(0, 2).toUpperCase() || &#39;??&#39;}
++                   &lt;div class="h-8 w-8 rounded bg-patriot-blue-800 flex items-center justify-center text-neutral-400 text-[10px] font-bold"&gt;
++                     {r.team_name?.substring(0, 2).toUpperCase() || '??'}
 +                   &lt;/div&gt;
 +                 )}
-+                 &lt;div class=&quot;font-semibold&quot;&gt;{r.team_name}&lt;/div&gt;
++                 &lt;div class="font-semibold"&gt;{r.team_name}&lt;/div&gt;
 +                 {r.leaderboard_tier &amp;&amp; (
-+                   &lt;div class=&quot;ml-auto text-xs font-bold text-neutral-400&quot;&gt;{r.leaderboard_tier}&lt;/div&gt;
++                   &lt;div class="ml-auto text-xs font-bold text-neutral-400"&gt;{r.leaderboard_tier}&lt;/div&gt;
 +                 )}
 +               &lt;/header&gt;
-+               &lt;dl class=&quot;mt-2 grid grid-cols-3 text-sm&quot;&gt;
-+                 &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;Score&lt;/dt&gt;&lt;dd class=&quot;font-medium&quot;&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/dd&gt;&lt;/div&gt;
-+                 &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;Elo&lt;/dt&gt;&lt;dd class=&quot;font-medium&quot;&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/dd&gt;&lt;/div&gt;
-+                 &lt;div&gt;&lt;dt class=&quot;text-neutral-400&quot;&gt;RP&lt;/dt&gt;&lt;dd&gt;{r.current_rp ?? 0}&lt;/dd&gt;&lt;/div&gt;
++               &lt;dl class="mt-2 grid grid-cols-3 text-sm"&gt;
++                 &lt;div&gt;&lt;dt class="text-neutral-400"&gt;Score&lt;/dt&gt;&lt;dd class="font-medium"&gt;{Math.round(r.hybrid_score ?? 0)}&lt;/dd&gt;&lt;/div&gt;
++                 &lt;div&gt;&lt;dt class="text-neutral-400"&gt;Elo&lt;/dt&gt;&lt;dd class="font-medium"&gt;{Math.round(r.elo_rating ?? 1500)}&lt;/dd&gt;&lt;/div&gt;
++                 &lt;div&gt;&lt;dt class="text-neutral-400"&gt;RP&lt;/dt&gt;&lt;dd&gt;{r.current_rp ?? 0}&lt;/dd&gt;&lt;/div&gt;
 +               &lt;/dl&gt;
 +             &lt;/article&gt;
 +           &lt;/a&gt;
@@ -1263,7 +1263,7 @@ League standings already have team links. Adding team/league/tournament links to
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/PlayerGamesIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/PlayerGamesIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 55, lines removed: undefined
@@ -1275,26 +1275,26 @@ Lines added: 55, lines removed: undefined
 + 
 +                 {/* Match Context Links */}
 +                 {getMatchData(selectedGame) &amp;&amp; (
-+                   &lt;div className=&quot;space-y-2&quot;&gt;
++                   &lt;div className="space-y-2"&gt;
 +                     {(getMatchData(selectedGame).team_a?.name || getMatchData(selectedGame).team_b?.name) &amp;&amp; (
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-neutral-400 text-sm mb-1&quot;&gt;Teams&lt;/div&gt;
-+                         &lt;div className=&quot;flex flex-wrap gap-2&quot;&gt;
++                         &lt;div className="text-neutral-400 text-sm mb-1"&gt;Teams&lt;/div&gt;
++                         &lt;div className="flex flex-wrap gap-2"&gt;
 +                           {getMatchData(selectedGame).team_a?.name &amp;&amp; (
 +                             &lt;a
 +                               href={&#96;/teams/${getMatchData(selectedGame).team_a_id}&#96;}
-+                               className=&quot;text-blue-400 hover:text-blue-300 transition&quot;
++                               className="text-blue-400 hover:text-blue-300 transition"
 +                             &gt;
 +                               {getMatchData(selectedGame).team_a.name}
 +                             &lt;/a&gt;
 +                           )}
 +                           {getMatchData(selectedGame).team_a?.name &amp;&amp; getMatchData(selectedGame).team_b?.name &amp;&amp; (
-+                             &lt;span className=&quot;text-neutral-500&quot;&gt;vs&lt;/span&gt;
++                             &lt;span className="text-neutral-500"&gt;vs&lt;/span&gt;
 +                           )}
 +                           {getMatchData(selectedGame).team_b?.name &amp;&amp; (
 +                             &lt;a
 +                               href={&#96;/teams/${getMatchData(selectedGame).team_b_id}&#96;}
-+                               className=&quot;text-blue-400 hover:text-blue-300 transition&quot;
++                               className="text-blue-400 hover:text-blue-300 transition"
 +                             &gt;
 +                               {getMatchData(selectedGame).team_b.name}
 +                             &lt;/a&gt;
@@ -1304,12 +1304,12 @@ Lines added: 55, lines removed: undefined
 +                     )}
 +                     {(getMatchData(selectedGame).league || getMatchData(selectedGame).tournament) &amp;&amp; (
 +                       &lt;div&gt;
-+                         &lt;div className=&quot;text-neutral-400 text-sm mb-1&quot;&gt;Context&lt;/div&gt;
-+                         &lt;div className=&quot;flex flex-wrap gap-2&quot;&gt;
++                         &lt;div className="text-neutral-400 text-sm mb-1"&gt;Context&lt;/div&gt;
++                         &lt;div className="flex flex-wrap gap-2"&gt;
 +                           {getMatchData(selectedGame).league &amp;&amp; getMatchData(selectedGame).season_id &amp;&amp; (
 +                             &lt;a
 +                               href={&#96;/leagues/${getMatchData(selectedGame).season_id}&#96;}
-+                               className=&quot;px-2 py-1 rounded bg-patriot-blue-800 text-neutral-200 text-xs hover:bg-patriot-blue-700 transition&quot;
++                               className="px-2 py-1 rounded bg-patriot-blue-800 text-neutral-200 text-xs hover:bg-patriot-blue-700 transition"
 +                             &gt;
 +                               {getMatchData(selectedGame).league.league_name} {getMatchData(selectedGame).league.season_number &amp;&amp; &#96;S${getMatchData(selectedGame).league.season_number}&#96;}
 +                             &lt;/a&gt;
@@ -1317,7 +1317,7 @@ Lines added: 55, lines removed: undefined
 +                           {getMatchData(selectedGame).tournament &amp;&amp; getMatchData(selectedGame).tournament_id &amp;&amp; (
 +                             &lt;a
 +                               href={&#96;/tournaments/${getMatchData(selectedGame).tournament_id}&#96;}
-+                               className=&quot;px-2 py-1 rounded bg-patriot-red-900/30 text-patriot-red-300 text-xs hover:bg-patriot-red-900/50 transition&quot;
++                               className="px-2 py-1 rounded bg-patriot-red-900/30 text-patriot-red-300 text-xs hover:bg-patriot-red-900/50 transition"
 +                             &gt;
 +                               {getMatchData(selectedGame).tournament.name}
 +                             &lt;/a&gt;
@@ -1328,7 +1328,7 @@ Lines added: 55, lines removed: undefined
 +                   &lt;/div&gt;
 +                 )}
   
-                  &lt;div className=&quot;grid grid-cols-3 gap-4&quot;&gt;
+                  &lt;div className="grid grid-cols-3 gap-4"&gt;
 ```
 
 </details>
@@ -1373,14 +1373,14 @@ Adding league/tournament links to team match history:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamTabsIsland.tsx</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/TeamTabsIsland.tsx</summary>
 
 **Chunk 1**
 Lines added: 24, lines removed: 2
 
 ```diff
 @@ -447,6 +447,28 @@
-                              &lt;div className=&quot;text-xs text-neutral-500 flex items-center gap-2 flex-wrap&quot;&gt;
+                              &lt;div className="text-xs text-neutral-500 flex items-center gap-2 flex-wrap"&gt;
                                 &lt;span&gt;{new Date(match.played_at).toLocaleDateString()}&lt;/span&gt;
 -                               {match.league?.league_name &amp;&amp; &lt;span&gt;• {match.league.league_name}&lt;/span&gt;}
 -                               {match.tournament?.name &amp;&amp; &lt;span&gt;• {match.tournament.name}&lt;/span&gt;}
@@ -1390,7 +1390,7 @@ Lines added: 24, lines removed: 2
 +                                   &lt;a
 +                                     href={&#96;/leagues/${match.season_id}&#96;}
 +                                     onClick={(e) =&gt; e.stopPropagation()}
-+                                     className=&quot;hover:text-blue-400 transition&quot;
++                                     className="hover:text-blue-400 transition"
 +                                   &gt;
 +                                     {match.league.league_name}
 +                                   &lt;/a&gt;
@@ -1402,7 +1402,7 @@ Lines added: 24, lines removed: 2
 +                                   &lt;a
 +                                     href={&#96;/tournaments/${match.tournament_id}&#96;}
 +                                     onClick={(e) =&gt; e.stopPropagation()}
-+                                     className=&quot;hover:text-purple-400 transition&quot;
++                                     className="hover:text-purple-400 transition"
 +                                   &gt;
 +                                     {match.tournament.name}
 +                                   &lt;/a&gt;
@@ -1437,7 +1437,7 @@ Lines added: 24, lines removed: 2
 
 <tool-use data-tool-type="write" data-tool-name="write">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/Breadcrumbs.astro</summary>
+<details><summary>Tool use: **write** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/Breadcrumbs.astro</summary>
 
 **Chunk 1**
 Lines added: 32, lines removed: 1
@@ -1456,19 +1456,19 @@ Lines added: 32, lines removed: 1
 + const { items } = Astro.props;
 + ---
 + 
-+ &lt;nav class=&quot;mb-4&quot; aria-label=&quot;Breadcrumb&quot;&gt;
-+   &lt;ol class=&quot;flex items-center gap-2 text-sm text-neutral-400&quot;&gt;
++ &lt;nav class="mb-4" aria-label="Breadcrumb"&gt;
++   &lt;ol class="flex items-center gap-2 text-sm text-neutral-400"&gt;
 +     {items.map((item, index) =&gt; (
-+       &lt;li class=&quot;flex items-center gap-2&quot;&gt;
++       &lt;li class="flex items-center gap-2"&gt;
 +         {index &gt; 0 &amp;&amp; (
-+           &lt;svg class=&quot;w-4 h-4&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;
-+             &lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M9 5l7 7-7 7&quot; /&gt;
++           &lt;svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
++             &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /&gt;
 +           &lt;/svg&gt;
 +         )}
 +         {index === items.length - 1 ? (
-+           &lt;span class=&quot;text-white font-medium&quot;&gt;{item.label}&lt;/span&gt;
++           &lt;span class="text-white font-medium"&gt;{item.label}&lt;/span&gt;
 +         ) : (
-+           &lt;a href={item.href} class=&quot;hover:text-patriot-red-400 transition&quot;&gt;
++           &lt;a href={item.href} class="hover:text-patriot-red-400 transition"&gt;
 +             {item.label}
 +           &lt;/a&gt;
 +         )}
@@ -1504,18 +1504,18 @@ Adding breadcrumbs to detail pages:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -2,4 +2,5 @@
-  import BaseLayout from &quot;../../components/BaseLayout.astro&quot;;
-  import Navigation from &quot;../../components/Navigation.astro&quot;;
-+ import Breadcrumbs from &quot;../../components/Breadcrumbs.astro&quot;;
-  import TeamTabsIsland from &quot;../../components/TeamTabsIsland&quot;;
-  import { supa } from &quot;../../lib/supabase&quot;;
+  import BaseLayout from "../../components/BaseLayout.astro";
+  import Navigation from "../../components/Navigation.astro";
++ import Breadcrumbs from "../../components/Breadcrumbs.astro";
+  import TeamTabsIsland from "../../components/TeamTabsIsland";
+  import { supa } from "../../lib/supabase";
 ```
 
 </details>
@@ -1543,7 +1543,7 @@ Adding breadcrumbs to detail pages:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 5, lines removed: undefined
@@ -1551,14 +1551,14 @@ Lines added: 5, lines removed: undefined
 ```diff
 @@ -178,4 +178,9 @@
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 +       &lt;Breadcrumbs items={[
-+         { label: &quot;Home&quot;, href: &quot;/&quot; },
-+         { label: &quot;Teams&quot;, href: &quot;/teams&quot; },
++         { label: "Home", href: "/" },
++         { label: "Teams", href: "/teams" },
 +         { label: team.name, href: &#96;/teams/${team.id}&#96; }
 +       ]} /&gt;
         &lt;!-- Team Header --&gt;
-        &lt;div class=&quot;mb-8 flex items-start gap-6&quot;&gt;
+        &lt;div class="mb-8 flex items-start gap-6"&gt;
 ```
 
 </details>
@@ -1602,18 +1602,18 @@ Adding breadcrumbs to the remaining detail pages:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -2,4 +2,5 @@
-  import BaseLayout from &quot;../../components/BaseLayout.astro&quot;;
-  import Navigation from &quot;../../components/Navigation.astro&quot;;
-+ import Breadcrumbs from &quot;../../components/Breadcrumbs.astro&quot;;
-  import PlayerTabs from &quot;../../components/player/Tabs&quot;;
-  import { supa } from &quot;../../lib/supabase&quot;;
+  import BaseLayout from "../../components/BaseLayout.astro";
+  import Navigation from "../../components/Navigation.astro";
++ import Breadcrumbs from "../../components/Breadcrumbs.astro";
+  import PlayerTabs from "../../components/player/Tabs";
+  import { supa } from "../../lib/supabase";
 ```
 
 </details>
@@ -1676,7 +1676,7 @@ Output mode: content
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 6, lines removed: 1
@@ -1685,15 +1685,15 @@ Lines added: 6, lines removed: 1
 @@ -192,5 +192,10 @@
   &gt;
     &lt;Navigation /&gt;
--     &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
-+   &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+-     &lt;main class="mx-auto max-w-6xl p-6"&gt;
++   &lt;main class="mx-auto max-w-6xl p-6"&gt;
 +     &lt;Breadcrumbs items={[
-+       { label: &quot;Home&quot;, href: &quot;/&quot; },
-+       { label: &quot;Players&quot;, href: &quot;/players&quot; },
-+       { label: player?.gamertag || &quot;Player&quot;, href: &#96;/players/${id}&#96; }
++       { label: "Home", href: "/" },
++       { label: "Players", href: "/players" },
++       { label: player?.gamertag || "Player", href: &#96;/players/${id}&#96; }
 +     ]} /&gt;
         &lt;!-- Player Header --&gt;
-        &lt;div class=&quot;mb-8&quot;&gt;
+        &lt;div class="mb-8"&gt;
 ```
 
 </details>
@@ -1704,18 +1704,18 @@ Lines added: 6, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -2,4 +2,5 @@
-  import BaseLayout from &quot;../../components/BaseLayout.astro&quot;;
-  import Navigation from &quot;../../components/Navigation.astro&quot;;
-+ import Breadcrumbs from &quot;../../components/Breadcrumbs.astro&quot;;
-  import LeagueTabsIsland from &quot;../../components/LeagueTabsIsland&quot;;
-  import { supa } from &quot;../../lib/supabase&quot;;
+  import BaseLayout from "../../components/BaseLayout.astro";
+  import Navigation from "../../components/Navigation.astro";
++ import Breadcrumbs from "../../components/Breadcrumbs.astro";
+  import LeagueTabsIsland from "../../components/LeagueTabsIsland";
+  import { supa } from "../../lib/supabase";
 ```
 
 </details>
@@ -1760,18 +1760,18 @@ Model supplied an ambiguous edit
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 1, lines removed: undefined
 
 ```diff
 @@ -2,4 +2,5 @@
-  import BaseLayout from &quot;../../components/BaseLayout.astro&quot;;
-  import Navigation from &quot;../../components/Navigation.astro&quot;;
-+ import Breadcrumbs from &quot;../../components/Breadcrumbs.astro&quot;;
-  import TournamentTabsIsland from &quot;../../components/TournamentTabsIsland&quot;;
-  import { supa } from &quot;../../lib/supabase&quot;;
+  import BaseLayout from "../../components/BaseLayout.astro";
+  import Navigation from "../../components/Navigation.astro";
++ import Breadcrumbs from "../../components/Breadcrumbs.astro";
+  import TournamentTabsIsland from "../../components/TournamentTabsIsland";
+  import { supa } from "../../lib/supabase";
 ```
 
 </details>
@@ -1782,7 +1782,7 @@ Lines added: 1, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 5, lines removed: undefined
@@ -1790,14 +1790,14 @@ Lines added: 5, lines removed: undefined
 ```diff
 @@ -263,4 +263,9 @@
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 +       &lt;Breadcrumbs items={[
-+         { label: &quot;Home&quot;, href: &quot;/&quot; },
-+         { label: &quot;Tournaments&quot;, href: &quot;/tournaments&quot; },
++         { label: "Home", href: "/" },
++         { label: "Tournaments", href: "/tournaments" },
 +         { label: tournament.name, href: &#96;/tournaments/${id}&#96; }
 +       ]} /&gt;
         &lt;!-- Tournament Header --&gt;
-        &lt;div class=&quot;mb-8&quot;&gt;
+        &lt;div class="mb-8"&gt;
 ```
 
 </details>
@@ -1846,7 +1846,7 @@ Fixing the league page breadcrumb:
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 5, lines removed: undefined
@@ -1854,14 +1854,14 @@ Lines added: 5, lines removed: undefined
 ```diff
 @@ -594,4 +594,9 @@
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 +       &lt;Breadcrumbs items={[
-+         { label: &quot;Home&quot;, href: &quot;/&quot; },
-+         { label: &quot;Leagues&quot;, href: &quot;/leagues&quot; },
-+         { label: league?.league_name ? &#96;${league.league_name} ${league.season_number ? &#96;S${league.season_number}&#96; : &#39;&#39;}&#96; : &quot;League&quot;, href: &#96;/leagues/${id}&#96; }
++         { label: "Home", href: "/" },
++         { label: "Leagues", href: "/leagues" },
++         { label: league?.league_name ? &#96;${league.league_name} ${league.season_number ? &#96;S${league.season_number}&#96; : ''}&#96; : "League", href: &#96;/leagues/${id}&#96; }
 +       ]} /&gt;
         &lt;!-- League Header --&gt;
-        &lt;div class=&quot;mb-8 flex items-start gap-6&quot;&gt;
+        &lt;div class="mb-8 flex items-start gap-6"&gt;
 ```
 
 </details>
@@ -1996,75 +1996,75 @@ Parameters:
 
 ```json
 {
-  &quot;plan&quot;: &quot;# Open Graph Meta Tags Implementation\n\nAdd comprehensive Open Graph and Twitter Card meta tags throughout the site to enable rich social media previews when links are shared.\n\n## Implementation Strategy\n\n### 1. Enhance BaseLayout Component\n**File:** &#96;src/components/BaseLayout.astro&#96;\n\n**Changes:**\n- Add optional props for Open Graph: &#96;ogImage&#96;, &#96;ogType&#96;, &#96;ogUrl&#96;\n- Add optional props for Twitter Card: &#96;twitterCard&#96;\n- Implement default Open Graph tags (og:title, og:description, og:image, og:url, og:type, og:site_name)\n- Implement Twitter Card tags (twitter:card, twitter:title, twitter:description, twitter:image)\n- Use absolute URLs for og:image and og:url (construct from Astro.url)\n- Default og:image to site logo if not provided\n- Default og:type to \&quot;website\&quot; if not provided\n\n### 2. Home Page\n**File:** &#96;src/pages/index.astro&#96;\n\n**Changes:**\n- Add og:image (site logo/default image)\n- Set og:type to \&quot;website\&quot;\n- Add Twitter Card tags\n\n### 3. Team Detail Pages\n**File:** &#96;src/pages/teams/[id].astro&#96;\n\n**Changes:**\n- Use team logo_url as og:image (fallback to default)\n- Set og:type to \&quot;profile\&quot; or \&quot;website\&quot;\n- Include team name, rank, and tier in description\n- Generate absolute URL for og:url\n\n### 4. Player Detail Pages\n**File:** &#96;src/pages/players/[id].astro&#96;\n\n**Changes:**\n- Use player avatar if available, otherwise default image\n- Set og:type to \&quot;profile\&quot;\n- Include gamertag, position, and rating in description\n- Generate absolute URL for og:url\n\n### 5. League Detail Pages\n**File:** &#96;src/pages/leagues/[id].astro&#96;\n\n**Changes:**\n- Use league logo as og:image\n- Set og:type to \&quot;website\&quot;\n- Include league name, season number, and tier in description\n- Generate absolute URL for og:url\n\n### 6. Tournament Detail Pages\n**File:** &#96;src/pages/tournaments/[id].astro&#96;\n\n**Changes:**\n- Use tournament banner_url as og:image (fallback to logo)\n- Set og:type to \&quot;website\&quot;\n- Include tournament name, tier, and prize pool in description\n- Generate absolute URL for og:url\n\n### 7. Matchup/Spotlight Pages\n**File:** &#96;src/pages/matchups/[id].astro&#96;\n\n**Changes:**\n- Use composite image showing both teams or default\n- Set og:type to \&quot;website\&quot;\n- Include team names and match details in description\n- Generate absolute URL for og:url\n\n## Technical Details\n\n- **Image URLs**: Must be absolute URLs (use &#96;Astro.url.origin&#96; + image path)\n- **Image Fallback**: Default to &#96;/GR.svg&#96; or site logo if entity-specific image unavailable\n- **URL Construction**: Use &#96;Astro.url.href&#96; for og:url\n- **Site Name**: \&quot;Global Rank Analytics Data Engine (G.R.A.D.E.)\&quot;\n- **Twitter Card Type**: Use \&quot;summary_large_image\&quot; for better visual impact\n\n## Required Meta Tags\n\n**Open Graph:**\n- og:title\n- og:description\n- og:image\n- og:url\n- og:type\n- og:site_name\n\n**Twitter Card:**\n- twitter:card\n- twitter:title\n- twitter:description\n- twitter:image\n\n## Image Requirements\n\n- Minimum size: 1200x630px (recommended for best display)\n- Use existing logos/banners from database\n- Ensure images are publicly accessible\n- Consider creating default OG image if needed&quot;,
-  &quot;name&quot;: &quot;Internal Linking SEO Strategy&quot;,
-  &quot;todos&quot;: [
+  "plan": "# Open Graph Meta Tags Implementation\n\nAdd comprehensive Open Graph and Twitter Card meta tags throughout the site to enable rich social media previews when links are shared.\n\n## Implementation Strategy\n\n### 1. Enhance BaseLayout Component\n**File:** &#96;src/components/BaseLayout.astro&#96;\n\n**Changes:**\n- Add optional props for Open Graph: &#96;ogImage&#96;, &#96;ogType&#96;, &#96;ogUrl&#96;\n- Add optional props for Twitter Card: &#96;twitterCard&#96;\n- Implement default Open Graph tags (og:title, og:description, og:image, og:url, og:type, og:site_name)\n- Implement Twitter Card tags (twitter:card, twitter:title, twitter:description, twitter:image)\n- Use absolute URLs for og:image and og:url (construct from Astro.url)\n- Default og:image to site logo if not provided\n- Default og:type to \"website\" if not provided\n\n### 2. Home Page\n**File:** &#96;src/pages/index.astro&#96;\n\n**Changes:**\n- Add og:image (site logo/default image)\n- Set og:type to \"website\"\n- Add Twitter Card tags\n\n### 3. Team Detail Pages\n**File:** &#96;src/pages/teams/[id].astro&#96;\n\n**Changes:**\n- Use team logo_url as og:image (fallback to default)\n- Set og:type to \"profile\" or \"website\"\n- Include team name, rank, and tier in description\n- Generate absolute URL for og:url\n\n### 4. Player Detail Pages\n**File:** &#96;src/pages/players/[id].astro&#96;\n\n**Changes:**\n- Use player avatar if available, otherwise default image\n- Set og:type to \"profile\"\n- Include gamertag, position, and rating in description\n- Generate absolute URL for og:url\n\n### 5. League Detail Pages\n**File:** &#96;src/pages/leagues/[id].astro&#96;\n\n**Changes:**\n- Use league logo as og:image\n- Set og:type to \"website\"\n- Include league name, season number, and tier in description\n- Generate absolute URL for og:url\n\n### 6. Tournament Detail Pages\n**File:** &#96;src/pages/tournaments/[id].astro&#96;\n\n**Changes:**\n- Use tournament banner_url as og:image (fallback to logo)\n- Set og:type to \"website\"\n- Include tournament name, tier, and prize pool in description\n- Generate absolute URL for og:url\n\n### 7. Matchup/Spotlight Pages\n**File:** &#96;src/pages/matchups/[id].astro&#96;\n\n**Changes:**\n- Use composite image showing both teams or default\n- Set og:type to \"website\"\n- Include team names and match details in description\n- Generate absolute URL for og:url\n\n## Technical Details\n\n- **Image URLs**: Must be absolute URLs (use &#96;Astro.url.origin&#96; + image path)\n- **Image Fallback**: Default to &#96;/GR.svg&#96; or site logo if entity-specific image unavailable\n- **URL Construction**: Use &#96;Astro.url.href&#96; for og:url\n- **Site Name**: \"Global Rank Analytics Data Engine (G.R.A.D.E.)\"\n- **Twitter Card Type**: Use \"summary_large_image\" for better visual impact\n\n## Required Meta Tags\n\n**Open Graph:**\n- og:title\n- og:description\n- og:image\n- og:url\n- og:type\n- og:site_name\n\n**Twitter Card:**\n- twitter:card\n- twitter:title\n- twitter:description\n- twitter:image\n\n## Image Requirements\n\n- Minimum size: 1200x630px (recommended for best display)\n- Use existing logos/banners from database\n- Ensure images are publicly accessible\n- Consider creating default OG image if needed",
+  "name": "Internal Linking SEO Strategy",
+  "todos": [
     {
-      &quot;content&quot;: &quot;Add Open Graph and Twitter Card props to BaseLayout component with default values&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;enhance-baselayout&quot;
+      "content": "Add Open Graph and Twitter Card props to BaseLayout component with default values",
+      "status": "pending",
+      "id": "enhance-baselayout"
     },
     {
-      &quot;content&quot;: &quot;Add Open Graph tags to home page with site logo&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;home-page-og&quot;,
-      &quot;dependencies&quot;: [
-        &quot;enhance-baselayout&quot;
+      "content": "Add Open Graph tags to home page with site logo",
+      "status": "pending",
+      "id": "home-page-og",
+      "dependencies": [
+        "enhance-baselayout"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add Open Graph tags to team detail pages using team logos&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;team-pages-og&quot;,
-      &quot;dependencies&quot;: [
-        &quot;enhance-baselayout&quot;
+      "content": "Add Open Graph tags to team detail pages using team logos",
+      "status": "pending",
+      "id": "team-pages-og",
+      "dependencies": [
+        "enhance-baselayout"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add Open Graph tags to player detail pages&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;player-pages-og&quot;,
-      &quot;dependencies&quot;: [
-        &quot;enhance-baselayout&quot;
+      "content": "Add Open Graph tags to player detail pages",
+      "status": "pending",
+      "id": "player-pages-og",
+      "dependencies": [
+        "enhance-baselayout"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add Open Graph tags to league detail pages using league logos&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;league-pages-og&quot;,
-      &quot;dependencies&quot;: [
-        &quot;enhance-baselayout&quot;
+      "content": "Add Open Graph tags to league detail pages using league logos",
+      "status": "pending",
+      "id": "league-pages-og",
+      "dependencies": [
+        "enhance-baselayout"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add Open Graph tags to tournament detail pages using tournament banners&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;tournament-pages-og&quot;,
-      &quot;dependencies&quot;: [
-        &quot;enhance-baselayout&quot;
+      "content": "Add Open Graph tags to tournament detail pages using tournament banners",
+      "status": "pending",
+      "id": "tournament-pages-og",
+      "dependencies": [
+        "enhance-baselayout"
       ]
     },
     {
-      &quot;content&quot;: &quot;Add Open Graph tags to matchup/spotlight pages&quot;,
-      &quot;status&quot;: &quot;pending&quot;,
-      &quot;id&quot;: &quot;matchup-pages-og&quot;,
-      &quot;dependencies&quot;: [
-        &quot;enhance-baselayout&quot;
+      "content": "Add Open Graph tags to matchup/spotlight pages",
+      "status": "pending",
+      "id": "matchup-pages-og",
+      "dependencies": [
+        "enhance-baselayout"
       ]
     }
   ],
-  &quot;overview&quot;: &quot;Add Open Graph and Twitter Card meta tags to BaseLayout and all major pages to enable rich social media previews when links are shared on Facebook, Twitter, LinkedIn, etc.&quot;
+  "overview": "Add Open Graph and Twitter Card meta tags to BaseLayout and all major pages to enable rich social media previews when links are shared on Facebook, Twitter, LinkedIn, etc."
 }
 ```
 Additional data:
 
 ```json
 {
-  &quot;status&quot;: &quot;pending&quot;,
-  &quot;reviewData&quot;: {
-    &quot;status&quot;: &quot;Requested&quot;,
-    &quot;selectedOption&quot;: &quot;none&quot;,
-    &quot;isShowingInput&quot;: false
+  "status": "pending",
+  "reviewData": {
+    "status": "Requested",
+    "selectedOption": "none",
+    "isShowingInput": false
   }
 }
 ```
@@ -2072,7 +2072,7 @@ Result:
 
 ```json
 {
-  &quot;rejected&quot;: {}
+  "rejected": {}
 }
 ```
 Status: **completed**
@@ -2138,7 +2138,7 @@ Implementing Open Graph meta tags, starting with BaseLayout, then updating all p
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/BaseLayout.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/components/BaseLayout.astro</summary>
 
 **Chunk 1**
 Lines added: 12, lines removed: 1
@@ -2150,12 +2150,12 @@ Lines added: 12, lines removed: 1
 +   ogImage?: string;
 +   ogType?: string;
 +   ogUrl?: string;
-+   twitterCard?: &quot;summary&quot; | &quot;summary_large_image&quot;;
++   twitterCard?: "summary" | "summary_large_image";
   }
   
 - const { title, description } = Astro.props;
-+ const { title, description, ogImage, ogType = &quot;website&quot;, ogUrl, twitterCard = &quot;summary_large_image&quot; } = Astro.props;
-  const fullTitle = title.includes(&quot;Global Rank Analytics Data Engine&quot;) 
++ const { title, description, ogImage, ogType = "website", ogUrl, twitterCard = "summary_large_image" } = Astro.props;
+  const fullTitle = title.includes("Global Rank Analytics Data Engine") 
     ? title 
     : &#96;${title} - Global Rank Analytics Data Engine (G.R.A.D.E)&#96;;
 + 
@@ -2163,8 +2163,8 @@ Lines added: 12, lines removed: 1
 + const siteUrl = Astro.url.origin;
 + const canonicalUrl = ogUrl || Astro.url.href;
 + const defaultImage = &#96;${siteUrl}/GR.svg&#96;;
-+ const ogImageUrl = ogImage ? (ogImage.startsWith(&#39;http&#39;) ? ogImage : &#96;${siteUrl}${ogImage}&#96;) : defaultImage;
-+ const siteName = &quot;Global Rank Analytics Data Engine (G.R.A.D.E.)&quot;;
++ const ogImageUrl = ogImage ? (ogImage.startsWith('http') ? ogImage : &#96;${siteUrl}${ogImage}&#96;) : defaultImage;
++ const siteName = "Global Rank Analytics Data Engine (G.R.A.D.E.)";
   ---
   
 ```
@@ -2175,27 +2175,27 @@ Lines added: 18, lines removed: undefined
 ```diff
 @@ -17,4 +28,22 @@
       &lt;title&gt;{fullTitle}&lt;/title&gt;
-      &lt;meta name=&quot;description&quot; content={description} /&gt;
+      &lt;meta name="description" content={description} /&gt;
 +     
 +     &lt;!-- Open Graph / Facebook --&gt;
-+     &lt;meta property=&quot;og:type&quot; content={ogType} /&gt;
-+     &lt;meta property=&quot;og:url&quot; content={canonicalUrl} /&gt;
-+     &lt;meta property=&quot;og:title&quot; content={fullTitle} /&gt;
-+     &lt;meta property=&quot;og:description&quot; content={description} /&gt;
-+     &lt;meta property=&quot;og:image&quot; content={ogImageUrl} /&gt;
-+     &lt;meta property=&quot;og:site_name&quot; content={siteName} /&gt;
++     &lt;meta property="og:type" content={ogType} /&gt;
++     &lt;meta property="og:url" content={canonicalUrl} /&gt;
++     &lt;meta property="og:title" content={fullTitle} /&gt;
++     &lt;meta property="og:description" content={description} /&gt;
++     &lt;meta property="og:image" content={ogImageUrl} /&gt;
++     &lt;meta property="og:site_name" content={siteName} /&gt;
 +     
 +     &lt;!-- Twitter Card --&gt;
-+     &lt;meta name=&quot;twitter:card&quot; content={twitterCard} /&gt;
-+     &lt;meta name=&quot;twitter:title&quot; content={fullTitle} /&gt;
-+     &lt;meta name=&quot;twitter:description&quot; content={description} /&gt;
-+     &lt;meta name=&quot;twitter:image&quot; content={ogImageUrl} /&gt;
++     &lt;meta name="twitter:card" content={twitterCard} /&gt;
++     &lt;meta name="twitter:title" content={fullTitle} /&gt;
++     &lt;meta name="twitter:description" content={description} /&gt;
++     &lt;meta name="twitter:image" content={ogImageUrl} /&gt;
 +     
 +     &lt;!-- Canonical URL --&gt;
-+     &lt;link rel=&quot;canonical&quot; href={canonicalUrl} /&gt;
++     &lt;link rel="canonical" href={canonicalUrl} /&gt;
 +     
-      &lt;link rel=&quot;icon&quot; type=&quot;image/svg+xml&quot; href=&quot;/favicon.svg&quot; /&gt;
-      &lt;link rel=&quot;apple-touch-icon&quot; sizes=&quot;180x180&quot; href=&quot;/apple-touch-icon.png&quot; /&gt;
+      &lt;link rel="icon" type="image/svg+xml" href="/favicon.svg" /&gt;
+      &lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" /&gt;
 ```
 
 </details>
@@ -2241,21 +2241,21 @@ Lines added: 18, lines removed: undefined
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/index.astro</summary>
 
 **Chunk 1**
 Lines added: 3, lines removed: 1
 
 ```diff
 @@ -71,5 +71,7 @@
-    title=&quot;Home&quot;
-    description=&quot;Comprehensive global rankings and analytics for NBA 2K Pro-Am competitive teams and players&quot;
+    title="Home"
+    description="Comprehensive global rankings and analytics for NBA 2K Pro-Am competitive teams and players"
 - &gt;
-+   ogImage=&quot;/GR.svg&quot;
-+   ogType=&quot;website&quot;
++   ogImage="/GR.svg"
++   ogType="website"
 + /&gt;
     &lt;Navigation /&gt;
-    &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+    &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
@@ -2302,7 +2302,7 @@ Lines added: 3, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/teams/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: 1
@@ -2310,10 +2310,10 @@ Lines added: 8, lines removed: 1
 ```diff
 @@ -170,10 +170,17 @@
   
-  const teamDescription = &#96;View ${team.name}&#39;s profile, roster, match history, and statistics. Track team performance, rankings, and achievements in NBA 2K Pro-Am competitions.&#96;;
+  const teamDescription = &#96;View ${team.name}'s profile, roster, match history, and statistics. Track team performance, rankings, and achievements in NBA 2K Pro-Am competitions.&#96;;
 + 
 + // Construct Open Graph image URL
-+ const ogImage = team.logo_url || &quot;/GR.svg&quot;;
++ const ogImage = team.logo_url || "/GR.svg";
 + const ogUrl = Astro.url.href;
   ---
   
@@ -2322,11 +2322,11 @@ Lines added: 8, lines removed: 1
     description={teamDescription}
 - &gt;
 +   ogImage={ogImage}
-+   ogType=&quot;website&quot;
++   ogType="website"
 +   ogUrl={ogUrl}
 + /&gt;
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
@@ -2374,7 +2374,7 @@ Lines added: 8, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/players/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: 1
@@ -2382,10 +2382,10 @@ Lines added: 8, lines removed: 1
 ```diff
 @@ -185,10 +185,17 @@
   
-  const playerDescription = &#96;View ${player.gamertag}&#39;s profile, statistics, game logs, and achievements. Track player performance, ratings, and career progress in NBA 2K Pro-Am competitions.&#96;;
+  const playerDescription = &#96;View ${player.gamertag}'s profile, statistics, game logs, and achievements. Track player performance, ratings, and career progress in NBA 2K Pro-Am competitions.&#96;;
 + 
 + // Construct Open Graph image URL (use default for now, could add player avatars later)
-+ const ogImage = &quot;/GR.svg&quot;;
++ const ogImage = "/GR.svg";
 + const ogUrl = Astro.url.href;
   ---
   
@@ -2394,11 +2394,11 @@ Lines added: 8, lines removed: 1
     description={playerDescription}
 - &gt;
 +   ogImage={ogImage}
-+   ogType=&quot;profile&quot;
++   ogType="profile"
 +   ogUrl={ogUrl}
 + /&gt;
     &lt;Navigation /&gt;
-    &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+    &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
@@ -2447,7 +2447,7 @@ Lines added: 8, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/leagues/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: 1
@@ -2458,7 +2458,7 @@ Lines added: 8, lines removed: 1
   const leagueDescription = &#96;View ${league.league_name} standings, schedules, match results, and statistics. Track season progress and team performance in this NBA 2K Pro-Am league.&#96;;
 + 
 + // Construct Open Graph image URL
-+ const ogImage = league.league_logo || &quot;/GR.svg&quot;;
++ const ogImage = league.league_logo || "/GR.svg";
 + const ogUrl = Astro.url.href;
   ---
   
@@ -2467,11 +2467,11 @@ Lines added: 8, lines removed: 1
     description={leagueDescription}
 - &gt;
 +   ogImage={ogImage}
-+   ogType=&quot;website&quot;
++   ogType="website"
 +   ogUrl={ogUrl}
 + /&gt;
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
@@ -2521,7 +2521,7 @@ Lines added: 8, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/tournaments/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: 1
@@ -2532,7 +2532,7 @@ Lines added: 8, lines removed: 1
   const tournamentDescription = &#96;View ${tournament.name} bracket, results, matches, and prize information. Track tournament progress and team performance in this NBA 2K Pro-Am competition.&#96;;
 + 
 + // Construct Open Graph image URL (prefer banner, fallback to default)
-+ const ogImage = tournament.banner_url || &quot;/GR.svg&quot;;
++ const ogImage = tournament.banner_url || "/GR.svg";
 + const ogUrl = Astro.url.href;
   ---
   
@@ -2541,11 +2541,11 @@ Lines added: 8, lines removed: 1
     description={tournamentDescription}
 - &gt;
 +   ogImage={ogImage}
-+   ogType=&quot;website&quot;
++   ogType="website"
 +   ogUrl={ogUrl}
 + /&gt;
     &lt;Navigation /&gt;
-      &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+      &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
@@ -2596,7 +2596,7 @@ Lines added: 8, lines removed: 1
 
 <tool-use data-tool-type="write" data-tool-name="search_replace">
 
-<details><summary>Tool use: **code_edit** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matchups/[id].astro</summary>
+<details><summary>Tool use: **search_replace** • Edit file: /Volumes/870SSD/Active GH Projects/proamrank-astro/proam-rankings/src/pages/matchups/[id].astro</summary>
 
 **Chunk 1**
 Lines added: 8, lines removed: 1
@@ -2607,7 +2607,7 @@ Lines added: 8, lines removed: 1
   const matchupDescription = &#96;View ${spotlightMatch.team_a.name} vs ${spotlightMatch.team_b.name} matchup details, statistics, and head-to-head history in NBA 2K Pro-Am competitions.&#96;;
 + 
 + // Construct Open Graph image URL (use team logos if available, fallback to default)
-+ const ogImage = spotlightMatch.team_a.logo_url || spotlightMatch.team_b.logo_url || &quot;/GR.svg&quot;;
++ const ogImage = spotlightMatch.team_a.logo_url || spotlightMatch.team_b.logo_url || "/GR.svg";
 + const ogUrl = Astro.url.href;
   ---
   
@@ -2616,11 +2616,11 @@ Lines added: 8, lines removed: 1
     description={matchupDescription}
 - &gt;
 +   ogImage={ogImage}
-+   ogType=&quot;website&quot;
++   ogType="website"
 +   ogUrl={ogUrl}
 + /&gt;
     &lt;Navigation /&gt;
-    &lt;main class=&quot;mx-auto max-w-6xl p-6&quot;&gt;
+    &lt;main class="mx-auto max-w-6xl p-6"&gt;
 ```
 
 </details>
